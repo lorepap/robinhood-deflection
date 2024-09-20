@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/common/VlanTag.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/common/VlanTag.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "VlanTag_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(VlanTagBase)
 
@@ -260,7 +205,7 @@ void VlanTagBase::setVlanId(int vlanId)
 class VlanTagBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_vlanId,
     };
@@ -270,34 +215,38 @@ class VlanTagBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(VlanTagBaseDescriptor)
 
 VlanTagBaseDescriptor::VlanTagBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::VlanTagBase)), "inet::TagBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 VlanTagBaseDescriptor::~VlanTagBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool VlanTagBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -307,34 +256,34 @@ bool VlanTagBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **VlanTagBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *VlanTagBaseDescriptor::getProperty(const char *propertyname) const
+const char *VlanTagBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int VlanTagBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int VlanTagBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_vlanId
@@ -344,11 +293,11 @@ unsigned int VlanTagBaseDescriptor::getFieldTypeFlags(int field) const
 
 const char *VlanTagBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "vlanId",
@@ -358,19 +307,19 @@ const char *VlanTagBaseDescriptor::getFieldName(int field) const
 
 int VlanTagBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "vlanId") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "vlanId") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *VlanTagBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_vlanId
@@ -380,112 +329,178 @@ const char *VlanTagBaseDescriptor::getFieldTypeString(int field) const
 
 const char **VlanTagBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *VlanTagBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *VlanTagBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int VlanTagBaseDescriptor::getFieldArraySize(void *object, int field) const
+int VlanTagBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    VlanTagBase *pp = (VlanTagBase *)object; (void)pp;
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *VlanTagBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void VlanTagBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanTagBase *pp = (VlanTagBase *)object; (void)pp;
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'VlanTagBase'", field);
+    }
+}
+
+const char *VlanTagBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string VlanTagBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string VlanTagBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    VlanTagBase *pp = (VlanTagBase *)object; (void)pp;
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
     switch (field) {
         case FIELD_vlanId: return long2string(pp->getVlanId());
         default: return "";
     }
 }
 
-bool VlanTagBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void VlanTagBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanTagBase *pp = (VlanTagBase *)object; (void)pp;
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
     switch (field) {
-        case FIELD_vlanId: pp->setVlanId(string2long(value)); return true;
-        default: return false;
+        case FIELD_vlanId: pp->setVlanId(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanTagBase'", field);
+    }
+}
+
+omnetpp::cValue VlanTagBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_vlanId: return pp->getVlanId();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'VlanTagBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void VlanTagBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_vlanId: pp->setVlanId(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanTagBase'", field);
     }
 }
 
 const char *VlanTagBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *VlanTagBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr VlanTagBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    VlanTagBase *pp = (VlanTagBase *)object; (void)pp;
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void VlanTagBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanTagBase *pp = omnetpp::fromAnyPtr<VlanTagBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanTagBase'", field);
     }
 }
 
@@ -529,7 +544,7 @@ void VlanReq::parsimUnpack(omnetpp::cCommBuffer *b)
 class VlanReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -538,34 +553,38 @@ class VlanReqDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(VlanReqDescriptor)
 
 VlanReqDescriptor::VlanReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::VlanReq)), "inet::VlanTagBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 VlanReqDescriptor::~VlanReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool VlanReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -575,170 +594,234 @@ bool VlanReqDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **VlanReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *VlanReqDescriptor::getProperty(const char *propertyname) const
+const char *VlanReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int VlanReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int VlanReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *VlanReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int VlanReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *VlanReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **VlanReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *VlanReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *VlanReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int VlanReqDescriptor::getFieldArraySize(void *object, int field) const
+int VlanReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    VlanReq *pp = (VlanReq *)object; (void)pp;
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *VlanReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void VlanReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanReq *pp = (VlanReq *)object; (void)pp;
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'VlanReq'", field);
+    }
+}
+
+const char *VlanReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string VlanReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string VlanReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    VlanReq *pp = (VlanReq *)object; (void)pp;
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool VlanReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void VlanReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanReq *pp = (VlanReq *)object; (void)pp;
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanReq'", field);
+    }
+}
+
+omnetpp::cValue VlanReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'VlanReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void VlanReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanReq'", field);
     }
 }
 
 const char *VlanReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *VlanReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr VlanReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    VlanReq *pp = (VlanReq *)object; (void)pp;
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void VlanReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanReq *pp = omnetpp::fromAnyPtr<VlanReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanReq'", field);
     }
 }
 
@@ -782,7 +865,7 @@ void VlanInd::parsimUnpack(omnetpp::cCommBuffer *b)
 class VlanIndDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -791,34 +874,38 @@ class VlanIndDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(VlanIndDescriptor)
 
 VlanIndDescriptor::VlanIndDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::VlanInd)), "inet::VlanTagBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 VlanIndDescriptor::~VlanIndDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool VlanIndDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -828,172 +915,240 @@ bool VlanIndDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **VlanIndDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *VlanIndDescriptor::getProperty(const char *propertyname) const
+const char *VlanIndDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int VlanIndDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int VlanIndDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *VlanIndDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int VlanIndDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *VlanIndDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **VlanIndDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *VlanIndDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *VlanIndDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int VlanIndDescriptor::getFieldArraySize(void *object, int field) const
+int VlanIndDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    VlanInd *pp = (VlanInd *)object; (void)pp;
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *VlanIndDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void VlanIndDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanInd *pp = (VlanInd *)object; (void)pp;
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'VlanInd'", field);
+    }
+}
+
+const char *VlanIndDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string VlanIndDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string VlanIndDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    VlanInd *pp = (VlanInd *)object; (void)pp;
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool VlanIndDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void VlanIndDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    VlanInd *pp = (VlanInd *)object; (void)pp;
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanInd'", field);
+    }
+}
+
+omnetpp::cValue VlanIndDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'VlanInd' as cValue -- field index out of range?", field);
+    }
+}
+
+void VlanIndDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanInd'", field);
     }
 }
 
 const char *VlanIndDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *VlanIndDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr VlanIndDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    VlanInd *pp = (VlanInd *)object; (void)pp;
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void VlanIndDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    VlanInd *pp = omnetpp::fromAnyPtr<VlanInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'VlanInd'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

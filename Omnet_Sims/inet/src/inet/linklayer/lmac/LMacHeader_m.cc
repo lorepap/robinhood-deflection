@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/lmac/LMacHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/lmac/LMacHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "LMacHeader_m.h"
 
 namespace omnetpp {
@@ -149,78 +150,9 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::LMacType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::LMacType"));
-    e->insert(LMAC_CONTROL, "LMAC_CONTROL");
-    e->insert(LMAC_TIMEOUT, "LMAC_TIMEOUT");
-    e->insert(LMAC_WAKEUP, "LMAC_WAKEUP");
-    e->insert(LMAC_SEND_DATA, "LMAC_SEND_DATA");
-    e->insert(LMAC_SETUP_PHASE_END, "LMAC_SETUP_PHASE_END");
-    e->insert(LMAC_CHECK_CHANNEL, "LMAC_CHECK_CHANNEL");
-    e->insert(LMAC_SOMEBODY, "LMAC_SOMEBODY");
-    e->insert(LMAC_DATA, "LMAC_DATA");
-    e->insert(LMAC_START_LMAC, "LMAC_START_LMAC");
-    e->insert(LMAC_SEND_CONTROL, "LMAC_SEND_CONTROL");
-)
+Register_Enum(inet::LMacType, (inet::LMacType::LMAC_CONTROL, inet::LMacType::LMAC_TIMEOUT, inet::LMacType::LMAC_WAKEUP, inet::LMacType::LMAC_SEND_DATA, inet::LMacType::LMAC_SETUP_PHASE_END, inet::LMacType::LMAC_CHECK_CHANNEL, inet::LMacType::LMAC_SOMEBODY, inet::LMacType::LMAC_DATA, inet::LMacType::LMAC_START_LMAC, inet::LMacType::LMAC_SEND_CONTROL));
 
 Register_Class(LMacHeaderBase)
 
@@ -310,12 +242,12 @@ void LMacHeaderBase::setDestAddr(const MacAddress& destAddr)
     this->destAddr = destAddr;
 }
 
-inet::LMacType LMacHeaderBase::getType() const
+LMacType LMacHeaderBase::getType() const
 {
     return this->type;
 }
 
-void LMacHeaderBase::setType(inet::LMacType type)
+void LMacHeaderBase::setType(LMacType type)
 {
     handleChange();
     this->type = type;
@@ -339,7 +271,7 @@ size_t LMacHeaderBase::getOccupiedSlotsArraySize() const
 
 const MacAddress& LMacHeaderBase::getOccupiedSlots(size_t k) const
 {
-    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size occupiedSlots_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)occupiedSlots_arraysize, (unsigned long)k);
     return this->occupiedSlots[k];
 }
 
@@ -357,15 +289,15 @@ void LMacHeaderBase::setOccupiedSlotsArraySize(size_t newSize)
 
 void LMacHeaderBase::setOccupiedSlots(size_t k, const MacAddress& occupiedSlots)
 {
-    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)occupiedSlots_arraysize, (unsigned long)k);
     handleChange();
     this->occupiedSlots[k] = occupiedSlots;
 }
 
 void LMacHeaderBase::insertOccupiedSlots(size_t k, const MacAddress& occupiedSlots)
 {
+    if (k > occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)occupiedSlots_arraysize, (unsigned long)k);
     handleChange();
-    if (k > occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = occupiedSlots_arraysize + 1;
     MacAddress *occupiedSlots2 = new MacAddress[newSize];
     size_t i;
@@ -379,14 +311,14 @@ void LMacHeaderBase::insertOccupiedSlots(size_t k, const MacAddress& occupiedSlo
     occupiedSlots_arraysize = newSize;
 }
 
-void LMacHeaderBase::insertOccupiedSlots(const MacAddress& occupiedSlots)
+void LMacHeaderBase::appendOccupiedSlots(const MacAddress& occupiedSlots)
 {
     insertOccupiedSlots(occupiedSlots_arraysize, occupiedSlots);
 }
 
 void LMacHeaderBase::eraseOccupiedSlots(size_t k)
 {
-    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= occupiedSlots_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)occupiedSlots_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = occupiedSlots_arraysize - 1;
     MacAddress *occupiedSlots2 = (newSize == 0) ? nullptr : new MacAddress[newSize];
@@ -403,7 +335,7 @@ void LMacHeaderBase::eraseOccupiedSlots(size_t k)
 class LMacHeaderBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srcAddr,
         FIELD_destAddr,
@@ -417,34 +349,38 @@ class LMacHeaderBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(LMacHeaderBaseDescriptor)
 
 LMacHeaderBaseDescriptor::LMacHeaderBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::LMacHeaderBase)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 LMacHeaderBaseDescriptor::~LMacHeaderBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool LMacHeaderBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -454,52 +390,52 @@ bool LMacHeaderBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **LMacHeaderBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *LMacHeaderBaseDescriptor::getProperty(const char *propertyname) const
+const char *LMacHeaderBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int LMacHeaderBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int LMacHeaderBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_srcAddr
         0,    // FIELD_destAddr
         0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_mySlot
-        FD_ISARRAY,    // FIELD_occupiedSlots
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_occupiedSlots
     };
     return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
 }
 
 const char *LMacHeaderBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srcAddr",
@@ -513,23 +449,23 @@ const char *LMacHeaderBaseDescriptor::getFieldName(int field) const
 
 int LMacHeaderBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srcAddr") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destAddr") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+2;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "mySlot") == 0) return base+3;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "occupiedSlots") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srcAddr") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "destAddr") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "mySlot") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "occupiedSlots") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *LMacHeaderBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_srcAddr
@@ -543,11 +479,11 @@ const char *LMacHeaderBaseDescriptor::getFieldTypeString(int field) const
 
 const char **LMacHeaderBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -558,60 +494,77 @@ const char **LMacHeaderBaseDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *LMacHeaderBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *LMacHeaderBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::LMacType";
+            if (!strcmp(propertyName, "enum")) return "inet::LMacType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int LMacHeaderBaseDescriptor::getFieldArraySize(void *object, int field) const
+int LMacHeaderBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    LMacHeaderBase *pp = (LMacHeaderBase *)object; (void)pp;
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
     switch (field) {
         case FIELD_occupiedSlots: return pp->getOccupiedSlotsArraySize();
         default: return 0;
     }
 }
 
-const char *LMacHeaderBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void LMacHeaderBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacHeaderBase *pp = (LMacHeaderBase *)object; (void)pp;
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_occupiedSlots: pp->setOccupiedSlotsArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'LMacHeaderBase'", field);
+    }
+}
+
+const char *LMacHeaderBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string LMacHeaderBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string LMacHeaderBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    LMacHeaderBase *pp = (LMacHeaderBase *)object; (void)pp;
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
     switch (field) {
         case FIELD_srcAddr: return pp->getSrcAddr().str();
         case FIELD_destAddr: return pp->getDestAddr().str();
@@ -622,48 +575,102 @@ std::string LMacHeaderBaseDescriptor::getFieldValueAsString(void *object, int fi
     }
 }
 
-bool LMacHeaderBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void LMacHeaderBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacHeaderBase *pp = (LMacHeaderBase *)object; (void)pp;
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
     switch (field) {
-        case FIELD_mySlot: pp->setMySlot(string2long(value)); return true;
-        default: return false;
+        case FIELD_mySlot: pp->setMySlot(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacHeaderBase'", field);
+    }
+}
+
+omnetpp::cValue LMacHeaderBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_srcAddr: return omnetpp::toAnyPtr(&pp->getSrcAddr()); break;
+        case FIELD_destAddr: return omnetpp::toAnyPtr(&pp->getDestAddr()); break;
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_mySlot: return pp->getMySlot();
+        case FIELD_occupiedSlots: return omnetpp::toAnyPtr(&pp->getOccupiedSlots(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'LMacHeaderBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void LMacHeaderBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_mySlot: pp->setMySlot(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacHeaderBase'", field);
     }
 }
 
 const char *LMacHeaderBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *LMacHeaderBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr LMacHeaderBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    LMacHeaderBase *pp = (LMacHeaderBase *)object; (void)pp;
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
     switch (field) {
-        case FIELD_srcAddr: return toVoidPtr(&pp->getSrcAddr()); break;
-        case FIELD_destAddr: return toVoidPtr(&pp->getDestAddr()); break;
-        case FIELD_occupiedSlots: return toVoidPtr(&pp->getOccupiedSlots(i)); break;
-        default: return nullptr;
+        case FIELD_srcAddr: return omnetpp::toAnyPtr(&pp->getSrcAddr()); break;
+        case FIELD_destAddr: return omnetpp::toAnyPtr(&pp->getDestAddr()); break;
+        case FIELD_occupiedSlots: return omnetpp::toAnyPtr(&pp->getOccupiedSlots(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void LMacHeaderBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacHeaderBase *pp = omnetpp::fromAnyPtr<LMacHeaderBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacHeaderBase'", field);
     }
 }
 
@@ -707,7 +714,7 @@ void LMacControlFrame::parsimUnpack(omnetpp::cCommBuffer *b)
 class LMacControlFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -716,34 +723,38 @@ class LMacControlFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(LMacControlFrameDescriptor)
 
 LMacControlFrameDescriptor::LMacControlFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::LMacControlFrame)), "inet::LMacHeaderBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 LMacControlFrameDescriptor::~LMacControlFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool LMacControlFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -753,170 +764,234 @@ bool LMacControlFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **LMacControlFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *LMacControlFrameDescriptor::getProperty(const char *propertyname) const
+const char *LMacControlFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int LMacControlFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int LMacControlFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *LMacControlFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int LMacControlFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *LMacControlFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **LMacControlFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *LMacControlFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *LMacControlFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int LMacControlFrameDescriptor::getFieldArraySize(void *object, int field) const
+int LMacControlFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    LMacControlFrame *pp = (LMacControlFrame *)object; (void)pp;
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *LMacControlFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void LMacControlFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacControlFrame *pp = (LMacControlFrame *)object; (void)pp;
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'LMacControlFrame'", field);
+    }
+}
+
+const char *LMacControlFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string LMacControlFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string LMacControlFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    LMacControlFrame *pp = (LMacControlFrame *)object; (void)pp;
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool LMacControlFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void LMacControlFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacControlFrame *pp = (LMacControlFrame *)object; (void)pp;
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacControlFrame'", field);
+    }
+}
+
+omnetpp::cValue LMacControlFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'LMacControlFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void LMacControlFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacControlFrame'", field);
     }
 }
 
 const char *LMacControlFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *LMacControlFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr LMacControlFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    LMacControlFrame *pp = (LMacControlFrame *)object; (void)pp;
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void LMacControlFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacControlFrame *pp = omnetpp::fromAnyPtr<LMacControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacControlFrame'", field);
     }
 }
 
@@ -974,7 +1049,7 @@ void LMacDataFrameHeader::setNetworkProtocol(int networkProtocol)
 class LMacDataFrameHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_networkProtocol,
     };
@@ -984,34 +1059,38 @@ class LMacDataFrameHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(LMacDataFrameHeaderDescriptor)
 
 LMacDataFrameHeaderDescriptor::LMacDataFrameHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::LMacDataFrameHeader)), "inet::LMacHeaderBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 LMacDataFrameHeaderDescriptor::~LMacDataFrameHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool LMacDataFrameHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1021,34 +1100,34 @@ bool LMacDataFrameHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **LMacDataFrameHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *LMacDataFrameHeaderDescriptor::getProperty(const char *propertyname) const
+const char *LMacDataFrameHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int LMacDataFrameHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int LMacDataFrameHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_networkProtocol
@@ -1058,11 +1137,11 @@ unsigned int LMacDataFrameHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *LMacDataFrameHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "networkProtocol",
@@ -1072,19 +1151,19 @@ const char *LMacDataFrameHeaderDescriptor::getFieldName(int field) const
 
 int LMacDataFrameHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "networkProtocol") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "networkProtocol") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *LMacDataFrameHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_networkProtocol
@@ -1094,114 +1173,184 @@ const char *LMacDataFrameHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **LMacDataFrameHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *LMacDataFrameHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *LMacDataFrameHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int LMacDataFrameHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int LMacDataFrameHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    LMacDataFrameHeader *pp = (LMacDataFrameHeader *)object; (void)pp;
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *LMacDataFrameHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void LMacDataFrameHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacDataFrameHeader *pp = (LMacDataFrameHeader *)object; (void)pp;
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'LMacDataFrameHeader'", field);
+    }
+}
+
+const char *LMacDataFrameHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string LMacDataFrameHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string LMacDataFrameHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    LMacDataFrameHeader *pp = (LMacDataFrameHeader *)object; (void)pp;
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
     switch (field) {
         case FIELD_networkProtocol: return long2string(pp->getNetworkProtocol());
         default: return "";
     }
 }
 
-bool LMacDataFrameHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void LMacDataFrameHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    LMacDataFrameHeader *pp = (LMacDataFrameHeader *)object; (void)pp;
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_networkProtocol: pp->setNetworkProtocol(string2long(value)); return true;
-        default: return false;
+        case FIELD_networkProtocol: pp->setNetworkProtocol(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacDataFrameHeader'", field);
+    }
+}
+
+omnetpp::cValue LMacDataFrameHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_networkProtocol: return pp->getNetworkProtocol();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'LMacDataFrameHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void LMacDataFrameHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_networkProtocol: pp->setNetworkProtocol(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacDataFrameHeader'", field);
     }
 }
 
 const char *LMacDataFrameHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *LMacDataFrameHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr LMacDataFrameHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    LMacDataFrameHeader *pp = (LMacDataFrameHeader *)object; (void)pp;
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void LMacDataFrameHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    LMacDataFrameHeader *pp = omnetpp::fromAnyPtr<LMacDataFrameHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'LMacDataFrameHeader'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

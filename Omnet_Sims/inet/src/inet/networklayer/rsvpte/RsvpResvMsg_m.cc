@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/rsvpte/RsvpResvMsg.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/rsvpte/RsvpResvMsg.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "RsvpResvMsg_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(RsvpResvMsg)
 
@@ -277,7 +222,7 @@ void RsvpResvMsg::setFlowDescriptor(const FlowDescriptorVector& flowDescriptor)
 class RsvpResvMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_hop,
         FIELD_flowDescriptor,
@@ -288,34 +233,38 @@ class RsvpResvMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RsvpResvMsgDescriptor)
 
 RsvpResvMsgDescriptor::RsvpResvMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::RsvpResvMsg)), "inet::RsvpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RsvpResvMsgDescriptor::~RsvpResvMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RsvpResvMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -325,34 +274,34 @@ bool RsvpResvMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RsvpResvMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RsvpResvMsgDescriptor::getProperty(const char *propertyname) const
+const char *RsvpResvMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RsvpResvMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int RsvpResvMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND,    // FIELD_hop
@@ -363,11 +312,11 @@ unsigned int RsvpResvMsgDescriptor::getFieldTypeFlags(int field) const
 
 const char *RsvpResvMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "hop",
@@ -378,20 +327,20 @@ const char *RsvpResvMsgDescriptor::getFieldName(int field) const
 
 int RsvpResvMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hop") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "flowDescriptor") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "hop") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "flowDescriptor") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RsvpResvMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::RsvpHopObj",    // FIELD_hop
@@ -402,95 +351,145 @@ const char *RsvpResvMsgDescriptor::getFieldTypeString(int field) const
 
 const char **RsvpResvMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RsvpResvMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RsvpResvMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RsvpResvMsgDescriptor::getFieldArraySize(void *object, int field) const
+int RsvpResvMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RsvpResvMsg *pp = (RsvpResvMsg *)object; (void)pp;
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RsvpResvMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RsvpResvMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvMsg *pp = (RsvpResvMsg *)object; (void)pp;
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RsvpResvMsg'", field);
+    }
+}
+
+const char *RsvpResvMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RsvpResvMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RsvpResvMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RsvpResvMsg *pp = (RsvpResvMsg *)object; (void)pp;
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: {std::stringstream out; out << pp->getHop(); return out.str();}
-        case FIELD_flowDescriptor: {std::stringstream out; out << pp->getFlowDescriptor(); return out.str();}
+        case FIELD_hop: return "";
+        case FIELD_flowDescriptor: return "";
         default: return "";
     }
 }
 
-bool RsvpResvMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RsvpResvMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvMsg *pp = (RsvpResvMsg *)object; (void)pp;
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvMsg'", field);
+    }
+}
+
+omnetpp::cValue RsvpResvMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_flowDescriptor: return omnetpp::toAnyPtr(&pp->getFlowDescriptor()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RsvpResvMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void RsvpResvMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvMsg'", field);
     }
 }
 
 const char *RsvpResvMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_hop: return omnetpp::opp_typename(typeid(RsvpHopObj));
@@ -499,19 +498,35 @@ const char *RsvpResvMsgDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *RsvpResvMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RsvpResvMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RsvpResvMsg *pp = (RsvpResvMsg *)object; (void)pp;
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: return toVoidPtr(&pp->getHop()); break;
-        case FIELD_flowDescriptor: return toVoidPtr(&pp->getFlowDescriptor()); break;
-        default: return nullptr;
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_flowDescriptor: return omnetpp::toAnyPtr(&pp->getFlowDescriptor()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RsvpResvMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvMsg *pp = omnetpp::fromAnyPtr<RsvpResvMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvMsg'", field);
     }
 }
 
@@ -585,7 +600,7 @@ void RsvpResvTear::setFlowDescriptor(const FlowDescriptorVector& flowDescriptor)
 class RsvpResvTearDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_hop,
         FIELD_flowDescriptor,
@@ -596,34 +611,38 @@ class RsvpResvTearDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RsvpResvTearDescriptor)
 
 RsvpResvTearDescriptor::RsvpResvTearDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::RsvpResvTear)), "inet::RsvpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RsvpResvTearDescriptor::~RsvpResvTearDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RsvpResvTearDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -633,34 +652,34 @@ bool RsvpResvTearDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RsvpResvTearDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RsvpResvTearDescriptor::getProperty(const char *propertyname) const
+const char *RsvpResvTearDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RsvpResvTearDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int RsvpResvTearDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND,    // FIELD_hop
@@ -671,11 +690,11 @@ unsigned int RsvpResvTearDescriptor::getFieldTypeFlags(int field) const
 
 const char *RsvpResvTearDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "hop",
@@ -686,20 +705,20 @@ const char *RsvpResvTearDescriptor::getFieldName(int field) const
 
 int RsvpResvTearDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hop") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "flowDescriptor") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "hop") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "flowDescriptor") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RsvpResvTearDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::RsvpHopObj",    // FIELD_hop
@@ -710,95 +729,145 @@ const char *RsvpResvTearDescriptor::getFieldTypeString(int field) const
 
 const char **RsvpResvTearDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RsvpResvTearDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RsvpResvTearDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RsvpResvTearDescriptor::getFieldArraySize(void *object, int field) const
+int RsvpResvTearDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RsvpResvTear *pp = (RsvpResvTear *)object; (void)pp;
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RsvpResvTearDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RsvpResvTearDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvTear *pp = (RsvpResvTear *)object; (void)pp;
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RsvpResvTear'", field);
+    }
+}
+
+const char *RsvpResvTearDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RsvpResvTearDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RsvpResvTearDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RsvpResvTear *pp = (RsvpResvTear *)object; (void)pp;
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: {std::stringstream out; out << pp->getHop(); return out.str();}
-        case FIELD_flowDescriptor: {std::stringstream out; out << pp->getFlowDescriptor(); return out.str();}
+        case FIELD_hop: return "";
+        case FIELD_flowDescriptor: return "";
         default: return "";
     }
 }
 
-bool RsvpResvTearDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RsvpResvTearDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvTear *pp = (RsvpResvTear *)object; (void)pp;
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvTear'", field);
+    }
+}
+
+omnetpp::cValue RsvpResvTearDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
+    switch (field) {
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_flowDescriptor: return omnetpp::toAnyPtr(&pp->getFlowDescriptor()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RsvpResvTear' as cValue -- field index out of range?", field);
+    }
+}
+
+void RsvpResvTearDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvTear'", field);
     }
 }
 
 const char *RsvpResvTearDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_hop: return omnetpp::opp_typename(typeid(RsvpHopObj));
@@ -807,19 +876,35 @@ const char *RsvpResvTearDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *RsvpResvTearDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RsvpResvTearDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RsvpResvTear *pp = (RsvpResvTear *)object; (void)pp;
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: return toVoidPtr(&pp->getHop()); break;
-        case FIELD_flowDescriptor: return toVoidPtr(&pp->getFlowDescriptor()); break;
-        default: return nullptr;
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_flowDescriptor: return omnetpp::toAnyPtr(&pp->getFlowDescriptor()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RsvpResvTearDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvTear *pp = omnetpp::fromAnyPtr<RsvpResvTear>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvTear'", field);
     }
 }
 
@@ -907,7 +992,7 @@ void RsvpResvError::setErrorCode(int errorCode)
 class RsvpResvErrorDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_hop,
         FIELD_errorNode,
@@ -919,34 +1004,38 @@ class RsvpResvErrorDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RsvpResvErrorDescriptor)
 
 RsvpResvErrorDescriptor::RsvpResvErrorDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::RsvpResvError)), "inet::RsvpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RsvpResvErrorDescriptor::~RsvpResvErrorDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RsvpResvErrorDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -956,34 +1045,34 @@ bool RsvpResvErrorDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RsvpResvErrorDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RsvpResvErrorDescriptor::getProperty(const char *propertyname) const
+const char *RsvpResvErrorDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RsvpResvErrorDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int RsvpResvErrorDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND,    // FIELD_hop
@@ -995,11 +1084,11 @@ unsigned int RsvpResvErrorDescriptor::getFieldTypeFlags(int field) const
 
 const char *RsvpResvErrorDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "hop",
@@ -1011,21 +1100,21 @@ const char *RsvpResvErrorDescriptor::getFieldName(int field) const
 
 int RsvpResvErrorDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hop") == 0) return base+0;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "errorNode") == 0) return base+1;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "errorCode") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "hop") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "errorNode") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "errorCode") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RsvpResvErrorDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::RsvpHopObj",    // FIELD_hop
@@ -1037,97 +1126,149 @@ const char *RsvpResvErrorDescriptor::getFieldTypeString(int field) const
 
 const char **RsvpResvErrorDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RsvpResvErrorDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RsvpResvErrorDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RsvpResvErrorDescriptor::getFieldArraySize(void *object, int field) const
+int RsvpResvErrorDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RsvpResvError *pp = (RsvpResvError *)object; (void)pp;
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RsvpResvErrorDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RsvpResvErrorDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvError *pp = (RsvpResvError *)object; (void)pp;
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RsvpResvError'", field);
+    }
+}
+
+const char *RsvpResvErrorDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RsvpResvErrorDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RsvpResvErrorDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RsvpResvError *pp = (RsvpResvError *)object; (void)pp;
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: {std::stringstream out; out << pp->getHop(); return out.str();}
+        case FIELD_hop: return "";
         case FIELD_errorNode: return pp->getErrorNode().str();
         case FIELD_errorCode: return long2string(pp->getErrorCode());
         default: return "";
     }
 }
 
-bool RsvpResvErrorDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RsvpResvErrorDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RsvpResvError *pp = (RsvpResvError *)object; (void)pp;
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
     switch (field) {
-        case FIELD_errorCode: pp->setErrorCode(string2long(value)); return true;
-        default: return false;
+        case FIELD_errorCode: pp->setErrorCode(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvError'", field);
+    }
+}
+
+omnetpp::cValue RsvpResvErrorDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
+    switch (field) {
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_errorNode: return omnetpp::toAnyPtr(&pp->getErrorNode()); break;
+        case FIELD_errorCode: return pp->getErrorCode();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RsvpResvError' as cValue -- field index out of range?", field);
+    }
+}
+
+void RsvpResvErrorDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
+    switch (field) {
+        case FIELD_errorCode: pp->setErrorCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvError'", field);
     }
 }
 
 const char *RsvpResvErrorDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_hop: return omnetpp::opp_typename(typeid(RsvpHopObj));
@@ -1135,21 +1276,41 @@ const char *RsvpResvErrorDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *RsvpResvErrorDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RsvpResvErrorDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RsvpResvError *pp = (RsvpResvError *)object; (void)pp;
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
     switch (field) {
-        case FIELD_hop: return toVoidPtr(&pp->getHop()); break;
-        case FIELD_errorNode: return toVoidPtr(&pp->getErrorNode()); break;
-        default: return nullptr;
+        case FIELD_hop: return omnetpp::toAnyPtr(&pp->getHop()); break;
+        case FIELD_errorNode: return omnetpp::toAnyPtr(&pp->getErrorNode()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void RsvpResvErrorDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RsvpResvError *pp = omnetpp::fromAnyPtr<RsvpResvError>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RsvpResvError'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

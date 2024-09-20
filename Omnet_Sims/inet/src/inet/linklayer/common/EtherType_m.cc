@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/common/EtherType.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/common/EtherType.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "EtherType_m.h"
 
 namespace omnetpp {
@@ -149,80 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::EtherType, (inet::EtherType::ETHERTYPE_IPv4, inet::EtherType::ETHERTYPE_ARP, inet::EtherType::ETHERTYPE_TRILL, inet::EtherType::ETHERTYPE_L2_ISIS, inet::EtherType::ETHERTYPE_RARP, inet::EtherType::ETHERTYPE_8021Q_TAG, inet::EtherType::ETHERTYPE_IPv6, inet::EtherType::ETHERTYPE_NEXT_HOP_FORWARDING, inet::EtherType::ETHERTYPE_FLOW_CONTROL, inet::EtherType::ETHERTYPE_8021ad_S_TAG, inet::EtherType::ETHERTYPE_MPLS_UNICAST, inet::EtherType::ETHERTYPE_MPLS_MULTICAST));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+}  // namespace inet
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+namespace omnetpp {
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::EtherType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::EtherType"));
-    e->insert(ETHERTYPE_IPv4, "ETHERTYPE_IPv4");
-    e->insert(ETHERTYPE_ARP, "ETHERTYPE_ARP");
-    e->insert(ETHERTYPE_TRILL, "ETHERTYPE_TRILL");
-    e->insert(ETHERTYPE_L2_ISIS, "ETHERTYPE_L2_ISIS");
-    e->insert(ETHERTYPE_RARP, "ETHERTYPE_RARP");
-    e->insert(ETHERTYPE_8021Q_TAG, "ETHERTYPE_8021Q_TAG");
-    e->insert(ETHERTYPE_IPv6, "ETHERTYPE_IPv6");
-    e->insert(ETHERTYPE_NEXT_HOP_FORWARDING, "ETHERTYPE_NEXT_HOP_FORWARDING");
-    e->insert(ETHERTYPE_FLOW_CONTROL, "ETHERTYPE_FLOW_CONTROL");
-    e->insert(ETHERTYPE_8021ad_S_TAG, "ETHERTYPE_8021ad_S_TAG");
-    e->insert(ETHERTYPE_MPLS_UNICAST, "ETHERTYPE_MPLS_UNICAST");
-    e->insert(ETHERTYPE_MPLS_MULTICAST, "ETHERTYPE_MPLS_MULTICAST");
-)
-
-} // namespace inet
+}  // namespace omnetpp
 

@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/common/TlvOptions.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/common/TlvOptions.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "TlvOptions_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(TlvOptionBase)
 
@@ -271,7 +216,7 @@ void TlvOptionBase::setLength(short length)
 class TlvOptionBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_length,
@@ -282,34 +227,38 @@ class TlvOptionBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(TlvOptionBaseDescriptor)
 
 TlvOptionBaseDescriptor::TlvOptionBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::TlvOptionBase)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 TlvOptionBaseDescriptor::~TlvOptionBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool TlvOptionBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -319,34 +268,34 @@ bool TlvOptionBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **TlvOptionBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *TlvOptionBaseDescriptor::getProperty(const char *propertyname) const
+const char *TlvOptionBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int TlvOptionBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int TlvOptionBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_type
@@ -357,11 +306,11 @@ unsigned int TlvOptionBaseDescriptor::getFieldTypeFlags(int field) const
 
 const char *TlvOptionBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -372,20 +321,20 @@ const char *TlvOptionBaseDescriptor::getFieldName(int field) const
 
 int TlvOptionBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *TlvOptionBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_type
@@ -396,67 +345,83 @@ const char *TlvOptionBaseDescriptor::getFieldTypeString(int field) const
 
 const char **TlvOptionBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *TlvOptionBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *TlvOptionBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int TlvOptionBaseDescriptor::getFieldArraySize(void *object, int field) const
+int TlvOptionBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    TlvOptionBase *pp = (TlvOptionBase *)object; (void)pp;
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *TlvOptionBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void TlvOptionBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptionBase *pp = (TlvOptionBase *)object; (void)pp;
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'TlvOptionBase'", field);
+    }
+}
+
+const char *TlvOptionBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string TlvOptionBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string TlvOptionBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    TlvOptionBase *pp = (TlvOptionBase *)object; (void)pp;
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
     switch (field) {
         case FIELD_type: return long2string(pp->getType());
         case FIELD_length: return long2string(pp->getLength());
@@ -464,46 +429,98 @@ std::string TlvOptionBaseDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool TlvOptionBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void TlvOptionBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptionBase *pp = (TlvOptionBase *)object; (void)pp;
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
     switch (field) {
-        case FIELD_type: pp->setType(string2long(value)); return true;
-        case FIELD_length: pp->setLength(string2long(value)); return true;
-        default: return false;
+        case FIELD_type: pp->setType(string2long(value)); break;
+        case FIELD_length: pp->setLength(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionBase'", field);
+    }
+}
+
+omnetpp::cValue TlvOptionBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return pp->getType();
+        case FIELD_length: return pp->getLength();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'TlvOptionBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void TlvOptionBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: pp->setType(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionBase'", field);
     }
 }
 
 const char *TlvOptionBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *TlvOptionBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr TlvOptionBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    TlvOptionBase *pp = (TlvOptionBase *)object; (void)pp;
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void TlvOptionBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptionBase *pp = omnetpp::fromAnyPtr<TlvOptionBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionBase'", field);
     }
 }
 
@@ -568,7 +585,7 @@ size_t TlvOptionRaw::getBytesArraySize() const
 
 char TlvOptionRaw::getBytes(size_t k) const
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size bytes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     return this->bytes[k];
 }
 
@@ -587,13 +604,13 @@ void TlvOptionRaw::setBytesArraySize(size_t newSize)
 
 void TlvOptionRaw::setBytes(size_t k, char bytes)
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     this->bytes[k] = bytes;
 }
 
 void TlvOptionRaw::insertBytes(size_t k, char bytes)
 {
-    if (k > bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     size_t newSize = bytes_arraysize + 1;
     char *bytes2 = new char[newSize];
     size_t i;
@@ -607,14 +624,14 @@ void TlvOptionRaw::insertBytes(size_t k, char bytes)
     bytes_arraysize = newSize;
 }
 
-void TlvOptionRaw::insertBytes(char bytes)
+void TlvOptionRaw::appendBytes(char bytes)
 {
     insertBytes(bytes_arraysize, bytes);
 }
 
 void TlvOptionRaw::eraseBytes(size_t k)
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     size_t newSize = bytes_arraysize - 1;
     char *bytes2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -630,7 +647,7 @@ void TlvOptionRaw::eraseBytes(size_t k)
 class TlvOptionRawDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_bytes,
     };
@@ -640,34 +657,38 @@ class TlvOptionRawDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(TlvOptionRawDescriptor)
 
 TlvOptionRawDescriptor::TlvOptionRawDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::TlvOptionRaw)), "inet::TlvOptionBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 TlvOptionRawDescriptor::~TlvOptionRawDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool TlvOptionRawDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -677,48 +698,48 @@ bool TlvOptionRawDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **TlvOptionRawDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *TlvOptionRawDescriptor::getProperty(const char *propertyname) const
+const char *TlvOptionRawDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int TlvOptionRawDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int TlvOptionRawDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_bytes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_bytes
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *TlvOptionRawDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "bytes",
@@ -728,19 +749,19 @@ const char *TlvOptionRawDescriptor::getFieldName(int field) const
 
 int TlvOptionRawDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bytes") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "bytes") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *TlvOptionRawDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "char",    // FIELD_bytes
@@ -750,113 +771,180 @@ const char *TlvOptionRawDescriptor::getFieldTypeString(int field) const
 
 const char **TlvOptionRawDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *TlvOptionRawDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *TlvOptionRawDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int TlvOptionRawDescriptor::getFieldArraySize(void *object, int field) const
+int TlvOptionRawDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    TlvOptionRaw *pp = (TlvOptionRaw *)object; (void)pp;
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
     switch (field) {
         case FIELD_bytes: return pp->getBytesArraySize();
         default: return 0;
     }
 }
 
-const char *TlvOptionRawDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void TlvOptionRawDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptionRaw *pp = (TlvOptionRaw *)object; (void)pp;
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: pp->setBytesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'TlvOptionRaw'", field);
+    }
+}
+
+const char *TlvOptionRawDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string TlvOptionRawDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string TlvOptionRawDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    TlvOptionRaw *pp = (TlvOptionRaw *)object; (void)pp;
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
     switch (field) {
         case FIELD_bytes: return long2string(pp->getBytes(i));
         default: return "";
     }
 }
 
-bool TlvOptionRawDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void TlvOptionRawDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptionRaw *pp = (TlvOptionRaw *)object; (void)pp;
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
     switch (field) {
-        case FIELD_bytes: pp->setBytes(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_bytes: pp->setBytes(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionRaw'", field);
+    }
+}
+
+omnetpp::cValue TlvOptionRawDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: return pp->getBytes(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'TlvOptionRaw' as cValue -- field index out of range?", field);
+    }
+}
+
+void TlvOptionRawDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: pp->setBytes(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionRaw'", field);
     }
 }
 
 const char *TlvOptionRawDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *TlvOptionRawDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr TlvOptionRawDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    TlvOptionRaw *pp = (TlvOptionRaw *)object; (void)pp;
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void TlvOptionRawDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptionRaw *pp = omnetpp::fromAnyPtr<TlvOptionRaw>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptionRaw'", field);
     }
 }
 
@@ -926,7 +1014,7 @@ size_t TlvOptions::getTlvOptionArraySize() const
 
 const TlvOptionBase * TlvOptions::getTlvOption(size_t k) const
 {
-    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size tlvOption_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tlvOption_arraysize, (unsigned long)k);
     return this->tlvOption[k];
 }
 
@@ -947,28 +1035,31 @@ void TlvOptions::setTlvOptionArraySize(size_t newSize)
 
 void TlvOptions::setTlvOption(size_t k, TlvOptionBase * tlvOption)
 {
-    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
-    if (this->tlvOption[k] != nullptr) throw omnetpp::cRuntimeError("setTlvOption(): a value is already set, remove it first with dropTlvOption()");
+    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tlvOption_arraysize, (unsigned long)k);
+    if (this->tlvOption[k] != nullptr) throw omnetpp::cRuntimeError("setTlvOption(): a value is already set, remove it first with removeTlvOption()");
     this->tlvOption[k] = tlvOption;
+    if (this->tlvOption[k] != nullptr && this->tlvOption[k]->isOwnedObject()) take((cOwnedObject*)this->tlvOption[k]);
 }
 
-TlvOptionBase * TlvOptions::dropTlvOption(size_t k)
+TlvOptionBase * TlvOptions::removeTlvOption(size_t k)
 {
-    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tlvOption_arraysize, (unsigned long)k);
     TlvOptionBase * retval = this->tlvOption[k];
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->tlvOption[k] = nullptr;
     return retval;
 }
 
 void TlvOptions::insertTlvOption(size_t k, TlvOptionBase * tlvOption)
 {
-    if (k > tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tlvOption_arraysize, (unsigned long)k);
     size_t newSize = tlvOption_arraysize + 1;
     TlvOptionBase * *tlvOption2 = new TlvOptionBase *[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         tlvOption2[i] = this->tlvOption[i];
     tlvOption2[k] = tlvOption;
+    if (tlvOption2[k] != nullptr && tlvOption2[k]->isOwnedObject()) take((cOwnedObject*)tlvOption2[k]);
     for (i = k + 1; i < newSize; i++)
         tlvOption2[i] = this->tlvOption[i-1];
     delete [] this->tlvOption;
@@ -976,14 +1067,14 @@ void TlvOptions::insertTlvOption(size_t k, TlvOptionBase * tlvOption)
     tlvOption_arraysize = newSize;
 }
 
-void TlvOptions::insertTlvOption(TlvOptionBase * tlvOption)
+void TlvOptions::appendTlvOption(TlvOptionBase * tlvOption)
 {
     insertTlvOption(tlvOption_arraysize, tlvOption);
 }
 
 void TlvOptions::eraseTlvOption(size_t k)
 {
-    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= tlvOption_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tlvOption_arraysize, (unsigned long)k);
     size_t newSize = tlvOption_arraysize - 1;
     TlvOptionBase * *tlvOption2 = (newSize == 0) ? nullptr : new TlvOptionBase *[newSize];
     size_t i;
@@ -991,7 +1082,7 @@ void TlvOptions::eraseTlvOption(size_t k)
         tlvOption2[i] = this->tlvOption[i];
     for (i = k; i < newSize; i++)
         tlvOption2[i] = this->tlvOption[i+1];
-    delete this->tlvOption[k];
+    if (this->tlvOption[k] != nullptr && this->tlvOption[k]->isOwnedObject()) dropAndDelete((cOwnedObject*)this->tlvOption[k]); else delete this->tlvOption[k];
     delete [] this->tlvOption;
     this->tlvOption = tlvOption2;
     tlvOption_arraysize = newSize;
@@ -1000,7 +1091,7 @@ void TlvOptions::eraseTlvOption(size_t k)
 class TlvOptionsDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_tlvOption,
     };
@@ -1010,34 +1101,38 @@ class TlvOptionsDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(TlvOptionsDescriptor)
 
 TlvOptionsDescriptor::TlvOptionsDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::TlvOptions)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 TlvOptionsDescriptor::~TlvOptionsDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool TlvOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1047,48 +1142,48 @@ bool TlvOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **TlvOptionsDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *TlvOptionsDescriptor::getProperty(const char *propertyname) const
+const char *TlvOptionsDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int TlvOptionsDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int TlvOptionsDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_tlvOption
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_tlvOption
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *TlvOptionsDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "tlvOption",
@@ -1098,19 +1193,19 @@ const char *TlvOptionsDescriptor::getFieldName(int field) const
 
 int TlvOptionsDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tlvOption") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "tlvOption") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *TlvOptionsDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::TlvOptionBase",    // FIELD_tlvOption
@@ -1120,11 +1215,11 @@ const char *TlvOptionsDescriptor::getFieldTypeString(int field) const
 
 const char **TlvOptionsDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_tlvOption: {
@@ -1135,88 +1230,139 @@ const char **TlvOptionsDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *TlvOptionsDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *TlvOptionsDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_tlvOption:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int TlvOptionsDescriptor::getFieldArraySize(void *object, int field) const
+int TlvOptionsDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    TlvOptions *pp = (TlvOptions *)object; (void)pp;
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
     switch (field) {
         case FIELD_tlvOption: return pp->getTlvOptionArraySize();
         default: return 0;
     }
 }
 
-const char *TlvOptionsDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void TlvOptionsDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptions *pp = (TlvOptions *)object; (void)pp;
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_tlvOption: pp->setTlvOptionArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'TlvOptions'", field);
+    }
+}
+
+const char *TlvOptionsDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
     switch (field) {
         case FIELD_tlvOption: { const TlvOptionBase * value = pp->getTlvOption(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string TlvOptionsDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string TlvOptionsDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    TlvOptions *pp = (TlvOptions *)object; (void)pp;
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_tlvOption: {std::stringstream out; out << pp->getTlvOption(i); return out.str();}
+        case FIELD_tlvOption: { auto obj = pp->getTlvOption(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool TlvOptionsDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void TlvOptionsDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TlvOptions *pp = (TlvOptions *)object; (void)pp;
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptions'", field);
+    }
+}
+
+omnetpp::cValue TlvOptionsDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_tlvOption: return omnetpp::toAnyPtr(pp->getTlvOption(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'TlvOptions' as cValue -- field index out of range?", field);
+    }
+}
+
+void TlvOptionsDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_tlvOption: pp->setTlvOption(i,omnetpp::fromAnyPtr<TlvOptionBase>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptions'", field);
     }
 }
 
 const char *TlvOptionsDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_tlvOption: return omnetpp::opp_typename(typeid(TlvOptionBase));
@@ -1224,20 +1370,41 @@ const char *TlvOptionsDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *TlvOptionsDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr TlvOptionsDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    TlvOptions *pp = (TlvOptions *)object; (void)pp;
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_tlvOption: return toVoidPtr(pp->getTlvOption(i)); break;
-        default: return nullptr;
+        case FIELD_tlvOption: return omnetpp::toAnyPtr(pp->getTlvOption(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void TlvOptionsDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TlvOptions *pp = omnetpp::fromAnyPtr<TlvOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_tlvOption: pp->setTlvOption(i,omnetpp::fromAnyPtr<TlvOptionBase>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TlvOptions'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

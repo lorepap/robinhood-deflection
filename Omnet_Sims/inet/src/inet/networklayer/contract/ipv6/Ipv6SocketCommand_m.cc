@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/contract/ipv6/Ipv6SocketCommand.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/contract/ipv6/Ipv6SocketCommand.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ipv6SocketCommand_m.h"
 
 namespace omnetpp {
@@ -149,79 +150,11 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::Ipv6CommandCode, (inet::Ipv6CommandCode::IPv6_C_BIND, inet::Ipv6CommandCode::IPv6_C_CONNECT, inet::Ipv6CommandCode::IPv6_C_CLOSE, inet::Ipv6CommandCode::IPv6_C_DESTROY));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Ipv6CommandCode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Ipv6CommandCode"));
-    e->insert(IPv6_C_BIND, "IPv6_C_BIND");
-    e->insert(IPv6_C_CONNECT, "IPv6_C_CONNECT");
-    e->insert(IPv6_C_CLOSE, "IPv6_C_CLOSE");
-    e->insert(IPv6_C_DESTROY, "IPv6_C_DESTROY");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Ipv6StatusInd");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Ipv6StatusInd"));
-    e->insert(IPv6_I_DATA, "IPv6_I_DATA");
-    e->insert(IPv6_I_SOCKET_CLOSED, "IPv6_I_SOCKET_CLOSED");
-)
+Register_Enum(inet::Ipv6StatusInd, (inet::Ipv6StatusInd::IPv6_I_DATA, inet::Ipv6StatusInd::IPv6_I_SOCKET_CLOSED));
 
 Register_Class(Ipv6SocketCommandBase)
 
@@ -261,7 +194,7 @@ void Ipv6SocketCommandBase::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6SocketCommandBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -270,34 +203,38 @@ class Ipv6SocketCommandBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketCommandBaseDescriptor)
 
 Ipv6SocketCommandBaseDescriptor::Ipv6SocketCommandBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketCommandBase)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketCommandBaseDescriptor::~Ipv6SocketCommandBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketCommandBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -307,170 +244,234 @@ bool Ipv6SocketCommandBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6SocketCommandBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketCommandBaseDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketCommandBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketCommandBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6SocketCommandBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6SocketCommandBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6SocketCommandBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketCommandBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6SocketCommandBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketCommandBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketCommandBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketCommandBaseDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketCommandBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCommandBase *pp = (Ipv6SocketCommandBase *)object; (void)pp;
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketCommandBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketCommandBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCommandBase *pp = (Ipv6SocketCommandBase *)object; (void)pp;
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketCommandBase'", field);
+    }
+}
+
+const char *Ipv6SocketCommandBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketCommandBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketCommandBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCommandBase *pp = (Ipv6SocketCommandBase *)object; (void)pp;
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6SocketCommandBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketCommandBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCommandBase *pp = (Ipv6SocketCommandBase *)object; (void)pp;
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCommandBase'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketCommandBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketCommandBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketCommandBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCommandBase'", field);
     }
 }
 
 const char *Ipv6SocketCommandBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6SocketCommandBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketCommandBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCommandBase *pp = (Ipv6SocketCommandBase *)object; (void)pp;
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6SocketCommandBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCommandBase *pp = omnetpp::fromAnyPtr<Ipv6SocketCommandBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCommandBase'", field);
     }
 }
 
@@ -540,7 +541,7 @@ void Ipv6SocketBindCommand::setLocalAddress(const Ipv6Address& localAddress)
 class Ipv6SocketBindCommandDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_protocol,
         FIELD_localAddress,
@@ -551,34 +552,38 @@ class Ipv6SocketBindCommandDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketBindCommandDescriptor)
 
 Ipv6SocketBindCommandDescriptor::Ipv6SocketBindCommandDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketBindCommand)), "inet::Ipv6SocketCommandBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketBindCommandDescriptor::~Ipv6SocketBindCommandDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketBindCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -588,34 +593,34 @@ bool Ipv6SocketBindCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6SocketBindCommandDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketBindCommandDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketBindCommandDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketBindCommandDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ipv6SocketBindCommandDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND | FD_ISPOINTER,    // FIELD_protocol
@@ -626,11 +631,11 @@ unsigned int Ipv6SocketBindCommandDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv6SocketBindCommandDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "protocol",
@@ -641,20 +646,20 @@ const char *Ipv6SocketBindCommandDescriptor::getFieldName(int field) const
 
 int Ipv6SocketBindCommandDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocol") == 0) return base+0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "localAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "protocol") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "localAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketBindCommandDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Protocol",    // FIELD_protocol
@@ -665,96 +670,146 @@ const char *Ipv6SocketBindCommandDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6SocketBindCommandDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketBindCommandDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketBindCommandDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketBindCommandDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketBindCommandDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketBindCommand *pp = (Ipv6SocketBindCommand *)object; (void)pp;
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketBindCommandDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketBindCommandDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketBindCommand *pp = (Ipv6SocketBindCommand *)object; (void)pp;
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketBindCommand'", field);
+    }
+}
+
+const char *Ipv6SocketBindCommandDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
     switch (field) {
         case FIELD_protocol: { const Protocol * value = pp->getProtocol(); return omnetpp::opp_typename(typeid(*const_cast<Protocol *>(value))); }
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketBindCommandDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketBindCommandDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketBindCommand *pp = (Ipv6SocketBindCommand *)object; (void)pp;
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_protocol: {std::stringstream out; out << pp->getProtocol(); return out.str();}
+        case FIELD_protocol: return "";
         case FIELD_localAddress: return pp->getLocalAddress().str();
         default: return "";
     }
 }
 
-bool Ipv6SocketBindCommandDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketBindCommandDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketBindCommand *pp = (Ipv6SocketBindCommand *)object; (void)pp;
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketBindCommand'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketBindCommandDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
+    switch (field) {
+        case FIELD_protocol: return omnetpp::toAnyPtr(pp->getProtocol()); break;
+        case FIELD_localAddress: return omnetpp::toAnyPtr(&pp->getLocalAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketBindCommand' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketBindCommandDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketBindCommand'", field);
     }
 }
 
 const char *Ipv6SocketBindCommandDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocol: return omnetpp::opp_typename(typeid(Protocol));
@@ -762,19 +817,35 @@ const char *Ipv6SocketBindCommandDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Ipv6SocketBindCommandDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketBindCommandDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketBindCommand *pp = (Ipv6SocketBindCommand *)object; (void)pp;
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_protocol: return toVoidPtr(pp->getProtocol()); break;
-        case FIELD_localAddress: return toVoidPtr(&pp->getLocalAddress()); break;
-        default: return nullptr;
+        case FIELD_protocol: return omnetpp::toAnyPtr(pp->getProtocol()); break;
+        case FIELD_localAddress: return omnetpp::toAnyPtr(&pp->getLocalAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6SocketBindCommandDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketBindCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketBindCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketBindCommand'", field);
     }
 }
 
@@ -844,7 +915,7 @@ void Ipv6SocketConnectCommand::setRemoteAddress(const Ipv6Address& remoteAddress
 class Ipv6SocketConnectCommandDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_protocol,
         FIELD_remoteAddress,
@@ -855,34 +926,38 @@ class Ipv6SocketConnectCommandDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketConnectCommandDescriptor)
 
 Ipv6SocketConnectCommandDescriptor::Ipv6SocketConnectCommandDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketConnectCommand)), "inet::Ipv6SocketCommandBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketConnectCommandDescriptor::~Ipv6SocketConnectCommandDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketConnectCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -892,34 +967,34 @@ bool Ipv6SocketConnectCommandDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **Ipv6SocketConnectCommandDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketConnectCommandDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketConnectCommandDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketConnectCommandDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ipv6SocketConnectCommandDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND | FD_ISPOINTER,    // FIELD_protocol
@@ -930,11 +1005,11 @@ unsigned int Ipv6SocketConnectCommandDescriptor::getFieldTypeFlags(int field) co
 
 const char *Ipv6SocketConnectCommandDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "protocol",
@@ -945,20 +1020,20 @@ const char *Ipv6SocketConnectCommandDescriptor::getFieldName(int field) const
 
 int Ipv6SocketConnectCommandDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocol") == 0) return base+0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "remoteAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "protocol") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "remoteAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketConnectCommandDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Protocol",    // FIELD_protocol
@@ -969,96 +1044,146 @@ const char *Ipv6SocketConnectCommandDescriptor::getFieldTypeString(int field) co
 
 const char **Ipv6SocketConnectCommandDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketConnectCommandDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketConnectCommandDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketConnectCommandDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketConnectCommandDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketConnectCommand *pp = (Ipv6SocketConnectCommand *)object; (void)pp;
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketConnectCommandDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketConnectCommandDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketConnectCommand *pp = (Ipv6SocketConnectCommand *)object; (void)pp;
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketConnectCommand'", field);
+    }
+}
+
+const char *Ipv6SocketConnectCommandDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
     switch (field) {
         case FIELD_protocol: { const Protocol * value = pp->getProtocol(); return omnetpp::opp_typename(typeid(*const_cast<Protocol *>(value))); }
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketConnectCommandDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketConnectCommandDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketConnectCommand *pp = (Ipv6SocketConnectCommand *)object; (void)pp;
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_protocol: {std::stringstream out; out << pp->getProtocol(); return out.str();}
+        case FIELD_protocol: return "";
         case FIELD_remoteAddress: return pp->getRemoteAddress().str();
         default: return "";
     }
 }
 
-bool Ipv6SocketConnectCommandDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketConnectCommandDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketConnectCommand *pp = (Ipv6SocketConnectCommand *)object; (void)pp;
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketConnectCommand'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketConnectCommandDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
+    switch (field) {
+        case FIELD_protocol: return omnetpp::toAnyPtr(pp->getProtocol()); break;
+        case FIELD_remoteAddress: return omnetpp::toAnyPtr(&pp->getRemoteAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketConnectCommand' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketConnectCommandDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketConnectCommand'", field);
     }
 }
 
 const char *Ipv6SocketConnectCommandDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocol: return omnetpp::opp_typename(typeid(Protocol));
@@ -1066,19 +1191,35 @@ const char *Ipv6SocketConnectCommandDescriptor::getFieldStructName(int field) co
     };
 }
 
-void *Ipv6SocketConnectCommandDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketConnectCommandDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketConnectCommand *pp = (Ipv6SocketConnectCommand *)object; (void)pp;
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_protocol: return toVoidPtr(pp->getProtocol()); break;
-        case FIELD_remoteAddress: return toVoidPtr(&pp->getRemoteAddress()); break;
-        default: return nullptr;
+        case FIELD_protocol: return omnetpp::toAnyPtr(pp->getProtocol()); break;
+        case FIELD_remoteAddress: return omnetpp::toAnyPtr(&pp->getRemoteAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6SocketConnectCommandDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketConnectCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketConnectCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketConnectCommand'", field);
     }
 }
 
@@ -1122,7 +1263,7 @@ void Ipv6SocketCloseCommand::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6SocketCloseCommandDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1131,34 +1272,38 @@ class Ipv6SocketCloseCommandDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketCloseCommandDescriptor)
 
 Ipv6SocketCloseCommandDescriptor::Ipv6SocketCloseCommandDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketCloseCommand)), "inet::Ipv6SocketCommandBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketCloseCommandDescriptor::~Ipv6SocketCloseCommandDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketCloseCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1168,170 +1313,234 @@ bool Ipv6SocketCloseCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6SocketCloseCommandDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketCloseCommandDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketCloseCommandDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketCloseCommandDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6SocketCloseCommandDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6SocketCloseCommandDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6SocketCloseCommandDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketCloseCommandDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6SocketCloseCommandDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketCloseCommandDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketCloseCommandDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketCloseCommandDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketCloseCommandDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCloseCommand *pp = (Ipv6SocketCloseCommand *)object; (void)pp;
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketCloseCommandDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketCloseCommandDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCloseCommand *pp = (Ipv6SocketCloseCommand *)object; (void)pp;
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketCloseCommand'", field);
+    }
+}
+
+const char *Ipv6SocketCloseCommandDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketCloseCommandDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketCloseCommandDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCloseCommand *pp = (Ipv6SocketCloseCommand *)object; (void)pp;
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6SocketCloseCommandDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketCloseCommandDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCloseCommand *pp = (Ipv6SocketCloseCommand *)object; (void)pp;
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCloseCommand'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketCloseCommandDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketCloseCommand' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketCloseCommandDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCloseCommand'", field);
     }
 }
 
 const char *Ipv6SocketCloseCommandDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6SocketCloseCommandDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketCloseCommandDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketCloseCommand *pp = (Ipv6SocketCloseCommand *)object; (void)pp;
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6SocketCloseCommandDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketCloseCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketCloseCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketCloseCommand'", field);
     }
 }
 
@@ -1375,7 +1584,7 @@ void Ipv6SocketDestroyCommand::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6SocketDestroyCommandDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1384,34 +1593,38 @@ class Ipv6SocketDestroyCommandDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketDestroyCommandDescriptor)
 
 Ipv6SocketDestroyCommandDescriptor::Ipv6SocketDestroyCommandDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketDestroyCommand)), "inet::Ipv6SocketCommandBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketDestroyCommandDescriptor::~Ipv6SocketDestroyCommandDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketDestroyCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1421,170 +1634,234 @@ bool Ipv6SocketDestroyCommandDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **Ipv6SocketDestroyCommandDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketDestroyCommandDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketDestroyCommandDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketDestroyCommandDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6SocketDestroyCommandDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6SocketDestroyCommandDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6SocketDestroyCommandDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketDestroyCommandDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6SocketDestroyCommandDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketDestroyCommandDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketDestroyCommandDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketDestroyCommandDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketDestroyCommandDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketDestroyCommand *pp = (Ipv6SocketDestroyCommand *)object; (void)pp;
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketDestroyCommandDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketDestroyCommandDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketDestroyCommand *pp = (Ipv6SocketDestroyCommand *)object; (void)pp;
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketDestroyCommand'", field);
+    }
+}
+
+const char *Ipv6SocketDestroyCommandDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketDestroyCommandDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketDestroyCommandDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketDestroyCommand *pp = (Ipv6SocketDestroyCommand *)object; (void)pp;
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6SocketDestroyCommandDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketDestroyCommandDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketDestroyCommand *pp = (Ipv6SocketDestroyCommand *)object; (void)pp;
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketDestroyCommand'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketDestroyCommandDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketDestroyCommand' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketDestroyCommandDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketDestroyCommand'", field);
     }
 }
 
 const char *Ipv6SocketDestroyCommandDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6SocketDestroyCommandDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketDestroyCommandDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketDestroyCommand *pp = (Ipv6SocketDestroyCommand *)object; (void)pp;
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6SocketDestroyCommandDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketDestroyCommand *pp = omnetpp::fromAnyPtr<Ipv6SocketDestroyCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketDestroyCommand'", field);
     }
 }
 
@@ -1628,7 +1905,7 @@ void Ipv6SocketClosedIndication::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6SocketClosedIndicationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1637,34 +1914,38 @@ class Ipv6SocketClosedIndicationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6SocketClosedIndicationDescriptor)
 
 Ipv6SocketClosedIndicationDescriptor::Ipv6SocketClosedIndicationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6SocketClosedIndication)), "inet::Ipv6SocketCommandBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6SocketClosedIndicationDescriptor::~Ipv6SocketClosedIndicationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6SocketClosedIndicationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1674,172 +1955,240 @@ bool Ipv6SocketClosedIndicationDescriptor::doesSupport(omnetpp::cObject *obj) co
 
 const char **Ipv6SocketClosedIndicationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6SocketClosedIndicationDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6SocketClosedIndicationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6SocketClosedIndicationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6SocketClosedIndicationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6SocketClosedIndicationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6SocketClosedIndicationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6SocketClosedIndicationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6SocketClosedIndicationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6SocketClosedIndicationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6SocketClosedIndicationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6SocketClosedIndicationDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6SocketClosedIndicationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketClosedIndication *pp = (Ipv6SocketClosedIndication *)object; (void)pp;
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6SocketClosedIndicationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6SocketClosedIndicationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketClosedIndication *pp = (Ipv6SocketClosedIndication *)object; (void)pp;
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6SocketClosedIndication'", field);
+    }
+}
+
+const char *Ipv6SocketClosedIndicationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6SocketClosedIndicationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6SocketClosedIndicationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketClosedIndication *pp = (Ipv6SocketClosedIndication *)object; (void)pp;
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6SocketClosedIndicationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6SocketClosedIndicationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6SocketClosedIndication *pp = (Ipv6SocketClosedIndication *)object; (void)pp;
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketClosedIndication'", field);
+    }
+}
+
+omnetpp::cValue Ipv6SocketClosedIndicationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6SocketClosedIndication' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6SocketClosedIndicationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketClosedIndication'", field);
     }
 }
 
 const char *Ipv6SocketClosedIndicationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6SocketClosedIndicationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6SocketClosedIndicationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6SocketClosedIndication *pp = (Ipv6SocketClosedIndication *)object; (void)pp;
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Ipv6SocketClosedIndicationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6SocketClosedIndication *pp = omnetpp::fromAnyPtr<Ipv6SocketClosedIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6SocketClosedIndication'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

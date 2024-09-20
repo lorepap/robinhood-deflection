@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/ieee8022/Ieee8022LlcHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/ieee8022/Ieee8022LlcHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ieee8022LlcHeader_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(Ieee8022LlcHeader)
 
@@ -291,7 +236,7 @@ void Ieee8022LlcHeader::setControl(int control)
 class Ieee8022LlcHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_dsap,
         FIELD_ssap,
@@ -303,34 +248,38 @@ class Ieee8022LlcHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee8022LlcHeaderDescriptor)
 
 Ieee8022LlcHeaderDescriptor::Ieee8022LlcHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ieee8022LlcHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee8022LlcHeaderDescriptor::~Ieee8022LlcHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee8022LlcHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -340,34 +289,34 @@ bool Ieee8022LlcHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee8022LlcHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee8022LlcHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee8022LlcHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee8022LlcHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ieee8022LlcHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_dsap
@@ -379,11 +328,11 @@ unsigned int Ieee8022LlcHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee8022LlcHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "dsap",
@@ -395,21 +344,21 @@ const char *Ieee8022LlcHeaderDescriptor::getFieldName(int field) const
 
 int Ieee8022LlcHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dsap") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "ssap") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "control") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "dsap") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "ssap") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "control") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee8022LlcHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_dsap
@@ -421,67 +370,83 @@ const char *Ieee8022LlcHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee8022LlcHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee8022LlcHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee8022LlcHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee8022LlcHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee8022LlcHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcHeader *pp = (Ieee8022LlcHeader *)object; (void)pp;
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee8022LlcHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee8022LlcHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcHeader *pp = (Ieee8022LlcHeader *)object; (void)pp;
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee8022LlcHeader'", field);
+    }
+}
+
+const char *Ieee8022LlcHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee8022LlcHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee8022LlcHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcHeader *pp = (Ieee8022LlcHeader *)object; (void)pp;
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
     switch (field) {
         case FIELD_dsap: return long2string(pp->getDsap());
         case FIELD_ssap: return long2string(pp->getSsap());
@@ -490,47 +455,101 @@ std::string Ieee8022LlcHeaderDescriptor::getFieldValueAsString(void *object, int
     }
 }
 
-bool Ieee8022LlcHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee8022LlcHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcHeader *pp = (Ieee8022LlcHeader *)object; (void)pp;
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_dsap: pp->setDsap(string2long(value)); return true;
-        case FIELD_ssap: pp->setSsap(string2long(value)); return true;
-        case FIELD_control: pp->setControl(string2long(value)); return true;
-        default: return false;
+        case FIELD_dsap: pp->setDsap(string2long(value)); break;
+        case FIELD_ssap: pp->setSsap(string2long(value)); break;
+        case FIELD_control: pp->setControl(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee8022LlcHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_dsap: return pp->getDsap();
+        case FIELD_ssap: return pp->getSsap();
+        case FIELD_control: return pp->getControl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee8022LlcHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee8022LlcHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_dsap: pp->setDsap(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_ssap: pp->setSsap(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_control: pp->setControl(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcHeader'", field);
     }
 }
 
 const char *Ieee8022LlcHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee8022LlcHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee8022LlcHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcHeader *pp = (Ieee8022LlcHeader *)object; (void)pp;
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee8022LlcHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcHeader'", field);
     }
 }
 
@@ -607,7 +626,7 @@ void Ieee8022LlcSnapHeader::setProtocolId(int protocolId)
 class Ieee8022LlcSnapHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_oui,
         FIELD_protocolId,
@@ -618,34 +637,38 @@ class Ieee8022LlcSnapHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee8022LlcSnapHeaderDescriptor)
 
 Ieee8022LlcSnapHeaderDescriptor::Ieee8022LlcSnapHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ieee8022LlcSnapHeader)), "inet::Ieee8022LlcHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee8022LlcSnapHeaderDescriptor::~Ieee8022LlcSnapHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee8022LlcSnapHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -655,34 +678,34 @@ bool Ieee8022LlcSnapHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee8022LlcSnapHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee8022LlcSnapHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee8022LlcSnapHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee8022LlcSnapHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ieee8022LlcSnapHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_oui
@@ -693,11 +716,11 @@ unsigned int Ieee8022LlcSnapHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee8022LlcSnapHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "oui",
@@ -708,20 +731,20 @@ const char *Ieee8022LlcSnapHeaderDescriptor::getFieldName(int field) const
 
 int Ieee8022LlcSnapHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "oui") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocolId") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "oui") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "protocolId") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee8022LlcSnapHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_oui
@@ -732,67 +755,83 @@ const char *Ieee8022LlcSnapHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee8022LlcSnapHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee8022LlcSnapHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee8022LlcSnapHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee8022LlcSnapHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee8022LlcSnapHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcSnapHeader *pp = (Ieee8022LlcSnapHeader *)object; (void)pp;
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee8022LlcSnapHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee8022LlcSnapHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcSnapHeader *pp = (Ieee8022LlcSnapHeader *)object; (void)pp;
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee8022LlcSnapHeader'", field);
+    }
+}
+
+const char *Ieee8022LlcSnapHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee8022LlcSnapHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee8022LlcSnapHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcSnapHeader *pp = (Ieee8022LlcSnapHeader *)object; (void)pp;
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
     switch (field) {
         case FIELD_oui: return long2string(pp->getOui());
         case FIELD_protocolId: return long2string(pp->getProtocolId());
@@ -800,48 +839,104 @@ std::string Ieee8022LlcSnapHeaderDescriptor::getFieldValueAsString(void *object,
     }
 }
 
-bool Ieee8022LlcSnapHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee8022LlcSnapHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcSnapHeader *pp = (Ieee8022LlcSnapHeader *)object; (void)pp;
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_oui: pp->setOui(string2long(value)); return true;
-        case FIELD_protocolId: pp->setProtocolId(string2long(value)); return true;
-        default: return false;
+        case FIELD_oui: pp->setOui(string2long(value)); break;
+        case FIELD_protocolId: pp->setProtocolId(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcSnapHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee8022LlcSnapHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_oui: return pp->getOui();
+        case FIELD_protocolId: return pp->getProtocolId();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee8022LlcSnapHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee8022LlcSnapHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_oui: pp->setOui(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_protocolId: pp->setProtocolId(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcSnapHeader'", field);
     }
 }
 
 const char *Ieee8022LlcSnapHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee8022LlcSnapHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee8022LlcSnapHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee8022LlcSnapHeader *pp = (Ieee8022LlcSnapHeader *)object; (void)pp;
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Ieee8022LlcSnapHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee8022LlcSnapHeader *pp = omnetpp::fromAnyPtr<Ieee8022LlcSnapHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee8022LlcSnapHeader'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/icmpv6/Ipv6NdMessage.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/icmpv6/Ipv6NdMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ipv6NdMessage_m.h"
 
 namespace omnetpp {
@@ -149,75 +150,9 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Ipv6NdOptionTypes");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Ipv6NdOptionTypes"));
-    e->insert(IPv6ND_SOURCE_LINK_LAYER_ADDR_OPTION, "IPv6ND_SOURCE_LINK_LAYER_ADDR_OPTION");
-    e->insert(IPv6ND_TARGET_LINK_LAYER_ADDR_OPTION, "IPv6ND_TARGET_LINK_LAYER_ADDR_OPTION");
-    e->insert(IPv6ND_PREFIX_INFORMATION, "IPv6ND_PREFIX_INFORMATION");
-    e->insert(IPv6ND_REDIRECTED_HEADER, "IPv6ND_REDIRECTED_HEADER");
-    e->insert(IPv6ND_MTU, "IPv6ND_MTU");
-    e->insert(IPv6ND_ADVERTISEMENT_INTERVAL, "IPv6ND_ADVERTISEMENT_INTERVAL");
-    e->insert(IPv6ND_HOME_AGENT_INFORMATION_OPTION, "IPv6ND_HOME_AGENT_INFORMATION_OPTION");
-)
+Register_Enum(inet::Ipv6NdOptionTypes, (inet::Ipv6NdOptionTypes::IPv6ND_SOURCE_LINK_LAYER_ADDR_OPTION, inet::Ipv6NdOptionTypes::IPv6ND_TARGET_LINK_LAYER_ADDR_OPTION, inet::Ipv6NdOptionTypes::IPv6ND_PREFIX_INFORMATION, inet::Ipv6NdOptionTypes::IPv6ND_REDIRECTED_HEADER, inet::Ipv6NdOptionTypes::IPv6ND_MTU, inet::Ipv6NdOptionTypes::IPv6ND_ADVERTISEMENT_INTERVAL, inet::Ipv6NdOptionTypes::IPv6ND_HOME_AGENT_INFORMATION_OPTION));
 
 Register_Class(Ipv6NdOption)
 
@@ -277,12 +212,12 @@ void Ipv6NdOption::parsimUnpack(omnetpp::cCommBuffer *b)
     }
 }
 
-inet::Ipv6NdOptionTypes Ipv6NdOption::getType() const
+Ipv6NdOptionTypes Ipv6NdOption::getType() const
 {
     return this->type;
 }
 
-void Ipv6NdOption::setType(inet::Ipv6NdOptionTypes type)
+void Ipv6NdOption::setType(Ipv6NdOptionTypes type)
 {
     this->type = type;
 }
@@ -304,7 +239,7 @@ size_t Ipv6NdOption::getPaddingBytesArraySize() const
 
 char Ipv6NdOption::getPaddingBytes(size_t k) const
 {
-    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size paddingBytes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)paddingBytes_arraysize, (unsigned long)k);
     return this->paddingBytes[k];
 }
 
@@ -323,13 +258,13 @@ void Ipv6NdOption::setPaddingBytesArraySize(size_t newSize)
 
 void Ipv6NdOption::setPaddingBytes(size_t k, char paddingBytes)
 {
-    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)paddingBytes_arraysize, (unsigned long)k);
     this->paddingBytes[k] = paddingBytes;
 }
 
 void Ipv6NdOption::insertPaddingBytes(size_t k, char paddingBytes)
 {
-    if (k > paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)paddingBytes_arraysize, (unsigned long)k);
     size_t newSize = paddingBytes_arraysize + 1;
     char *paddingBytes2 = new char[newSize];
     size_t i;
@@ -343,14 +278,14 @@ void Ipv6NdOption::insertPaddingBytes(size_t k, char paddingBytes)
     paddingBytes_arraysize = newSize;
 }
 
-void Ipv6NdOption::insertPaddingBytes(char paddingBytes)
+void Ipv6NdOption::appendPaddingBytes(char paddingBytes)
 {
     insertPaddingBytes(paddingBytes_arraysize, paddingBytes);
 }
 
 void Ipv6NdOption::erasePaddingBytes(size_t k)
 {
-    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= paddingBytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)paddingBytes_arraysize, (unsigned long)k);
     size_t newSize = paddingBytes_arraysize - 1;
     char *paddingBytes2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -366,7 +301,7 @@ void Ipv6NdOption::erasePaddingBytes(size_t k)
 class Ipv6NdOptionDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_optionLength,
@@ -378,34 +313,38 @@ class Ipv6NdOptionDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdOptionDescriptor)
 
 Ipv6NdOptionDescriptor::Ipv6NdOptionDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdOption)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdOptionDescriptor::~Ipv6NdOptionDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdOptionDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -415,50 +354,50 @@ bool Ipv6NdOptionDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdOptionDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdOptionDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdOptionDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdOptionDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ipv6NdOptionDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        0,    // FIELD_type
+        FD_ISEDITABLE,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_optionLength
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_paddingBytes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_paddingBytes
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv6NdOptionDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -470,21 +409,21 @@ const char *Ipv6NdOptionDescriptor::getFieldName(int field) const
 
 int Ipv6NdOptionDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "optionLength") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "paddingBytes") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "optionLength") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "paddingBytes") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdOptionDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv6NdOptionTypes",    // FIELD_type
@@ -496,11 +435,11 @@ const char *Ipv6NdOptionDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6NdOptionDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -511,60 +450,77 @@ const char **Ipv6NdOptionDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *Ipv6NdOptionDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdOptionDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::Ipv6NdOptionTypes";
+            if (!strcmp(propertyName, "enum")) return "inet::Ipv6NdOptionTypes";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ipv6NdOptionDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdOptionDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOption *pp = (Ipv6NdOption *)object; (void)pp;
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
     switch (field) {
         case FIELD_paddingBytes: return pp->getPaddingBytesArraySize();
         default: return 0;
     }
 }
 
-const char *Ipv6NdOptionDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdOptionDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdOption *pp = (Ipv6NdOption *)object; (void)pp;
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
+    switch (field) {
+        case FIELD_paddingBytes: pp->setPaddingBytesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdOption'", field);
+    }
+}
+
+const char *Ipv6NdOptionDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdOptionDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdOptionDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOption *pp = (Ipv6NdOption *)object; (void)pp;
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::Ipv6NdOptionTypes");
         case FIELD_optionLength: return long2string(pp->getOptionLength());
@@ -573,46 +529,101 @@ std::string Ipv6NdOptionDescriptor::getFieldValueAsString(void *object, int fiel
     }
 }
 
-bool Ipv6NdOptionDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdOptionDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdOption *pp = (Ipv6NdOption *)object; (void)pp;
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
     switch (field) {
-        case FIELD_optionLength: pp->setOptionLength(string2long(value)); return true;
-        case FIELD_paddingBytes: pp->setPaddingBytes(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_type: pp->setType((inet::Ipv6NdOptionTypes)string2enum(value, "inet::Ipv6NdOptionTypes")); break;
+        case FIELD_optionLength: pp->setOptionLength(string2long(value)); break;
+        case FIELD_paddingBytes: pp->setPaddingBytes(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOption'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdOptionDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_optionLength: return pp->getOptionLength();
+        case FIELD_paddingBytes: return pp->getPaddingBytes(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdOption' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdOptionDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: pp->setType(static_cast<inet::Ipv6NdOptionTypes>(value.intValue())); break;
+        case FIELD_optionLength: pp->setOptionLength(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_paddingBytes: pp->setPaddingBytes(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOption'", field);
     }
 }
 
 const char *Ipv6NdOptionDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdOptionDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdOptionDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOption *pp = (Ipv6NdOption *)object; (void)pp;
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdOptionDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOption *pp = omnetpp::fromAnyPtr<Ipv6NdOption>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOption'", field);
     }
 }
 
@@ -671,7 +682,7 @@ void Ipv6NdSourceTargetLinkLayerAddress::setLinkLayerAddress(const MacAddress& l
 class Ipv6NdSourceTargetLinkLayerAddressDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_linkLayerAddress,
     };
@@ -681,34 +692,38 @@ class Ipv6NdSourceTargetLinkLayerAddressDescriptor : public omnetpp::cClassDescr
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdSourceTargetLinkLayerAddressDescriptor)
 
 Ipv6NdSourceTargetLinkLayerAddressDescriptor::Ipv6NdSourceTargetLinkLayerAddressDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdSourceTargetLinkLayerAddress)), "inet::Ipv6NdOption")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdSourceTargetLinkLayerAddressDescriptor::~Ipv6NdSourceTargetLinkLayerAddressDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdSourceTargetLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -718,34 +733,34 @@ bool Ipv6NdSourceTargetLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject 
 
 const char **Ipv6NdSourceTargetLinkLayerAddressDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_linkLayerAddress
@@ -755,11 +770,11 @@ unsigned int Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldTypeFlags(int
 
 const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "linkLayerAddress",
@@ -769,19 +784,19 @@ const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldName(int field
 
 int Ipv6NdSourceTargetLinkLayerAddressDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "linkLayerAddress") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "linkLayerAddress") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_linkLayerAddress
@@ -791,112 +806,177 @@ const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldTypeString(int
 
 const char **Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceTargetLinkLayerAddress *pp = (Ipv6NdSourceTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdSourceTargetLinkLayerAddressDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceTargetLinkLayerAddress *pp = (Ipv6NdSourceTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdSourceTargetLinkLayerAddress'", field);
+    }
+}
+
+const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceTargetLinkLayerAddress *pp = (Ipv6NdSourceTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         case FIELD_linkLayerAddress: return pp->getLinkLayerAddress().str();
         default: return "";
     }
 }
 
-bool Ipv6NdSourceTargetLinkLayerAddressDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdSourceTargetLinkLayerAddressDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceTargetLinkLayerAddress *pp = (Ipv6NdSourceTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceTargetLinkLayerAddress'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        case FIELD_linkLayerAddress: return omnetpp::toAnyPtr(&pp->getLinkLayerAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdSourceTargetLinkLayerAddress' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdSourceTargetLinkLayerAddressDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceTargetLinkLayerAddress'", field);
     }
 }
 
 const char *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdSourceTargetLinkLayerAddressDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceTargetLinkLayerAddress *pp = (Ipv6NdSourceTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        case FIELD_linkLayerAddress: return toVoidPtr(&pp->getLinkLayerAddress()); break;
-        default: return nullptr;
+        case FIELD_linkLayerAddress: return omnetpp::toAnyPtr(&pp->getLinkLayerAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdSourceTargetLinkLayerAddressDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceTargetLinkLayerAddress'", field);
     }
 }
 
@@ -941,7 +1021,7 @@ void Ipv6NdSourceLinkLayerAddress::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6NdSourceLinkLayerAddressDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -950,34 +1030,38 @@ class Ipv6NdSourceLinkLayerAddressDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdSourceLinkLayerAddressDescriptor)
 
 Ipv6NdSourceLinkLayerAddressDescriptor::Ipv6NdSourceLinkLayerAddressDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdSourceLinkLayerAddress)), "inet::Ipv6NdSourceTargetLinkLayerAddress")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdSourceLinkLayerAddressDescriptor::~Ipv6NdSourceLinkLayerAddressDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdSourceLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -987,170 +1071,234 @@ bool Ipv6NdSourceLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject *obj) 
 
 const char **Ipv6NdSourceLinkLayerAddressDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdSourceLinkLayerAddressDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdSourceLinkLayerAddressDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdSourceLinkLayerAddressDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6NdSourceLinkLayerAddressDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6NdSourceLinkLayerAddressDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6NdSourceLinkLayerAddressDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdSourceLinkLayerAddressDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdSourceLinkLayerAddressDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceLinkLayerAddress *pp = (Ipv6NdSourceLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdSourceLinkLayerAddressDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceLinkLayerAddress *pp = (Ipv6NdSourceLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdSourceLinkLayerAddress'", field);
+    }
+}
+
+const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdSourceLinkLayerAddressDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdSourceLinkLayerAddressDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceLinkLayerAddress *pp = (Ipv6NdSourceLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6NdSourceLinkLayerAddressDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdSourceLinkLayerAddressDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceLinkLayerAddress *pp = (Ipv6NdSourceLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceLinkLayerAddress'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdSourceLinkLayerAddressDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdSourceLinkLayerAddress' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdSourceLinkLayerAddressDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceLinkLayerAddress'", field);
     }
 }
 
 const char *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6NdSourceLinkLayerAddressDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdSourceLinkLayerAddressDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdSourceLinkLayerAddress *pp = (Ipv6NdSourceLinkLayerAddress *)object; (void)pp;
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdSourceLinkLayerAddressDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdSourceLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdSourceLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdSourceLinkLayerAddress'", field);
     }
 }
 
@@ -1195,7 +1343,7 @@ void Ipv6NdTargetLinkLayerAddress::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6NdTargetLinkLayerAddressDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1204,34 +1352,38 @@ class Ipv6NdTargetLinkLayerAddressDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdTargetLinkLayerAddressDescriptor)
 
 Ipv6NdTargetLinkLayerAddressDescriptor::Ipv6NdTargetLinkLayerAddressDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdTargetLinkLayerAddress)), "inet::Ipv6NdSourceTargetLinkLayerAddress")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdTargetLinkLayerAddressDescriptor::~Ipv6NdTargetLinkLayerAddressDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdTargetLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1241,170 +1393,234 @@ bool Ipv6NdTargetLinkLayerAddressDescriptor::doesSupport(omnetpp::cObject *obj) 
 
 const char **Ipv6NdTargetLinkLayerAddressDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdTargetLinkLayerAddressDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdTargetLinkLayerAddressDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdTargetLinkLayerAddressDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6NdTargetLinkLayerAddressDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6NdTargetLinkLayerAddressDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6NdTargetLinkLayerAddressDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdTargetLinkLayerAddressDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdTargetLinkLayerAddressDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdTargetLinkLayerAddress *pp = (Ipv6NdTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdTargetLinkLayerAddressDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdTargetLinkLayerAddress *pp = (Ipv6NdTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdTargetLinkLayerAddress'", field);
+    }
+}
+
+const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdTargetLinkLayerAddressDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdTargetLinkLayerAddressDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdTargetLinkLayerAddress *pp = (Ipv6NdTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6NdTargetLinkLayerAddressDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdTargetLinkLayerAddressDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdTargetLinkLayerAddress *pp = (Ipv6NdTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdTargetLinkLayerAddress'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdTargetLinkLayerAddressDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdTargetLinkLayerAddress' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdTargetLinkLayerAddressDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdTargetLinkLayerAddress'", field);
     }
 }
 
 const char *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6NdTargetLinkLayerAddressDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdTargetLinkLayerAddressDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdTargetLinkLayerAddress *pp = (Ipv6NdTargetLinkLayerAddress *)object; (void)pp;
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdTargetLinkLayerAddressDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdTargetLinkLayerAddress *pp = omnetpp::fromAnyPtr<Ipv6NdTargetLinkLayerAddress>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdTargetLinkLayerAddress'", field);
     }
 }
 
@@ -1568,7 +1784,7 @@ void Ipv6NdPrefixInformation::setPrefix(const Ipv6Address& prefix)
 class Ipv6NdPrefixInformationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_prefixLength,
         FIELD_onlinkFlag,
@@ -1586,34 +1802,38 @@ class Ipv6NdPrefixInformationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdPrefixInformationDescriptor)
 
 Ipv6NdPrefixInformationDescriptor::Ipv6NdPrefixInformationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdPrefixInformation)), "inet::Ipv6NdOption")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdPrefixInformationDescriptor::~Ipv6NdPrefixInformationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdPrefixInformationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1623,34 +1843,34 @@ bool Ipv6NdPrefixInformationDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdPrefixInformationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdPrefixInformationDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdPrefixInformationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdPrefixInformationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 9+basedesc->getFieldCount() : 9;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 9+base->getFieldCount() : 9;
 }
 
 unsigned int Ipv6NdPrefixInformationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_prefixLength
@@ -1668,11 +1888,11 @@ unsigned int Ipv6NdPrefixInformationDescriptor::getFieldTypeFlags(int field) con
 
 const char *Ipv6NdPrefixInformationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "prefixLength",
@@ -1690,27 +1910,27 @@ const char *Ipv6NdPrefixInformationDescriptor::getFieldName(int field) const
 
 int Ipv6NdPrefixInformationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "prefixLength") == 0) return base+0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "onlinkFlag") == 0) return base+1;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "autoAddressConfFlag") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routerAddressFlag") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved1") == 0) return base+4;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "validLifetime") == 0) return base+5;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "preferredLifetime") == 0) return base+6;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved2") == 0) return base+7;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "prefix") == 0) return base+8;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "prefixLength") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "onlinkFlag") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "autoAddressConfFlag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "routerAddressFlag") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "reserved1") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "validLifetime") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "preferredLifetime") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "reserved2") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "prefix") == 0) return baseIndex + 8;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdPrefixInformationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "unsigned short",    // FIELD_prefixLength
@@ -1728,67 +1948,83 @@ const char *Ipv6NdPrefixInformationDescriptor::getFieldTypeString(int field) con
 
 const char **Ipv6NdPrefixInformationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdPrefixInformationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdPrefixInformationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdPrefixInformationDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdPrefixInformationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdPrefixInformation *pp = (Ipv6NdPrefixInformation *)object; (void)pp;
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdPrefixInformationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdPrefixInformationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdPrefixInformation *pp = (Ipv6NdPrefixInformation *)object; (void)pp;
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdPrefixInformation'", field);
+    }
+}
+
+const char *Ipv6NdPrefixInformationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdPrefixInformationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdPrefixInformationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdPrefixInformation *pp = (Ipv6NdPrefixInformation *)object; (void)pp;
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
     switch (field) {
         case FIELD_prefixLength: return ulong2string(pp->getPrefixLength());
         case FIELD_onlinkFlag: return bool2string(pp->getOnlinkFlag());
@@ -1803,53 +2039,118 @@ std::string Ipv6NdPrefixInformationDescriptor::getFieldValueAsString(void *objec
     }
 }
 
-bool Ipv6NdPrefixInformationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdPrefixInformationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdPrefixInformation *pp = (Ipv6NdPrefixInformation *)object; (void)pp;
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
     switch (field) {
-        case FIELD_prefixLength: pp->setPrefixLength(string2ulong(value)); return true;
-        case FIELD_onlinkFlag: pp->setOnlinkFlag(string2bool(value)); return true;
-        case FIELD_autoAddressConfFlag: pp->setAutoAddressConfFlag(string2bool(value)); return true;
-        case FIELD_routerAddressFlag: pp->setRouterAddressFlag(string2bool(value)); return true;
-        case FIELD_reserved1: pp->setReserved1(string2ulong(value)); return true;
-        case FIELD_validLifetime: pp->setValidLifetime(string2ulong(value)); return true;
-        case FIELD_preferredLifetime: pp->setPreferredLifetime(string2ulong(value)); return true;
-        case FIELD_reserved2: pp->setReserved2(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_prefixLength: pp->setPrefixLength(string2ulong(value)); break;
+        case FIELD_onlinkFlag: pp->setOnlinkFlag(string2bool(value)); break;
+        case FIELD_autoAddressConfFlag: pp->setAutoAddressConfFlag(string2bool(value)); break;
+        case FIELD_routerAddressFlag: pp->setRouterAddressFlag(string2bool(value)); break;
+        case FIELD_reserved1: pp->setReserved1(string2ulong(value)); break;
+        case FIELD_validLifetime: pp->setValidLifetime(string2ulong(value)); break;
+        case FIELD_preferredLifetime: pp->setPreferredLifetime(string2ulong(value)); break;
+        case FIELD_reserved2: pp->setReserved2(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdPrefixInformation'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdPrefixInformationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
+    switch (field) {
+        case FIELD_prefixLength: return (omnetpp::intval_t)(pp->getPrefixLength());
+        case FIELD_onlinkFlag: return pp->getOnlinkFlag();
+        case FIELD_autoAddressConfFlag: return pp->getAutoAddressConfFlag();
+        case FIELD_routerAddressFlag: return pp->getRouterAddressFlag();
+        case FIELD_reserved1: return (omnetpp::intval_t)(pp->getReserved1());
+        case FIELD_validLifetime: return (omnetpp::intval_t)(pp->getValidLifetime());
+        case FIELD_preferredLifetime: return (omnetpp::intval_t)(pp->getPreferredLifetime());
+        case FIELD_reserved2: return (omnetpp::intval_t)(pp->getReserved2());
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->getPrefix()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdPrefixInformation' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdPrefixInformationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
+    switch (field) {
+        case FIELD_prefixLength: pp->setPrefixLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_onlinkFlag: pp->setOnlinkFlag(value.boolValue()); break;
+        case FIELD_autoAddressConfFlag: pp->setAutoAddressConfFlag(value.boolValue()); break;
+        case FIELD_routerAddressFlag: pp->setRouterAddressFlag(value.boolValue()); break;
+        case FIELD_reserved1: pp->setReserved1(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_validLifetime: pp->setValidLifetime(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_preferredLifetime: pp->setPreferredLifetime(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_reserved2: pp->setReserved2(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdPrefixInformation'", field);
     }
 }
 
 const char *Ipv6NdPrefixInformationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdPrefixInformationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdPrefixInformationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdPrefixInformation *pp = (Ipv6NdPrefixInformation *)object; (void)pp;
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
     switch (field) {
-        case FIELD_prefix: return toVoidPtr(&pp->getPrefix()); break;
-        default: return nullptr;
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->getPrefix()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdPrefixInformationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdPrefixInformation *pp = omnetpp::fromAnyPtr<Ipv6NdPrefixInformation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdPrefixInformation'", field);
     }
 }
 
@@ -1922,7 +2223,7 @@ void Ipv6NdMtu::setMtu(uint32_t mtu)
 class Ipv6NdMtuDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_mtu,
@@ -1933,34 +2234,38 @@ class Ipv6NdMtuDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdMtuDescriptor)
 
 Ipv6NdMtuDescriptor::Ipv6NdMtuDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdMtu)), "inet::Ipv6NdOption")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdMtuDescriptor::~Ipv6NdMtuDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdMtuDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1970,34 +2275,34 @@ bool Ipv6NdMtuDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdMtuDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdMtuDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdMtuDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdMtuDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ipv6NdMtuDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -2008,11 +2313,11 @@ unsigned int Ipv6NdMtuDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv6NdMtuDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -2023,20 +2328,20 @@ const char *Ipv6NdMtuDescriptor::getFieldName(int field) const
 
 int Ipv6NdMtuDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "mtu") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "mtu") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdMtuDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_reserved
@@ -2047,67 +2352,83 @@ const char *Ipv6NdMtuDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6NdMtuDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdMtuDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdMtuDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdMtuDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdMtuDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMtu *pp = (Ipv6NdMtu *)object; (void)pp;
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdMtuDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdMtuDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdMtu *pp = (Ipv6NdMtu *)object; (void)pp;
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdMtu'", field);
+    }
+}
+
+const char *Ipv6NdMtuDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdMtuDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdMtuDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMtu *pp = (Ipv6NdMtu *)object; (void)pp;
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_mtu: return ulong2string(pp->getMtu());
@@ -2115,46 +2436,98 @@ std::string Ipv6NdMtuDescriptor::getFieldValueAsString(void *object, int field, 
     }
 }
 
-bool Ipv6NdMtuDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdMtuDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdMtu *pp = (Ipv6NdMtu *)object; (void)pp;
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_mtu: pp->setMtu(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_mtu: pp->setMtu(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMtu'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdMtuDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_mtu: return (omnetpp::intval_t)(pp->getMtu());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdMtu' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdMtuDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_mtu: pp->setMtu(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMtu'", field);
     }
 }
 
 const char *Ipv6NdMtuDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdMtuDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdMtuDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMtu *pp = (Ipv6NdMtu *)object; (void)pp;
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdMtuDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMtu *pp = omnetpp::fromAnyPtr<Ipv6NdMtu>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMtu'", field);
     }
 }
 
@@ -2227,7 +2600,7 @@ void Mipv6NdAdvertisementInterval::setAdvertisementInterval(uint32_t advertiseme
 class Mipv6NdAdvertisementIntervalDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_advertisementInterval,
@@ -2238,34 +2611,38 @@ class Mipv6NdAdvertisementIntervalDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Mipv6NdAdvertisementIntervalDescriptor)
 
 Mipv6NdAdvertisementIntervalDescriptor::Mipv6NdAdvertisementIntervalDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Mipv6NdAdvertisementInterval)), "inet::Ipv6NdOption")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Mipv6NdAdvertisementIntervalDescriptor::~Mipv6NdAdvertisementIntervalDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Mipv6NdAdvertisementIntervalDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2275,34 +2652,34 @@ bool Mipv6NdAdvertisementIntervalDescriptor::doesSupport(omnetpp::cObject *obj) 
 
 const char **Mipv6NdAdvertisementIntervalDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Mipv6NdAdvertisementIntervalDescriptor::getProperty(const char *propertyname) const
+const char *Mipv6NdAdvertisementIntervalDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Mipv6NdAdvertisementIntervalDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Mipv6NdAdvertisementIntervalDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -2313,11 +2690,11 @@ unsigned int Mipv6NdAdvertisementIntervalDescriptor::getFieldTypeFlags(int field
 
 const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -2328,20 +2705,20 @@ const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldName(int field) cons
 
 int Mipv6NdAdvertisementIntervalDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "advertisementInterval") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "advertisementInterval") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_reserved
@@ -2352,67 +2729,83 @@ const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldTypeString(int field
 
 const char **Mipv6NdAdvertisementIntervalDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Mipv6NdAdvertisementIntervalDescriptor::getFieldArraySize(void *object, int field) const
+int Mipv6NdAdvertisementIntervalDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Mipv6NdAdvertisementInterval *pp = (Mipv6NdAdvertisementInterval *)object; (void)pp;
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Mipv6NdAdvertisementIntervalDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Mipv6NdAdvertisementInterval *pp = (Mipv6NdAdvertisementInterval *)object; (void)pp;
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Mipv6NdAdvertisementInterval'", field);
+    }
+}
+
+const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Mipv6NdAdvertisementIntervalDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Mipv6NdAdvertisementIntervalDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Mipv6NdAdvertisementInterval *pp = (Mipv6NdAdvertisementInterval *)object; (void)pp;
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_advertisementInterval: return ulong2string(pp->getAdvertisementInterval());
@@ -2420,46 +2813,98 @@ std::string Mipv6NdAdvertisementIntervalDescriptor::getFieldValueAsString(void *
     }
 }
 
-bool Mipv6NdAdvertisementIntervalDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Mipv6NdAdvertisementIntervalDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Mipv6NdAdvertisementInterval *pp = (Mipv6NdAdvertisementInterval *)object; (void)pp;
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_advertisementInterval: pp->setAdvertisementInterval(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_advertisementInterval: pp->setAdvertisementInterval(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6NdAdvertisementInterval'", field);
+    }
+}
+
+omnetpp::cValue Mipv6NdAdvertisementIntervalDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_advertisementInterval: return (omnetpp::intval_t)(pp->getAdvertisementInterval());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Mipv6NdAdvertisementInterval' as cValue -- field index out of range?", field);
+    }
+}
+
+void Mipv6NdAdvertisementIntervalDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_advertisementInterval: pp->setAdvertisementInterval(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6NdAdvertisementInterval'", field);
     }
 }
 
 const char *Mipv6NdAdvertisementIntervalDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Mipv6NdAdvertisementIntervalDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Mipv6NdAdvertisementIntervalDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Mipv6NdAdvertisementInterval *pp = (Mipv6NdAdvertisementInterval *)object; (void)pp;
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Mipv6NdAdvertisementIntervalDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Mipv6NdAdvertisementInterval *pp = omnetpp::fromAnyPtr<Mipv6NdAdvertisementInterval>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6NdAdvertisementInterval'", field);
     }
 }
 
@@ -2545,7 +2990,7 @@ void Mipv6HaInformation::setHomeAgentLifetime(uint16_t homeAgentLifetime)
 class Mipv6HaInformationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_homeAgentPreference,
@@ -2557,34 +3002,38 @@ class Mipv6HaInformationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Mipv6HaInformationDescriptor)
 
 Mipv6HaInformationDescriptor::Mipv6HaInformationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Mipv6HaInformation)), "inet::Ipv6NdOption")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Mipv6HaInformationDescriptor::~Mipv6HaInformationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Mipv6HaInformationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2594,34 +3043,34 @@ bool Mipv6HaInformationDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Mipv6HaInformationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Mipv6HaInformationDescriptor::getProperty(const char *propertyname) const
+const char *Mipv6HaInformationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Mipv6HaInformationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Mipv6HaInformationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -2633,11 +3082,11 @@ unsigned int Mipv6HaInformationDescriptor::getFieldTypeFlags(int field) const
 
 const char *Mipv6HaInformationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -2649,21 +3098,21 @@ const char *Mipv6HaInformationDescriptor::getFieldName(int field) const
 
 int Mipv6HaInformationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "homeAgentPreference") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "homeAgentLifetime") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "homeAgentPreference") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "homeAgentLifetime") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Mipv6HaInformationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_reserved
@@ -2675,67 +3124,83 @@ const char *Mipv6HaInformationDescriptor::getFieldTypeString(int field) const
 
 const char **Mipv6HaInformationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Mipv6HaInformationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Mipv6HaInformationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Mipv6HaInformationDescriptor::getFieldArraySize(void *object, int field) const
+int Mipv6HaInformationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Mipv6HaInformation *pp = (Mipv6HaInformation *)object; (void)pp;
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Mipv6HaInformationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Mipv6HaInformationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Mipv6HaInformation *pp = (Mipv6HaInformation *)object; (void)pp;
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Mipv6HaInformation'", field);
+    }
+}
+
+const char *Mipv6HaInformationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Mipv6HaInformationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Mipv6HaInformationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Mipv6HaInformation *pp = (Mipv6HaInformation *)object; (void)pp;
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_homeAgentPreference: return ulong2string(pp->getHomeAgentPreference());
@@ -2744,47 +3209,101 @@ std::string Mipv6HaInformationDescriptor::getFieldValueAsString(void *object, in
     }
 }
 
-bool Mipv6HaInformationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Mipv6HaInformationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Mipv6HaInformation *pp = (Mipv6HaInformation *)object; (void)pp;
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_homeAgentPreference: pp->setHomeAgentPreference(string2ulong(value)); return true;
-        case FIELD_homeAgentLifetime: pp->setHomeAgentLifetime(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_homeAgentPreference: pp->setHomeAgentPreference(string2ulong(value)); break;
+        case FIELD_homeAgentLifetime: pp->setHomeAgentLifetime(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6HaInformation'", field);
+    }
+}
+
+omnetpp::cValue Mipv6HaInformationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_homeAgentPreference: return (omnetpp::intval_t)(pp->getHomeAgentPreference());
+        case FIELD_homeAgentLifetime: return (omnetpp::intval_t)(pp->getHomeAgentLifetime());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Mipv6HaInformation' as cValue -- field index out of range?", field);
+    }
+}
+
+void Mipv6HaInformationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_homeAgentPreference: pp->setHomeAgentPreference(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_homeAgentLifetime: pp->setHomeAgentLifetime(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6HaInformation'", field);
     }
 }
 
 const char *Mipv6HaInformationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Mipv6HaInformationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Mipv6HaInformationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Mipv6HaInformation *pp = (Mipv6HaInformation *)object; (void)pp;
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Mipv6HaInformationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Mipv6HaInformation *pp = omnetpp::fromAnyPtr<Mipv6HaInformation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Mipv6HaInformation'", field);
     }
 }
 
@@ -2854,7 +3373,7 @@ size_t Ipv6NdOptions::getOptionArraySize() const
 
 const Ipv6NdOption * Ipv6NdOptions::getOption(size_t k) const
 {
-    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size option_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)option_arraysize, (unsigned long)k);
     return this->option[k];
 }
 
@@ -2875,28 +3394,31 @@ void Ipv6NdOptions::setOptionArraySize(size_t newSize)
 
 void Ipv6NdOptions::setOption(size_t k, Ipv6NdOption * option)
 {
-    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
-    if (this->option[k] != nullptr) throw omnetpp::cRuntimeError("setOption(): a value is already set, remove it first with dropOption()");
+    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)option_arraysize, (unsigned long)k);
+    if (this->option[k] != nullptr) throw omnetpp::cRuntimeError("setOption(): a value is already set, remove it first with removeOption()");
     this->option[k] = option;
+    if (this->option[k] != nullptr && this->option[k]->isOwnedObject()) take((cOwnedObject*)this->option[k]);
 }
 
-Ipv6NdOption * Ipv6NdOptions::dropOption(size_t k)
+Ipv6NdOption * Ipv6NdOptions::removeOption(size_t k)
 {
-    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)option_arraysize, (unsigned long)k);
     Ipv6NdOption * retval = this->option[k];
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->option[k] = nullptr;
     return retval;
 }
 
 void Ipv6NdOptions::insertOption(size_t k, Ipv6NdOption * option)
 {
-    if (k > option_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > option_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)option_arraysize, (unsigned long)k);
     size_t newSize = option_arraysize + 1;
     Ipv6NdOption * *option2 = new Ipv6NdOption *[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         option2[i] = this->option[i];
     option2[k] = option;
+    if (option2[k] != nullptr && option2[k]->isOwnedObject()) take((cOwnedObject*)option2[k]);
     for (i = k + 1; i < newSize; i++)
         option2[i] = this->option[i-1];
     delete [] this->option;
@@ -2904,14 +3426,14 @@ void Ipv6NdOptions::insertOption(size_t k, Ipv6NdOption * option)
     option_arraysize = newSize;
 }
 
-void Ipv6NdOptions::insertOption(Ipv6NdOption * option)
+void Ipv6NdOptions::appendOption(Ipv6NdOption * option)
 {
     insertOption(option_arraysize, option);
 }
 
 void Ipv6NdOptions::eraseOption(size_t k)
 {
-    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= option_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)option_arraysize, (unsigned long)k);
     size_t newSize = option_arraysize - 1;
     Ipv6NdOption * *option2 = (newSize == 0) ? nullptr : new Ipv6NdOption *[newSize];
     size_t i;
@@ -2919,7 +3441,7 @@ void Ipv6NdOptions::eraseOption(size_t k)
         option2[i] = this->option[i];
     for (i = k; i < newSize; i++)
         option2[i] = this->option[i+1];
-    delete this->option[k];
+    if (this->option[k] != nullptr && this->option[k]->isOwnedObject()) dropAndDelete((cOwnedObject*)this->option[k]); else delete this->option[k];
     delete [] this->option;
     this->option = option2;
     option_arraysize = newSize;
@@ -2928,7 +3450,7 @@ void Ipv6NdOptions::eraseOption(size_t k)
 class Ipv6NdOptionsDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_option,
     };
@@ -2938,34 +3460,38 @@ class Ipv6NdOptionsDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdOptionsDescriptor)
 
 Ipv6NdOptionsDescriptor::Ipv6NdOptionsDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdOptions)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdOptionsDescriptor::~Ipv6NdOptionsDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2975,48 +3501,48 @@ bool Ipv6NdOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdOptionsDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdOptionsDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdOptionsDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdOptionsDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv6NdOptionsDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_option
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_option
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv6NdOptionsDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "option",
@@ -3026,19 +3552,19 @@ const char *Ipv6NdOptionsDescriptor::getFieldName(int field) const
 
 int Ipv6NdOptionsDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "option") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "option") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdOptionsDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv6NdOption",    // FIELD_option
@@ -3048,11 +3574,11 @@ const char *Ipv6NdOptionsDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6NdOptionsDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_option: {
@@ -3063,88 +3589,139 @@ const char **Ipv6NdOptionsDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *Ipv6NdOptionsDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdOptionsDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_option:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ipv6NdOptionsDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdOptionsDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOptions *pp = (Ipv6NdOptions *)object; (void)pp;
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
     switch (field) {
         case FIELD_option: return pp->getOptionArraySize();
         default: return 0;
     }
 }
 
-const char *Ipv6NdOptionsDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdOptionsDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdOptions *pp = (Ipv6NdOptions *)object; (void)pp;
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_option: pp->setOptionArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdOptions'", field);
+    }
+}
+
+const char *Ipv6NdOptionsDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
     switch (field) {
         case FIELD_option: { const Ipv6NdOption * value = pp->getOption(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdOptionsDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdOptionsDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOptions *pp = (Ipv6NdOptions *)object; (void)pp;
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_option: {std::stringstream out; out << pp->getOption(i); return out.str();}
+        case FIELD_option: { auto obj = pp->getOption(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool Ipv6NdOptionsDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdOptionsDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdOptions *pp = (Ipv6NdOptions *)object; (void)pp;
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOptions'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdOptionsDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_option: return omnetpp::toAnyPtr(pp->getOption(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdOptions' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdOptionsDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_option: pp->setOption(i,omnetpp::fromAnyPtr<Ipv6NdOption>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOptions'", field);
     }
 }
 
 const char *Ipv6NdOptionsDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_option: return omnetpp::opp_typename(typeid(Ipv6NdOption));
@@ -3152,18 +3729,35 @@ const char *Ipv6NdOptionsDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Ipv6NdOptionsDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdOptionsDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdOptions *pp = (Ipv6NdOptions *)object; (void)pp;
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_option: return toVoidPtr(pp->getOption(i)); break;
-        default: return nullptr;
+        case FIELD_option: return omnetpp::toAnyPtr(pp->getOption(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdOptionsDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdOptions *pp = omnetpp::fromAnyPtr<Ipv6NdOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_option: pp->setOption(i,omnetpp::fromAnyPtr<Ipv6NdOption>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdOptions'", field);
     }
 }
 
@@ -3221,7 +3815,7 @@ void Ipv6NdMessage::setCode(int code)
 class Ipv6NdMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
     };
@@ -3231,34 +3825,38 @@ class Ipv6NdMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdMessageDescriptor)
 
 Ipv6NdMessageDescriptor::Ipv6NdMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdMessage)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdMessageDescriptor::~Ipv6NdMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3268,34 +3866,34 @@ bool Ipv6NdMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdMessageDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv6NdMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_code
@@ -3305,11 +3903,11 @@ unsigned int Ipv6NdMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv6NdMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -3319,19 +3917,19 @@ const char *Ipv6NdMessageDescriptor::getFieldName(int field) const
 
 int Ipv6NdMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_code
@@ -3341,112 +3939,178 @@ const char *Ipv6NdMessageDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6NdMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdMessageDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMessage *pp = (Ipv6NdMessage *)object; (void)pp;
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdMessage *pp = (Ipv6NdMessage *)object; (void)pp;
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdMessage'", field);
+    }
+}
+
+const char *Ipv6NdMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMessage *pp = (Ipv6NdMessage *)object; (void)pp;
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
     switch (field) {
         case FIELD_code: return long2string(pp->getCode());
         default: return "";
     }
 }
 
-bool Ipv6NdMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdMessage *pp = (Ipv6NdMessage *)object; (void)pp;
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode(string2long(value)); return true;
-        default: return false;
+        case FIELD_code: pp->setCode(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMessage'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return pp->getCode();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: pp->setCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMessage'", field);
     }
 }
 
 const char *Ipv6NdMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdMessage *pp = (Ipv6NdMessage *)object; (void)pp;
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NdMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdMessage *pp = omnetpp::fromAnyPtr<Ipv6NdMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdMessage'", field);
     }
 }
 
@@ -3521,7 +4185,7 @@ void Ipv6RouterSolicitation::setOptions(const Ipv6NdOptions& options)
 class Ipv6RouterSolicitationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_options,
@@ -3532,34 +4196,38 @@ class Ipv6RouterSolicitationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6RouterSolicitationDescriptor)
 
 Ipv6RouterSolicitationDescriptor::Ipv6RouterSolicitationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6RouterSolicitation)), "inet::Ipv6NdMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6RouterSolicitationDescriptor::~Ipv6RouterSolicitationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6RouterSolicitationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3569,34 +4237,34 @@ bool Ipv6RouterSolicitationDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6RouterSolicitationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6RouterSolicitationDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6RouterSolicitationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6RouterSolicitationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ipv6RouterSolicitationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -3607,11 +4275,11 @@ unsigned int Ipv6RouterSolicitationDescriptor::getFieldTypeFlags(int field) cons
 
 const char *Ipv6RouterSolicitationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -3622,20 +4290,20 @@ const char *Ipv6RouterSolicitationDescriptor::getFieldName(int field) const
 
 int Ipv6RouterSolicitationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6RouterSolicitationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_reserved
@@ -3646,96 +4314,147 @@ const char *Ipv6RouterSolicitationDescriptor::getFieldTypeString(int field) cons
 
 const char **Ipv6RouterSolicitationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6RouterSolicitationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6RouterSolicitationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6RouterSolicitationDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6RouterSolicitationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterSolicitation *pp = (Ipv6RouterSolicitation *)object; (void)pp;
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6RouterSolicitationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6RouterSolicitationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6RouterSolicitation *pp = (Ipv6RouterSolicitation *)object; (void)pp;
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6RouterSolicitation'", field);
+    }
+}
+
+const char *Ipv6RouterSolicitationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6RouterSolicitationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6RouterSolicitationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterSolicitation *pp = (Ipv6RouterSolicitation *)object; (void)pp;
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv6RouterSolicitationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6RouterSolicitationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6RouterSolicitation *pp = (Ipv6RouterSolicitation *)object; (void)pp;
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterSolicitation'", field);
+    }
+}
+
+omnetpp::cValue Ipv6RouterSolicitationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6RouterSolicitation' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6RouterSolicitationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterSolicitation'", field);
     }
 }
 
 const char *Ipv6RouterSolicitationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(Ipv6NdOptions));
@@ -3743,18 +4462,34 @@ const char *Ipv6RouterSolicitationDescriptor::getFieldStructName(int field) cons
     };
 }
 
-void *Ipv6RouterSolicitationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6RouterSolicitationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterSolicitation *pp = (Ipv6RouterSolicitation *)object; (void)pp;
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
     switch (field) {
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6RouterSolicitationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterSolicitation *pp = omnetpp::fromAnyPtr<Ipv6RouterSolicitation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterSolicitation'", field);
     }
 }
 
@@ -3927,7 +4662,7 @@ void Ipv6RouterAdvertisement::setOptions(const Ipv6NdOptions& options)
 class Ipv6RouterAdvertisementDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_curHopLimit,
         FIELD_managedAddrConfFlag,
@@ -3945,34 +4680,38 @@ class Ipv6RouterAdvertisementDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6RouterAdvertisementDescriptor)
 
 Ipv6RouterAdvertisementDescriptor::Ipv6RouterAdvertisementDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6RouterAdvertisement)), "inet::Ipv6NdMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6RouterAdvertisementDescriptor::~Ipv6RouterAdvertisementDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6RouterAdvertisementDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3982,34 +4721,34 @@ bool Ipv6RouterAdvertisementDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6RouterAdvertisementDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6RouterAdvertisementDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6RouterAdvertisementDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6RouterAdvertisementDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 9+basedesc->getFieldCount() : 9;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 9+base->getFieldCount() : 9;
 }
 
 unsigned int Ipv6RouterAdvertisementDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_curHopLimit
@@ -4027,11 +4766,11 @@ unsigned int Ipv6RouterAdvertisementDescriptor::getFieldTypeFlags(int field) con
 
 const char *Ipv6RouterAdvertisementDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "curHopLimit",
@@ -4049,27 +4788,27 @@ const char *Ipv6RouterAdvertisementDescriptor::getFieldName(int field) const
 
 int Ipv6RouterAdvertisementDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "curHopLimit") == 0) return base+0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "managedAddrConfFlag") == 0) return base+1;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "otherStatefulConfFlag") == 0) return base+2;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "homeAgentFlag") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+4;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routerLifetime") == 0) return base+5;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reachableTime") == 0) return base+6;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "retransTimer") == 0) return base+7;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+8;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "curHopLimit") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "managedAddrConfFlag") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "otherStatefulConfFlag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "homeAgentFlag") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "routerLifetime") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "reachableTime") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "retransTimer") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 8;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6RouterAdvertisementDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "unsigned short",    // FIELD_curHopLimit
@@ -4087,67 +4826,83 @@ const char *Ipv6RouterAdvertisementDescriptor::getFieldTypeString(int field) con
 
 const char **Ipv6RouterAdvertisementDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6RouterAdvertisementDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6RouterAdvertisementDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6RouterAdvertisementDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6RouterAdvertisementDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterAdvertisement *pp = (Ipv6RouterAdvertisement *)object; (void)pp;
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6RouterAdvertisementDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6RouterAdvertisementDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6RouterAdvertisement *pp = (Ipv6RouterAdvertisement *)object; (void)pp;
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6RouterAdvertisement'", field);
+    }
+}
+
+const char *Ipv6RouterAdvertisementDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6RouterAdvertisementDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6RouterAdvertisementDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterAdvertisement *pp = (Ipv6RouterAdvertisement *)object; (void)pp;
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
     switch (field) {
         case FIELD_curHopLimit: return ulong2string(pp->getCurHopLimit());
         case FIELD_managedAddrConfFlag: return bool2string(pp->getManagedAddrConfFlag());
@@ -4157,40 +4912,89 @@ std::string Ipv6RouterAdvertisementDescriptor::getFieldValueAsString(void *objec
         case FIELD_routerLifetime: return ulong2string(pp->getRouterLifetime());
         case FIELD_reachableTime: return ulong2string(pp->getReachableTime());
         case FIELD_retransTimer: return ulong2string(pp->getRetransTimer());
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv6RouterAdvertisementDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6RouterAdvertisementDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6RouterAdvertisement *pp = (Ipv6RouterAdvertisement *)object; (void)pp;
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
     switch (field) {
-        case FIELD_curHopLimit: pp->setCurHopLimit(string2ulong(value)); return true;
-        case FIELD_managedAddrConfFlag: pp->setManagedAddrConfFlag(string2bool(value)); return true;
-        case FIELD_otherStatefulConfFlag: pp->setOtherStatefulConfFlag(string2bool(value)); return true;
-        case FIELD_homeAgentFlag: pp->setHomeAgentFlag(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_routerLifetime: pp->setRouterLifetime(string2ulong(value)); return true;
-        case FIELD_reachableTime: pp->setReachableTime(string2ulong(value)); return true;
-        case FIELD_retransTimer: pp->setRetransTimer(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_curHopLimit: pp->setCurHopLimit(string2ulong(value)); break;
+        case FIELD_managedAddrConfFlag: pp->setManagedAddrConfFlag(string2bool(value)); break;
+        case FIELD_otherStatefulConfFlag: pp->setOtherStatefulConfFlag(string2bool(value)); break;
+        case FIELD_homeAgentFlag: pp->setHomeAgentFlag(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_routerLifetime: pp->setRouterLifetime(string2ulong(value)); break;
+        case FIELD_reachableTime: pp->setReachableTime(string2ulong(value)); break;
+        case FIELD_retransTimer: pp->setRetransTimer(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterAdvertisement'", field);
+    }
+}
+
+omnetpp::cValue Ipv6RouterAdvertisementDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
+    switch (field) {
+        case FIELD_curHopLimit: return (omnetpp::intval_t)(pp->getCurHopLimit());
+        case FIELD_managedAddrConfFlag: return pp->getManagedAddrConfFlag();
+        case FIELD_otherStatefulConfFlag: return pp->getOtherStatefulConfFlag();
+        case FIELD_homeAgentFlag: return pp->getHomeAgentFlag();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_routerLifetime: return (omnetpp::intval_t)(pp->getRouterLifetime());
+        case FIELD_reachableTime: return (omnetpp::intval_t)(pp->getReachableTime());
+        case FIELD_retransTimer: return (omnetpp::intval_t)(pp->getRetransTimer());
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6RouterAdvertisement' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6RouterAdvertisementDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
+    switch (field) {
+        case FIELD_curHopLimit: pp->setCurHopLimit(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_managedAddrConfFlag: pp->setManagedAddrConfFlag(value.boolValue()); break;
+        case FIELD_otherStatefulConfFlag: pp->setOtherStatefulConfFlag(value.boolValue()); break;
+        case FIELD_homeAgentFlag: pp->setHomeAgentFlag(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_routerLifetime: pp->setRouterLifetime(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_reachableTime: pp->setReachableTime(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_retransTimer: pp->setRetransTimer(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterAdvertisement'", field);
     }
 }
 
 const char *Ipv6RouterAdvertisementDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(Ipv6NdOptions));
@@ -4198,18 +5002,34 @@ const char *Ipv6RouterAdvertisementDescriptor::getFieldStructName(int field) con
     };
 }
 
-void *Ipv6RouterAdvertisementDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6RouterAdvertisementDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6RouterAdvertisement *pp = (Ipv6RouterAdvertisement *)object; (void)pp;
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
     switch (field) {
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6RouterAdvertisementDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6RouterAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6RouterAdvertisement>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6RouterAdvertisement'", field);
     }
 }
 
@@ -4298,7 +5118,7 @@ void Ipv6NeighbourSolicitation::setOptions(const Ipv6NdOptions& options)
 class Ipv6NeighbourSolicitationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_targetAddress,
@@ -4310,34 +5130,38 @@ class Ipv6NeighbourSolicitationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NeighbourSolicitationDescriptor)
 
 Ipv6NeighbourSolicitationDescriptor::Ipv6NeighbourSolicitationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NeighbourSolicitation)), "inet::Ipv6NdMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NeighbourSolicitationDescriptor::~Ipv6NeighbourSolicitationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NeighbourSolicitationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4347,34 +5171,34 @@ bool Ipv6NeighbourSolicitationDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ipv6NeighbourSolicitationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NeighbourSolicitationDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NeighbourSolicitationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NeighbourSolicitationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ipv6NeighbourSolicitationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -4386,11 +5210,11 @@ unsigned int Ipv6NeighbourSolicitationDescriptor::getFieldTypeFlags(int field) c
 
 const char *Ipv6NeighbourSolicitationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -4402,21 +5226,21 @@ const char *Ipv6NeighbourSolicitationDescriptor::getFieldName(int field) const
 
 int Ipv6NeighbourSolicitationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "targetAddress") == 0) return base+1;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "targetAddress") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NeighbourSolicitationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_reserved
@@ -4428,97 +5252,149 @@ const char *Ipv6NeighbourSolicitationDescriptor::getFieldTypeString(int field) c
 
 const char **Ipv6NeighbourSolicitationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NeighbourSolicitationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NeighbourSolicitationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NeighbourSolicitationDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NeighbourSolicitationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourSolicitation *pp = (Ipv6NeighbourSolicitation *)object; (void)pp;
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NeighbourSolicitationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NeighbourSolicitationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourSolicitation *pp = (Ipv6NeighbourSolicitation *)object; (void)pp;
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NeighbourSolicitation'", field);
+    }
+}
+
+const char *Ipv6NeighbourSolicitationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NeighbourSolicitationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NeighbourSolicitationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourSolicitation *pp = (Ipv6NeighbourSolicitation *)object; (void)pp;
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_targetAddress: return pp->getTargetAddress().str();
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv6NeighbourSolicitationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NeighbourSolicitationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourSolicitation *pp = (Ipv6NeighbourSolicitation *)object; (void)pp;
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourSolicitation'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NeighbourSolicitationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NeighbourSolicitation' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NeighbourSolicitationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourSolicitation'", field);
     }
 }
 
 const char *Ipv6NeighbourSolicitationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(Ipv6NdOptions));
@@ -4526,19 +5402,35 @@ const char *Ipv6NeighbourSolicitationDescriptor::getFieldStructName(int field) c
     };
 }
 
-void *Ipv6NeighbourSolicitationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NeighbourSolicitationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourSolicitation *pp = (Ipv6NeighbourSolicitation *)object; (void)pp;
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
     switch (field) {
-        case FIELD_targetAddress: return toVoidPtr(&pp->getTargetAddress()); break;
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NeighbourSolicitationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourSolicitation *pp = omnetpp::fromAnyPtr<Ipv6NeighbourSolicitation>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourSolicitation'", field);
     }
 }
 
@@ -4669,7 +5561,7 @@ void Ipv6NeighbourAdvertisement::setOptions(const Ipv6NdOptions& options)
 class Ipv6NeighbourAdvertisementDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_routerFlag,
         FIELD_solicitedFlag,
@@ -4684,34 +5576,38 @@ class Ipv6NeighbourAdvertisementDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NeighbourAdvertisementDescriptor)
 
 Ipv6NeighbourAdvertisementDescriptor::Ipv6NeighbourAdvertisementDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NeighbourAdvertisement)), "inet::Ipv6NdMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NeighbourAdvertisementDescriptor::~Ipv6NeighbourAdvertisementDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NeighbourAdvertisementDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4721,34 +5617,34 @@ bool Ipv6NeighbourAdvertisementDescriptor::doesSupport(omnetpp::cObject *obj) co
 
 const char **Ipv6NeighbourAdvertisementDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NeighbourAdvertisementDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NeighbourAdvertisementDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NeighbourAdvertisementDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 6+base->getFieldCount() : 6;
 }
 
 unsigned int Ipv6NeighbourAdvertisementDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_routerFlag
@@ -4763,11 +5659,11 @@ unsigned int Ipv6NeighbourAdvertisementDescriptor::getFieldTypeFlags(int field) 
 
 const char *Ipv6NeighbourAdvertisementDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "routerFlag",
@@ -4782,24 +5678,24 @@ const char *Ipv6NeighbourAdvertisementDescriptor::getFieldName(int field) const
 
 int Ipv6NeighbourAdvertisementDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routerFlag") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "solicitedFlag") == 0) return base+1;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "overrideFlag") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+3;
-    if (fieldName[0] == 't' && strcmp(fieldName, "targetAddress") == 0) return base+4;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+5;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "routerFlag") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "solicitedFlag") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "overrideFlag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "targetAddress") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 5;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NeighbourAdvertisementDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_routerFlag
@@ -4814,103 +5710,161 @@ const char *Ipv6NeighbourAdvertisementDescriptor::getFieldTypeString(int field) 
 
 const char **Ipv6NeighbourAdvertisementDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NeighbourAdvertisementDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NeighbourAdvertisementDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NeighbourAdvertisementDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NeighbourAdvertisementDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourAdvertisement *pp = (Ipv6NeighbourAdvertisement *)object; (void)pp;
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NeighbourAdvertisementDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NeighbourAdvertisementDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourAdvertisement *pp = (Ipv6NeighbourAdvertisement *)object; (void)pp;
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NeighbourAdvertisement'", field);
+    }
+}
+
+const char *Ipv6NeighbourAdvertisementDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NeighbourAdvertisementDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NeighbourAdvertisementDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourAdvertisement *pp = (Ipv6NeighbourAdvertisement *)object; (void)pp;
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
     switch (field) {
         case FIELD_routerFlag: return bool2string(pp->getRouterFlag());
         case FIELD_solicitedFlag: return bool2string(pp->getSolicitedFlag());
         case FIELD_overrideFlag: return bool2string(pp->getOverrideFlag());
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_targetAddress: return pp->getTargetAddress().str();
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv6NeighbourAdvertisementDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NeighbourAdvertisementDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourAdvertisement *pp = (Ipv6NeighbourAdvertisement *)object; (void)pp;
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
     switch (field) {
-        case FIELD_routerFlag: pp->setRouterFlag(string2bool(value)); return true;
-        case FIELD_solicitedFlag: pp->setSolicitedFlag(string2bool(value)); return true;
-        case FIELD_overrideFlag: pp->setOverrideFlag(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_routerFlag: pp->setRouterFlag(string2bool(value)); break;
+        case FIELD_solicitedFlag: pp->setSolicitedFlag(string2bool(value)); break;
+        case FIELD_overrideFlag: pp->setOverrideFlag(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourAdvertisement'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NeighbourAdvertisementDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
+    switch (field) {
+        case FIELD_routerFlag: return pp->getRouterFlag();
+        case FIELD_solicitedFlag: return pp->getSolicitedFlag();
+        case FIELD_overrideFlag: return pp->getOverrideFlag();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NeighbourAdvertisement' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NeighbourAdvertisementDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
+    switch (field) {
+        case FIELD_routerFlag: pp->setRouterFlag(value.boolValue()); break;
+        case FIELD_solicitedFlag: pp->setSolicitedFlag(value.boolValue()); break;
+        case FIELD_overrideFlag: pp->setOverrideFlag(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourAdvertisement'", field);
     }
 }
 
 const char *Ipv6NeighbourAdvertisementDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(Ipv6NdOptions));
@@ -4918,19 +5872,35 @@ const char *Ipv6NeighbourAdvertisementDescriptor::getFieldStructName(int field) 
     };
 }
 
-void *Ipv6NeighbourAdvertisementDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NeighbourAdvertisementDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NeighbourAdvertisement *pp = (Ipv6NeighbourAdvertisement *)object; (void)pp;
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
     switch (field) {
-        case FIELD_targetAddress: return toVoidPtr(&pp->getTargetAddress()); break;
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6NeighbourAdvertisementDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NeighbourAdvertisement *pp = omnetpp::fromAnyPtr<Ipv6NeighbourAdvertisement>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NeighbourAdvertisement'", field);
     }
 }
 
@@ -5019,7 +5989,7 @@ void Ipv6Redirect::setOptions(const Ipv6NdOptions& options)
 class Ipv6RedirectDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_targetAddress,
         FIELD_destinationAddress,
@@ -5031,34 +6001,38 @@ class Ipv6RedirectDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6RedirectDescriptor)
 
 Ipv6RedirectDescriptor::Ipv6RedirectDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6Redirect)), "inet::Ipv6NdMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6RedirectDescriptor::~Ipv6RedirectDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6RedirectDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5068,34 +6042,34 @@ bool Ipv6RedirectDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6RedirectDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6RedirectDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6RedirectDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6RedirectDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ipv6RedirectDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_targetAddress
@@ -5107,11 +6081,11 @@ unsigned int Ipv6RedirectDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv6RedirectDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "targetAddress",
@@ -5123,21 +6097,21 @@ const char *Ipv6RedirectDescriptor::getFieldName(int field) const
 
 int Ipv6RedirectDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "targetAddress") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destinationAddress") == 0) return base+1;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "targetAddress") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "destinationAddress") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6RedirectDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv6Address",    // FIELD_targetAddress
@@ -5149,96 +6123,147 @@ const char *Ipv6RedirectDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6RedirectDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6RedirectDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6RedirectDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6RedirectDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6RedirectDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6Redirect *pp = (Ipv6Redirect *)object; (void)pp;
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6RedirectDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6RedirectDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6Redirect *pp = (Ipv6Redirect *)object; (void)pp;
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6Redirect'", field);
+    }
+}
+
+const char *Ipv6RedirectDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6RedirectDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6RedirectDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6Redirect *pp = (Ipv6Redirect *)object; (void)pp;
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
     switch (field) {
         case FIELD_targetAddress: return pp->getTargetAddress().str();
         case FIELD_destinationAddress: return pp->getDestinationAddress().str();
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv6RedirectDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6RedirectDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6Redirect *pp = (Ipv6Redirect *)object; (void)pp;
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6Redirect'", field);
+    }
+}
+
+omnetpp::cValue Ipv6RedirectDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
+    switch (field) {
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_destinationAddress: return omnetpp::toAnyPtr(&pp->getDestinationAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6Redirect' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6RedirectDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6Redirect'", field);
     }
 }
 
 const char *Ipv6RedirectDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(Ipv6NdOptions));
@@ -5246,20 +6271,36 @@ const char *Ipv6RedirectDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Ipv6RedirectDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6RedirectDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6Redirect *pp = (Ipv6Redirect *)object; (void)pp;
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
     switch (field) {
-        case FIELD_targetAddress: return toVoidPtr(&pp->getTargetAddress()); break;
-        case FIELD_destinationAddress: return toVoidPtr(&pp->getDestinationAddress()); break;
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_targetAddress: return omnetpp::toAnyPtr(&pp->getTargetAddress()); break;
+        case FIELD_destinationAddress: return omnetpp::toAnyPtr(&pp->getDestinationAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6RedirectDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6Redirect *pp = omnetpp::fromAnyPtr<Ipv6Redirect>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6Redirect'", field);
     }
 }
 
@@ -5340,7 +6381,7 @@ void Ipv6NdControlInfo::setFromHL(bool fromHL)
 class Ipv6NdControlInfoDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_nextHop,
         FIELD_interfaceId,
@@ -5352,34 +6393,38 @@ class Ipv6NdControlInfoDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6NdControlInfoDescriptor)
 
 Ipv6NdControlInfoDescriptor::Ipv6NdControlInfoDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6NdControlInfo)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6NdControlInfoDescriptor::~Ipv6NdControlInfoDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6NdControlInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5389,34 +6434,34 @@ bool Ipv6NdControlInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6NdControlInfoDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6NdControlInfoDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6NdControlInfoDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6NdControlInfoDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ipv6NdControlInfoDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_nextHop
@@ -5428,11 +6473,11 @@ unsigned int Ipv6NdControlInfoDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv6NdControlInfoDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "nextHop",
@@ -5444,21 +6489,21 @@ const char *Ipv6NdControlInfoDescriptor::getFieldName(int field) const
 
 int Ipv6NdControlInfoDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nextHop") == 0) return base+0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "interfaceId") == 0) return base+1;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fromHL") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "nextHop") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "interfaceId") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "fromHL") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6NdControlInfoDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv6Address",    // FIELD_nextHop
@@ -5470,67 +6515,83 @@ const char *Ipv6NdControlInfoDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6NdControlInfoDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6NdControlInfoDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6NdControlInfoDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6NdControlInfoDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6NdControlInfoDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6NdControlInfo *pp = (Ipv6NdControlInfo *)object; (void)pp;
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6NdControlInfoDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6NdControlInfoDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdControlInfo *pp = (Ipv6NdControlInfo *)object; (void)pp;
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6NdControlInfo'", field);
+    }
+}
+
+const char *Ipv6NdControlInfoDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6NdControlInfoDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6NdControlInfoDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdControlInfo *pp = (Ipv6NdControlInfo *)object; (void)pp;
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
     switch (field) {
         case FIELD_nextHop: return pp->getNextHop().str();
         case FIELD_interfaceId: return long2string(pp->getInterfaceId());
@@ -5539,49 +6600,106 @@ std::string Ipv6NdControlInfoDescriptor::getFieldValueAsString(void *object, int
     }
 }
 
-bool Ipv6NdControlInfoDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6NdControlInfoDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6NdControlInfo *pp = (Ipv6NdControlInfo *)object; (void)pp;
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
     switch (field) {
-        case FIELD_interfaceId: pp->setInterfaceId(string2long(value)); return true;
-        case FIELD_fromHL: pp->setFromHL(string2bool(value)); return true;
-        default: return false;
+        case FIELD_interfaceId: pp->setInterfaceId(string2long(value)); break;
+        case FIELD_fromHL: pp->setFromHL(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdControlInfo'", field);
+    }
+}
+
+omnetpp::cValue Ipv6NdControlInfoDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_nextHop: return omnetpp::toAnyPtr(&pp->getNextHop()); break;
+        case FIELD_interfaceId: return pp->getInterfaceId();
+        case FIELD_fromHL: return pp->getFromHL();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6NdControlInfo' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6NdControlInfoDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_interfaceId: pp->setInterfaceId(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_fromHL: pp->setFromHL(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdControlInfo'", field);
     }
 }
 
 const char *Ipv6NdControlInfoDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv6NdControlInfoDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6NdControlInfoDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6NdControlInfo *pp = (Ipv6NdControlInfo *)object; (void)pp;
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
     switch (field) {
-        case FIELD_nextHop: return toVoidPtr(&pp->getNextHop()); break;
-        default: return nullptr;
+        case FIELD_nextHop: return omnetpp::toAnyPtr(&pp->getNextHop()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Ipv6NdControlInfoDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6NdControlInfo *pp = omnetpp::fromAnyPtr<Ipv6NdControlInfo>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6NdControlInfo'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

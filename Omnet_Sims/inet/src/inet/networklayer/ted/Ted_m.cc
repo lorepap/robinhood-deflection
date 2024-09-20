@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/ted/Ted.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/ted/Ted.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ted_m.h"
 
 namespace omnetpp {
@@ -149,74 +150,12 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 TeLinkStateInfo::TeLinkStateInfo()
 {
-    this->metric = 0;
-    this->MaxBandwidth = 0;
     for (size_t i = 0; i < 8; i++)
         this->UnResvBandwidth[i] = 0;
-    this->timestamp = SIMTIME_ZERO;
-    this->sourceId = 0;
-    this->messageId = 0;
-    this->state = false;
 }
 
 void __doPacking(omnetpp::cCommBuffer *b, const TeLinkStateInfo& a)
@@ -252,7 +191,7 @@ void __doUnpacking(omnetpp::cCommBuffer *b, TeLinkStateInfo& a)
 class TeLinkStateInfoDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_advrouter,
         FIELD_linkid,
@@ -272,34 +211,38 @@ class TeLinkStateInfoDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(TeLinkStateInfoDescriptor)
 
 TeLinkStateInfoDescriptor::TeLinkStateInfoDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::TeLinkStateInfo)), "")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 TeLinkStateInfoDescriptor::~TeLinkStateInfoDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool TeLinkStateInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -309,34 +252,34 @@ bool TeLinkStateInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **TeLinkStateInfoDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *TeLinkStateInfoDescriptor::getProperty(const char *propertyname) const
+const char *TeLinkStateInfoDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int TeLinkStateInfoDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 11+basedesc->getFieldCount() : 11;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 11+base->getFieldCount() : 11;
 }
 
 unsigned int TeLinkStateInfoDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_advrouter
@@ -346,7 +289,7 @@ unsigned int TeLinkStateInfoDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_metric
         FD_ISEDITABLE,    // FIELD_MaxBandwidth
         FD_ISARRAY | FD_ISEDITABLE,    // FIELD_UnResvBandwidth
-        0,    // FIELD_timestamp
+        FD_ISEDITABLE,    // FIELD_timestamp
         FD_ISEDITABLE,    // FIELD_sourceId
         FD_ISEDITABLE,    // FIELD_messageId
         FD_ISEDITABLE,    // FIELD_state
@@ -356,11 +299,11 @@ unsigned int TeLinkStateInfoDescriptor::getFieldTypeFlags(int field) const
 
 const char *TeLinkStateInfoDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "advrouter",
@@ -380,29 +323,29 @@ const char *TeLinkStateInfoDescriptor::getFieldName(int field) const
 
 int TeLinkStateInfoDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "advrouter") == 0) return base+0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "linkid") == 0) return base+1;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "local") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "remote") == 0) return base+3;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "metric") == 0) return base+4;
-    if (fieldName[0] == 'M' && strcmp(fieldName, "MaxBandwidth") == 0) return base+5;
-    if (fieldName[0] == 'U' && strcmp(fieldName, "UnResvBandwidth") == 0) return base+6;
-    if (fieldName[0] == 't' && strcmp(fieldName, "timestamp") == 0) return base+7;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sourceId") == 0) return base+8;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "messageId") == 0) return base+9;
-    if (fieldName[0] == 's' && strcmp(fieldName, "state") == 0) return base+10;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "advrouter") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "linkid") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "local") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "remote") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "metric") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "MaxBandwidth") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "UnResvBandwidth") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "timestamp") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "sourceId") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "messageId") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "state") == 0) return baseIndex + 10;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *TeLinkStateInfoDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv4Address",    // FIELD_advrouter
@@ -422,68 +365,84 @@ const char *TeLinkStateInfoDescriptor::getFieldTypeString(int field) const
 
 const char **TeLinkStateInfoDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *TeLinkStateInfoDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *TeLinkStateInfoDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int TeLinkStateInfoDescriptor::getFieldArraySize(void *object, int field) const
+int TeLinkStateInfoDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    TeLinkStateInfo *pp = (TeLinkStateInfo *)object; (void)pp;
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
     switch (field) {
         case FIELD_UnResvBandwidth: return 8;
         default: return 0;
     }
 }
 
-const char *TeLinkStateInfoDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void TeLinkStateInfoDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TeLinkStateInfo *pp = (TeLinkStateInfo *)object; (void)pp;
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'TeLinkStateInfo'", field);
+    }
+}
+
+const char *TeLinkStateInfoDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string TeLinkStateInfoDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string TeLinkStateInfoDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    TeLinkStateInfo *pp = (TeLinkStateInfo *)object; (void)pp;
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
     switch (field) {
         case FIELD_advrouter: return pp->advrouter.str();
         case FIELD_linkid: return pp->linkid.str();
@@ -501,55 +460,124 @@ std::string TeLinkStateInfoDescriptor::getFieldValueAsString(void *object, int f
     }
 }
 
-bool TeLinkStateInfoDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void TeLinkStateInfoDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TeLinkStateInfo *pp = (TeLinkStateInfo *)object; (void)pp;
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
     switch (field) {
-        case FIELD_metric: pp->metric = string2double(value); return true;
-        case FIELD_MaxBandwidth: pp->MaxBandwidth = string2double(value); return true;
-        case FIELD_UnResvBandwidth: if (i >= 8) return "";
-                pp->UnResvBandwidth[i] = string2double(value); return true;
-        case FIELD_sourceId: pp->sourceId = string2ulong(value); return true;
-        case FIELD_messageId: pp->messageId = string2ulong(value); return true;
-        case FIELD_state: pp->state = string2bool(value); return true;
-        default: return false;
+        case FIELD_metric: pp->metric = string2double(value); break;
+        case FIELD_MaxBandwidth: pp->MaxBandwidth = string2double(value); break;
+        case FIELD_UnResvBandwidth: if (i < 0 || i >= 8) throw omnetpp::cRuntimeError("Array index %d out of bounds for field %d of class 'TeLinkStateInfo'", i, field);
+                pp->UnResvBandwidth[i] = string2double(value); break;
+        case FIELD_timestamp: pp->timestamp = string2simtime(value); break;
+        case FIELD_sourceId: pp->sourceId = string2ulong(value); break;
+        case FIELD_messageId: pp->messageId = string2ulong(value); break;
+        case FIELD_state: pp->state = string2bool(value); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TeLinkStateInfo'", field);
+    }
+}
+
+omnetpp::cValue TeLinkStateInfoDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_advrouter: return omnetpp::toAnyPtr(&pp->advrouter); break;
+        case FIELD_linkid: return omnetpp::toAnyPtr(&pp->linkid); break;
+        case FIELD_local: return omnetpp::toAnyPtr(&pp->local); break;
+        case FIELD_remote: return omnetpp::toAnyPtr(&pp->remote); break;
+        case FIELD_metric: return pp->metric;
+        case FIELD_MaxBandwidth: return pp->MaxBandwidth;
+        case FIELD_UnResvBandwidth: if (i >= 8) return omnetpp::cValue();
+                return pp->UnResvBandwidth[i];
+        case FIELD_timestamp: return pp->timestamp.dbl();
+        case FIELD_sourceId: return (omnetpp::intval_t)(pp->sourceId);
+        case FIELD_messageId: return (omnetpp::intval_t)(pp->messageId);
+        case FIELD_state: return pp->state;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'TeLinkStateInfo' as cValue -- field index out of range?", field);
+    }
+}
+
+void TeLinkStateInfoDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_metric: pp->metric = value.doubleValue(); break;
+        case FIELD_MaxBandwidth: pp->MaxBandwidth = value.doubleValue(); break;
+        case FIELD_UnResvBandwidth: if (i < 0 || i >= 8) throw omnetpp::cRuntimeError("Array index %d out of bounds for field %d of class 'TeLinkStateInfo'", i, field);
+                pp->UnResvBandwidth[i] = value.doubleValue(); break;
+        case FIELD_timestamp: pp->timestamp = value.doubleValue(); break;
+        case FIELD_sourceId: pp->sourceId = omnetpp::checked_int_cast<unsigned int>(value.intValue()); break;
+        case FIELD_messageId: pp->messageId = omnetpp::checked_int_cast<unsigned int>(value.intValue()); break;
+        case FIELD_state: pp->state = value.boolValue(); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TeLinkStateInfo'", field);
     }
 }
 
 const char *TeLinkStateInfoDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *TeLinkStateInfoDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr TeLinkStateInfoDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    TeLinkStateInfo *pp = (TeLinkStateInfo *)object; (void)pp;
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
     switch (field) {
-        case FIELD_advrouter: return toVoidPtr(&pp->advrouter); break;
-        case FIELD_linkid: return toVoidPtr(&pp->linkid); break;
-        case FIELD_local: return toVoidPtr(&pp->local); break;
-        case FIELD_remote: return toVoidPtr(&pp->remote); break;
-        default: return nullptr;
+        case FIELD_advrouter: return omnetpp::toAnyPtr(&pp->advrouter); break;
+        case FIELD_linkid: return omnetpp::toAnyPtr(&pp->linkid); break;
+        case FIELD_local: return omnetpp::toAnyPtr(&pp->local); break;
+        case FIELD_remote: return omnetpp::toAnyPtr(&pp->remote); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void TeLinkStateInfoDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TeLinkStateInfo *pp = omnetpp::fromAnyPtr<TeLinkStateInfo>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TeLinkStateInfo'", field);
     }
 }
 
@@ -612,7 +640,7 @@ size_t TedChangeInfo::getTedLinkIndicesArraySize() const
 
 int TedChangeInfo::getTedLinkIndices(size_t k) const
 {
-    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size tedLinkIndices_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tedLinkIndices_arraysize, (unsigned long)k);
     return this->tedLinkIndices[k];
 }
 
@@ -631,13 +659,13 @@ void TedChangeInfo::setTedLinkIndicesArraySize(size_t newSize)
 
 void TedChangeInfo::setTedLinkIndices(size_t k, int tedLinkIndices)
 {
-    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tedLinkIndices_arraysize, (unsigned long)k);
     this->tedLinkIndices[k] = tedLinkIndices;
 }
 
 void TedChangeInfo::insertTedLinkIndices(size_t k, int tedLinkIndices)
 {
-    if (k > tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tedLinkIndices_arraysize, (unsigned long)k);
     size_t newSize = tedLinkIndices_arraysize + 1;
     int *tedLinkIndices2 = new int[newSize];
     size_t i;
@@ -651,14 +679,14 @@ void TedChangeInfo::insertTedLinkIndices(size_t k, int tedLinkIndices)
     tedLinkIndices_arraysize = newSize;
 }
 
-void TedChangeInfo::insertTedLinkIndices(int tedLinkIndices)
+void TedChangeInfo::appendTedLinkIndices(int tedLinkIndices)
 {
     insertTedLinkIndices(tedLinkIndices_arraysize, tedLinkIndices);
 }
 
 void TedChangeInfo::eraseTedLinkIndices(size_t k)
 {
-    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= tedLinkIndices_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)tedLinkIndices_arraysize, (unsigned long)k);
     size_t newSize = tedLinkIndices_arraysize - 1;
     int *tedLinkIndices2 = (newSize == 0) ? nullptr : new int[newSize];
     size_t i;
@@ -674,7 +702,7 @@ void TedChangeInfo::eraseTedLinkIndices(size_t k)
 class TedChangeInfoDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_tedLinkIndices,
     };
@@ -684,34 +712,38 @@ class TedChangeInfoDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(TedChangeInfoDescriptor)
 
 TedChangeInfoDescriptor::TedChangeInfoDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::TedChangeInfo)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 TedChangeInfoDescriptor::~TedChangeInfoDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool TedChangeInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -721,48 +753,48 @@ bool TedChangeInfoDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **TedChangeInfoDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *TedChangeInfoDescriptor::getProperty(const char *propertyname) const
+const char *TedChangeInfoDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int TedChangeInfoDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int TedChangeInfoDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_tedLinkIndices
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_tedLinkIndices
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *TedChangeInfoDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "tedLinkIndices",
@@ -772,19 +804,19 @@ const char *TedChangeInfoDescriptor::getFieldName(int field) const
 
 int TedChangeInfoDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tedLinkIndices") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "tedLinkIndices") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *TedChangeInfoDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_tedLinkIndices
@@ -794,115 +826,186 @@ const char *TedChangeInfoDescriptor::getFieldTypeString(int field) const
 
 const char **TedChangeInfoDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *TedChangeInfoDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *TedChangeInfoDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int TedChangeInfoDescriptor::getFieldArraySize(void *object, int field) const
+int TedChangeInfoDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    TedChangeInfo *pp = (TedChangeInfo *)object; (void)pp;
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
     switch (field) {
         case FIELD_tedLinkIndices: return pp->getTedLinkIndicesArraySize();
         default: return 0;
     }
 }
 
-const char *TedChangeInfoDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void TedChangeInfoDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TedChangeInfo *pp = (TedChangeInfo *)object; (void)pp;
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_tedLinkIndices: pp->setTedLinkIndicesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'TedChangeInfo'", field);
+    }
+}
+
+const char *TedChangeInfoDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string TedChangeInfoDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string TedChangeInfoDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    TedChangeInfo *pp = (TedChangeInfo *)object; (void)pp;
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
     switch (field) {
         case FIELD_tedLinkIndices: return long2string(pp->getTedLinkIndices(i));
         default: return "";
     }
 }
 
-bool TedChangeInfoDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void TedChangeInfoDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    TedChangeInfo *pp = (TedChangeInfo *)object; (void)pp;
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
     switch (field) {
-        case FIELD_tedLinkIndices: pp->setTedLinkIndices(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_tedLinkIndices: pp->setTedLinkIndices(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TedChangeInfo'", field);
+    }
+}
+
+omnetpp::cValue TedChangeInfoDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_tedLinkIndices: return pp->getTedLinkIndices(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'TedChangeInfo' as cValue -- field index out of range?", field);
+    }
+}
+
+void TedChangeInfoDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
+    switch (field) {
+        case FIELD_tedLinkIndices: pp->setTedLinkIndices(i,omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TedChangeInfo'", field);
     }
 }
 
 const char *TedChangeInfoDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *TedChangeInfoDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr TedChangeInfoDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    TedChangeInfo *pp = (TedChangeInfo *)object; (void)pp;
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void TedChangeInfoDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    TedChangeInfo *pp = omnetpp::fromAnyPtr<TedChangeInfo>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'TedChangeInfo'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

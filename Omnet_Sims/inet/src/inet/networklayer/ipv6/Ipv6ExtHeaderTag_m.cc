@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/ipv6/Ipv6ExtHeaderTag.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/ipv6/Ipv6ExtHeaderTag.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ipv6ExtHeaderTag_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(Ipv6ExtHeaderTagBase)
 
@@ -273,7 +218,7 @@ size_t Ipv6ExtHeaderTagBase::getExtensionHeaderArraySize() const
 
 const Ipv6ExtensionHeader * Ipv6ExtHeaderTagBase::getExtensionHeader(size_t k) const
 {
-    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size extensionHeader_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)extensionHeader_arraysize, (unsigned long)k);
     return this->extensionHeader[k];
 }
 
@@ -294,28 +239,31 @@ void Ipv6ExtHeaderTagBase::setExtensionHeaderArraySize(size_t newSize)
 
 void Ipv6ExtHeaderTagBase::setExtensionHeader(size_t k, Ipv6ExtensionHeader * extensionHeader)
 {
-    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
-    if (this->extensionHeader[k] != nullptr) throw omnetpp::cRuntimeError("setExtensionHeader(): a value is already set, remove it first with dropExtensionHeader()");
+    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)extensionHeader_arraysize, (unsigned long)k);
+    if (this->extensionHeader[k] != nullptr) throw omnetpp::cRuntimeError("setExtensionHeader(): a value is already set, remove it first with removeExtensionHeader()");
     this->extensionHeader[k] = extensionHeader;
+    if (this->extensionHeader[k] != nullptr && this->extensionHeader[k]->isOwnedObject()) take((cOwnedObject*)this->extensionHeader[k]);
 }
 
-Ipv6ExtensionHeader * Ipv6ExtHeaderTagBase::dropExtensionHeader(size_t k)
+Ipv6ExtensionHeader * Ipv6ExtHeaderTagBase::removeExtensionHeader(size_t k)
 {
-    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)extensionHeader_arraysize, (unsigned long)k);
     Ipv6ExtensionHeader * retval = this->extensionHeader[k];
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->extensionHeader[k] = nullptr;
     return retval;
 }
 
 void Ipv6ExtHeaderTagBase::insertExtensionHeader(size_t k, Ipv6ExtensionHeader * extensionHeader)
 {
-    if (k > extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)extensionHeader_arraysize, (unsigned long)k);
     size_t newSize = extensionHeader_arraysize + 1;
     Ipv6ExtensionHeader * *extensionHeader2 = new Ipv6ExtensionHeader *[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         extensionHeader2[i] = this->extensionHeader[i];
     extensionHeader2[k] = extensionHeader;
+    if (extensionHeader2[k] != nullptr && extensionHeader2[k]->isOwnedObject()) take((cOwnedObject*)extensionHeader2[k]);
     for (i = k + 1; i < newSize; i++)
         extensionHeader2[i] = this->extensionHeader[i-1];
     delete [] this->extensionHeader;
@@ -323,14 +271,14 @@ void Ipv6ExtHeaderTagBase::insertExtensionHeader(size_t k, Ipv6ExtensionHeader *
     extensionHeader_arraysize = newSize;
 }
 
-void Ipv6ExtHeaderTagBase::insertExtensionHeader(Ipv6ExtensionHeader * extensionHeader)
+void Ipv6ExtHeaderTagBase::appendExtensionHeader(Ipv6ExtensionHeader * extensionHeader)
 {
     insertExtensionHeader(extensionHeader_arraysize, extensionHeader);
 }
 
 void Ipv6ExtHeaderTagBase::eraseExtensionHeader(size_t k)
 {
-    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= extensionHeader_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)extensionHeader_arraysize, (unsigned long)k);
     size_t newSize = extensionHeader_arraysize - 1;
     Ipv6ExtensionHeader * *extensionHeader2 = (newSize == 0) ? nullptr : new Ipv6ExtensionHeader *[newSize];
     size_t i;
@@ -338,7 +286,7 @@ void Ipv6ExtHeaderTagBase::eraseExtensionHeader(size_t k)
         extensionHeader2[i] = this->extensionHeader[i];
     for (i = k; i < newSize; i++)
         extensionHeader2[i] = this->extensionHeader[i+1];
-    delete this->extensionHeader[k];
+    if (this->extensionHeader[k] != nullptr && this->extensionHeader[k]->isOwnedObject()) dropAndDelete((cOwnedObject*)this->extensionHeader[k]); else delete this->extensionHeader[k];
     delete [] this->extensionHeader;
     this->extensionHeader = extensionHeader2;
     extensionHeader_arraysize = newSize;
@@ -347,7 +295,7 @@ void Ipv6ExtHeaderTagBase::eraseExtensionHeader(size_t k)
 class Ipv6ExtHeaderTagBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_extensionHeader,
     };
@@ -357,34 +305,38 @@ class Ipv6ExtHeaderTagBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6ExtHeaderTagBaseDescriptor)
 
 Ipv6ExtHeaderTagBaseDescriptor::Ipv6ExtHeaderTagBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6ExtHeaderTagBase)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6ExtHeaderTagBaseDescriptor::~Ipv6ExtHeaderTagBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6ExtHeaderTagBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -394,48 +346,48 @@ bool Ipv6ExtHeaderTagBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6ExtHeaderTagBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6ExtHeaderTagBaseDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6ExtHeaderTagBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6ExtHeaderTagBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv6ExtHeaderTagBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_extensionHeader
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_extensionHeader
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "extensionHeader",
@@ -445,19 +397,19 @@ const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldName(int field) const
 
 int Ipv6ExtHeaderTagBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "extensionHeader") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "extensionHeader") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv6ExtensionHeader",    // FIELD_extensionHeader
@@ -467,11 +419,11 @@ const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv6ExtHeaderTagBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_extensionHeader: {
@@ -482,88 +434,139 @@ const char **Ipv6ExtHeaderTagBaseDescriptor::getFieldPropertyNames(int field) co
     }
 }
 
-const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_extensionHeader:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ipv6ExtHeaderTagBaseDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6ExtHeaderTagBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderTagBase *pp = (Ipv6ExtHeaderTagBase *)object; (void)pp;
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
     switch (field) {
         case FIELD_extensionHeader: return pp->getExtensionHeaderArraySize();
         default: return 0;
     }
 }
 
-const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6ExtHeaderTagBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderTagBase *pp = (Ipv6ExtHeaderTagBase *)object; (void)pp;
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_extensionHeader: pp->setExtensionHeaderArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6ExtHeaderTagBase'", field);
+    }
+}
+
+const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
     switch (field) {
         case FIELD_extensionHeader: { const Ipv6ExtensionHeader * value = pp->getExtensionHeader(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string Ipv6ExtHeaderTagBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6ExtHeaderTagBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderTagBase *pp = (Ipv6ExtHeaderTagBase *)object; (void)pp;
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
     switch (field) {
-        case FIELD_extensionHeader: {std::stringstream out; out << pp->getExtensionHeader(i); return out.str();}
+        case FIELD_extensionHeader: { auto obj = pp->getExtensionHeader(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool Ipv6ExtHeaderTagBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6ExtHeaderTagBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderTagBase *pp = (Ipv6ExtHeaderTagBase *)object; (void)pp;
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderTagBase'", field);
+    }
+}
+
+omnetpp::cValue Ipv6ExtHeaderTagBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_extensionHeader: return omnetpp::toAnyPtr(pp->getExtensionHeader(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6ExtHeaderTagBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6ExtHeaderTagBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_extensionHeader: pp->setExtensionHeader(i,omnetpp::fromAnyPtr<Ipv6ExtensionHeader>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderTagBase'", field);
     }
 }
 
 const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_extensionHeader: return omnetpp::opp_typename(typeid(Ipv6ExtensionHeader));
@@ -571,18 +574,35 @@ const char *Ipv6ExtHeaderTagBaseDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Ipv6ExtHeaderTagBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6ExtHeaderTagBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderTagBase *pp = (Ipv6ExtHeaderTagBase *)object; (void)pp;
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
     switch (field) {
-        case FIELD_extensionHeader: return toVoidPtr(pp->getExtensionHeader(i)); break;
-        default: return nullptr;
+        case FIELD_extensionHeader: return omnetpp::toAnyPtr(pp->getExtensionHeader(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6ExtHeaderTagBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderTagBase *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderTagBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_extensionHeader: pp->setExtensionHeader(i,omnetpp::fromAnyPtr<Ipv6ExtensionHeader>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderTagBase'", field);
     }
 }
 
@@ -626,7 +646,7 @@ void Ipv6ExtHeaderReq::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6ExtHeaderReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -635,34 +655,38 @@ class Ipv6ExtHeaderReqDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6ExtHeaderReqDescriptor)
 
 Ipv6ExtHeaderReqDescriptor::Ipv6ExtHeaderReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6ExtHeaderReq)), "inet::Ipv6ExtHeaderTagBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6ExtHeaderReqDescriptor::~Ipv6ExtHeaderReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6ExtHeaderReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -672,170 +696,234 @@ bool Ipv6ExtHeaderReqDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6ExtHeaderReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6ExtHeaderReqDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6ExtHeaderReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6ExtHeaderReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6ExtHeaderReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6ExtHeaderReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6ExtHeaderReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6ExtHeaderReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6ExtHeaderReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6ExtHeaderReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6ExtHeaderReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6ExtHeaderReqDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6ExtHeaderReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderReq *pp = (Ipv6ExtHeaderReq *)object; (void)pp;
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6ExtHeaderReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6ExtHeaderReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderReq *pp = (Ipv6ExtHeaderReq *)object; (void)pp;
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6ExtHeaderReq'", field);
+    }
+}
+
+const char *Ipv6ExtHeaderReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6ExtHeaderReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6ExtHeaderReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderReq *pp = (Ipv6ExtHeaderReq *)object; (void)pp;
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6ExtHeaderReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6ExtHeaderReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderReq *pp = (Ipv6ExtHeaderReq *)object; (void)pp;
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderReq'", field);
+    }
+}
+
+omnetpp::cValue Ipv6ExtHeaderReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6ExtHeaderReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6ExtHeaderReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderReq'", field);
     }
 }
 
 const char *Ipv6ExtHeaderReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6ExtHeaderReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6ExtHeaderReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderReq *pp = (Ipv6ExtHeaderReq *)object; (void)pp;
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv6ExtHeaderReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderReq *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderReq'", field);
     }
 }
 
@@ -879,7 +967,7 @@ void Ipv6ExtHeaderInd::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv6ExtHeaderIndDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -888,34 +976,38 @@ class Ipv6ExtHeaderIndDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv6ExtHeaderIndDescriptor)
 
 Ipv6ExtHeaderIndDescriptor::Ipv6ExtHeaderIndDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv6ExtHeaderInd)), "inet::Ipv6ExtHeaderTagBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv6ExtHeaderIndDescriptor::~Ipv6ExtHeaderIndDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv6ExtHeaderIndDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -925,172 +1017,240 @@ bool Ipv6ExtHeaderIndDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv6ExtHeaderIndDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv6ExtHeaderIndDescriptor::getProperty(const char *propertyname) const
+const char *Ipv6ExtHeaderIndDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv6ExtHeaderIndDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv6ExtHeaderIndDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv6ExtHeaderIndDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv6ExtHeaderIndDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv6ExtHeaderIndDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv6ExtHeaderIndDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv6ExtHeaderIndDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv6ExtHeaderIndDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv6ExtHeaderIndDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv6ExtHeaderIndDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderInd *pp = (Ipv6ExtHeaderInd *)object; (void)pp;
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv6ExtHeaderIndDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv6ExtHeaderIndDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderInd *pp = (Ipv6ExtHeaderInd *)object; (void)pp;
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv6ExtHeaderInd'", field);
+    }
+}
+
+const char *Ipv6ExtHeaderIndDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv6ExtHeaderIndDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv6ExtHeaderIndDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderInd *pp = (Ipv6ExtHeaderInd *)object; (void)pp;
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv6ExtHeaderIndDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv6ExtHeaderIndDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderInd *pp = (Ipv6ExtHeaderInd *)object; (void)pp;
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderInd'", field);
+    }
+}
+
+omnetpp::cValue Ipv6ExtHeaderIndDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv6ExtHeaderInd' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv6ExtHeaderIndDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderInd'", field);
     }
 }
 
 const char *Ipv6ExtHeaderIndDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv6ExtHeaderIndDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv6ExtHeaderIndDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv6ExtHeaderInd *pp = (Ipv6ExtHeaderInd *)object; (void)pp;
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Ipv6ExtHeaderIndDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv6ExtHeaderInd *pp = omnetpp::fromAnyPtr<Ipv6ExtHeaderInd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv6ExtHeaderInd'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

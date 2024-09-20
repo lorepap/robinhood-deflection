@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/csmaca/CsmaCaMacHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/csmaca/CsmaCaMacHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "CsmaCaMacHeader_m.h"
 
 namespace omnetpp {
@@ -149,70 +150,9 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::CsmaCaMacHeaderType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::CsmaCaMacHeaderType"));
-    e->insert(CSMA_DATA, "CSMA_DATA");
-    e->insert(CSMA_ACK, "CSMA_ACK");
-)
+Register_Enum(inet::CsmaCaMacHeaderType, (inet::CsmaCaMacHeaderType::CSMA_DATA, inet::CsmaCaMacHeaderType::CSMA_ACK));
 
 Register_Class(CsmaCaMacHeader)
 
@@ -263,12 +203,12 @@ void CsmaCaMacHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->receiverAddress);
 }
 
-inet::CsmaCaMacHeaderType CsmaCaMacHeader::getType() const
+CsmaCaMacHeaderType CsmaCaMacHeader::getType() const
 {
     return this->type;
 }
 
-void CsmaCaMacHeader::setType(inet::CsmaCaMacHeaderType type)
+void CsmaCaMacHeader::setType(CsmaCaMacHeaderType type)
 {
     handleChange();
     this->type = type;
@@ -310,7 +250,7 @@ void CsmaCaMacHeader::setReceiverAddress(const MacAddress& receiverAddress)
 class CsmaCaMacHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_headerLengthField,
@@ -323,34 +263,38 @@ class CsmaCaMacHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(CsmaCaMacHeaderDescriptor)
 
 CsmaCaMacHeaderDescriptor::CsmaCaMacHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::CsmaCaMacHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 CsmaCaMacHeaderDescriptor::~CsmaCaMacHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool CsmaCaMacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -360,37 +304,37 @@ bool CsmaCaMacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **CsmaCaMacHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *CsmaCaMacHeaderDescriptor::getProperty(const char *propertyname) const
+const char *CsmaCaMacHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int CsmaCaMacHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int CsmaCaMacHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_type
+        0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_headerLengthField
         0,    // FIELD_transmitterAddress
         0,    // FIELD_receiverAddress
@@ -400,11 +344,11 @@ unsigned int CsmaCaMacHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *CsmaCaMacHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -417,22 +361,22 @@ const char *CsmaCaMacHeaderDescriptor::getFieldName(int field) const
 
 int CsmaCaMacHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "headerLengthField") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "transmitterAddress") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "receiverAddress") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "headerLengthField") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "transmitterAddress") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "receiverAddress") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *CsmaCaMacHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::CsmaCaMacHeaderType",    // FIELD_type
@@ -445,11 +389,11 @@ const char *CsmaCaMacHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **CsmaCaMacHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -460,59 +404,75 @@ const char **CsmaCaMacHeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *CsmaCaMacHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *CsmaCaMacHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::CsmaCaMacHeaderType";
+            if (!strcmp(propertyName, "enum")) return "inet::CsmaCaMacHeaderType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int CsmaCaMacHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int CsmaCaMacHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacHeader *pp = (CsmaCaMacHeader *)object; (void)pp;
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *CsmaCaMacHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void CsmaCaMacHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacHeader *pp = (CsmaCaMacHeader *)object; (void)pp;
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'CsmaCaMacHeader'", field);
+    }
+}
+
+const char *CsmaCaMacHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string CsmaCaMacHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string CsmaCaMacHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacHeader *pp = (CsmaCaMacHeader *)object; (void)pp;
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::CsmaCaMacHeaderType");
         case FIELD_headerLengthField: return ulong2string(pp->getHeaderLengthField());
@@ -522,48 +482,100 @@ std::string CsmaCaMacHeaderDescriptor::getFieldValueAsString(void *object, int f
     }
 }
 
-bool CsmaCaMacHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void CsmaCaMacHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacHeader *pp = (CsmaCaMacHeader *)object; (void)pp;
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_type: pp->setType((inet::CsmaCaMacHeaderType)string2enum(value, "inet::CsmaCaMacHeaderType")); return true;
-        case FIELD_headerLengthField: pp->setHeaderLengthField(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_headerLengthField: pp->setHeaderLengthField(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacHeader'", field);
+    }
+}
+
+omnetpp::cValue CsmaCaMacHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_headerLengthField: return (omnetpp::intval_t)(pp->getHeaderLengthField());
+        case FIELD_transmitterAddress: return omnetpp::toAnyPtr(&pp->getTransmitterAddress()); break;
+        case FIELD_receiverAddress: return omnetpp::toAnyPtr(&pp->getReceiverAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'CsmaCaMacHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void CsmaCaMacHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_headerLengthField: pp->setHeaderLengthField(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacHeader'", field);
     }
 }
 
 const char *CsmaCaMacHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *CsmaCaMacHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr CsmaCaMacHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacHeader *pp = (CsmaCaMacHeader *)object; (void)pp;
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_transmitterAddress: return toVoidPtr(&pp->getTransmitterAddress()); break;
-        case FIELD_receiverAddress: return toVoidPtr(&pp->getReceiverAddress()); break;
-        default: return nullptr;
+        case FIELD_transmitterAddress: return omnetpp::toAnyPtr(&pp->getTransmitterAddress()); break;
+        case FIELD_receiverAddress: return omnetpp::toAnyPtr(&pp->getReceiverAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void CsmaCaMacHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacHeader'", field);
     }
 }
 
@@ -609,7 +621,7 @@ void CsmaCaMacAckHeader::parsimUnpack(omnetpp::cCommBuffer *b)
 class CsmaCaMacAckHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -618,34 +630,38 @@ class CsmaCaMacAckHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(CsmaCaMacAckHeaderDescriptor)
 
 CsmaCaMacAckHeaderDescriptor::CsmaCaMacAckHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::CsmaCaMacAckHeader)), "inet::CsmaCaMacHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 CsmaCaMacAckHeaderDescriptor::~CsmaCaMacAckHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool CsmaCaMacAckHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -655,170 +671,234 @@ bool CsmaCaMacAckHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **CsmaCaMacAckHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *CsmaCaMacAckHeaderDescriptor::getProperty(const char *propertyname) const
+const char *CsmaCaMacAckHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int CsmaCaMacAckHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int CsmaCaMacAckHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *CsmaCaMacAckHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int CsmaCaMacAckHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *CsmaCaMacAckHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **CsmaCaMacAckHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *CsmaCaMacAckHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *CsmaCaMacAckHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int CsmaCaMacAckHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int CsmaCaMacAckHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacAckHeader *pp = (CsmaCaMacAckHeader *)object; (void)pp;
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *CsmaCaMacAckHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void CsmaCaMacAckHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacAckHeader *pp = (CsmaCaMacAckHeader *)object; (void)pp;
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'CsmaCaMacAckHeader'", field);
+    }
+}
+
+const char *CsmaCaMacAckHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string CsmaCaMacAckHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string CsmaCaMacAckHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacAckHeader *pp = (CsmaCaMacAckHeader *)object; (void)pp;
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool CsmaCaMacAckHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void CsmaCaMacAckHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacAckHeader *pp = (CsmaCaMacAckHeader *)object; (void)pp;
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacAckHeader'", field);
+    }
+}
+
+omnetpp::cValue CsmaCaMacAckHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'CsmaCaMacAckHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void CsmaCaMacAckHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacAckHeader'", field);
     }
 }
 
 const char *CsmaCaMacAckHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *CsmaCaMacAckHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr CsmaCaMacAckHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacAckHeader *pp = (CsmaCaMacAckHeader *)object; (void)pp;
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void CsmaCaMacAckHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacAckHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacAckHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacAckHeader'", field);
     }
 }
 
@@ -893,7 +973,7 @@ void CsmaCaMacDataHeader::setPriority(int priority)
 class CsmaCaMacDataHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_networkProtocol,
         FIELD_priority,
@@ -904,34 +984,38 @@ class CsmaCaMacDataHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(CsmaCaMacDataHeaderDescriptor)
 
 CsmaCaMacDataHeaderDescriptor::CsmaCaMacDataHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::CsmaCaMacDataHeader)), "inet::CsmaCaMacHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 CsmaCaMacDataHeaderDescriptor::~CsmaCaMacDataHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool CsmaCaMacDataHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -941,34 +1025,34 @@ bool CsmaCaMacDataHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **CsmaCaMacDataHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *CsmaCaMacDataHeaderDescriptor::getProperty(const char *propertyname) const
+const char *CsmaCaMacDataHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int CsmaCaMacDataHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int CsmaCaMacDataHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_networkProtocol
@@ -979,11 +1063,11 @@ unsigned int CsmaCaMacDataHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *CsmaCaMacDataHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "networkProtocol",
@@ -994,20 +1078,20 @@ const char *CsmaCaMacDataHeaderDescriptor::getFieldName(int field) const
 
 int CsmaCaMacDataHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "networkProtocol") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "priority") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "networkProtocol") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "priority") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *CsmaCaMacDataHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_networkProtocol
@@ -1018,67 +1102,83 @@ const char *CsmaCaMacDataHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **CsmaCaMacDataHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *CsmaCaMacDataHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *CsmaCaMacDataHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int CsmaCaMacDataHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int CsmaCaMacDataHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacDataHeader *pp = (CsmaCaMacDataHeader *)object; (void)pp;
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *CsmaCaMacDataHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void CsmaCaMacDataHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacDataHeader *pp = (CsmaCaMacDataHeader *)object; (void)pp;
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'CsmaCaMacDataHeader'", field);
+    }
+}
+
+const char *CsmaCaMacDataHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string CsmaCaMacDataHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string CsmaCaMacDataHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacDataHeader *pp = (CsmaCaMacDataHeader *)object; (void)pp;
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
     switch (field) {
         case FIELD_networkProtocol: return long2string(pp->getNetworkProtocol());
         case FIELD_priority: return long2string(pp->getPriority());
@@ -1086,46 +1186,98 @@ std::string CsmaCaMacDataHeaderDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool CsmaCaMacDataHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void CsmaCaMacDataHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacDataHeader *pp = (CsmaCaMacDataHeader *)object; (void)pp;
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_networkProtocol: pp->setNetworkProtocol(string2long(value)); return true;
-        case FIELD_priority: pp->setPriority(string2long(value)); return true;
-        default: return false;
+        case FIELD_networkProtocol: pp->setNetworkProtocol(string2long(value)); break;
+        case FIELD_priority: pp->setPriority(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacDataHeader'", field);
+    }
+}
+
+omnetpp::cValue CsmaCaMacDataHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_networkProtocol: return pp->getNetworkProtocol();
+        case FIELD_priority: return pp->getPriority();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'CsmaCaMacDataHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void CsmaCaMacDataHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_networkProtocol: pp->setNetworkProtocol(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_priority: pp->setPriority(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacDataHeader'", field);
     }
 }
 
 const char *CsmaCaMacDataHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *CsmaCaMacDataHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr CsmaCaMacDataHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacDataHeader *pp = (CsmaCaMacDataHeader *)object; (void)pp;
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void CsmaCaMacDataHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacDataHeader *pp = omnetpp::fromAnyPtr<CsmaCaMacDataHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacDataHeader'", field);
     }
 }
 
@@ -1185,12 +1337,12 @@ void CsmaCaMacTrailer::setFcs(uint32_t fcs)
     this->fcs = fcs;
 }
 
-inet::FcsMode CsmaCaMacTrailer::getFcsMode() const
+FcsMode CsmaCaMacTrailer::getFcsMode() const
 {
     return this->fcsMode;
 }
 
-void CsmaCaMacTrailer::setFcsMode(inet::FcsMode fcsMode)
+void CsmaCaMacTrailer::setFcsMode(FcsMode fcsMode)
 {
     handleChange();
     this->fcsMode = fcsMode;
@@ -1199,7 +1351,7 @@ void CsmaCaMacTrailer::setFcsMode(inet::FcsMode fcsMode)
 class CsmaCaMacTrailerDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_fcs,
         FIELD_fcsMode,
@@ -1210,34 +1362,38 @@ class CsmaCaMacTrailerDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(CsmaCaMacTrailerDescriptor)
 
 CsmaCaMacTrailerDescriptor::CsmaCaMacTrailerDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::CsmaCaMacTrailer)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 CsmaCaMacTrailerDescriptor::~CsmaCaMacTrailerDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool CsmaCaMacTrailerDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1247,34 +1403,34 @@ bool CsmaCaMacTrailerDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **CsmaCaMacTrailerDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *CsmaCaMacTrailerDescriptor::getProperty(const char *propertyname) const
+const char *CsmaCaMacTrailerDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int CsmaCaMacTrailerDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int CsmaCaMacTrailerDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_fcs
@@ -1285,11 +1441,11 @@ unsigned int CsmaCaMacTrailerDescriptor::getFieldTypeFlags(int field) const
 
 const char *CsmaCaMacTrailerDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "fcs",
@@ -1300,20 +1456,20 @@ const char *CsmaCaMacTrailerDescriptor::getFieldName(int field) const
 
 int CsmaCaMacTrailerDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcs") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcsMode") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "fcs") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fcsMode") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *CsmaCaMacTrailerDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_fcs
@@ -1324,11 +1480,11 @@ const char *CsmaCaMacTrailerDescriptor::getFieldTypeString(int field) const
 
 const char **CsmaCaMacTrailerDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode: {
@@ -1339,59 +1495,75 @@ const char **CsmaCaMacTrailerDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *CsmaCaMacTrailerDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *CsmaCaMacTrailerDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode:
-            if (!strcmp(propertyname, "enum")) return "inet::FcsMode";
+            if (!strcmp(propertyName, "enum")) return "inet::FcsMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int CsmaCaMacTrailerDescriptor::getFieldArraySize(void *object, int field) const
+int CsmaCaMacTrailerDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacTrailer *pp = (CsmaCaMacTrailer *)object; (void)pp;
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *CsmaCaMacTrailerDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void CsmaCaMacTrailerDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacTrailer *pp = (CsmaCaMacTrailer *)object; (void)pp;
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'CsmaCaMacTrailer'", field);
+    }
+}
+
+const char *CsmaCaMacTrailerDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string CsmaCaMacTrailerDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string CsmaCaMacTrailerDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacTrailer *pp = (CsmaCaMacTrailer *)object; (void)pp;
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
     switch (field) {
         case FIELD_fcs: return ulong2string(pp->getFcs());
         case FIELD_fcsMode: return enum2string(pp->getFcsMode(), "inet::FcsMode");
@@ -1399,47 +1571,102 @@ std::string CsmaCaMacTrailerDescriptor::getFieldValueAsString(void *object, int 
     }
 }
 
-bool CsmaCaMacTrailerDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void CsmaCaMacTrailerDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    CsmaCaMacTrailer *pp = (CsmaCaMacTrailer *)object; (void)pp;
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
     switch (field) {
-        case FIELD_fcs: pp->setFcs(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_fcs: pp->setFcs(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacTrailer'", field);
+    }
+}
+
+omnetpp::cValue CsmaCaMacTrailerDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: return (omnetpp::intval_t)(pp->getFcs());
+        case FIELD_fcsMode: return static_cast<int>(pp->getFcsMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'CsmaCaMacTrailer' as cValue -- field index out of range?", field);
+    }
+}
+
+void CsmaCaMacTrailerDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: pp->setFcs(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacTrailer'", field);
     }
 }
 
 const char *CsmaCaMacTrailerDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *CsmaCaMacTrailerDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr CsmaCaMacTrailerDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    CsmaCaMacTrailer *pp = (CsmaCaMacTrailer *)object; (void)pp;
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void CsmaCaMacTrailerDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    CsmaCaMacTrailer *pp = omnetpp::fromAnyPtr<CsmaCaMacTrailer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'CsmaCaMacTrailer'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

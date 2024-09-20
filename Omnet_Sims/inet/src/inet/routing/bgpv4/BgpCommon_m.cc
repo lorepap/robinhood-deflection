@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/routing/bgpv4/BgpCommon.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/routing/bgpv4/BgpCommon.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "BgpCommon_m.h"
 
 namespace omnetpp {
@@ -149,80 +150,17 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace bgp {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::bgp::BgpSessionType, (inet::bgp::BgpSessionType::IGP, inet::bgp::BgpSessionType::EGP, inet::bgp::BgpSessionType::INCOMPLETE));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+Register_Enum(inet::bgp::BgpPathSegmentType, (inet::bgp::BgpPathSegmentType::AS_SET, inet::bgp::BgpPathSegmentType::AS_SEQUENCE));
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+}  // namespace bgp
+}  // namespace inet
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
+namespace omnetpp {
 
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::bgp::BgpSessionType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::bgp::BgpSessionType"));
-    e->insert(IGP, "IGP");
-    e->insert(EGP, "EGP");
-    e->insert(INCOMPLETE, "INCOMPLETE");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::bgp::BgpPathSegmentType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::bgp::BgpPathSegmentType"));
-    e->insert(AS_SET, "AS_SET");
-    e->insert(AS_SEQUENCE, "AS_SEQUENCE");
-)
-
-} // namespace bgp
-} // namespace inet
+}  // namespace omnetpp
 

@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/physicallayer/contract/packetlevel/RadioControlInfo.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/physicallayer/contract/packetlevel/RadioControlInfo.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "RadioControlInfo_m.h"
 
 namespace omnetpp {
@@ -149,70 +150,10 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace physicallayer {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::physicallayer::RadioCommandCode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::physicallayer::RadioCommandCode"));
-    e->insert(RADIO_C_CONFIGURE, "RADIO_C_CONFIGURE");
-)
+Register_Enum(inet::physicallayer::RadioCommandCode, (inet::physicallayer::RadioCommandCode::RADIO_C_CONFIGURE));
 
 Register_Class(ConfigureRadioCommand)
 
@@ -277,22 +218,22 @@ void ConfigureRadioCommand::setRadioMode(int radioMode)
     this->radioMode = radioMode;
 }
 
-W ConfigureRadioCommand::getPower() const
+::inet::W ConfigureRadioCommand::getPower() const
 {
     return this->power;
 }
 
-void ConfigureRadioCommand::setPower(W power)
+void ConfigureRadioCommand::setPower(::inet::W power)
 {
     this->power = power;
 }
 
-bps ConfigureRadioCommand::getBitrate() const
+::inet::bps ConfigureRadioCommand::getBitrate() const
 {
     return this->bitrate;
 }
 
-void ConfigureRadioCommand::setBitrate(bps bitrate)
+void ConfigureRadioCommand::setBitrate(::inet::bps bitrate)
 {
     this->bitrate = bitrate;
 }
@@ -307,22 +248,22 @@ void ConfigureRadioCommand::setModulation(IModulation * modulation)
     this->modulation = modulation;
 }
 
-Hz ConfigureRadioCommand::getCenterFrequency() const
+::inet::Hz ConfigureRadioCommand::getCenterFrequency() const
 {
     return this->centerFrequency;
 }
 
-void ConfigureRadioCommand::setCenterFrequency(Hz centerFrequency)
+void ConfigureRadioCommand::setCenterFrequency(::inet::Hz centerFrequency)
 {
     this->centerFrequency = centerFrequency;
 }
 
-Hz ConfigureRadioCommand::getBandwidth() const
+::inet::Hz ConfigureRadioCommand::getBandwidth() const
 {
     return this->bandwidth;
 }
 
-void ConfigureRadioCommand::setBandwidth(Hz bandwidth)
+void ConfigureRadioCommand::setBandwidth(::inet::Hz bandwidth)
 {
     this->bandwidth = bandwidth;
 }
@@ -330,7 +271,7 @@ void ConfigureRadioCommand::setBandwidth(Hz bandwidth)
 class ConfigureRadioCommandDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_radioMode,
         FIELD_power,
@@ -345,34 +286,38 @@ class ConfigureRadioCommandDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(ConfigureRadioCommandDescriptor)
 
 ConfigureRadioCommandDescriptor::ConfigureRadioCommandDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::physicallayer::ConfigureRadioCommand)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 ConfigureRadioCommandDescriptor::~ConfigureRadioCommandDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool ConfigureRadioCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -382,40 +327,40 @@ bool ConfigureRadioCommandDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **ConfigureRadioCommandDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *ConfigureRadioCommandDescriptor::getProperty(const char *propertyname) const
+const char *ConfigureRadioCommandDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int ConfigureRadioCommandDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 6+base->getFieldCount() : 6;
 }
 
 unsigned int ConfigureRadioCommandDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_radioMode
         FD_ISEDITABLE,    // FIELD_power
         FD_ISEDITABLE,    // FIELD_bitrate
-        FD_ISCOMPOUND | FD_ISPOINTER,    // FIELD_modulation
+        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISREPLACEABLE,    // FIELD_modulation
         FD_ISEDITABLE,    // FIELD_centerFrequency
         FD_ISEDITABLE,    // FIELD_bandwidth
     };
@@ -424,11 +369,11 @@ unsigned int ConfigureRadioCommandDescriptor::getFieldTypeFlags(int field) const
 
 const char *ConfigureRadioCommandDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "radioMode",
@@ -443,24 +388,24 @@ const char *ConfigureRadioCommandDescriptor::getFieldName(int field) const
 
 int ConfigureRadioCommandDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "radioMode") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "power") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bitrate") == 0) return base+2;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "modulation") == 0) return base+3;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "centerFrequency") == 0) return base+4;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bandwidth") == 0) return base+5;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "radioMode") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "power") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "bitrate") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "modulation") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "centerFrequency") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "bandwidth") == 0) return baseIndex + 5;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *ConfigureRadioCommandDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_radioMode
@@ -475,105 +420,165 @@ const char *ConfigureRadioCommandDescriptor::getFieldTypeString(int field) const
 
 const char **ConfigureRadioCommandDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *ConfigureRadioCommandDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *ConfigureRadioCommandDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int ConfigureRadioCommandDescriptor::getFieldArraySize(void *object, int field) const
+int ConfigureRadioCommandDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    ConfigureRadioCommand *pp = (ConfigureRadioCommand *)object; (void)pp;
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *ConfigureRadioCommandDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void ConfigureRadioCommandDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    ConfigureRadioCommand *pp = (ConfigureRadioCommand *)object; (void)pp;
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'ConfigureRadioCommand'", field);
+    }
+}
+
+const char *ConfigureRadioCommandDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
     switch (field) {
         case FIELD_modulation: { const IModulation * value = pp->getModulation(); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string ConfigureRadioCommandDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string ConfigureRadioCommandDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    ConfigureRadioCommand *pp = (ConfigureRadioCommand *)object; (void)pp;
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
     switch (field) {
         case FIELD_radioMode: return long2string(pp->getRadioMode());
         case FIELD_power: return unit2string(pp->getPower());
         case FIELD_bitrate: return unit2string(pp->getBitrate());
-        case FIELD_modulation: {std::stringstream out; out << pp->getModulation(); return out.str();}
+        case FIELD_modulation: return "";
         case FIELD_centerFrequency: return unit2string(pp->getCenterFrequency());
         case FIELD_bandwidth: return unit2string(pp->getBandwidth());
         default: return "";
     }
 }
 
-bool ConfigureRadioCommandDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void ConfigureRadioCommandDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    ConfigureRadioCommand *pp = (ConfigureRadioCommand *)object; (void)pp;
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_radioMode: pp->setRadioMode(string2long(value)); return true;
-        case FIELD_power: pp->setPower(W(string2double(value))); return true;
-        case FIELD_bitrate: pp->setBitrate(bps(string2double(value))); return true;
-        case FIELD_centerFrequency: pp->setCenterFrequency(Hz(string2double(value))); return true;
-        case FIELD_bandwidth: pp->setBandwidth(Hz(string2double(value))); return true;
-        default: return false;
+        case FIELD_radioMode: pp->setRadioMode(string2long(value)); break;
+        case FIELD_power: pp->setPower(W(string2double(value))); break;
+        case FIELD_bitrate: pp->setBitrate(bps(string2double(value))); break;
+        case FIELD_centerFrequency: pp->setCenterFrequency(Hz(string2double(value))); break;
+        case FIELD_bandwidth: pp->setBandwidth(Hz(string2double(value))); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ConfigureRadioCommand'", field);
+    }
+}
+
+omnetpp::cValue ConfigureRadioCommandDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
+    switch (field) {
+        case FIELD_radioMode: return pp->getRadioMode();
+        case FIELD_power: throw omnetpp::cRuntimeError("Cannot return field 'inet::physicallayer::ConfigureRadioCommand::power' (type 'W') as cValue, please provide @toValue in the msg file");
+        case FIELD_bitrate: throw omnetpp::cRuntimeError("Cannot return field 'inet::physicallayer::ConfigureRadioCommand::bitrate' (type 'bps') as cValue, please provide @toValue in the msg file");
+        case FIELD_modulation: return omnetpp::toAnyPtr(pp->getModulation()); break;
+        case FIELD_centerFrequency: throw omnetpp::cRuntimeError("Cannot return field 'inet::physicallayer::ConfigureRadioCommand::centerFrequency' (type 'Hz') as cValue, please provide @toValue in the msg file");
+        case FIELD_bandwidth: throw omnetpp::cRuntimeError("Cannot return field 'inet::physicallayer::ConfigureRadioCommand::bandwidth' (type 'Hz') as cValue, please provide @toValue in the msg file");
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'ConfigureRadioCommand' as cValue -- field index out of range?", field);
+    }
+}
+
+void ConfigureRadioCommandDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
+    switch (field) {
+        case FIELD_radioMode: pp->setRadioMode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_power: throw omnetpp::cRuntimeError("Cannot set field 'inet::physicallayer::ConfigureRadioCommand::power' (type 'W') from cValue, please provide @fromValue in the msg file");
+        case FIELD_bitrate: throw omnetpp::cRuntimeError("Cannot set field 'inet::physicallayer::ConfigureRadioCommand::bitrate' (type 'bps') from cValue, please provide @fromValue in the msg file");
+        case FIELD_modulation: pp->setModulation(omnetpp::fromAnyPtr<IModulation>(value.pointerValue())); break;
+        case FIELD_centerFrequency: throw omnetpp::cRuntimeError("Cannot set field 'inet::physicallayer::ConfigureRadioCommand::centerFrequency' (type 'Hz') from cValue, please provide @fromValue in the msg file");
+        case FIELD_bandwidth: throw omnetpp::cRuntimeError("Cannot set field 'inet::physicallayer::ConfigureRadioCommand::bandwidth' (type 'Hz') from cValue, please provide @fromValue in the msg file");
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ConfigureRadioCommand'", field);
     }
 }
 
 const char *ConfigureRadioCommandDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_modulation: return omnetpp::opp_typename(typeid(IModulation));
@@ -581,21 +586,42 @@ const char *ConfigureRadioCommandDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *ConfigureRadioCommandDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr ConfigureRadioCommandDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    ConfigureRadioCommand *pp = (ConfigureRadioCommand *)object; (void)pp;
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
     switch (field) {
-        case FIELD_modulation: return toVoidPtr(pp->getModulation()); break;
-        default: return nullptr;
+        case FIELD_modulation: return omnetpp::toAnyPtr(pp->getModulation()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace physicallayer
-} // namespace inet
+void ConfigureRadioCommandDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    ConfigureRadioCommand *pp = omnetpp::fromAnyPtr<ConfigureRadioCommand>(object); (void)pp;
+    switch (field) {
+        case FIELD_modulation: pp->setModulation(omnetpp::fromAnyPtr<IModulation>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ConfigureRadioCommand'", field);
+    }
+}
+
+}  // namespace physicallayer
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

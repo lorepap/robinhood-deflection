@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/applications/voip/SimpleVoipPacket.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/applications/voip/SimpleVoipPacket.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "SimpleVoipPacket_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(SimpleVoipPacket)
 
@@ -306,23 +251,23 @@ void SimpleVoipPacket::setPacketID(unsigned int packetID)
     this->packetID = packetID;
 }
 
-omnetpp::simtime_t SimpleVoipPacket::getVoipTimestamp() const
+::omnetpp::simtime_t SimpleVoipPacket::getVoipTimestamp() const
 {
     return this->voipTimestamp;
 }
 
-void SimpleVoipPacket::setVoipTimestamp(omnetpp::simtime_t voipTimestamp)
+void SimpleVoipPacket::setVoipTimestamp(::omnetpp::simtime_t voipTimestamp)
 {
     handleChange();
     this->voipTimestamp = voipTimestamp;
 }
 
-omnetpp::simtime_t SimpleVoipPacket::getVoiceDuration() const
+::omnetpp::simtime_t SimpleVoipPacket::getVoiceDuration() const
 {
     return this->voiceDuration;
 }
 
-void SimpleVoipPacket::setVoiceDuration(omnetpp::simtime_t voiceDuration)
+void SimpleVoipPacket::setVoiceDuration(::omnetpp::simtime_t voiceDuration)
 {
     handleChange();
     this->voiceDuration = voiceDuration;
@@ -331,7 +276,7 @@ void SimpleVoipPacket::setVoiceDuration(omnetpp::simtime_t voiceDuration)
 class SimpleVoipPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_totalLengthField,
         FIELD_talkspurtID,
@@ -346,34 +291,38 @@ class SimpleVoipPacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SimpleVoipPacketDescriptor)
 
 SimpleVoipPacketDescriptor::SimpleVoipPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::SimpleVoipPacket)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SimpleVoipPacketDescriptor::~SimpleVoipPacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SimpleVoipPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -383,53 +332,53 @@ bool SimpleVoipPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SimpleVoipPacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SimpleVoipPacketDescriptor::getProperty(const char *propertyname) const
+const char *SimpleVoipPacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SimpleVoipPacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 6+base->getFieldCount() : 6;
 }
 
 unsigned int SimpleVoipPacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_totalLengthField
         FD_ISEDITABLE,    // FIELD_talkspurtID
         FD_ISEDITABLE,    // FIELD_talkspurtNumPackets
         FD_ISEDITABLE,    // FIELD_packetID
-        0,    // FIELD_voipTimestamp
-        0,    // FIELD_voiceDuration
+        FD_ISEDITABLE,    // FIELD_voipTimestamp
+        FD_ISEDITABLE,    // FIELD_voiceDuration
     };
     return (field >= 0 && field < 6) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SimpleVoipPacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "totalLengthField",
@@ -444,24 +393,24 @@ const char *SimpleVoipPacketDescriptor::getFieldName(int field) const
 
 int SimpleVoipPacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "totalLengthField") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "talkspurtID") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "talkspurtNumPackets") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "packetID") == 0) return base+3;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "voipTimestamp") == 0) return base+4;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "voiceDuration") == 0) return base+5;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "totalLengthField") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "talkspurtID") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "talkspurtNumPackets") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "packetID") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "voipTimestamp") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "voiceDuration") == 0) return baseIndex + 5;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SimpleVoipPacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_totalLengthField
@@ -476,67 +425,83 @@ const char *SimpleVoipPacketDescriptor::getFieldTypeString(int field) const
 
 const char **SimpleVoipPacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SimpleVoipPacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SimpleVoipPacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SimpleVoipPacketDescriptor::getFieldArraySize(void *object, int field) const
+int SimpleVoipPacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SimpleVoipPacket *pp = (SimpleVoipPacket *)object; (void)pp;
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SimpleVoipPacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SimpleVoipPacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SimpleVoipPacket *pp = (SimpleVoipPacket *)object; (void)pp;
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SimpleVoipPacket'", field);
+    }
+}
+
+const char *SimpleVoipPacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SimpleVoipPacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SimpleVoipPacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SimpleVoipPacket *pp = (SimpleVoipPacket *)object; (void)pp;
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
     switch (field) {
         case FIELD_totalLengthField: return ulong2string(pp->getTotalLengthField());
         case FIELD_talkspurtID: return ulong2string(pp->getTalkspurtID());
@@ -548,50 +513,116 @@ std::string SimpleVoipPacketDescriptor::getFieldValueAsString(void *object, int 
     }
 }
 
-bool SimpleVoipPacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SimpleVoipPacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SimpleVoipPacket *pp = (SimpleVoipPacket *)object; (void)pp;
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_totalLengthField: pp->setTotalLengthField(string2ulong(value)); return true;
-        case FIELD_talkspurtID: pp->setTalkspurtID(string2ulong(value)); return true;
-        case FIELD_talkspurtNumPackets: pp->setTalkspurtNumPackets(string2ulong(value)); return true;
-        case FIELD_packetID: pp->setPacketID(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_totalLengthField: pp->setTotalLengthField(string2ulong(value)); break;
+        case FIELD_talkspurtID: pp->setTalkspurtID(string2ulong(value)); break;
+        case FIELD_talkspurtNumPackets: pp->setTalkspurtNumPackets(string2ulong(value)); break;
+        case FIELD_packetID: pp->setPacketID(string2ulong(value)); break;
+        case FIELD_voipTimestamp: pp->setVoipTimestamp(string2simtime(value)); break;
+        case FIELD_voiceDuration: pp->setVoiceDuration(string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SimpleVoipPacket'", field);
+    }
+}
+
+omnetpp::cValue SimpleVoipPacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_totalLengthField: return (omnetpp::intval_t)(pp->getTotalLengthField());
+        case FIELD_talkspurtID: return (omnetpp::intval_t)(pp->getTalkspurtID());
+        case FIELD_talkspurtNumPackets: return (omnetpp::intval_t)(pp->getTalkspurtNumPackets());
+        case FIELD_packetID: return (omnetpp::intval_t)(pp->getPacketID());
+        case FIELD_voipTimestamp: return pp->getVoipTimestamp().dbl();
+        case FIELD_voiceDuration: return pp->getVoiceDuration().dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SimpleVoipPacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void SimpleVoipPacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_totalLengthField: pp->setTotalLengthField(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_talkspurtID: pp->setTalkspurtID(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_talkspurtNumPackets: pp->setTalkspurtNumPackets(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_packetID: pp->setPacketID(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_voipTimestamp: pp->setVoipTimestamp(value.doubleValue()); break;
+        case FIELD_voiceDuration: pp->setVoiceDuration(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SimpleVoipPacket'", field);
     }
 }
 
 const char *SimpleVoipPacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SimpleVoipPacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SimpleVoipPacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SimpleVoipPacket *pp = (SimpleVoipPacket *)object; (void)pp;
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void SimpleVoipPacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SimpleVoipPacket *pp = omnetpp::fromAnyPtr<SimpleVoipPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SimpleVoipPacket'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

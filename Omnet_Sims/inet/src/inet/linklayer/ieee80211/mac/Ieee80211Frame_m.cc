@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/ieee80211/mac/Ieee80211Frame.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/ieee80211/mac/Ieee80211Frame.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ieee80211Frame_m.h"
 
 namespace omnetpp {
@@ -149,137 +150,16 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-} // namespace inet
+}  // namespace inet
 
 namespace inet {
 namespace ieee80211 {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::ieee80211::Ieee80211FrameType, (inet::ieee80211::Ieee80211FrameType::ST_ASSOCIATIONREQUEST, inet::ieee80211::Ieee80211FrameType::ST_ASSOCIATIONRESPONSE, inet::ieee80211::Ieee80211FrameType::ST_REASSOCIATIONREQUEST, inet::ieee80211::Ieee80211FrameType::ST_REASSOCIATIONRESPONSE, inet::ieee80211::Ieee80211FrameType::ST_PROBEREQUEST, inet::ieee80211::Ieee80211FrameType::ST_PROBERESPONSE, inet::ieee80211::Ieee80211FrameType::ST_BEACON, inet::ieee80211::Ieee80211FrameType::ST_ATIM, inet::ieee80211::Ieee80211FrameType::ST_DISASSOCIATION, inet::ieee80211::Ieee80211FrameType::ST_AUTHENTICATION, inet::ieee80211::Ieee80211FrameType::ST_DEAUTHENTICATION, inet::ieee80211::Ieee80211FrameType::ST_ACTION, inet::ieee80211::Ieee80211FrameType::ST_NOACKACTION, inet::ieee80211::Ieee80211FrameType::ST_PSPOLL, inet::ieee80211::Ieee80211FrameType::ST_RTS, inet::ieee80211::Ieee80211FrameType::ST_CTS, inet::ieee80211::Ieee80211FrameType::ST_ACK, inet::ieee80211::Ieee80211FrameType::ST_BLOCKACK_REQ, inet::ieee80211::Ieee80211FrameType::ST_BLOCKACK, inet::ieee80211::Ieee80211FrameType::ST_DATA, inet::ieee80211::Ieee80211FrameType::ST_DATA_WITH_QOS, inet::ieee80211::Ieee80211FrameType::ST_LBMS_REQUEST, inet::ieee80211::Ieee80211FrameType::ST_LBMS_REPORT));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::ieee80211::Ieee80211FrameType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::ieee80211::Ieee80211FrameType"));
-    e->insert(ST_ASSOCIATIONREQUEST, "ST_ASSOCIATIONREQUEST");
-    e->insert(ST_ASSOCIATIONRESPONSE, "ST_ASSOCIATIONRESPONSE");
-    e->insert(ST_REASSOCIATIONREQUEST, "ST_REASSOCIATIONREQUEST");
-    e->insert(ST_REASSOCIATIONRESPONSE, "ST_REASSOCIATIONRESPONSE");
-    e->insert(ST_PROBEREQUEST, "ST_PROBEREQUEST");
-    e->insert(ST_PROBERESPONSE, "ST_PROBERESPONSE");
-    e->insert(ST_BEACON, "ST_BEACON");
-    e->insert(ST_ATIM, "ST_ATIM");
-    e->insert(ST_DISASSOCIATION, "ST_DISASSOCIATION");
-    e->insert(ST_AUTHENTICATION, "ST_AUTHENTICATION");
-    e->insert(ST_DEAUTHENTICATION, "ST_DEAUTHENTICATION");
-    e->insert(ST_ACTION, "ST_ACTION");
-    e->insert(ST_NOACKACTION, "ST_NOACKACTION");
-    e->insert(ST_PSPOLL, "ST_PSPOLL");
-    e->insert(ST_RTS, "ST_RTS");
-    e->insert(ST_CTS, "ST_CTS");
-    e->insert(ST_ACK, "ST_ACK");
-    e->insert(ST_BLOCKACK_REQ, "ST_BLOCKACK_REQ");
-    e->insert(ST_BLOCKACK, "ST_BLOCKACK");
-    e->insert(ST_DATA, "ST_DATA");
-    e->insert(ST_DATA_WITH_QOS, "ST_DATA_WITH_QOS");
-    e->insert(ST_LBMS_REQUEST, "ST_LBMS_REQUEST");
-    e->insert(ST_LBMS_REPORT, "ST_LBMS_REPORT");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::ieee80211::AckPolicy");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::ieee80211::AckPolicy"));
-    e->insert(NORMAL_ACK, "NORMAL_ACK");
-    e->insert(NO_ACK, "NO_ACK");
-    e->insert(NO_EXPLICIT_ACK, "NO_EXPLICIT_ACK");
-    e->insert(BLOCK_ACK, "BLOCK_ACK");
-)
+Register_Enum(inet::ieee80211::AckPolicy, (inet::ieee80211::AckPolicy::NORMAL_ACK, inet::ieee80211::AckPolicy::NO_ACK, inet::ieee80211::AckPolicy::NO_EXPLICIT_ACK, inet::ieee80211::AckPolicy::BLOCK_ACK));
 
 Register_Class(Ieee80211MacTrailer)
 
@@ -337,12 +217,12 @@ void Ieee80211MacTrailer::setFcs(uint32_t fcs)
     this->fcs = fcs;
 }
 
-inet::FcsMode Ieee80211MacTrailer::getFcsMode() const
+::inet::FcsMode Ieee80211MacTrailer::getFcsMode() const
 {
     return this->fcsMode;
 }
 
-void Ieee80211MacTrailer::setFcsMode(inet::FcsMode fcsMode)
+void Ieee80211MacTrailer::setFcsMode(::inet::FcsMode fcsMode)
 {
     handleChange();
     this->fcsMode = fcsMode;
@@ -351,7 +231,7 @@ void Ieee80211MacTrailer::setFcsMode(inet::FcsMode fcsMode)
 class Ieee80211MacTrailerDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_fcs,
         FIELD_fcsMode,
@@ -362,34 +242,38 @@ class Ieee80211MacTrailerDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MacTrailerDescriptor)
 
 Ieee80211MacTrailerDescriptor::Ieee80211MacTrailerDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MacTrailer)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MacTrailerDescriptor::~Ieee80211MacTrailerDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MacTrailerDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -399,34 +283,34 @@ bool Ieee80211MacTrailerDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211MacTrailerDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MacTrailerDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MacTrailerDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MacTrailerDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ieee80211MacTrailerDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_fcs
@@ -437,11 +321,11 @@ unsigned int Ieee80211MacTrailerDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211MacTrailerDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "fcs",
@@ -452,20 +336,20 @@ const char *Ieee80211MacTrailerDescriptor::getFieldName(int field) const
 
 int Ieee80211MacTrailerDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcs") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcsMode") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "fcs") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fcsMode") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MacTrailerDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_fcs
@@ -476,11 +360,11 @@ const char *Ieee80211MacTrailerDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211MacTrailerDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode: {
@@ -491,59 +375,75 @@ const char **Ieee80211MacTrailerDescriptor::getFieldPropertyNames(int field) con
     }
 }
 
-const char *Ieee80211MacTrailerDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MacTrailerDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode:
-            if (!strcmp(propertyname, "enum")) return "inet::FcsMode";
+            if (!strcmp(propertyName, "enum")) return "inet::FcsMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ieee80211MacTrailerDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MacTrailerDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacTrailer *pp = (Ieee80211MacTrailer *)object; (void)pp;
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MacTrailerDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MacTrailerDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MacTrailer *pp = (Ieee80211MacTrailer *)object; (void)pp;
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MacTrailer'", field);
+    }
+}
+
+const char *Ieee80211MacTrailerDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MacTrailerDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MacTrailerDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacTrailer *pp = (Ieee80211MacTrailer *)object; (void)pp;
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
     switch (field) {
         case FIELD_fcs: return ulong2string(pp->getFcs());
         case FIELD_fcsMode: return enum2string(pp->getFcsMode(), "inet::FcsMode");
@@ -551,45 +451,96 @@ std::string Ieee80211MacTrailerDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool Ieee80211MacTrailerDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MacTrailerDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MacTrailer *pp = (Ieee80211MacTrailer *)object; (void)pp;
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
     switch (field) {
-        case FIELD_fcs: pp->setFcs(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_fcs: pp->setFcs(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacTrailer'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MacTrailerDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: return (omnetpp::intval_t)(pp->getFcs());
+        case FIELD_fcsMode: return static_cast<int>(pp->getFcsMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MacTrailer' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MacTrailerDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: pp->setFcs(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacTrailer'", field);
     }
 }
 
 const char *Ieee80211MacTrailerDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211MacTrailerDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MacTrailerDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacTrailer *pp = (Ieee80211MacTrailer *)object; (void)pp;
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MacTrailerDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacTrailer *pp = omnetpp::fromAnyPtr<Ieee80211MacTrailer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacTrailer'", field);
     }
 }
 
@@ -671,12 +622,12 @@ void Ieee80211MacHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->MACArrive);
 }
 
-inet::ieee80211::Ieee80211FrameType Ieee80211MacHeader::getType() const
+Ieee80211FrameType Ieee80211MacHeader::getType() const
 {
     return this->type;
 }
 
-void Ieee80211MacHeader::setType(inet::ieee80211::Ieee80211FrameType type)
+void Ieee80211MacHeader::setType(Ieee80211FrameType type)
 {
     handleChange();
     this->type = type;
@@ -770,12 +721,12 @@ void Ieee80211MacHeader::setOrder(bool order)
     this->order = order;
 }
 
-omnetpp::simtime_t Ieee80211MacHeader::getDurationField() const
+::omnetpp::simtime_t Ieee80211MacHeader::getDurationField() const
 {
     return this->durationField;
 }
 
-void Ieee80211MacHeader::setDurationField(omnetpp::simtime_t durationField)
+void Ieee80211MacHeader::setDurationField(::omnetpp::simtime_t durationField)
 {
     handleChange();
     this->durationField = durationField;
@@ -792,23 +743,23 @@ void Ieee80211MacHeader::setAID(short AID)
     this->AID = AID;
 }
 
-const MacAddress& Ieee80211MacHeader::getReceiverAddress() const
+const ::inet::MacAddress& Ieee80211MacHeader::getReceiverAddress() const
 {
     return this->receiverAddress;
 }
 
-void Ieee80211MacHeader::setReceiverAddress(const MacAddress& receiverAddress)
+void Ieee80211MacHeader::setReceiverAddress(const ::inet::MacAddress& receiverAddress)
 {
     handleChange();
     this->receiverAddress = receiverAddress;
 }
 
-omnetpp::simtime_t Ieee80211MacHeader::getMACArrive() const
+::omnetpp::simtime_t Ieee80211MacHeader::getMACArrive() const
 {
     return this->MACArrive;
 }
 
-void Ieee80211MacHeader::setMACArrive(omnetpp::simtime_t MACArrive)
+void Ieee80211MacHeader::setMACArrive(::omnetpp::simtime_t MACArrive)
 {
     handleChange();
     this->MACArrive = MACArrive;
@@ -817,7 +768,7 @@ void Ieee80211MacHeader::setMACArrive(omnetpp::simtime_t MACArrive)
 class Ieee80211MacHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_toDS,
@@ -839,34 +790,38 @@ class Ieee80211MacHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MacHeaderDescriptor)
 
 Ieee80211MacHeaderDescriptor::Ieee80211MacHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MacHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MacHeaderDescriptor::~Ieee80211MacHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -876,34 +831,34 @@ bool Ieee80211MacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211MacHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MacHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MacHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MacHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 13+basedesc->getFieldCount() : 13;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 13+base->getFieldCount() : 13;
 }
 
 unsigned int Ieee80211MacHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_type
@@ -915,21 +870,21 @@ unsigned int Ieee80211MacHeaderDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_moreData
         FD_ISEDITABLE,    // FIELD_protectedFrame
         FD_ISEDITABLE,    // FIELD_order
-        0,    // FIELD_durationField
+        FD_ISEDITABLE,    // FIELD_durationField
         FD_ISEDITABLE,    // FIELD_AID
         0,    // FIELD_receiverAddress
-        0,    // FIELD_MACArrive
+        FD_ISEDITABLE,    // FIELD_MACArrive
     };
     return (field >= 0 && field < 13) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ieee80211MacHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -951,31 +906,31 @@ const char *Ieee80211MacHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211MacHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "toDS") == 0) return base+1;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fromDS") == 0) return base+2;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "moreFragments") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "retry") == 0) return base+4;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "powerMgmt") == 0) return base+5;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "moreData") == 0) return base+6;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protectedFrame") == 0) return base+7;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "order") == 0) return base+8;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "durationField") == 0) return base+9;
-    if (fieldName[0] == 'A' && strcmp(fieldName, "AID") == 0) return base+10;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "receiverAddress") == 0) return base+11;
-    if (fieldName[0] == 'M' && strcmp(fieldName, "MACArrive") == 0) return base+12;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "toDS") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "fromDS") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "moreFragments") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "retry") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "powerMgmt") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "moreData") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "protectedFrame") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "order") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "durationField") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "AID") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "receiverAddress") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "MACArrive") == 0) return baseIndex + 12;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MacHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::ieee80211::Ieee80211FrameType",    // FIELD_type
@@ -997,11 +952,11 @@ const char *Ieee80211MacHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211MacHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -1012,59 +967,75 @@ const char **Ieee80211MacHeaderDescriptor::getFieldPropertyNames(int field) cons
     }
 }
 
-const char *Ieee80211MacHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MacHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::ieee80211::Ieee80211FrameType";
+            if (!strcmp(propertyName, "enum")) return "inet::ieee80211::Ieee80211FrameType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ieee80211MacHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MacHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacHeader *pp = (Ieee80211MacHeader *)object; (void)pp;
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MacHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MacHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MacHeader *pp = (Ieee80211MacHeader *)object; (void)pp;
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MacHeader'", field);
+    }
+}
+
+const char *Ieee80211MacHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MacHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MacHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacHeader *pp = (Ieee80211MacHeader *)object; (void)pp;
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::ieee80211::Ieee80211FrameType");
         case FIELD_toDS: return bool2string(pp->getToDS());
@@ -1083,55 +1054,130 @@ std::string Ieee80211MacHeaderDescriptor::getFieldValueAsString(void *object, in
     }
 }
 
-bool Ieee80211MacHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MacHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MacHeader *pp = (Ieee80211MacHeader *)object; (void)pp;
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_type: pp->setType((inet::ieee80211::Ieee80211FrameType)string2enum(value, "inet::ieee80211::Ieee80211FrameType")); return true;
-        case FIELD_toDS: pp->setToDS(string2bool(value)); return true;
-        case FIELD_fromDS: pp->setFromDS(string2bool(value)); return true;
-        case FIELD_moreFragments: pp->setMoreFragments(string2bool(value)); return true;
-        case FIELD_retry: pp->setRetry(string2bool(value)); return true;
-        case FIELD_powerMgmt: pp->setPowerMgmt(string2bool(value)); return true;
-        case FIELD_moreData: pp->setMoreData(string2bool(value)); return true;
-        case FIELD_protectedFrame: pp->setProtectedFrame(string2bool(value)); return true;
-        case FIELD_order: pp->setOrder(string2bool(value)); return true;
-        case FIELD_AID: pp->setAID(string2long(value)); return true;
-        default: return false;
+        case FIELD_type: pp->setType((inet::ieee80211::Ieee80211FrameType)string2enum(value, "inet::ieee80211::Ieee80211FrameType")); break;
+        case FIELD_toDS: pp->setToDS(string2bool(value)); break;
+        case FIELD_fromDS: pp->setFromDS(string2bool(value)); break;
+        case FIELD_moreFragments: pp->setMoreFragments(string2bool(value)); break;
+        case FIELD_retry: pp->setRetry(string2bool(value)); break;
+        case FIELD_powerMgmt: pp->setPowerMgmt(string2bool(value)); break;
+        case FIELD_moreData: pp->setMoreData(string2bool(value)); break;
+        case FIELD_protectedFrame: pp->setProtectedFrame(string2bool(value)); break;
+        case FIELD_order: pp->setOrder(string2bool(value)); break;
+        case FIELD_durationField: pp->setDurationField(string2simtime(value)); break;
+        case FIELD_AID: pp->setAID(string2long(value)); break;
+        case FIELD_MACArrive: pp->setMACArrive(string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MacHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_toDS: return pp->getToDS();
+        case FIELD_fromDS: return pp->getFromDS();
+        case FIELD_moreFragments: return pp->getMoreFragments();
+        case FIELD_retry: return pp->getRetry();
+        case FIELD_powerMgmt: return pp->getPowerMgmt();
+        case FIELD_moreData: return pp->getMoreData();
+        case FIELD_protectedFrame: return pp->getProtectedFrame();
+        case FIELD_order: return pp->getOrder();
+        case FIELD_durationField: return pp->getDurationField().dbl();
+        case FIELD_AID: return pp->getAID();
+        case FIELD_receiverAddress: return omnetpp::toAnyPtr(&pp->getReceiverAddress()); break;
+        case FIELD_MACArrive: return pp->getMACArrive().dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MacHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MacHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: pp->setType(static_cast<inet::ieee80211::Ieee80211FrameType>(value.intValue())); break;
+        case FIELD_toDS: pp->setToDS(value.boolValue()); break;
+        case FIELD_fromDS: pp->setFromDS(value.boolValue()); break;
+        case FIELD_moreFragments: pp->setMoreFragments(value.boolValue()); break;
+        case FIELD_retry: pp->setRetry(value.boolValue()); break;
+        case FIELD_powerMgmt: pp->setPowerMgmt(value.boolValue()); break;
+        case FIELD_moreData: pp->setMoreData(value.boolValue()); break;
+        case FIELD_protectedFrame: pp->setProtectedFrame(value.boolValue()); break;
+        case FIELD_order: pp->setOrder(value.boolValue()); break;
+        case FIELD_durationField: pp->setDurationField(value.doubleValue()); break;
+        case FIELD_AID: pp->setAID(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_MACArrive: pp->setMACArrive(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacHeader'", field);
     }
 }
 
 const char *Ieee80211MacHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211MacHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MacHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MacHeader *pp = (Ieee80211MacHeader *)object; (void)pp;
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_receiverAddress: return toVoidPtr(&pp->getReceiverAddress()); break;
-        default: return nullptr;
+        case FIELD_receiverAddress: return omnetpp::toAnyPtr(&pp->getReceiverAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MacHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MacHeader *pp = omnetpp::fromAnyPtr<Ieee80211MacHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MacHeader'", field);
     }
 }
 
@@ -1175,7 +1221,7 @@ void Ieee80211OneAddressHeader::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211OneAddressHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1184,34 +1230,38 @@ class Ieee80211OneAddressHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211OneAddressHeaderDescriptor)
 
 Ieee80211OneAddressHeaderDescriptor::Ieee80211OneAddressHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211OneAddressHeader)), "inet::ieee80211::Ieee80211MacHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211OneAddressHeaderDescriptor::~Ieee80211OneAddressHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211OneAddressHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1221,170 +1271,234 @@ bool Ieee80211OneAddressHeaderDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ieee80211OneAddressHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211OneAddressHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211OneAddressHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211OneAddressHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211OneAddressHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211OneAddressHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211OneAddressHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211OneAddressHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211OneAddressHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211OneAddressHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211OneAddressHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211OneAddressHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211OneAddressHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211OneAddressHeader *pp = (Ieee80211OneAddressHeader *)object; (void)pp;
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211OneAddressHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211OneAddressHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211OneAddressHeader *pp = (Ieee80211OneAddressHeader *)object; (void)pp;
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211OneAddressHeader'", field);
+    }
+}
+
+const char *Ieee80211OneAddressHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211OneAddressHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211OneAddressHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211OneAddressHeader *pp = (Ieee80211OneAddressHeader *)object; (void)pp;
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211OneAddressHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211OneAddressHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211OneAddressHeader *pp = (Ieee80211OneAddressHeader *)object; (void)pp;
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211OneAddressHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211OneAddressHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211OneAddressHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211OneAddressHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211OneAddressHeader'", field);
     }
 }
 
 const char *Ieee80211OneAddressHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211OneAddressHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211OneAddressHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211OneAddressHeader *pp = (Ieee80211OneAddressHeader *)object; (void)pp;
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211OneAddressHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211OneAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211OneAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211OneAddressHeader'", field);
     }
 }
 
@@ -1430,7 +1544,7 @@ void Ieee80211AckFrame::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211AckFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1439,34 +1553,38 @@ class Ieee80211AckFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211AckFrameDescriptor)
 
 Ieee80211AckFrameDescriptor::Ieee80211AckFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211AckFrame)), "inet::ieee80211::Ieee80211OneAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211AckFrameDescriptor::~Ieee80211AckFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211AckFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1476,170 +1594,234 @@ bool Ieee80211AckFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211AckFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211AckFrameDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211AckFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211AckFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211AckFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211AckFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211AckFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211AckFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211AckFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211AckFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211AckFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211AckFrameDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211AckFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211AckFrame *pp = (Ieee80211AckFrame *)object; (void)pp;
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211AckFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211AckFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AckFrame *pp = (Ieee80211AckFrame *)object; (void)pp;
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211AckFrame'", field);
+    }
+}
+
+const char *Ieee80211AckFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211AckFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211AckFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AckFrame *pp = (Ieee80211AckFrame *)object; (void)pp;
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211AckFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211AckFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AckFrame *pp = (Ieee80211AckFrame *)object; (void)pp;
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AckFrame'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211AckFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211AckFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211AckFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AckFrame'", field);
     }
 }
 
 const char *Ieee80211AckFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211AckFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211AckFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AckFrame *pp = (Ieee80211AckFrame *)object; (void)pp;
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211AckFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AckFrame *pp = omnetpp::fromAnyPtr<Ieee80211AckFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AckFrame'", field);
     }
 }
 
@@ -1685,12 +1867,12 @@ void Ieee80211TwoAddressHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->transmitterAddress);
 }
 
-const MacAddress& Ieee80211TwoAddressHeader::getTransmitterAddress() const
+const ::inet::MacAddress& Ieee80211TwoAddressHeader::getTransmitterAddress() const
 {
     return this->transmitterAddress;
 }
 
-void Ieee80211TwoAddressHeader::setTransmitterAddress(const MacAddress& transmitterAddress)
+void Ieee80211TwoAddressHeader::setTransmitterAddress(const ::inet::MacAddress& transmitterAddress)
 {
     handleChange();
     this->transmitterAddress = transmitterAddress;
@@ -1699,7 +1881,7 @@ void Ieee80211TwoAddressHeader::setTransmitterAddress(const MacAddress& transmit
 class Ieee80211TwoAddressHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_transmitterAddress,
     };
@@ -1709,34 +1891,38 @@ class Ieee80211TwoAddressHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211TwoAddressHeaderDescriptor)
 
 Ieee80211TwoAddressHeaderDescriptor::Ieee80211TwoAddressHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211TwoAddressHeader)), "inet::ieee80211::Ieee80211OneAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211TwoAddressHeaderDescriptor::~Ieee80211TwoAddressHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211TwoAddressHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1746,34 +1932,34 @@ bool Ieee80211TwoAddressHeaderDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ieee80211TwoAddressHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211TwoAddressHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211TwoAddressHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211TwoAddressHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ieee80211TwoAddressHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_transmitterAddress
@@ -1783,11 +1969,11 @@ unsigned int Ieee80211TwoAddressHeaderDescriptor::getFieldTypeFlags(int field) c
 
 const char *Ieee80211TwoAddressHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "transmitterAddress",
@@ -1797,19 +1983,19 @@ const char *Ieee80211TwoAddressHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211TwoAddressHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "transmitterAddress") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "transmitterAddress") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211TwoAddressHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_transmitterAddress
@@ -1819,112 +2005,177 @@ const char *Ieee80211TwoAddressHeaderDescriptor::getFieldTypeString(int field) c
 
 const char **Ieee80211TwoAddressHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211TwoAddressHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211TwoAddressHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211TwoAddressHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211TwoAddressHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211TwoAddressHeader *pp = (Ieee80211TwoAddressHeader *)object; (void)pp;
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211TwoAddressHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211TwoAddressHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211TwoAddressHeader *pp = (Ieee80211TwoAddressHeader *)object; (void)pp;
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211TwoAddressHeader'", field);
+    }
+}
+
+const char *Ieee80211TwoAddressHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211TwoAddressHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211TwoAddressHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211TwoAddressHeader *pp = (Ieee80211TwoAddressHeader *)object; (void)pp;
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
     switch (field) {
         case FIELD_transmitterAddress: return pp->getTransmitterAddress().str();
         default: return "";
     }
 }
 
-bool Ieee80211TwoAddressHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211TwoAddressHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211TwoAddressHeader *pp = (Ieee80211TwoAddressHeader *)object; (void)pp;
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211TwoAddressHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211TwoAddressHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_transmitterAddress: return omnetpp::toAnyPtr(&pp->getTransmitterAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211TwoAddressHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211TwoAddressHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211TwoAddressHeader'", field);
     }
 }
 
 const char *Ieee80211TwoAddressHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211TwoAddressHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211TwoAddressHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211TwoAddressHeader *pp = (Ieee80211TwoAddressHeader *)object; (void)pp;
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_transmitterAddress: return toVoidPtr(&pp->getTransmitterAddress()); break;
-        default: return nullptr;
+        case FIELD_transmitterAddress: return omnetpp::toAnyPtr(&pp->getTransmitterAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211TwoAddressHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211TwoAddressHeader *pp = omnetpp::fromAnyPtr<Ieee80211TwoAddressHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211TwoAddressHeader'", field);
     }
 }
 
@@ -1970,7 +2221,7 @@ void Ieee80211RtsFrame::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211RtsFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1979,34 +2230,38 @@ class Ieee80211RtsFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211RtsFrameDescriptor)
 
 Ieee80211RtsFrameDescriptor::Ieee80211RtsFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211RtsFrame)), "inet::ieee80211::Ieee80211TwoAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211RtsFrameDescriptor::~Ieee80211RtsFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211RtsFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2016,170 +2271,234 @@ bool Ieee80211RtsFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211RtsFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211RtsFrameDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211RtsFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211RtsFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211RtsFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211RtsFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211RtsFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211RtsFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211RtsFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211RtsFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211RtsFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211RtsFrameDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211RtsFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211RtsFrame *pp = (Ieee80211RtsFrame *)object; (void)pp;
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211RtsFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211RtsFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211RtsFrame *pp = (Ieee80211RtsFrame *)object; (void)pp;
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211RtsFrame'", field);
+    }
+}
+
+const char *Ieee80211RtsFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211RtsFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211RtsFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211RtsFrame *pp = (Ieee80211RtsFrame *)object; (void)pp;
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211RtsFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211RtsFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211RtsFrame *pp = (Ieee80211RtsFrame *)object; (void)pp;
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211RtsFrame'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211RtsFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211RtsFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211RtsFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211RtsFrame'", field);
     }
 }
 
 const char *Ieee80211RtsFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211RtsFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211RtsFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211RtsFrame *pp = (Ieee80211RtsFrame *)object; (void)pp;
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211RtsFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211RtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211RtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211RtsFrame'", field);
     }
 }
 
@@ -2225,7 +2544,7 @@ void Ieee80211CtsFrame::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211CtsFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -2234,34 +2553,38 @@ class Ieee80211CtsFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211CtsFrameDescriptor)
 
 Ieee80211CtsFrameDescriptor::Ieee80211CtsFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211CtsFrame)), "inet::ieee80211::Ieee80211OneAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211CtsFrameDescriptor::~Ieee80211CtsFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211CtsFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2271,170 +2594,234 @@ bool Ieee80211CtsFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211CtsFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211CtsFrameDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211CtsFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211CtsFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211CtsFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211CtsFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211CtsFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211CtsFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211CtsFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211CtsFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211CtsFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211CtsFrameDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211CtsFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211CtsFrame *pp = (Ieee80211CtsFrame *)object; (void)pp;
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211CtsFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211CtsFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CtsFrame *pp = (Ieee80211CtsFrame *)object; (void)pp;
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211CtsFrame'", field);
+    }
+}
+
+const char *Ieee80211CtsFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211CtsFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211CtsFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CtsFrame *pp = (Ieee80211CtsFrame *)object; (void)pp;
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211CtsFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211CtsFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CtsFrame *pp = (Ieee80211CtsFrame *)object; (void)pp;
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CtsFrame'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211CtsFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211CtsFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211CtsFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CtsFrame'", field);
     }
 }
 
 const char *Ieee80211CtsFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211CtsFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211CtsFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CtsFrame *pp = (Ieee80211CtsFrame *)object; (void)pp;
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211CtsFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CtsFrame *pp = omnetpp::fromAnyPtr<Ieee80211CtsFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CtsFrame'", field);
     }
 }
 
@@ -2486,12 +2873,12 @@ void Ieee80211DataOrMgmtHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->sequenceNumber);
 }
 
-const MacAddress& Ieee80211DataOrMgmtHeader::getAddress3() const
+const ::inet::MacAddress& Ieee80211DataOrMgmtHeader::getAddress3() const
 {
     return this->address3;
 }
 
-void Ieee80211DataOrMgmtHeader::setAddress3(const MacAddress& address3)
+void Ieee80211DataOrMgmtHeader::setAddress3(const ::inet::MacAddress& address3)
 {
     handleChange();
     this->address3 = address3;
@@ -2508,12 +2895,12 @@ void Ieee80211DataOrMgmtHeader::setFragmentNumber(short fragmentNumber)
     this->fragmentNumber = fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211DataOrMgmtHeader::getSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211DataOrMgmtHeader::getSequenceNumber() const
 {
     return this->sequenceNumber;
 }
 
-void Ieee80211DataOrMgmtHeader::setSequenceNumber(const SequenceNumber& sequenceNumber)
+void Ieee80211DataOrMgmtHeader::setSequenceNumber(const ::inet::SequenceNumber& sequenceNumber)
 {
     handleChange();
     this->sequenceNumber = sequenceNumber;
@@ -2522,7 +2909,7 @@ void Ieee80211DataOrMgmtHeader::setSequenceNumber(const SequenceNumber& sequence
 class Ieee80211DataOrMgmtHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_address3,
         FIELD_fragmentNumber,
@@ -2534,34 +2921,38 @@ class Ieee80211DataOrMgmtHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211DataOrMgmtHeaderDescriptor)
 
 Ieee80211DataOrMgmtHeaderDescriptor::Ieee80211DataOrMgmtHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211DataOrMgmtHeader)), "inet::ieee80211::Ieee80211TwoAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211DataOrMgmtHeaderDescriptor::~Ieee80211DataOrMgmtHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211DataOrMgmtHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2571,34 +2962,34 @@ bool Ieee80211DataOrMgmtHeaderDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ieee80211DataOrMgmtHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211DataOrMgmtHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211DataOrMgmtHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211DataOrMgmtHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ieee80211DataOrMgmtHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_address3
@@ -2610,11 +3001,11 @@ unsigned int Ieee80211DataOrMgmtHeaderDescriptor::getFieldTypeFlags(int field) c
 
 const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "address3",
@@ -2626,21 +3017,21 @@ const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211DataOrMgmtHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "address3") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentNumber") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sequenceNumber") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "address3") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fragmentNumber") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "sequenceNumber") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_address3
@@ -2652,116 +3043,184 @@ const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldTypeString(int field) c
 
 const char **Ieee80211DataOrMgmtHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211DataOrMgmtHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211DataOrMgmtHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataOrMgmtHeader *pp = (Ieee80211DataOrMgmtHeader *)object; (void)pp;
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211DataOrMgmtHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211DataOrMgmtHeader *pp = (Ieee80211DataOrMgmtHeader *)object; (void)pp;
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211DataOrMgmtHeader'", field);
+    }
+}
+
+const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211DataOrMgmtHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211DataOrMgmtHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataOrMgmtHeader *pp = (Ieee80211DataOrMgmtHeader *)object; (void)pp;
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
     switch (field) {
         case FIELD_address3: return pp->getAddress3().str();
         case FIELD_fragmentNumber: return long2string(pp->getFragmentNumber());
-        case FIELD_sequenceNumber: {std::stringstream out; out << pp->getSequenceNumber(); return out.str();}
+        case FIELD_sequenceNumber: return "";
         default: return "";
     }
 }
 
-bool Ieee80211DataOrMgmtHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211DataOrMgmtHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211DataOrMgmtHeader *pp = (Ieee80211DataOrMgmtHeader *)object; (void)pp;
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); return true;
-        default: return false;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataOrMgmtHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211DataOrMgmtHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_address3: return omnetpp::toAnyPtr(&pp->getAddress3()); break;
+        case FIELD_fragmentNumber: return pp->getFragmentNumber();
+        case FIELD_sequenceNumber: return omnetpp::toAnyPtr(&pp->getSequenceNumber()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211DataOrMgmtHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211DataOrMgmtHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_fragmentNumber: pp->setFragmentNumber(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataOrMgmtHeader'", field);
     }
 }
 
 const char *Ieee80211DataOrMgmtHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211DataOrMgmtHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211DataOrMgmtHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataOrMgmtHeader *pp = (Ieee80211DataOrMgmtHeader *)object; (void)pp;
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_address3: return toVoidPtr(&pp->getAddress3()); break;
-        case FIELD_sequenceNumber: return toVoidPtr(&pp->getSequenceNumber()); break;
-        default: return nullptr;
+        case FIELD_address3: return omnetpp::toAnyPtr(&pp->getAddress3()); break;
+        case FIELD_sequenceNumber: return omnetpp::toAnyPtr(&pp->getSequenceNumber()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211DataOrMgmtHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataOrMgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataOrMgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataOrMgmtHeader'", field);
     }
 }
 
@@ -2817,23 +3276,23 @@ void Ieee80211DataHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->aMsduPresent);
 }
 
-const MacAddress& Ieee80211DataHeader::getAddress4() const
+const ::inet::MacAddress& Ieee80211DataHeader::getAddress4() const
 {
     return this->address4;
 }
 
-void Ieee80211DataHeader::setAddress4(const MacAddress& address4)
+void Ieee80211DataHeader::setAddress4(const ::inet::MacAddress& address4)
 {
     handleChange();
     this->address4 = address4;
 }
 
-inet::ieee80211::AckPolicy Ieee80211DataHeader::getAckPolicy() const
+AckPolicy Ieee80211DataHeader::getAckPolicy() const
 {
     return this->ackPolicy;
 }
 
-void Ieee80211DataHeader::setAckPolicy(inet::ieee80211::AckPolicy ackPolicy)
+void Ieee80211DataHeader::setAckPolicy(AckPolicy ackPolicy)
 {
     handleChange();
     this->ackPolicy = ackPolicy;
@@ -2864,7 +3323,7 @@ void Ieee80211DataHeader::setAMsduPresent(bool aMsduPresent)
 class Ieee80211DataHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_address4,
         FIELD_ackPolicy,
@@ -2877,34 +3336,38 @@ class Ieee80211DataHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211DataHeaderDescriptor)
 
 Ieee80211DataHeaderDescriptor::Ieee80211DataHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211DataHeader)), "inet::ieee80211::Ieee80211DataOrMgmtHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211DataHeaderDescriptor::~Ieee80211DataHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211DataHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2914,34 +3377,34 @@ bool Ieee80211DataHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211DataHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211DataHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211DataHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211DataHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211DataHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_address4
@@ -2954,11 +3417,11 @@ unsigned int Ieee80211DataHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211DataHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "address4",
@@ -2971,22 +3434,22 @@ const char *Ieee80211DataHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211DataHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "address4") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "ackPolicy") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tid") == 0) return base+2;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "aMsduPresent") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "address4") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "ackPolicy") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "tid") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "aMsduPresent") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211DataHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_address4
@@ -2999,11 +3462,11 @@ const char *Ieee80211DataHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211DataHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_ackPolicy: {
@@ -3014,59 +3477,75 @@ const char **Ieee80211DataHeaderDescriptor::getFieldPropertyNames(int field) con
     }
 }
 
-const char *Ieee80211DataHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211DataHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_ackPolicy:
-            if (!strcmp(propertyname, "enum")) return "inet::ieee80211::AckPolicy";
+            if (!strcmp(propertyName, "enum")) return "inet::ieee80211::AckPolicy";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ieee80211DataHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211DataHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataHeader *pp = (Ieee80211DataHeader *)object; (void)pp;
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211DataHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211DataHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211DataHeader *pp = (Ieee80211DataHeader *)object; (void)pp;
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211DataHeader'", field);
+    }
+}
+
+const char *Ieee80211DataHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211DataHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211DataHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataHeader *pp = (Ieee80211DataHeader *)object; (void)pp;
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
     switch (field) {
         case FIELD_address4: return pp->getAddress4().str();
         case FIELD_ackPolicy: return enum2string(pp->getAckPolicy(), "inet::ieee80211::AckPolicy");
@@ -3076,48 +3555,103 @@ std::string Ieee80211DataHeaderDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool Ieee80211DataHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211DataHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211DataHeader *pp = (Ieee80211DataHeader *)object; (void)pp;
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_ackPolicy: pp->setAckPolicy((inet::ieee80211::AckPolicy)string2enum(value, "inet::ieee80211::AckPolicy")); return true;
-        case FIELD_tid: pp->setTid(string2ulong(value)); return true;
-        case FIELD_aMsduPresent: pp->setAMsduPresent(string2bool(value)); return true;
-        default: return false;
+        case FIELD_ackPolicy: pp->setAckPolicy((inet::ieee80211::AckPolicy)string2enum(value, "inet::ieee80211::AckPolicy")); break;
+        case FIELD_tid: pp->setTid(string2ulong(value)); break;
+        case FIELD_aMsduPresent: pp->setAMsduPresent(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211DataHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_address4: return omnetpp::toAnyPtr(&pp->getAddress4()); break;
+        case FIELD_ackPolicy: return static_cast<int>(pp->getAckPolicy());
+        case FIELD_tid: return (omnetpp::intval_t)(pp->getTid());
+        case FIELD_aMsduPresent: return pp->getAMsduPresent();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211DataHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211DataHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_ackPolicy: pp->setAckPolicy(static_cast<inet::ieee80211::AckPolicy>(value.intValue())); break;
+        case FIELD_tid: pp->setTid(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_aMsduPresent: pp->setAMsduPresent(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataHeader'", field);
     }
 }
 
 const char *Ieee80211DataHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211DataHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211DataHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211DataHeader *pp = (Ieee80211DataHeader *)object; (void)pp;
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_address4: return toVoidPtr(&pp->getAddress4()); break;
-        default: return nullptr;
+        case FIELD_address4: return omnetpp::toAnyPtr(&pp->getAddress4()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211DataHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211DataHeader *pp = omnetpp::fromAnyPtr<Ieee80211DataHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211DataHeader'", field);
     }
 }
 
@@ -3161,7 +3695,7 @@ void Ieee80211MgmtHeader::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211MgmtHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -3170,34 +3704,38 @@ class Ieee80211MgmtHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MgmtHeaderDescriptor)
 
 Ieee80211MgmtHeaderDescriptor::Ieee80211MgmtHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MgmtHeader)), "inet::ieee80211::Ieee80211DataOrMgmtHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MgmtHeaderDescriptor::~Ieee80211MgmtHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MgmtHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3207,170 +3745,234 @@ bool Ieee80211MgmtHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211MgmtHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MgmtHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MgmtHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MgmtHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211MgmtHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211MgmtHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211MgmtHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MgmtHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211MgmtHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211MgmtHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MgmtHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211MgmtHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MgmtHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MgmtHeader *pp = (Ieee80211MgmtHeader *)object; (void)pp;
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MgmtHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MgmtHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MgmtHeader *pp = (Ieee80211MgmtHeader *)object; (void)pp;
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MgmtHeader'", field);
+    }
+}
+
+const char *Ieee80211MgmtHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MgmtHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MgmtHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MgmtHeader *pp = (Ieee80211MgmtHeader *)object; (void)pp;
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211MgmtHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MgmtHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MgmtHeader *pp = (Ieee80211MgmtHeader *)object; (void)pp;
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MgmtHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MgmtHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MgmtHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MgmtHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MgmtHeader'", field);
     }
 }
 
 const char *Ieee80211MgmtHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211MgmtHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MgmtHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MgmtHeader *pp = (Ieee80211MgmtHeader *)object; (void)pp;
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MgmtHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MgmtHeader *pp = omnetpp::fromAnyPtr<Ieee80211MgmtHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MgmtHeader'", field);
     }
 }
 
@@ -3444,7 +4046,7 @@ void Ieee80211ActionFrame::setBlockAckAction(uint8_t blockAckAction)
 class Ieee80211ActionFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_category,
         FIELD_blockAckAction,
@@ -3455,34 +4057,38 @@ class Ieee80211ActionFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211ActionFrameDescriptor)
 
 Ieee80211ActionFrameDescriptor::Ieee80211ActionFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211ActionFrame)), "inet::ieee80211::Ieee80211MgmtHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211ActionFrameDescriptor::~Ieee80211ActionFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211ActionFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3492,34 +4098,34 @@ bool Ieee80211ActionFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211ActionFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211ActionFrameDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211ActionFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211ActionFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ieee80211ActionFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_category
@@ -3530,11 +4136,11 @@ unsigned int Ieee80211ActionFrameDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211ActionFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "category",
@@ -3545,20 +4151,20 @@ const char *Ieee80211ActionFrameDescriptor::getFieldName(int field) const
 
 int Ieee80211ActionFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "category") == 0) return base+0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckAction") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "category") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "blockAckAction") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211ActionFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_category
@@ -3569,67 +4175,83 @@ const char *Ieee80211ActionFrameDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211ActionFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211ActionFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211ActionFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211ActionFrameDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211ActionFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211ActionFrame *pp = (Ieee80211ActionFrame *)object; (void)pp;
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211ActionFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211ActionFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211ActionFrame *pp = (Ieee80211ActionFrame *)object; (void)pp;
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211ActionFrame'", field);
+    }
+}
+
+const char *Ieee80211ActionFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211ActionFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211ActionFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211ActionFrame *pp = (Ieee80211ActionFrame *)object; (void)pp;
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
     switch (field) {
         case FIELD_category: return long2string(pp->getCategory());
         case FIELD_blockAckAction: return ulong2string(pp->getBlockAckAction());
@@ -3637,46 +4259,98 @@ std::string Ieee80211ActionFrameDescriptor::getFieldValueAsString(void *object, 
     }
 }
 
-bool Ieee80211ActionFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211ActionFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211ActionFrame *pp = (Ieee80211ActionFrame *)object; (void)pp;
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
     switch (field) {
-        case FIELD_category: pp->setCategory(string2long(value)); return true;
-        case FIELD_blockAckAction: pp->setBlockAckAction(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_category: pp->setCategory(string2long(value)); break;
+        case FIELD_blockAckAction: pp->setBlockAckAction(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211ActionFrame'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211ActionFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_category: return pp->getCategory();
+        case FIELD_blockAckAction: return (omnetpp::intval_t)(pp->getBlockAckAction());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211ActionFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211ActionFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_category: pp->setCategory(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_blockAckAction: pp->setBlockAckAction(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211ActionFrame'", field);
     }
 }
 
 const char *Ieee80211ActionFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211ActionFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211ActionFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211ActionFrame *pp = (Ieee80211ActionFrame *)object; (void)pp;
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211ActionFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211ActionFrame *pp = omnetpp::fromAnyPtr<Ieee80211ActionFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211ActionFrame'", field);
     }
 }
 
@@ -3728,23 +4402,23 @@ void Ieee80211MsduSubframeHeader::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->length);
 }
 
-const MacAddress& Ieee80211MsduSubframeHeader::getSa() const
+const ::inet::MacAddress& Ieee80211MsduSubframeHeader::getSa() const
 {
     return this->sa;
 }
 
-void Ieee80211MsduSubframeHeader::setSa(const MacAddress& sa)
+void Ieee80211MsduSubframeHeader::setSa(const ::inet::MacAddress& sa)
 {
     handleChange();
     this->sa = sa;
 }
 
-const MacAddress& Ieee80211MsduSubframeHeader::getDa() const
+const ::inet::MacAddress& Ieee80211MsduSubframeHeader::getDa() const
 {
     return this->da;
 }
 
-void Ieee80211MsduSubframeHeader::setDa(const MacAddress& da)
+void Ieee80211MsduSubframeHeader::setDa(const ::inet::MacAddress& da)
 {
     handleChange();
     this->da = da;
@@ -3764,7 +4438,7 @@ void Ieee80211MsduSubframeHeader::setLength(int length)
 class Ieee80211MsduSubframeHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_sa,
         FIELD_da,
@@ -3776,34 +4450,38 @@ class Ieee80211MsduSubframeHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MsduSubframeHeaderDescriptor)
 
 Ieee80211MsduSubframeHeaderDescriptor::Ieee80211MsduSubframeHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MsduSubframeHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MsduSubframeHeaderDescriptor::~Ieee80211MsduSubframeHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MsduSubframeHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3813,34 +4491,34 @@ bool Ieee80211MsduSubframeHeaderDescriptor::doesSupport(omnetpp::cObject *obj) c
 
 const char **Ieee80211MsduSubframeHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MsduSubframeHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MsduSubframeHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MsduSubframeHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ieee80211MsduSubframeHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_sa
@@ -3852,11 +4530,11 @@ unsigned int Ieee80211MsduSubframeHeaderDescriptor::getFieldTypeFlags(int field)
 
 const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "sa",
@@ -3868,21 +4546,21 @@ const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211MsduSubframeHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sa") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "da") == 0) return base+1;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "sa") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "da") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_sa
@@ -3894,67 +4572,83 @@ const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldTypeString(int field)
 
 const char **Ieee80211MsduSubframeHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211MsduSubframeHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MsduSubframeHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MsduSubframeHeader *pp = (Ieee80211MsduSubframeHeader *)object; (void)pp;
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MsduSubframeHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MsduSubframeHeader *pp = (Ieee80211MsduSubframeHeader *)object; (void)pp;
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MsduSubframeHeader'", field);
+    }
+}
+
+const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MsduSubframeHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MsduSubframeHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MsduSubframeHeader *pp = (Ieee80211MsduSubframeHeader *)object; (void)pp;
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
     switch (field) {
         case FIELD_sa: return pp->getSa().str();
         case FIELD_da: return pp->getDa().str();
@@ -3963,47 +4657,99 @@ std::string Ieee80211MsduSubframeHeaderDescriptor::getFieldValueAsString(void *o
     }
 }
 
-bool Ieee80211MsduSubframeHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MsduSubframeHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MsduSubframeHeader *pp = (Ieee80211MsduSubframeHeader *)object; (void)pp;
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_length: pp->setLength(string2long(value)); return true;
-        default: return false;
+        case FIELD_length: pp->setLength(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MsduSubframeHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MsduSubframeHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_sa: return omnetpp::toAnyPtr(&pp->getSa()); break;
+        case FIELD_da: return omnetpp::toAnyPtr(&pp->getDa()); break;
+        case FIELD_length: return pp->getLength();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MsduSubframeHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MsduSubframeHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MsduSubframeHeader'", field);
     }
 }
 
 const char *Ieee80211MsduSubframeHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211MsduSubframeHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MsduSubframeHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MsduSubframeHeader *pp = (Ieee80211MsduSubframeHeader *)object; (void)pp;
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_sa: return toVoidPtr(&pp->getSa()); break;
-        case FIELD_da: return toVoidPtr(&pp->getDa()); break;
-        default: return nullptr;
+        case FIELD_sa: return omnetpp::toAnyPtr(&pp->getSa()); break;
+        case FIELD_da: return omnetpp::toAnyPtr(&pp->getDa()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MsduSubframeHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MsduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MsduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MsduSubframeHeader'", field);
     }
 }
 
@@ -4063,7 +4809,7 @@ void Ieee80211MpduSubframeHeader::setLength(int length)
 class Ieee80211MpduSubframeHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_length,
     };
@@ -4073,34 +4819,38 @@ class Ieee80211MpduSubframeHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MpduSubframeHeaderDescriptor)
 
 Ieee80211MpduSubframeHeaderDescriptor::Ieee80211MpduSubframeHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MpduSubframeHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MpduSubframeHeaderDescriptor::~Ieee80211MpduSubframeHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MpduSubframeHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4110,34 +4860,34 @@ bool Ieee80211MpduSubframeHeaderDescriptor::doesSupport(omnetpp::cObject *obj) c
 
 const char **Ieee80211MpduSubframeHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MpduSubframeHeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MpduSubframeHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MpduSubframeHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ieee80211MpduSubframeHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_length
@@ -4147,11 +4897,11 @@ unsigned int Ieee80211MpduSubframeHeaderDescriptor::getFieldTypeFlags(int field)
 
 const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "length",
@@ -4161,19 +4911,19 @@ const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldName(int field) const
 
 int Ieee80211MpduSubframeHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_length
@@ -4183,112 +4933,178 @@ const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldTypeString(int field)
 
 const char **Ieee80211MpduSubframeHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211MpduSubframeHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MpduSubframeHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MpduSubframeHeader *pp = (Ieee80211MpduSubframeHeader *)object; (void)pp;
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MpduSubframeHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MpduSubframeHeader *pp = (Ieee80211MpduSubframeHeader *)object; (void)pp;
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MpduSubframeHeader'", field);
+    }
+}
+
+const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MpduSubframeHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MpduSubframeHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MpduSubframeHeader *pp = (Ieee80211MpduSubframeHeader *)object; (void)pp;
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
     switch (field) {
         case FIELD_length: return long2string(pp->getLength());
         default: return "";
     }
 }
 
-bool Ieee80211MpduSubframeHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MpduSubframeHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MpduSubframeHeader *pp = (Ieee80211MpduSubframeHeader *)object; (void)pp;
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_length: pp->setLength(string2long(value)); return true;
-        default: return false;
+        case FIELD_length: pp->setLength(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MpduSubframeHeader'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MpduSubframeHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: return pp->getLength();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MpduSubframeHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MpduSubframeHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MpduSubframeHeader'", field);
     }
 }
 
 const char *Ieee80211MpduSubframeHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211MpduSubframeHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MpduSubframeHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MpduSubframeHeader *pp = (Ieee80211MpduSubframeHeader *)object; (void)pp;
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MpduSubframeHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MpduSubframeHeader *pp = omnetpp::fromAnyPtr<Ieee80211MpduSubframeHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MpduSubframeHeader'", field);
     }
 }
 
@@ -4412,12 +5228,12 @@ void Ieee80211AddbaRequest::setBufferSize(uint16_t bufferSize)
     this->bufferSize = bufferSize;
 }
 
-omnetpp::simtime_t Ieee80211AddbaRequest::getBlockAckTimeoutValue() const
+::omnetpp::simtime_t Ieee80211AddbaRequest::getBlockAckTimeoutValue() const
 {
     return this->blockAckTimeoutValue;
 }
 
-void Ieee80211AddbaRequest::setBlockAckTimeoutValue(omnetpp::simtime_t blockAckTimeoutValue)
+void Ieee80211AddbaRequest::setBlockAckTimeoutValue(::omnetpp::simtime_t blockAckTimeoutValue)
 {
     handleChange();
     this->blockAckTimeoutValue = blockAckTimeoutValue;
@@ -4434,12 +5250,12 @@ void Ieee80211AddbaRequest::set_fragmentNumber(uint8_t _fragmentNumber)
     this->_fragmentNumber = _fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211AddbaRequest::getStartingSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211AddbaRequest::getStartingSequenceNumber() const
 {
     return this->startingSequenceNumber;
 }
 
-void Ieee80211AddbaRequest::setStartingSequenceNumber(const SequenceNumber& startingSequenceNumber)
+void Ieee80211AddbaRequest::setStartingSequenceNumber(const ::inet::SequenceNumber& startingSequenceNumber)
 {
     handleChange();
     this->startingSequenceNumber = startingSequenceNumber;
@@ -4448,7 +5264,7 @@ void Ieee80211AddbaRequest::setStartingSequenceNumber(const SequenceNumber& star
 class Ieee80211AddbaRequestDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_dialogToken,
         FIELD_aMsduSupported,
@@ -4465,34 +5281,38 @@ class Ieee80211AddbaRequestDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211AddbaRequestDescriptor)
 
 Ieee80211AddbaRequestDescriptor::Ieee80211AddbaRequestDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211AddbaRequest)), "inet::ieee80211::Ieee80211ActionFrame")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211AddbaRequestDescriptor::~Ieee80211AddbaRequestDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211AddbaRequestDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4502,34 +5322,34 @@ bool Ieee80211AddbaRequestDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211AddbaRequestDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211AddbaRequestDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211AddbaRequestDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211AddbaRequestDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 8+basedesc->getFieldCount() : 8;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 8+base->getFieldCount() : 8;
 }
 
 unsigned int Ieee80211AddbaRequestDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_dialogToken
@@ -4537,7 +5357,7 @@ unsigned int Ieee80211AddbaRequestDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_blockAckPolicy
         FD_ISEDITABLE,    // FIELD_tid
         FD_ISEDITABLE,    // FIELD_bufferSize
-        0,    // FIELD_blockAckTimeoutValue
+        FD_ISEDITABLE,    // FIELD_blockAckTimeoutValue
         FD_ISEDITABLE,    // FIELD__fragmentNumber
         0,    // FIELD_startingSequenceNumber
     };
@@ -4546,11 +5366,11 @@ unsigned int Ieee80211AddbaRequestDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211AddbaRequestDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "dialogToken",
@@ -4567,26 +5387,26 @@ const char *Ieee80211AddbaRequestDescriptor::getFieldName(int field) const
 
 int Ieee80211AddbaRequestDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dialogToken") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "aMsduSupported") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckPolicy") == 0) return base+2;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tid") == 0) return base+3;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bufferSize") == 0) return base+4;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckTimeoutValue") == 0) return base+5;
-    if (fieldName[0] == '_' && strcmp(fieldName, "_fragmentNumber") == 0) return base+6;
-    if (fieldName[0] == 's' && strcmp(fieldName, "startingSequenceNumber") == 0) return base+7;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "dialogToken") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "aMsduSupported") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "blockAckPolicy") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "tid") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "bufferSize") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "blockAckTimeoutValue") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "_fragmentNumber") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "startingSequenceNumber") == 0) return baseIndex + 7;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211AddbaRequestDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_dialogToken
@@ -4603,67 +5423,83 @@ const char *Ieee80211AddbaRequestDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211AddbaRequestDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211AddbaRequestDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211AddbaRequestDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211AddbaRequestDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211AddbaRequestDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaRequest *pp = (Ieee80211AddbaRequest *)object; (void)pp;
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211AddbaRequestDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211AddbaRequestDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaRequest *pp = (Ieee80211AddbaRequest *)object; (void)pp;
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211AddbaRequest'", field);
+    }
+}
+
+const char *Ieee80211AddbaRequestDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211AddbaRequestDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211AddbaRequestDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaRequest *pp = (Ieee80211AddbaRequest *)object; (void)pp;
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
     switch (field) {
         case FIELD_dialogToken: return ulong2string(pp->getDialogToken());
         case FIELD_aMsduSupported: return bool2string(pp->getAMsduSupported());
@@ -4672,56 +5508,120 @@ std::string Ieee80211AddbaRequestDescriptor::getFieldValueAsString(void *object,
         case FIELD_bufferSize: return ulong2string(pp->getBufferSize());
         case FIELD_blockAckTimeoutValue: return simtime2string(pp->getBlockAckTimeoutValue());
         case FIELD__fragmentNumber: return ulong2string(pp->get_fragmentNumber());
-        case FIELD_startingSequenceNumber: {std::stringstream out; out << pp->getStartingSequenceNumber(); return out.str();}
+        case FIELD_startingSequenceNumber: return "";
         default: return "";
     }
 }
 
-bool Ieee80211AddbaRequestDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211AddbaRequestDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaRequest *pp = (Ieee80211AddbaRequest *)object; (void)pp;
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
     switch (field) {
-        case FIELD_dialogToken: pp->setDialogToken(string2ulong(value)); return true;
-        case FIELD_aMsduSupported: pp->setAMsduSupported(string2bool(value)); return true;
-        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); return true;
-        case FIELD_tid: pp->setTid(string2ulong(value)); return true;
-        case FIELD_bufferSize: pp->setBufferSize(string2ulong(value)); return true;
-        case FIELD__fragmentNumber: pp->set_fragmentNumber(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_dialogToken: pp->setDialogToken(string2ulong(value)); break;
+        case FIELD_aMsduSupported: pp->setAMsduSupported(string2bool(value)); break;
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); break;
+        case FIELD_tid: pp->setTid(string2ulong(value)); break;
+        case FIELD_bufferSize: pp->setBufferSize(string2ulong(value)); break;
+        case FIELD_blockAckTimeoutValue: pp->setBlockAckTimeoutValue(string2simtime(value)); break;
+        case FIELD__fragmentNumber: pp->set_fragmentNumber(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaRequest'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211AddbaRequestDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
+    switch (field) {
+        case FIELD_dialogToken: return (omnetpp::intval_t)(pp->getDialogToken());
+        case FIELD_aMsduSupported: return pp->getAMsduSupported();
+        case FIELD_blockAckPolicy: return pp->getBlockAckPolicy();
+        case FIELD_tid: return (omnetpp::intval_t)(pp->getTid());
+        case FIELD_bufferSize: return (omnetpp::intval_t)(pp->getBufferSize());
+        case FIELD_blockAckTimeoutValue: return pp->getBlockAckTimeoutValue().dbl();
+        case FIELD__fragmentNumber: return (omnetpp::intval_t)(pp->get_fragmentNumber());
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211AddbaRequest' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211AddbaRequestDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
+    switch (field) {
+        case FIELD_dialogToken: pp->setDialogToken(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_aMsduSupported: pp->setAMsduSupported(value.boolValue()); break;
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(value.boolValue()); break;
+        case FIELD_tid: pp->setTid(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_bufferSize: pp->setBufferSize(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_blockAckTimeoutValue: pp->setBlockAckTimeoutValue(value.doubleValue()); break;
+        case FIELD__fragmentNumber: pp->set_fragmentNumber(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaRequest'", field);
     }
 }
 
 const char *Ieee80211AddbaRequestDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211AddbaRequestDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211AddbaRequestDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaRequest *pp = (Ieee80211AddbaRequest *)object; (void)pp;
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
     switch (field) {
-        case FIELD_startingSequenceNumber: return toVoidPtr(&pp->getStartingSequenceNumber()); break;
-        default: return nullptr;
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211AddbaRequestDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaRequest *pp = omnetpp::fromAnyPtr<Ieee80211AddbaRequest>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaRequest'", field);
     }
 }
 
@@ -4853,12 +5753,12 @@ void Ieee80211AddbaResponse::setBufferSize(uint16_t bufferSize)
     this->bufferSize = bufferSize;
 }
 
-omnetpp::simtime_t Ieee80211AddbaResponse::getBlockAckTimeoutValue() const
+::omnetpp::simtime_t Ieee80211AddbaResponse::getBlockAckTimeoutValue() const
 {
     return this->blockAckTimeoutValue;
 }
 
-void Ieee80211AddbaResponse::setBlockAckTimeoutValue(omnetpp::simtime_t blockAckTimeoutValue)
+void Ieee80211AddbaResponse::setBlockAckTimeoutValue(::omnetpp::simtime_t blockAckTimeoutValue)
 {
     handleChange();
     this->blockAckTimeoutValue = blockAckTimeoutValue;
@@ -4867,7 +5767,7 @@ void Ieee80211AddbaResponse::setBlockAckTimeoutValue(omnetpp::simtime_t blockAck
 class Ieee80211AddbaResponseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_dialogToken,
         FIELD_statusCode,
@@ -4883,34 +5783,38 @@ class Ieee80211AddbaResponseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211AddbaResponseDescriptor)
 
 Ieee80211AddbaResponseDescriptor::Ieee80211AddbaResponseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211AddbaResponse)), "inet::ieee80211::Ieee80211ActionFrame")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211AddbaResponseDescriptor::~Ieee80211AddbaResponseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211AddbaResponseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4920,34 +5824,34 @@ bool Ieee80211AddbaResponseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211AddbaResponseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211AddbaResponseDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211AddbaResponseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211AddbaResponseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int Ieee80211AddbaResponseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_dialogToken
@@ -4956,18 +5860,18 @@ unsigned int Ieee80211AddbaResponseDescriptor::getFieldTypeFlags(int field) cons
         FD_ISEDITABLE,    // FIELD_blockAckPolicy
         FD_ISEDITABLE,    // FIELD_tid
         FD_ISEDITABLE,    // FIELD_bufferSize
-        0,    // FIELD_blockAckTimeoutValue
+        FD_ISEDITABLE,    // FIELD_blockAckTimeoutValue
     };
     return (field >= 0 && field < 7) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ieee80211AddbaResponseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "dialogToken",
@@ -4983,25 +5887,25 @@ const char *Ieee80211AddbaResponseDescriptor::getFieldName(int field) const
 
 int Ieee80211AddbaResponseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dialogToken") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "statusCode") == 0) return base+1;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "aMsduSupported") == 0) return base+2;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckPolicy") == 0) return base+3;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tid") == 0) return base+4;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bufferSize") == 0) return base+5;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckTimeoutValue") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "dialogToken") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "statusCode") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "aMsduSupported") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "blockAckPolicy") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "tid") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "bufferSize") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "blockAckTimeoutValue") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211AddbaResponseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_dialogToken
@@ -5017,67 +5921,83 @@ const char *Ieee80211AddbaResponseDescriptor::getFieldTypeString(int field) cons
 
 const char **Ieee80211AddbaResponseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211AddbaResponseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211AddbaResponseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211AddbaResponseDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211AddbaResponseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaResponse *pp = (Ieee80211AddbaResponse *)object; (void)pp;
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211AddbaResponseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211AddbaResponseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaResponse *pp = (Ieee80211AddbaResponse *)object; (void)pp;
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211AddbaResponse'", field);
+    }
+}
+
+const char *Ieee80211AddbaResponseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211AddbaResponseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211AddbaResponseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaResponse *pp = (Ieee80211AddbaResponse *)object; (void)pp;
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
     switch (field) {
         case FIELD_dialogToken: return ulong2string(pp->getDialogToken());
         case FIELD_statusCode: return ulong2string(pp->getStatusCode());
@@ -5090,50 +6010,113 @@ std::string Ieee80211AddbaResponseDescriptor::getFieldValueAsString(void *object
     }
 }
 
-bool Ieee80211AddbaResponseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211AddbaResponseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaResponse *pp = (Ieee80211AddbaResponse *)object; (void)pp;
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
     switch (field) {
-        case FIELD_dialogToken: pp->setDialogToken(string2ulong(value)); return true;
-        case FIELD_statusCode: pp->setStatusCode(string2ulong(value)); return true;
-        case FIELD_aMsduSupported: pp->setAMsduSupported(string2bool(value)); return true;
-        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); return true;
-        case FIELD_tid: pp->setTid(string2ulong(value)); return true;
-        case FIELD_bufferSize: pp->setBufferSize(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_dialogToken: pp->setDialogToken(string2ulong(value)); break;
+        case FIELD_statusCode: pp->setStatusCode(string2ulong(value)); break;
+        case FIELD_aMsduSupported: pp->setAMsduSupported(string2bool(value)); break;
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); break;
+        case FIELD_tid: pp->setTid(string2ulong(value)); break;
+        case FIELD_bufferSize: pp->setBufferSize(string2ulong(value)); break;
+        case FIELD_blockAckTimeoutValue: pp->setBlockAckTimeoutValue(string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaResponse'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211AddbaResponseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
+    switch (field) {
+        case FIELD_dialogToken: return (omnetpp::intval_t)(pp->getDialogToken());
+        case FIELD_statusCode: return (omnetpp::intval_t)(pp->getStatusCode());
+        case FIELD_aMsduSupported: return pp->getAMsduSupported();
+        case FIELD_blockAckPolicy: return pp->getBlockAckPolicy();
+        case FIELD_tid: return (omnetpp::intval_t)(pp->getTid());
+        case FIELD_bufferSize: return (omnetpp::intval_t)(pp->getBufferSize());
+        case FIELD_blockAckTimeoutValue: return pp->getBlockAckTimeoutValue().dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211AddbaResponse' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211AddbaResponseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
+    switch (field) {
+        case FIELD_dialogToken: pp->setDialogToken(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_statusCode: pp->setStatusCode(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_aMsduSupported: pp->setAMsduSupported(value.boolValue()); break;
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(value.boolValue()); break;
+        case FIELD_tid: pp->setTid(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_bufferSize: pp->setBufferSize(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_blockAckTimeoutValue: pp->setBlockAckTimeoutValue(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaResponse'", field);
     }
 }
 
 const char *Ieee80211AddbaResponseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211AddbaResponseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211AddbaResponseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211AddbaResponse *pp = (Ieee80211AddbaResponse *)object; (void)pp;
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211AddbaResponseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211AddbaResponse *pp = omnetpp::fromAnyPtr<Ieee80211AddbaResponse>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211AddbaResponse'", field);
     }
 }
 
@@ -5237,7 +6220,7 @@ void Ieee80211Delba::setReasonCode(uint16_t reasonCode)
 class Ieee80211DelbaDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_reserved,
         FIELD_initiator,
@@ -5250,34 +6233,38 @@ class Ieee80211DelbaDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211DelbaDescriptor)
 
 Ieee80211DelbaDescriptor::Ieee80211DelbaDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211Delba)), "inet::ieee80211::Ieee80211ActionFrame")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211DelbaDescriptor::~Ieee80211DelbaDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211DelbaDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5287,34 +6274,34 @@ bool Ieee80211DelbaDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211DelbaDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211DelbaDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211DelbaDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211DelbaDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211DelbaDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_reserved
@@ -5327,11 +6314,11 @@ unsigned int Ieee80211DelbaDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211DelbaDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "reserved",
@@ -5344,22 +6331,22 @@ const char *Ieee80211DelbaDescriptor::getFieldName(int field) const
 
 int Ieee80211DelbaDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initiator") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tid") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reasonCode") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "initiator") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "tid") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "reasonCode") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211DelbaDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_reserved
@@ -5372,67 +6359,83 @@ const char *Ieee80211DelbaDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211DelbaDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211DelbaDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211DelbaDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211DelbaDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211DelbaDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211Delba *pp = (Ieee80211Delba *)object; (void)pp;
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211DelbaDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211DelbaDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211Delba *pp = (Ieee80211Delba *)object; (void)pp;
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211Delba'", field);
+    }
+}
+
+const char *Ieee80211DelbaDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211DelbaDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211DelbaDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211Delba *pp = (Ieee80211Delba *)object; (void)pp;
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
     switch (field) {
         case FIELD_reserved: return ulong2string(pp->getReserved());
         case FIELD_initiator: return bool2string(pp->getInitiator());
@@ -5442,48 +6445,104 @@ std::string Ieee80211DelbaDescriptor::getFieldValueAsString(void *object, int fi
     }
 }
 
-bool Ieee80211DelbaDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211DelbaDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211Delba *pp = (Ieee80211Delba *)object; (void)pp;
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
     switch (field) {
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_initiator: pp->setInitiator(string2bool(value)); return true;
-        case FIELD_tid: pp->setTid(string2ulong(value)); return true;
-        case FIELD_reasonCode: pp->setReasonCode(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_initiator: pp->setInitiator(string2bool(value)); break;
+        case FIELD_tid: pp->setTid(string2ulong(value)); break;
+        case FIELD_reasonCode: pp->setReasonCode(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211Delba'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211DelbaDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_initiator: return pp->getInitiator();
+        case FIELD_tid: return (omnetpp::intval_t)(pp->getTid());
+        case FIELD_reasonCode: return (omnetpp::intval_t)(pp->getReasonCode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211Delba' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211DelbaDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
+    switch (field) {
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_initiator: pp->setInitiator(value.boolValue()); break;
+        case FIELD_tid: pp->setTid(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_reasonCode: pp->setReasonCode(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211Delba'", field);
     }
 }
 
 const char *Ieee80211DelbaDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211DelbaDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211DelbaDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211Delba *pp = (Ieee80211Delba *)object; (void)pp;
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211DelbaDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211Delba *pp = omnetpp::fromAnyPtr<Ieee80211Delba>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211Delba'", field);
     }
 }
 
@@ -5585,7 +6644,7 @@ void Ieee80211BlockAckReq::setReserved(uint16_t reserved)
 class Ieee80211BlockAckReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_multiTid,
         FIELD_compressedBitmap,
@@ -5598,34 +6657,38 @@ class Ieee80211BlockAckReqDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211BlockAckReqDescriptor)
 
 Ieee80211BlockAckReqDescriptor::Ieee80211BlockAckReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211BlockAckReq)), "inet::ieee80211::Ieee80211TwoAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211BlockAckReqDescriptor::~Ieee80211BlockAckReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211BlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5635,34 +6698,34 @@ bool Ieee80211BlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211BlockAckReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211BlockAckReqDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211BlockAckReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211BlockAckReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211BlockAckReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_multiTid
@@ -5675,11 +6738,11 @@ unsigned int Ieee80211BlockAckReqDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211BlockAckReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "multiTid",
@@ -5692,22 +6755,22 @@ const char *Ieee80211BlockAckReqDescriptor::getFieldName(int field) const
 
 int Ieee80211BlockAckReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "multiTid") == 0) return base+0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "compressedBitmap") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "barAckPolicy") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "multiTid") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "compressedBitmap") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "barAckPolicy") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211BlockAckReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_multiTid
@@ -5720,67 +6783,83 @@ const char *Ieee80211BlockAckReqDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211BlockAckReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211BlockAckReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211BlockAckReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211BlockAckReqDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211BlockAckReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAckReq *pp = (Ieee80211BlockAckReq *)object; (void)pp;
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211BlockAckReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211BlockAckReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAckReq *pp = (Ieee80211BlockAckReq *)object; (void)pp;
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211BlockAckReq'", field);
+    }
+}
+
+const char *Ieee80211BlockAckReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211BlockAckReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211BlockAckReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAckReq *pp = (Ieee80211BlockAckReq *)object; (void)pp;
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
     switch (field) {
         case FIELD_multiTid: return bool2string(pp->getMultiTid());
         case FIELD_compressedBitmap: return bool2string(pp->getCompressedBitmap());
@@ -5790,48 +6869,104 @@ std::string Ieee80211BlockAckReqDescriptor::getFieldValueAsString(void *object, 
     }
 }
 
-bool Ieee80211BlockAckReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211BlockAckReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAckReq *pp = (Ieee80211BlockAckReq *)object; (void)pp;
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
     switch (field) {
-        case FIELD_multiTid: pp->setMultiTid(string2bool(value)); return true;
-        case FIELD_compressedBitmap: pp->setCompressedBitmap(string2bool(value)); return true;
-        case FIELD_barAckPolicy: pp->setBarAckPolicy(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_multiTid: pp->setMultiTid(string2bool(value)); break;
+        case FIELD_compressedBitmap: pp->setCompressedBitmap(string2bool(value)); break;
+        case FIELD_barAckPolicy: pp->setBarAckPolicy(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAckReq'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211BlockAckReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_multiTid: return pp->getMultiTid();
+        case FIELD_compressedBitmap: return pp->getCompressedBitmap();
+        case FIELD_barAckPolicy: return pp->getBarAckPolicy();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211BlockAckReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211BlockAckReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_multiTid: pp->setMultiTid(value.boolValue()); break;
+        case FIELD_compressedBitmap: pp->setCompressedBitmap(value.boolValue()); break;
+        case FIELD_barAckPolicy: pp->setBarAckPolicy(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAckReq'", field);
     }
 }
 
 const char *Ieee80211BlockAckReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211BlockAckReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211BlockAckReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAckReq *pp = (Ieee80211BlockAckReq *)object; (void)pp;
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211BlockAckReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAckReq'", field);
     }
 }
 
@@ -5907,12 +7042,12 @@ void Ieee80211BasicBlockAckReq::setFragmentNumber(int fragmentNumber)
     this->fragmentNumber = fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211BasicBlockAckReq::getStartingSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211BasicBlockAckReq::getStartingSequenceNumber() const
 {
     return this->startingSequenceNumber;
 }
 
-void Ieee80211BasicBlockAckReq::setStartingSequenceNumber(const SequenceNumber& startingSequenceNumber)
+void Ieee80211BasicBlockAckReq::setStartingSequenceNumber(const ::inet::SequenceNumber& startingSequenceNumber)
 {
     handleChange();
     this->startingSequenceNumber = startingSequenceNumber;
@@ -5921,7 +7056,7 @@ void Ieee80211BasicBlockAckReq::setStartingSequenceNumber(const SequenceNumber& 
 class Ieee80211BasicBlockAckReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_tidInfo,
         FIELD_fragmentNumber,
@@ -5933,34 +7068,38 @@ class Ieee80211BasicBlockAckReqDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211BasicBlockAckReqDescriptor)
 
 Ieee80211BasicBlockAckReqDescriptor::Ieee80211BasicBlockAckReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211BasicBlockAckReq)), "inet::ieee80211::Ieee80211BlockAckReq")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211BasicBlockAckReqDescriptor::~Ieee80211BasicBlockAckReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211BasicBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5970,34 +7109,34 @@ bool Ieee80211BasicBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ieee80211BasicBlockAckReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211BasicBlockAckReqDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211BasicBlockAckReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211BasicBlockAckReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ieee80211BasicBlockAckReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_tidInfo
@@ -6009,11 +7148,11 @@ unsigned int Ieee80211BasicBlockAckReqDescriptor::getFieldTypeFlags(int field) c
 
 const char *Ieee80211BasicBlockAckReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "tidInfo",
@@ -6025,21 +7164,21 @@ const char *Ieee80211BasicBlockAckReqDescriptor::getFieldName(int field) const
 
 int Ieee80211BasicBlockAckReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tidInfo") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentNumber") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "startingSequenceNumber") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "tidInfo") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fragmentNumber") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "startingSequenceNumber") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211BasicBlockAckReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_tidInfo
@@ -6051,116 +7190,185 @@ const char *Ieee80211BasicBlockAckReqDescriptor::getFieldTypeString(int field) c
 
 const char **Ieee80211BasicBlockAckReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211BasicBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211BasicBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211BasicBlockAckReqDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211BasicBlockAckReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAckReq *pp = (Ieee80211BasicBlockAckReq *)object; (void)pp;
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211BasicBlockAckReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211BasicBlockAckReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAckReq *pp = (Ieee80211BasicBlockAckReq *)object; (void)pp;
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211BasicBlockAckReq'", field);
+    }
+}
+
+const char *Ieee80211BasicBlockAckReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211BasicBlockAckReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211BasicBlockAckReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAckReq *pp = (Ieee80211BasicBlockAckReq *)object; (void)pp;
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
     switch (field) {
         case FIELD_tidInfo: return long2string(pp->getTidInfo());
         case FIELD_fragmentNumber: return long2string(pp->getFragmentNumber());
-        case FIELD_startingSequenceNumber: {std::stringstream out; out << pp->getStartingSequenceNumber(); return out.str();}
+        case FIELD_startingSequenceNumber: return "";
         default: return "";
     }
 }
 
-bool Ieee80211BasicBlockAckReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211BasicBlockAckReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAckReq *pp = (Ieee80211BasicBlockAckReq *)object; (void)pp;
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
     switch (field) {
-        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); return true;
-        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); return true;
-        default: return false;
+        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); break;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAckReq'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211BasicBlockAckReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_tidInfo: return pp->getTidInfo();
+        case FIELD_fragmentNumber: return pp->getFragmentNumber();
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211BasicBlockAckReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211BasicBlockAckReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_tidInfo: pp->setTidInfo(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAckReq'", field);
     }
 }
 
 const char *Ieee80211BasicBlockAckReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211BasicBlockAckReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211BasicBlockAckReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAckReq *pp = (Ieee80211BasicBlockAckReq *)object; (void)pp;
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
     switch (field) {
-        case FIELD_startingSequenceNumber: return toVoidPtr(&pp->getStartingSequenceNumber()); break;
-        default: return nullptr;
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211BasicBlockAckReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAckReq'", field);
     }
 }
 
@@ -6236,12 +7444,12 @@ void Ieee80211CompressedBlockAckReq::setFragmentNumber(int fragmentNumber)
     this->fragmentNumber = fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211CompressedBlockAckReq::getStartingSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211CompressedBlockAckReq::getStartingSequenceNumber() const
 {
     return this->startingSequenceNumber;
 }
 
-void Ieee80211CompressedBlockAckReq::setStartingSequenceNumber(const SequenceNumber& startingSequenceNumber)
+void Ieee80211CompressedBlockAckReq::setStartingSequenceNumber(const ::inet::SequenceNumber& startingSequenceNumber)
 {
     handleChange();
     this->startingSequenceNumber = startingSequenceNumber;
@@ -6250,7 +7458,7 @@ void Ieee80211CompressedBlockAckReq::setStartingSequenceNumber(const SequenceNum
 class Ieee80211CompressedBlockAckReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_tidInfo,
         FIELD_fragmentNumber,
@@ -6262,34 +7470,38 @@ class Ieee80211CompressedBlockAckReqDescriptor : public omnetpp::cClassDescripto
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211CompressedBlockAckReqDescriptor)
 
 Ieee80211CompressedBlockAckReqDescriptor::Ieee80211CompressedBlockAckReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211CompressedBlockAckReq)), "inet::ieee80211::Ieee80211BlockAckReq")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211CompressedBlockAckReqDescriptor::~Ieee80211CompressedBlockAckReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211CompressedBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -6299,34 +7511,34 @@ bool Ieee80211CompressedBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj
 
 const char **Ieee80211CompressedBlockAckReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211CompressedBlockAckReqDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211CompressedBlockAckReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211CompressedBlockAckReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Ieee80211CompressedBlockAckReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_tidInfo
@@ -6338,11 +7550,11 @@ unsigned int Ieee80211CompressedBlockAckReqDescriptor::getFieldTypeFlags(int fie
 
 const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "tidInfo",
@@ -6354,21 +7566,21 @@ const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldName(int field) co
 
 int Ieee80211CompressedBlockAckReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tidInfo") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentNumber") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "startingSequenceNumber") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "tidInfo") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fragmentNumber") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "startingSequenceNumber") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_tidInfo
@@ -6380,116 +7592,185 @@ const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldTypeString(int fie
 
 const char **Ieee80211CompressedBlockAckReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211CompressedBlockAckReqDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211CompressedBlockAckReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAckReq *pp = (Ieee80211CompressedBlockAckReq *)object; (void)pp;
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211CompressedBlockAckReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAckReq *pp = (Ieee80211CompressedBlockAckReq *)object; (void)pp;
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211CompressedBlockAckReq'", field);
+    }
+}
+
+const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211CompressedBlockAckReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211CompressedBlockAckReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAckReq *pp = (Ieee80211CompressedBlockAckReq *)object; (void)pp;
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
     switch (field) {
         case FIELD_tidInfo: return long2string(pp->getTidInfo());
         case FIELD_fragmentNumber: return long2string(pp->getFragmentNumber());
-        case FIELD_startingSequenceNumber: {std::stringstream out; out << pp->getStartingSequenceNumber(); return out.str();}
+        case FIELD_startingSequenceNumber: return "";
         default: return "";
     }
 }
 
-bool Ieee80211CompressedBlockAckReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211CompressedBlockAckReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAckReq *pp = (Ieee80211CompressedBlockAckReq *)object; (void)pp;
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
     switch (field) {
-        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); return true;
-        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); return true;
-        default: return false;
+        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); break;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAckReq'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211CompressedBlockAckReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_tidInfo: return pp->getTidInfo();
+        case FIELD_fragmentNumber: return pp->getFragmentNumber();
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211CompressedBlockAckReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211CompressedBlockAckReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
+    switch (field) {
+        case FIELD_tidInfo: pp->setTidInfo(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAckReq'", field);
     }
 }
 
 const char *Ieee80211CompressedBlockAckReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211CompressedBlockAckReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211CompressedBlockAckReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAckReq *pp = (Ieee80211CompressedBlockAckReq *)object; (void)pp;
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
     switch (field) {
-        case FIELD_startingSequenceNumber: return toVoidPtr(&pp->getStartingSequenceNumber()); break;
-        default: return nullptr;
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211CompressedBlockAckReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAckReq'", field);
     }
 }
 
@@ -6535,7 +7816,7 @@ void Ieee80211MultiTidBlockAckReq::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211MultiTidBlockAckReqDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -6544,34 +7825,38 @@ class Ieee80211MultiTidBlockAckReqDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MultiTidBlockAckReqDescriptor)
 
 Ieee80211MultiTidBlockAckReqDescriptor::Ieee80211MultiTidBlockAckReqDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MultiTidBlockAckReq)), "inet::ieee80211::Ieee80211BlockAckReq")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MultiTidBlockAckReqDescriptor::~Ieee80211MultiTidBlockAckReqDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MultiTidBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -6581,170 +7866,234 @@ bool Ieee80211MultiTidBlockAckReqDescriptor::doesSupport(omnetpp::cObject *obj) 
 
 const char **Ieee80211MultiTidBlockAckReqDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MultiTidBlockAckReqDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MultiTidBlockAckReqDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MultiTidBlockAckReqDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211MultiTidBlockAckReqDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211MultiTidBlockAckReqDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211MultiTidBlockAckReqDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211MultiTidBlockAckReqDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MultiTidBlockAckReqDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAckReq *pp = (Ieee80211MultiTidBlockAckReq *)object; (void)pp;
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MultiTidBlockAckReqDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAckReq *pp = (Ieee80211MultiTidBlockAckReq *)object; (void)pp;
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MultiTidBlockAckReq'", field);
+    }
+}
+
+const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MultiTidBlockAckReqDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MultiTidBlockAckReqDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAckReq *pp = (Ieee80211MultiTidBlockAckReq *)object; (void)pp;
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211MultiTidBlockAckReqDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MultiTidBlockAckReqDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAckReq *pp = (Ieee80211MultiTidBlockAckReq *)object; (void)pp;
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAckReq'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MultiTidBlockAckReqDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MultiTidBlockAckReq' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MultiTidBlockAckReqDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAckReq'", field);
     }
 }
 
 const char *Ieee80211MultiTidBlockAckReqDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211MultiTidBlockAckReqDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MultiTidBlockAckReqDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAckReq *pp = (Ieee80211MultiTidBlockAckReq *)object; (void)pp;
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211MultiTidBlockAckReqDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAckReq *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAckReq>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAckReq'", field);
     }
 }
 
@@ -6846,7 +8195,7 @@ void Ieee80211BlockAck::setReserved(uint16_t reserved)
 class Ieee80211BlockAckDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_blockAckPolicy,
         FIELD_multiTid,
@@ -6859,34 +8208,38 @@ class Ieee80211BlockAckDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211BlockAckDescriptor)
 
 Ieee80211BlockAckDescriptor::Ieee80211BlockAckDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211BlockAck)), "inet::ieee80211::Ieee80211TwoAddressHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211BlockAckDescriptor::~Ieee80211BlockAckDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211BlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -6896,34 +8249,34 @@ bool Ieee80211BlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211BlockAckDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211BlockAckDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211BlockAckDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211BlockAckDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211BlockAckDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_blockAckPolicy
@@ -6936,11 +8289,11 @@ unsigned int Ieee80211BlockAckDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ieee80211BlockAckDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "blockAckPolicy",
@@ -6953,22 +8306,22 @@ const char *Ieee80211BlockAckDescriptor::getFieldName(int field) const
 
 int Ieee80211BlockAckDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckPolicy") == 0) return base+0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "multiTid") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "compressedBitmap") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "blockAckPolicy") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "multiTid") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "compressedBitmap") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211BlockAckDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_blockAckPolicy
@@ -6981,67 +8334,83 @@ const char *Ieee80211BlockAckDescriptor::getFieldTypeString(int field) const
 
 const char **Ieee80211BlockAckDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211BlockAckDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211BlockAckDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211BlockAckDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211BlockAckDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAck *pp = (Ieee80211BlockAck *)object; (void)pp;
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211BlockAckDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211BlockAckDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAck *pp = (Ieee80211BlockAck *)object; (void)pp;
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211BlockAck'", field);
+    }
+}
+
+const char *Ieee80211BlockAckDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211BlockAckDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211BlockAckDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAck *pp = (Ieee80211BlockAck *)object; (void)pp;
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
     switch (field) {
         case FIELD_blockAckPolicy: return bool2string(pp->getBlockAckPolicy());
         case FIELD_multiTid: return bool2string(pp->getMultiTid());
@@ -7051,48 +8420,104 @@ std::string Ieee80211BlockAckDescriptor::getFieldValueAsString(void *object, int
     }
 }
 
-bool Ieee80211BlockAckDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211BlockAckDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAck *pp = (Ieee80211BlockAck *)object; (void)pp;
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
     switch (field) {
-        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); return true;
-        case FIELD_multiTid: pp->setMultiTid(string2bool(value)); return true;
-        case FIELD_compressedBitmap: pp->setCompressedBitmap(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(string2bool(value)); break;
+        case FIELD_multiTid: pp->setMultiTid(string2bool(value)); break;
+        case FIELD_compressedBitmap: pp->setCompressedBitmap(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAck'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211BlockAckDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_blockAckPolicy: return pp->getBlockAckPolicy();
+        case FIELD_multiTid: return pp->getMultiTid();
+        case FIELD_compressedBitmap: return pp->getCompressedBitmap();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211BlockAck' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211BlockAckDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_blockAckPolicy: pp->setBlockAckPolicy(value.boolValue()); break;
+        case FIELD_multiTid: pp->setMultiTid(value.boolValue()); break;
+        case FIELD_compressedBitmap: pp->setCompressedBitmap(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAck'", field);
     }
 }
 
 const char *Ieee80211BlockAckDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211BlockAckDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211BlockAckDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BlockAck *pp = (Ieee80211BlockAck *)object; (void)pp;
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211BlockAckDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BlockAck'", field);
     }
 }
 
@@ -7162,12 +8587,12 @@ void Ieee80211BasicBlockAck::setFragmentNumber(int fragmentNumber)
     this->fragmentNumber = fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211BasicBlockAck::getStartingSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211BasicBlockAck::getStartingSequenceNumber() const
 {
     return this->startingSequenceNumber;
 }
 
-void Ieee80211BasicBlockAck::setStartingSequenceNumber(const SequenceNumber& startingSequenceNumber)
+void Ieee80211BasicBlockAck::setStartingSequenceNumber(const ::inet::SequenceNumber& startingSequenceNumber)
 {
     handleChange();
     this->startingSequenceNumber = startingSequenceNumber;
@@ -7178,15 +8603,15 @@ size_t Ieee80211BasicBlockAck::getBlockAckBitmapArraySize() const
     return 64;
 }
 
-const BitVector& Ieee80211BasicBlockAck::getBlockAckBitmap(size_t k) const
+const ::inet::BitVector& Ieee80211BasicBlockAck::getBlockAckBitmap(size_t k) const
 {
-    if (k >= 64) throw omnetpp::cRuntimeError("Array of size 64 indexed by %lu", (unsigned long)k);
+    if (k >= 64) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)64, (unsigned long)k);
     return this->blockAckBitmap[k];
 }
 
-void Ieee80211BasicBlockAck::setBlockAckBitmap(size_t k, const BitVector& blockAckBitmap)
+void Ieee80211BasicBlockAck::setBlockAckBitmap(size_t k, const ::inet::BitVector& blockAckBitmap)
 {
-    if (k >= 64) throw omnetpp::cRuntimeError("Array of size 64 indexed by %lu", (unsigned long)k);
+    if (k >= 64) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)64, (unsigned long)k);
     handleChange();
     this->blockAckBitmap[k] = blockAckBitmap;
 }
@@ -7205,7 +8630,7 @@ void Ieee80211BasicBlockAck::setTidInfo(int tidInfo)
 class Ieee80211BasicBlockAckDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_fragmentNumber,
         FIELD_startingSequenceNumber,
@@ -7218,34 +8643,38 @@ class Ieee80211BasicBlockAckDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211BasicBlockAckDescriptor)
 
 Ieee80211BasicBlockAckDescriptor::Ieee80211BasicBlockAckDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211BasicBlockAck)), "inet::ieee80211::Ieee80211BlockAck")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211BasicBlockAckDescriptor::~Ieee80211BasicBlockAckDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211BasicBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7255,34 +8684,34 @@ bool Ieee80211BasicBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ieee80211BasicBlockAckDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211BasicBlockAckDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211BasicBlockAckDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211BasicBlockAckDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211BasicBlockAckDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_fragmentNumber
@@ -7295,11 +8724,11 @@ unsigned int Ieee80211BasicBlockAckDescriptor::getFieldTypeFlags(int field) cons
 
 const char *Ieee80211BasicBlockAckDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "fragmentNumber",
@@ -7312,22 +8741,22 @@ const char *Ieee80211BasicBlockAckDescriptor::getFieldName(int field) const
 
 int Ieee80211BasicBlockAckDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentNumber") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "startingSequenceNumber") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckBitmap") == 0) return base+2;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tidInfo") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "fragmentNumber") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "startingSequenceNumber") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "blockAckBitmap") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "tidInfo") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211BasicBlockAckDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_fragmentNumber
@@ -7340,119 +8769,189 @@ const char *Ieee80211BasicBlockAckDescriptor::getFieldTypeString(int field) cons
 
 const char **Ieee80211BasicBlockAckDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211BasicBlockAckDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211BasicBlockAckDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211BasicBlockAckDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211BasicBlockAckDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAck *pp = (Ieee80211BasicBlockAck *)object; (void)pp;
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
     switch (field) {
         case FIELD_blockAckBitmap: return 64;
         default: return 0;
     }
 }
 
-const char *Ieee80211BasicBlockAckDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211BasicBlockAckDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAck *pp = (Ieee80211BasicBlockAck *)object; (void)pp;
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211BasicBlockAck'", field);
+    }
+}
+
+const char *Ieee80211BasicBlockAckDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211BasicBlockAckDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211BasicBlockAckDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAck *pp = (Ieee80211BasicBlockAck *)object; (void)pp;
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
     switch (field) {
         case FIELD_fragmentNumber: return long2string(pp->getFragmentNumber());
-        case FIELD_startingSequenceNumber: {std::stringstream out; out << pp->getStartingSequenceNumber(); return out.str();}
+        case FIELD_startingSequenceNumber: return "";
         case FIELD_blockAckBitmap: return pp->getBlockAckBitmap(i).toString();
         case FIELD_tidInfo: return long2string(pp->getTidInfo());
         default: return "";
     }
 }
 
-bool Ieee80211BasicBlockAckDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211BasicBlockAckDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAck *pp = (Ieee80211BasicBlockAck *)object; (void)pp;
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
     switch (field) {
-        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); return true;
-        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); return true;
-        default: return false;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); break;
+        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAck'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211BasicBlockAckDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_fragmentNumber: return pp->getFragmentNumber();
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        case FIELD_blockAckBitmap: return omnetpp::toAnyPtr(&pp->getBlockAckBitmap(i)); break;
+        case FIELD_tidInfo: return pp->getTidInfo();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211BasicBlockAck' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211BasicBlockAckDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_fragmentNumber: pp->setFragmentNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_tidInfo: pp->setTidInfo(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAck'", field);
     }
 }
 
 const char *Ieee80211BasicBlockAckDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211BasicBlockAckDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211BasicBlockAckDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211BasicBlockAck *pp = (Ieee80211BasicBlockAck *)object; (void)pp;
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
     switch (field) {
-        case FIELD_startingSequenceNumber: return toVoidPtr(&pp->getStartingSequenceNumber()); break;
-        case FIELD_blockAckBitmap: return toVoidPtr(&pp->getBlockAckBitmap(i)); break;
-        default: return nullptr;
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        case FIELD_blockAckBitmap: return omnetpp::toAnyPtr(&pp->getBlockAckBitmap(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211BasicBlockAckDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211BasicBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211BasicBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211BasicBlockAck'", field);
     }
 }
 
@@ -7519,23 +9018,23 @@ void Ieee80211CompressedBlockAck::setFragmentNumber(int fragmentNumber)
     this->fragmentNumber = fragmentNumber;
 }
 
-const SequenceNumber& Ieee80211CompressedBlockAck::getStartingSequenceNumber() const
+const ::inet::SequenceNumber& Ieee80211CompressedBlockAck::getStartingSequenceNumber() const
 {
     return this->startingSequenceNumber;
 }
 
-void Ieee80211CompressedBlockAck::setStartingSequenceNumber(const SequenceNumber& startingSequenceNumber)
+void Ieee80211CompressedBlockAck::setStartingSequenceNumber(const ::inet::SequenceNumber& startingSequenceNumber)
 {
     handleChange();
     this->startingSequenceNumber = startingSequenceNumber;
 }
 
-const BitVector& Ieee80211CompressedBlockAck::getBlockAckBitmap() const
+const ::inet::BitVector& Ieee80211CompressedBlockAck::getBlockAckBitmap() const
 {
     return this->blockAckBitmap;
 }
 
-void Ieee80211CompressedBlockAck::setBlockAckBitmap(const BitVector& blockAckBitmap)
+void Ieee80211CompressedBlockAck::setBlockAckBitmap(const ::inet::BitVector& blockAckBitmap)
 {
     handleChange();
     this->blockAckBitmap = blockAckBitmap;
@@ -7555,7 +9054,7 @@ void Ieee80211CompressedBlockAck::setTidInfo(int tidInfo)
 class Ieee80211CompressedBlockAckDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_fragmentNumber,
         FIELD_startingSequenceNumber,
@@ -7568,34 +9067,38 @@ class Ieee80211CompressedBlockAckDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211CompressedBlockAckDescriptor)
 
 Ieee80211CompressedBlockAckDescriptor::Ieee80211CompressedBlockAckDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211CompressedBlockAck)), "inet::ieee80211::Ieee80211BlockAck")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211CompressedBlockAckDescriptor::~Ieee80211CompressedBlockAckDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211CompressedBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7605,34 +9108,34 @@ bool Ieee80211CompressedBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) c
 
 const char **Ieee80211CompressedBlockAckDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211CompressedBlockAckDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211CompressedBlockAckDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211CompressedBlockAckDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int Ieee80211CompressedBlockAckDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_fragmentNumber
@@ -7645,11 +9148,11 @@ unsigned int Ieee80211CompressedBlockAckDescriptor::getFieldTypeFlags(int field)
 
 const char *Ieee80211CompressedBlockAckDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "fragmentNumber",
@@ -7662,22 +9165,22 @@ const char *Ieee80211CompressedBlockAckDescriptor::getFieldName(int field) const
 
 int Ieee80211CompressedBlockAckDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentNumber") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "startingSequenceNumber") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "blockAckBitmap") == 0) return base+2;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tidInfo") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "fragmentNumber") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "startingSequenceNumber") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "blockAckBitmap") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "tidInfo") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211CompressedBlockAckDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_fragmentNumber
@@ -7690,118 +9193,188 @@ const char *Ieee80211CompressedBlockAckDescriptor::getFieldTypeString(int field)
 
 const char **Ieee80211CompressedBlockAckDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211CompressedBlockAckDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211CompressedBlockAckDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211CompressedBlockAckDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211CompressedBlockAckDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAck *pp = (Ieee80211CompressedBlockAck *)object; (void)pp;
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211CompressedBlockAckDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211CompressedBlockAckDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAck *pp = (Ieee80211CompressedBlockAck *)object; (void)pp;
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211CompressedBlockAck'", field);
+    }
+}
+
+const char *Ieee80211CompressedBlockAckDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211CompressedBlockAckDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211CompressedBlockAckDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAck *pp = (Ieee80211CompressedBlockAck *)object; (void)pp;
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
     switch (field) {
         case FIELD_fragmentNumber: return long2string(pp->getFragmentNumber());
-        case FIELD_startingSequenceNumber: {std::stringstream out; out << pp->getStartingSequenceNumber(); return out.str();}
+        case FIELD_startingSequenceNumber: return "";
         case FIELD_blockAckBitmap: return pp->getBlockAckBitmap().toString();
         case FIELD_tidInfo: return long2string(pp->getTidInfo());
         default: return "";
     }
 }
 
-bool Ieee80211CompressedBlockAckDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211CompressedBlockAckDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAck *pp = (Ieee80211CompressedBlockAck *)object; (void)pp;
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
     switch (field) {
-        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); return true;
-        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); return true;
-        default: return false;
+        case FIELD_fragmentNumber: pp->setFragmentNumber(string2long(value)); break;
+        case FIELD_tidInfo: pp->setTidInfo(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAck'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211CompressedBlockAckDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_fragmentNumber: return pp->getFragmentNumber();
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        case FIELD_blockAckBitmap: return omnetpp::toAnyPtr(&pp->getBlockAckBitmap()); break;
+        case FIELD_tidInfo: return pp->getTidInfo();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211CompressedBlockAck' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211CompressedBlockAckDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
+    switch (field) {
+        case FIELD_fragmentNumber: pp->setFragmentNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_tidInfo: pp->setTidInfo(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAck'", field);
     }
 }
 
 const char *Ieee80211CompressedBlockAckDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ieee80211CompressedBlockAckDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211CompressedBlockAckDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211CompressedBlockAck *pp = (Ieee80211CompressedBlockAck *)object; (void)pp;
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
     switch (field) {
-        case FIELD_startingSequenceNumber: return toVoidPtr(&pp->getStartingSequenceNumber()); break;
-        case FIELD_blockAckBitmap: return toVoidPtr(&pp->getBlockAckBitmap()); break;
-        default: return nullptr;
+        case FIELD_startingSequenceNumber: return omnetpp::toAnyPtr(&pp->getStartingSequenceNumber()); break;
+        case FIELD_blockAckBitmap: return omnetpp::toAnyPtr(&pp->getBlockAckBitmap()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ieee80211CompressedBlockAckDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211CompressedBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211CompressedBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211CompressedBlockAck'", field);
     }
 }
 
@@ -7847,7 +9420,7 @@ void Ieee80211MultiTidBlockAck::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ieee80211MultiTidBlockAckDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -7856,34 +9429,38 @@ class Ieee80211MultiTidBlockAckDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ieee80211MultiTidBlockAckDescriptor)
 
 Ieee80211MultiTidBlockAckDescriptor::Ieee80211MultiTidBlockAckDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ieee80211::Ieee80211MultiTidBlockAck)), "inet::ieee80211::Ieee80211BlockAck")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ieee80211MultiTidBlockAckDescriptor::~Ieee80211MultiTidBlockAckDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ieee80211MultiTidBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7893,173 +9470,241 @@ bool Ieee80211MultiTidBlockAckDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **Ieee80211MultiTidBlockAckDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ieee80211MultiTidBlockAckDescriptor::getProperty(const char *propertyname) const
+const char *Ieee80211MultiTidBlockAckDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ieee80211MultiTidBlockAckDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ieee80211MultiTidBlockAckDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ieee80211MultiTidBlockAckDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ieee80211MultiTidBlockAckDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ieee80211MultiTidBlockAckDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ieee80211MultiTidBlockAckDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ieee80211MultiTidBlockAckDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ieee80211MultiTidBlockAckDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ieee80211MultiTidBlockAckDescriptor::getFieldArraySize(void *object, int field) const
+int Ieee80211MultiTidBlockAckDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAck *pp = (Ieee80211MultiTidBlockAck *)object; (void)pp;
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ieee80211MultiTidBlockAckDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ieee80211MultiTidBlockAckDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAck *pp = (Ieee80211MultiTidBlockAck *)object; (void)pp;
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ieee80211MultiTidBlockAck'", field);
+    }
+}
+
+const char *Ieee80211MultiTidBlockAckDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ieee80211MultiTidBlockAckDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ieee80211MultiTidBlockAckDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAck *pp = (Ieee80211MultiTidBlockAck *)object; (void)pp;
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ieee80211MultiTidBlockAckDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ieee80211MultiTidBlockAckDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAck *pp = (Ieee80211MultiTidBlockAck *)object; (void)pp;
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAck'", field);
+    }
+}
+
+omnetpp::cValue Ieee80211MultiTidBlockAckDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ieee80211MultiTidBlockAck' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ieee80211MultiTidBlockAckDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAck'", field);
     }
 }
 
 const char *Ieee80211MultiTidBlockAckDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ieee80211MultiTidBlockAckDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ieee80211MultiTidBlockAckDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ieee80211MultiTidBlockAck *pp = (Ieee80211MultiTidBlockAck *)object; (void)pp;
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace ieee80211
-} // namespace inet
+void Ieee80211MultiTidBlockAckDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ieee80211MultiTidBlockAck *pp = omnetpp::fromAnyPtr<Ieee80211MultiTidBlockAck>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ieee80211MultiTidBlockAck'", field);
+    }
+}
+
+}  // namespace ieee80211
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

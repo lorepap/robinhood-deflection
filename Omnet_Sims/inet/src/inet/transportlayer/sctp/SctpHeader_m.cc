@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/transportlayer/sctp/SctpHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/transportlayer/sctp/SctpHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "SctpHeader_m.h"
 
 namespace omnetpp {
@@ -149,64 +150,8 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace sctp {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 SctpHeader_Base::SctpHeader_Base() : ::inet::TransportHeaderBase()
 {
@@ -250,7 +195,7 @@ void SctpHeader_Base::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->crc);
     doParsimPacking(b,this->crcMode);
     doParsimPacking(b,this->headerLength);
-    // field sctpChunks is abstract -- please do packing in customized class
+    // field sctpChunks is abstract or custom -- please do packing in customized class
 }
 
 void SctpHeader_Base::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -263,7 +208,7 @@ void SctpHeader_Base::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->crc);
     doParsimUnpacking(b,this->crcMode);
     doParsimUnpacking(b,this->headerLength);
-    // field sctpChunks is abstract -- please do unpacking in customized class
+    // field sctpChunks is abstract or custom -- please do unpacking in customized class
 }
 
 uint16_t SctpHeader_Base::getSrcPort() const
@@ -321,12 +266,12 @@ void SctpHeader_Base::setCrc(uint32_t crc)
     this->crc = crc;
 }
 
-inet::CrcMode SctpHeader_Base::getCrcMode() const
+::inet::CrcMode SctpHeader_Base::getCrcMode() const
 {
     return this->crcMode;
 }
 
-void SctpHeader_Base::setCrcMode(inet::CrcMode crcMode)
+void SctpHeader_Base::setCrcMode(::inet::CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
@@ -346,7 +291,7 @@ void SctpHeader_Base::setHeaderLength(unsigned short headerLength)
 class SctpHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srcPort,
         FIELD_destPort,
@@ -363,34 +308,38 @@ class SctpHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpHeaderDescriptor)
 
 SctpHeaderDescriptor::SctpHeaderDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpHeader", "inet::TransportHeaderBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpHeaderDescriptor::~SctpHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -400,35 +349,35 @@ bool SctpHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpHeaderDescriptor::getProperty(const char *propertyname) const
+const char *SctpHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 8+basedesc->getFieldCount() : 8;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 8+base->getFieldCount() : 8;
 }
 
 unsigned int SctpHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srcPort
@@ -438,18 +387,18 @@ unsigned int SctpHeaderDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_crc
         0,    // FIELD_crcMode
         FD_ISEDITABLE,    // FIELD_headerLength
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_sctpChunks
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_sctpChunks
     };
     return (field >= 0 && field < 8) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srcPort",
@@ -466,26 +415,26 @@ const char *SctpHeaderDescriptor::getFieldName(int field) const
 
 int SctpHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srcPort") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destPort") == 0) return base+1;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "vTag") == 0) return base+2;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "checksumOk") == 0) return base+3;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crc") == 0) return base+4;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crcMode") == 0) return base+5;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "headerLength") == 0) return base+6;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sctpChunks") == 0) return base+7;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srcPort") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "destPort") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "vTag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "checksumOk") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "crc") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "crcMode") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "headerLength") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "sctpChunks") == 0) return baseIndex + 7;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16",    // FIELD_srcPort
@@ -502,11 +451,11 @@ const char *SctpHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **SctpHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_crcMode: {
@@ -517,61 +466,78 @@ const char **SctpHeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *SctpHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_crcMode:
-            if (!strcmp(propertyname, "enum")) return "inet::CrcMode";
+            if (!strcmp(propertyName, "enum")) return "inet::CrcMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int SctpHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int SctpHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpHeader_Base *pp = (SctpHeader_Base *)object; (void)pp;
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
     switch (field) {
         case FIELD_sctpChunks: return pp->getSctpChunksArraySize();
         default: return 0;
     }
 }
 
-const char *SctpHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeader_Base *pp = (SctpHeader_Base *)object; (void)pp;
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunks: pp->setSctpChunksArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpHeader_Base'", field);
+    }
+}
+
+const char *SctpHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
     switch (field) {
         case FIELD_sctpChunks: { const SctpChunk * value = pp->getSctpChunks(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpHeader_Base *pp = (SctpHeader_Base *)object; (void)pp;
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
     switch (field) {
         case FIELD_srcPort: return ulong2string(pp->getSrcPort());
         case FIELD_destPort: return ulong2string(pp->getDestPort());
@@ -580,38 +546,85 @@ std::string SctpHeaderDescriptor::getFieldValueAsString(void *object, int field,
         case FIELD_crc: return ulong2string(pp->getCrc());
         case FIELD_crcMode: return enum2string(pp->getCrcMode(), "inet::CrcMode");
         case FIELD_headerLength: return ulong2string(pp->getHeaderLength());
-        case FIELD_sctpChunks: {std::stringstream out; out << pp->getSctpChunks(i); return out.str();}
+        case FIELD_sctpChunks: { auto obj = pp->getSctpChunks(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool SctpHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeader_Base *pp = (SctpHeader_Base *)object; (void)pp;
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_srcPort: pp->setSrcPort(string2ulong(value)); return true;
-        case FIELD_destPort: pp->setDestPort(string2ulong(value)); return true;
-        case FIELD_vTag: pp->setVTag(string2ulong(value)); return true;
-        case FIELD_checksumOk: pp->setChecksumOk(string2bool(value)); return true;
-        case FIELD_crc: pp->setCrc(string2ulong(value)); return true;
-        case FIELD_headerLength: pp->setHeaderLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srcPort: pp->setSrcPort(string2ulong(value)); break;
+        case FIELD_destPort: pp->setDestPort(string2ulong(value)); break;
+        case FIELD_vTag: pp->setVTag(string2ulong(value)); break;
+        case FIELD_checksumOk: pp->setChecksumOk(string2bool(value)); break;
+        case FIELD_crc: pp->setCrc(string2ulong(value)); break;
+        case FIELD_headerLength: pp->setHeaderLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeader_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_srcPort: return (omnetpp::intval_t)(pp->getSrcPort());
+        case FIELD_destPort: return (omnetpp::intval_t)(pp->getDestPort());
+        case FIELD_vTag: return (omnetpp::intval_t)(pp->getVTag());
+        case FIELD_checksumOk: return pp->getChecksumOk();
+        case FIELD_crc: return (omnetpp::intval_t)(pp->getCrc());
+        case FIELD_crcMode: return static_cast<int>(pp->getCrcMode());
+        case FIELD_headerLength: return (omnetpp::intval_t)(pp->getHeaderLength());
+        case FIELD_sctpChunks: return omnetpp::toAnyPtr(pp->getSctpChunks(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpHeader_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_srcPort: pp->setSrcPort(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_destPort: pp->setDestPort(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_vTag: pp->setVTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_checksumOk: pp->setChecksumOk(value.boolValue()); break;
+        case FIELD_crc: pp->setCrc(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_headerLength: pp->setHeaderLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_sctpChunks: pp->setSctpChunks(i,omnetpp::fromAnyPtr<SctpChunk>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeader_Base'", field);
     }
 }
 
 const char *SctpHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_sctpChunks: return omnetpp::opp_typename(typeid(SctpChunk));
@@ -619,18 +632,35 @@ const char *SctpHeaderDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpHeader_Base *pp = (SctpHeader_Base *)object; (void)pp;
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_sctpChunks: return toVoidPtr(pp->getSctpChunks(i)); break;
-        default: return nullptr;
+        case FIELD_sctpChunks: return omnetpp::toAnyPtr(pp->getSctpChunks(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeader_Base *pp = omnetpp::fromAnyPtr<SctpHeader_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunks: pp->setSctpChunks(i,omnetpp::fromAnyPtr<SctpChunk>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeader_Base'", field);
     }
 }
 
@@ -734,7 +764,7 @@ size_t SctpChunk::getChunkNameArraySize() const
 
 char SctpChunk::getChunkName(size_t k) const
 {
-    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size chunkName_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)chunkName_arraysize, (unsigned long)k);
     return this->chunkName[k];
 }
 
@@ -753,13 +783,13 @@ void SctpChunk::setChunkNameArraySize(size_t newSize)
 
 void SctpChunk::setChunkName(size_t k, char chunkName)
 {
-    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)chunkName_arraysize, (unsigned long)k);
     this->chunkName[k] = chunkName;
 }
 
 void SctpChunk::insertChunkName(size_t k, char chunkName)
 {
-    if (k > chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)chunkName_arraysize, (unsigned long)k);
     size_t newSize = chunkName_arraysize + 1;
     char *chunkName2 = new char[newSize];
     size_t i;
@@ -773,14 +803,14 @@ void SctpChunk::insertChunkName(size_t k, char chunkName)
     chunkName_arraysize = newSize;
 }
 
-void SctpChunk::insertChunkName(char chunkName)
+void SctpChunk::appendChunkName(char chunkName)
 {
     insertChunkName(chunkName_arraysize, chunkName);
 }
 
 void SctpChunk::eraseChunkName(size_t k)
 {
-    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= chunkName_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)chunkName_arraysize, (unsigned long)k);
     size_t newSize = chunkName_arraysize - 1;
     char *chunkName2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -796,7 +826,7 @@ void SctpChunk::eraseChunkName(size_t k)
 class SctpChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_sctpChunkType,
         FIELD_flags,
@@ -809,34 +839,38 @@ class SctpChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpChunkDescriptor)
 
 SctpChunkDescriptor::SctpChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpChunk)), "omnetpp::cPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpChunkDescriptor::~SctpChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -846,51 +880,51 @@ bool SctpChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_sctpChunkType
         FD_ISEDITABLE,    // FIELD_flags
         FD_ISEDITABLE,    // FIELD_length
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_chunkName
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_chunkName
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "sctpChunkType",
@@ -903,22 +937,22 @@ const char *SctpChunkDescriptor::getFieldName(int field) const
 
 int SctpChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sctpChunkType") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "flags") == 0) return base+1;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+2;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "chunkName") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "sctpChunkType") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "flags") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "chunkName") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8",    // FIELD_sctpChunkType
@@ -931,68 +965,85 @@ const char *SctpChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpChunk *pp = (SctpChunk *)object; (void)pp;
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
     switch (field) {
         case FIELD_chunkName: return pp->getChunkNameArraySize();
         default: return 0;
     }
 }
 
-const char *SctpChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpChunk *pp = (SctpChunk *)object; (void)pp;
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_chunkName: pp->setChunkNameArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpChunk'", field);
+    }
+}
+
+const char *SctpChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpChunk *pp = (SctpChunk *)object; (void)pp;
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
     switch (field) {
         case FIELD_sctpChunkType: return ulong2string(pp->getSctpChunkType());
         case FIELD_flags: return ulong2string(pp->getFlags());
@@ -1002,48 +1053,104 @@ std::string SctpChunkDescriptor::getFieldValueAsString(void *object, int field, 
     }
 }
 
-bool SctpChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpChunk *pp = (SctpChunk *)object; (void)pp;
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_sctpChunkType: pp->setSctpChunkType(string2ulong(value)); return true;
-        case FIELD_flags: pp->setFlags(string2ulong(value)); return true;
-        case FIELD_length: pp->setLength(string2ulong(value)); return true;
-        case FIELD_chunkName: pp->setChunkName(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_sctpChunkType: pp->setSctpChunkType(string2ulong(value)); break;
+        case FIELD_flags: pp->setFlags(string2ulong(value)); break;
+        case FIELD_length: pp->setLength(string2ulong(value)); break;
+        case FIELD_chunkName: pp->setChunkName(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunkType: return (omnetpp::intval_t)(pp->getSctpChunkType());
+        case FIELD_flags: return (omnetpp::intval_t)(pp->getFlags());
+        case FIELD_length: return (omnetpp::intval_t)(pp->getLength());
+        case FIELD_chunkName: return pp->getChunkName(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunkType: pp->setSctpChunkType(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_flags: pp->setFlags(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_chunkName: pp->setChunkName(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpChunk'", field);
     }
 }
 
 const char *SctpChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpChunk *pp = (SctpChunk *)object; (void)pp;
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpChunk *pp = omnetpp::fromAnyPtr<SctpChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpChunk'", field);
     }
 }
 
@@ -1087,7 +1194,7 @@ void SctpInitChunk::copy(const SctpInitChunk& other)
     this->ipv4Supported = other.ipv4Supported;
     this->ipv6Supported = other.ipv6Supported;
     delete [] this->addresses;
-    this->addresses = (other.addresses_arraysize==0) ? nullptr : new L3Address[other.addresses_arraysize];
+    this->addresses = (other.addresses_arraysize==0) ? nullptr : new ::inet::L3Address[other.addresses_arraysize];
     addresses_arraysize = other.addresses_arraysize;
     for (size_t i = 0; i < addresses_arraysize; i++) {
         this->addresses[i] = other.addresses[i];
@@ -1167,7 +1274,7 @@ void SctpInitChunk::parsimUnpack(omnetpp::cCommBuffer *b)
     if (addresses_arraysize == 0) {
         this->addresses = nullptr;
     } else {
-        this->addresses = new L3Address[addresses_arraysize];
+        this->addresses = new ::inet::L3Address[addresses_arraysize];
         doParsimArrayUnpacking(b,this->addresses,addresses_arraysize);
     }
     delete [] this->unrecognizedParameters;
@@ -1298,15 +1405,15 @@ size_t SctpInitChunk::getAddressesArraySize() const
     return addresses_arraysize;
 }
 
-const L3Address& SctpInitChunk::getAddresses(size_t k) const
+const ::inet::L3Address& SctpInitChunk::getAddresses(size_t k) const
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size addresses_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     return this->addresses[k];
 }
 
 void SctpInitChunk::setAddressesArraySize(size_t newSize)
 {
-    L3Address *addresses2 = (newSize==0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *addresses2 = (newSize==0) ? nullptr : new ::inet::L3Address[newSize];
     size_t minSize = addresses_arraysize < newSize ? addresses_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         addresses2[i] = this->addresses[i];
@@ -1315,17 +1422,17 @@ void SctpInitChunk::setAddressesArraySize(size_t newSize)
     addresses_arraysize = newSize;
 }
 
-void SctpInitChunk::setAddresses(size_t k, const L3Address& addresses)
+void SctpInitChunk::setAddresses(size_t k, const ::inet::L3Address& addresses)
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     this->addresses[k] = addresses;
 }
 
-void SctpInitChunk::insertAddresses(size_t k, const L3Address& addresses)
+void SctpInitChunk::insertAddresses(size_t k, const ::inet::L3Address& addresses)
 {
-    if (k > addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     size_t newSize = addresses_arraysize + 1;
-    L3Address *addresses2 = new L3Address[newSize];
+    ::inet::L3Address *addresses2 = new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         addresses2[i] = this->addresses[i];
@@ -1337,16 +1444,16 @@ void SctpInitChunk::insertAddresses(size_t k, const L3Address& addresses)
     addresses_arraysize = newSize;
 }
 
-void SctpInitChunk::insertAddresses(const L3Address& addresses)
+void SctpInitChunk::appendAddresses(const ::inet::L3Address& addresses)
 {
     insertAddresses(addresses_arraysize, addresses);
 }
 
 void SctpInitChunk::eraseAddresses(size_t k)
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     size_t newSize = addresses_arraysize - 1;
-    L3Address *addresses2 = (newSize == 0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *addresses2 = (newSize == 0) ? nullptr : new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         addresses2[i] = this->addresses[i];
@@ -1364,7 +1471,7 @@ size_t SctpInitChunk::getUnrecognizedParametersArraySize() const
 
 uint8_t SctpInitChunk::getUnrecognizedParameters(size_t k) const
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size unrecognizedParameters_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     return this->unrecognizedParameters[k];
 }
 
@@ -1383,13 +1490,13 @@ void SctpInitChunk::setUnrecognizedParametersArraySize(size_t newSize)
 
 void SctpInitChunk::setUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     this->unrecognizedParameters[k] = unrecognizedParameters;
 }
 
 void SctpInitChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize + 1;
     uint8_t *unrecognizedParameters2 = new uint8_t[newSize];
     size_t i;
@@ -1403,14 +1510,14 @@ void SctpInitChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecognizedP
     unrecognizedParameters_arraysize = newSize;
 }
 
-void SctpInitChunk::insertUnrecognizedParameters(uint8_t unrecognizedParameters)
+void SctpInitChunk::appendUnrecognizedParameters(uint8_t unrecognizedParameters)
 {
     insertUnrecognizedParameters(unrecognizedParameters_arraysize, unrecognizedParameters);
 }
 
 void SctpInitChunk::eraseUnrecognizedParameters(size_t k)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize - 1;
     uint8_t *unrecognizedParameters2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -1440,7 +1547,7 @@ size_t SctpInitChunk::getSctpChunkTypesArraySize() const
 
 uint16_t SctpInitChunk::getSctpChunkTypes(size_t k) const
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size sctpChunkTypes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     return this->sctpChunkTypes[k];
 }
 
@@ -1459,13 +1566,13 @@ void SctpInitChunk::setSctpChunkTypesArraySize(size_t newSize)
 
 void SctpInitChunk::setSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     this->sctpChunkTypes[k] = sctpChunkTypes;
 }
 
 void SctpInitChunk::insertSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize + 1;
     uint16_t *sctpChunkTypes2 = new uint16_t[newSize];
     size_t i;
@@ -1479,14 +1586,14 @@ void SctpInitChunk::insertSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
     sctpChunkTypes_arraysize = newSize;
 }
 
-void SctpInitChunk::insertSctpChunkTypes(uint16_t sctpChunkTypes)
+void SctpInitChunk::appendSctpChunkTypes(uint16_t sctpChunkTypes)
 {
     insertSctpChunkTypes(sctpChunkTypes_arraysize, sctpChunkTypes);
 }
 
 void SctpInitChunk::eraseSctpChunkTypes(size_t k)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize - 1;
     uint16_t *sctpChunkTypes2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -1506,7 +1613,7 @@ size_t SctpInitChunk::getSepChunksArraySize() const
 
 uint16_t SctpInitChunk::getSepChunks(size_t k) const
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size sepChunks_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     return this->sepChunks[k];
 }
 
@@ -1525,13 +1632,13 @@ void SctpInitChunk::setSepChunksArraySize(size_t newSize)
 
 void SctpInitChunk::setSepChunks(size_t k, uint16_t sepChunks)
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     this->sepChunks[k] = sepChunks;
 }
 
 void SctpInitChunk::insertSepChunks(size_t k, uint16_t sepChunks)
 {
-    if (k > sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     size_t newSize = sepChunks_arraysize + 1;
     uint16_t *sepChunks2 = new uint16_t[newSize];
     size_t i;
@@ -1545,14 +1652,14 @@ void SctpInitChunk::insertSepChunks(size_t k, uint16_t sepChunks)
     sepChunks_arraysize = newSize;
 }
 
-void SctpInitChunk::insertSepChunks(uint16_t sepChunks)
+void SctpInitChunk::appendSepChunks(uint16_t sepChunks)
 {
     insertSepChunks(sepChunks_arraysize, sepChunks);
 }
 
 void SctpInitChunk::eraseSepChunks(size_t k)
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     size_t newSize = sepChunks_arraysize - 1;
     uint16_t *sepChunks2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -1572,7 +1679,7 @@ size_t SctpInitChunk::getHmacTypesArraySize() const
 
 uint16_t SctpInitChunk::getHmacTypes(size_t k) const
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size hmacTypes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     return this->hmacTypes[k];
 }
 
@@ -1591,13 +1698,13 @@ void SctpInitChunk::setHmacTypesArraySize(size_t newSize)
 
 void SctpInitChunk::setHmacTypes(size_t k, uint16_t hmacTypes)
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     this->hmacTypes[k] = hmacTypes;
 }
 
 void SctpInitChunk::insertHmacTypes(size_t k, uint16_t hmacTypes)
 {
-    if (k > hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     size_t newSize = hmacTypes_arraysize + 1;
     uint16_t *hmacTypes2 = new uint16_t[newSize];
     size_t i;
@@ -1611,14 +1718,14 @@ void SctpInitChunk::insertHmacTypes(size_t k, uint16_t hmacTypes)
     hmacTypes_arraysize = newSize;
 }
 
-void SctpInitChunk::insertHmacTypes(uint16_t hmacTypes)
+void SctpInitChunk::appendHmacTypes(uint16_t hmacTypes)
 {
     insertHmacTypes(hmacTypes_arraysize, hmacTypes);
 }
 
 void SctpInitChunk::eraseHmacTypes(size_t k)
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     size_t newSize = hmacTypes_arraysize - 1;
     uint16_t *hmacTypes2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -1638,7 +1745,7 @@ size_t SctpInitChunk::getRandomArraySize() const
 
 uint8_t SctpInitChunk::getRandom(size_t k) const
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size random_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     return this->random[k];
 }
 
@@ -1657,13 +1764,13 @@ void SctpInitChunk::setRandomArraySize(size_t newSize)
 
 void SctpInitChunk::setRandom(size_t k, uint8_t random)
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     this->random[k] = random;
 }
 
 void SctpInitChunk::insertRandom(size_t k, uint8_t random)
 {
-    if (k > random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     size_t newSize = random_arraysize + 1;
     uint8_t *random2 = new uint8_t[newSize];
     size_t i;
@@ -1677,14 +1784,14 @@ void SctpInitChunk::insertRandom(size_t k, uint8_t random)
     random_arraysize = newSize;
 }
 
-void SctpInitChunk::insertRandom(uint8_t random)
+void SctpInitChunk::appendRandom(uint8_t random)
 {
     insertRandom(random_arraysize, random);
 }
 
 void SctpInitChunk::eraseRandom(size_t k)
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     size_t newSize = random_arraysize - 1;
     uint8_t *random2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -1700,7 +1807,7 @@ void SctpInitChunk::eraseRandom(size_t k)
 class SctpInitChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_initTag,
         FIELD_a_rwnd,
@@ -1724,34 +1831,38 @@ class SctpInitChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpInitChunkDescriptor)
 
 SctpInitChunkDescriptor::SctpInitChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpInitChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpInitChunkDescriptor::~SctpInitChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpInitChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1761,34 +1872,34 @@ bool SctpInitChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpInitChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpInitChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpInitChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpInitChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 15+basedesc->getFieldCount() : 15;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 15+base->getFieldCount() : 15;
 }
 
 unsigned int SctpInitChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_initTag
@@ -1799,24 +1910,24 @@ unsigned int SctpInitChunkDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_forwardTsn
         FD_ISEDITABLE,    // FIELD_ipv4Supported
         FD_ISEDITABLE,    // FIELD_ipv6Supported
-        FD_ISARRAY,    // FIELD_addresses
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_unrecognizedParameters
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_addresses
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_unrecognizedParameters
         FD_ISEDITABLE,    // FIELD_msg_rwnd
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sctpChunkTypes
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sepChunks
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_hmacTypes
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_random
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sctpChunkTypes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sepChunks
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_hmacTypes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_random
     };
     return (field >= 0 && field < 15) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpInitChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "initTag",
@@ -1840,33 +1951,33 @@ const char *SctpInitChunkDescriptor::getFieldName(int field) const
 
 int SctpInitChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initTag") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "a_rwnd") == 0) return base+1;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "noOutStreams") == 0) return base+2;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "noInStreams") == 0) return base+3;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initTsn") == 0) return base+4;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "forwardTsn") == 0) return base+5;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "ipv4Supported") == 0) return base+6;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "ipv6Supported") == 0) return base+7;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addresses") == 0) return base+8;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "unrecognizedParameters") == 0) return base+9;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "msg_rwnd") == 0) return base+10;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sctpChunkTypes") == 0) return base+11;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sepChunks") == 0) return base+12;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hmacTypes") == 0) return base+13;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "random") == 0) return base+14;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "initTag") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "a_rwnd") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "noOutStreams") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "noInStreams") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "initTsn") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "forwardTsn") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "ipv4Supported") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "ipv6Supported") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "addresses") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "unrecognizedParameters") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "msg_rwnd") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "sctpChunkTypes") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "sepChunks") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "hmacTypes") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "random") == 0) return baseIndex + 14;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpInitChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_initTag
@@ -1890,39 +2001,39 @@ const char *SctpInitChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpInitChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpInitChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpInitChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpInitChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpInitChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpInitChunk *pp = (SctpInitChunk *)object; (void)pp;
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
     switch (field) {
         case FIELD_addresses: return pp->getAddressesArraySize();
         case FIELD_unrecognizedParameters: return pp->getUnrecognizedParametersArraySize();
@@ -1934,29 +2045,51 @@ int SctpInitChunkDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *SctpInitChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpInitChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpInitChunk *pp = (SctpInitChunk *)object; (void)pp;
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_addresses: pp->setAddressesArraySize(size); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParametersArraySize(size); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypesArraySize(size); break;
+        case FIELD_sepChunks: pp->setSepChunksArraySize(size); break;
+        case FIELD_hmacTypes: pp->setHmacTypesArraySize(size); break;
+        case FIELD_random: pp->setRandomArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpInitChunk'", field);
+    }
+}
+
+const char *SctpInitChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpInitChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpInitChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpInitChunk *pp = (SctpInitChunk *)object; (void)pp;
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
     switch (field) {
         case FIELD_initTag: return ulong2string(pp->getInitTag());
         case FIELD_a_rwnd: return ulong2string(pp->getA_rwnd());
@@ -1977,59 +2110,136 @@ std::string SctpInitChunkDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool SctpInitChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpInitChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpInitChunk *pp = (SctpInitChunk *)object; (void)pp;
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_initTag: pp->setInitTag(string2ulong(value)); return true;
-        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); return true;
-        case FIELD_noOutStreams: pp->setNoOutStreams(string2ulong(value)); return true;
-        case FIELD_noInStreams: pp->setNoInStreams(string2ulong(value)); return true;
-        case FIELD_initTsn: pp->setInitTsn(string2ulong(value)); return true;
-        case FIELD_forwardTsn: pp->setForwardTsn(string2bool(value)); return true;
-        case FIELD_ipv4Supported: pp->setIpv4Supported(string2bool(value)); return true;
-        case FIELD_ipv6Supported: pp->setIpv6Supported(string2bool(value)); return true;
-        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); return true;
-        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); return true;
-        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); return true;
-        case FIELD_sepChunks: pp->setSepChunks(i,string2ulong(value)); return true;
-        case FIELD_hmacTypes: pp->setHmacTypes(i,string2ulong(value)); return true;
-        case FIELD_random: pp->setRandom(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_initTag: pp->setInitTag(string2ulong(value)); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); break;
+        case FIELD_noOutStreams: pp->setNoOutStreams(string2ulong(value)); break;
+        case FIELD_noInStreams: pp->setNoInStreams(string2ulong(value)); break;
+        case FIELD_initTsn: pp->setInitTsn(string2ulong(value)); break;
+        case FIELD_forwardTsn: pp->setForwardTsn(string2bool(value)); break;
+        case FIELD_ipv4Supported: pp->setIpv4Supported(string2bool(value)); break;
+        case FIELD_ipv6Supported: pp->setIpv6Supported(string2bool(value)); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); break;
+        case FIELD_sepChunks: pp->setSepChunks(i,string2ulong(value)); break;
+        case FIELD_hmacTypes: pp->setHmacTypes(i,string2ulong(value)); break;
+        case FIELD_random: pp->setRandom(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpInitChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_initTag: return (omnetpp::intval_t)(pp->getInitTag());
+        case FIELD_a_rwnd: return (omnetpp::intval_t)(pp->getA_rwnd());
+        case FIELD_noOutStreams: return (omnetpp::intval_t)(pp->getNoOutStreams());
+        case FIELD_noInStreams: return (omnetpp::intval_t)(pp->getNoInStreams());
+        case FIELD_initTsn: return (omnetpp::intval_t)(pp->getInitTsn());
+        case FIELD_forwardTsn: return pp->getForwardTsn();
+        case FIELD_ipv4Supported: return pp->getIpv4Supported();
+        case FIELD_ipv6Supported: return pp->getIpv6Supported();
+        case FIELD_addresses: return omnetpp::toAnyPtr(&pp->getAddresses(i)); break;
+        case FIELD_unrecognizedParameters: return (omnetpp::intval_t)(pp->getUnrecognizedParameters(i));
+        case FIELD_msg_rwnd: return (omnetpp::intval_t)(pp->getMsg_rwnd());
+        case FIELD_sctpChunkTypes: return (omnetpp::intval_t)(pp->getSctpChunkTypes(i));
+        case FIELD_sepChunks: return (omnetpp::intval_t)(pp->getSepChunks(i));
+        case FIELD_hmacTypes: return (omnetpp::intval_t)(pp->getHmacTypes(i));
+        case FIELD_random: return (omnetpp::intval_t)(pp->getRandom(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpInitChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpInitChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_initTag: pp->setInitTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_noOutStreams: pp->setNoOutStreams(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_noInStreams: pp->setNoInStreams(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_initTsn: pp->setInitTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_forwardTsn: pp->setForwardTsn(value.boolValue()); break;
+        case FIELD_ipv4Supported: pp->setIpv4Supported(value.boolValue()); break;
+        case FIELD_ipv6Supported: pp->setIpv6Supported(value.boolValue()); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_sepChunks: pp->setSepChunks(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_hmacTypes: pp->setHmacTypes(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_random: pp->setRandom(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitChunk'", field);
     }
 }
 
 const char *SctpInitChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpInitChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpInitChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpInitChunk *pp = (SctpInitChunk *)object; (void)pp;
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_addresses: return toVoidPtr(&pp->getAddresses(i)); break;
-        default: return nullptr;
+        case FIELD_addresses: return omnetpp::toAnyPtr(&pp->getAddresses(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpInitChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpInitChunk *pp = omnetpp::fromAnyPtr<SctpInitChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitChunk'", field);
     }
 }
 
@@ -2074,7 +2284,7 @@ void SctpInitAckChunk::copy(const SctpInitAckChunk& other)
     this->ipv4Supported = other.ipv4Supported;
     this->ipv6Supported = other.ipv6Supported;
     delete [] this->addresses;
-    this->addresses = (other.addresses_arraysize==0) ? nullptr : new L3Address[other.addresses_arraysize];
+    this->addresses = (other.addresses_arraysize==0) ? nullptr : new ::inet::L3Address[other.addresses_arraysize];
     addresses_arraysize = other.addresses_arraysize;
     for (size_t i = 0; i < addresses_arraysize; i++) {
         this->addresses[i] = other.addresses[i];
@@ -2164,7 +2374,7 @@ void SctpInitAckChunk::parsimUnpack(omnetpp::cCommBuffer *b)
     if (addresses_arraysize == 0) {
         this->addresses = nullptr;
     } else {
-        this->addresses = new L3Address[addresses_arraysize];
+        this->addresses = new ::inet::L3Address[addresses_arraysize];
         doParsimArrayUnpacking(b,this->addresses,addresses_arraysize);
     }
     delete [] this->cookie;
@@ -2304,15 +2514,15 @@ size_t SctpInitAckChunk::getAddressesArraySize() const
     return addresses_arraysize;
 }
 
-const L3Address& SctpInitAckChunk::getAddresses(size_t k) const
+const ::inet::L3Address& SctpInitAckChunk::getAddresses(size_t k) const
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size addresses_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     return this->addresses[k];
 }
 
 void SctpInitAckChunk::setAddressesArraySize(size_t newSize)
 {
-    L3Address *addresses2 = (newSize==0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *addresses2 = (newSize==0) ? nullptr : new ::inet::L3Address[newSize];
     size_t minSize = addresses_arraysize < newSize ? addresses_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         addresses2[i] = this->addresses[i];
@@ -2321,17 +2531,17 @@ void SctpInitAckChunk::setAddressesArraySize(size_t newSize)
     addresses_arraysize = newSize;
 }
 
-void SctpInitAckChunk::setAddresses(size_t k, const L3Address& addresses)
+void SctpInitAckChunk::setAddresses(size_t k, const ::inet::L3Address& addresses)
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     this->addresses[k] = addresses;
 }
 
-void SctpInitAckChunk::insertAddresses(size_t k, const L3Address& addresses)
+void SctpInitAckChunk::insertAddresses(size_t k, const ::inet::L3Address& addresses)
 {
-    if (k > addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     size_t newSize = addresses_arraysize + 1;
-    L3Address *addresses2 = new L3Address[newSize];
+    ::inet::L3Address *addresses2 = new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         addresses2[i] = this->addresses[i];
@@ -2343,16 +2553,16 @@ void SctpInitAckChunk::insertAddresses(size_t k, const L3Address& addresses)
     addresses_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertAddresses(const L3Address& addresses)
+void SctpInitAckChunk::appendAddresses(const ::inet::L3Address& addresses)
 {
     insertAddresses(addresses_arraysize, addresses);
 }
 
 void SctpInitAckChunk::eraseAddresses(size_t k)
 {
-    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)addresses_arraysize, (unsigned long)k);
     size_t newSize = addresses_arraysize - 1;
-    L3Address *addresses2 = (newSize == 0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *addresses2 = (newSize == 0) ? nullptr : new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         addresses2[i] = this->addresses[i];
@@ -2370,7 +2580,7 @@ size_t SctpInitAckChunk::getCookieArraySize() const
 
 char SctpInitAckChunk::getCookie(size_t k) const
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size cookie_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     return this->cookie[k];
 }
 
@@ -2389,13 +2599,13 @@ void SctpInitAckChunk::setCookieArraySize(size_t newSize)
 
 void SctpInitAckChunk::setCookie(size_t k, char cookie)
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     this->cookie[k] = cookie;
 }
 
 void SctpInitAckChunk::insertCookie(size_t k, char cookie)
 {
-    if (k > cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     size_t newSize = cookie_arraysize + 1;
     char *cookie2 = new char[newSize];
     size_t i;
@@ -2409,14 +2619,14 @@ void SctpInitAckChunk::insertCookie(size_t k, char cookie)
     cookie_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertCookie(char cookie)
+void SctpInitAckChunk::appendCookie(char cookie)
 {
     insertCookie(cookie_arraysize, cookie);
 }
 
 void SctpInitAckChunk::eraseCookie(size_t k)
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     size_t newSize = cookie_arraysize - 1;
     char *cookie2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -2436,7 +2646,7 @@ size_t SctpInitAckChunk::getUnrecognizedParametersArraySize() const
 
 uint8_t SctpInitAckChunk::getUnrecognizedParameters(size_t k) const
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size unrecognizedParameters_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     return this->unrecognizedParameters[k];
 }
 
@@ -2455,13 +2665,13 @@ void SctpInitAckChunk::setUnrecognizedParametersArraySize(size_t newSize)
 
 void SctpInitAckChunk::setUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     this->unrecognizedParameters[k] = unrecognizedParameters;
 }
 
 void SctpInitAckChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize + 1;
     uint8_t *unrecognizedParameters2 = new uint8_t[newSize];
     size_t i;
@@ -2475,14 +2685,14 @@ void SctpInitAckChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecogniz
     unrecognizedParameters_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertUnrecognizedParameters(uint8_t unrecognizedParameters)
+void SctpInitAckChunk::appendUnrecognizedParameters(uint8_t unrecognizedParameters)
 {
     insertUnrecognizedParameters(unrecognizedParameters_arraysize, unrecognizedParameters);
 }
 
 void SctpInitAckChunk::eraseUnrecognizedParameters(size_t k)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize - 1;
     uint8_t *unrecognizedParameters2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -2522,7 +2732,7 @@ size_t SctpInitAckChunk::getRandomArraySize() const
 
 uint8_t SctpInitAckChunk::getRandom(size_t k) const
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size random_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     return this->random[k];
 }
 
@@ -2541,13 +2751,13 @@ void SctpInitAckChunk::setRandomArraySize(size_t newSize)
 
 void SctpInitAckChunk::setRandom(size_t k, uint8_t random)
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     this->random[k] = random;
 }
 
 void SctpInitAckChunk::insertRandom(size_t k, uint8_t random)
 {
-    if (k > random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     size_t newSize = random_arraysize + 1;
     uint8_t *random2 = new uint8_t[newSize];
     size_t i;
@@ -2561,14 +2771,14 @@ void SctpInitAckChunk::insertRandom(size_t k, uint8_t random)
     random_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertRandom(uint8_t random)
+void SctpInitAckChunk::appendRandom(uint8_t random)
 {
     insertRandom(random_arraysize, random);
 }
 
 void SctpInitAckChunk::eraseRandom(size_t k)
 {
-    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= random_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)random_arraysize, (unsigned long)k);
     size_t newSize = random_arraysize - 1;
     uint8_t *random2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -2588,7 +2798,7 @@ size_t SctpInitAckChunk::getSctpChunkTypesArraySize() const
 
 uint16_t SctpInitAckChunk::getSctpChunkTypes(size_t k) const
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size sctpChunkTypes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     return this->sctpChunkTypes[k];
 }
 
@@ -2607,13 +2817,13 @@ void SctpInitAckChunk::setSctpChunkTypesArraySize(size_t newSize)
 
 void SctpInitAckChunk::setSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     this->sctpChunkTypes[k] = sctpChunkTypes;
 }
 
 void SctpInitAckChunk::insertSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize + 1;
     uint16_t *sctpChunkTypes2 = new uint16_t[newSize];
     size_t i;
@@ -2627,14 +2837,14 @@ void SctpInitAckChunk::insertSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
     sctpChunkTypes_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertSctpChunkTypes(uint16_t sctpChunkTypes)
+void SctpInitAckChunk::appendSctpChunkTypes(uint16_t sctpChunkTypes)
 {
     insertSctpChunkTypes(sctpChunkTypes_arraysize, sctpChunkTypes);
 }
 
 void SctpInitAckChunk::eraseSctpChunkTypes(size_t k)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize - 1;
     uint16_t *sctpChunkTypes2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -2654,7 +2864,7 @@ size_t SctpInitAckChunk::getSepChunksArraySize() const
 
 uint16_t SctpInitAckChunk::getSepChunks(size_t k) const
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size sepChunks_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     return this->sepChunks[k];
 }
 
@@ -2673,13 +2883,13 @@ void SctpInitAckChunk::setSepChunksArraySize(size_t newSize)
 
 void SctpInitAckChunk::setSepChunks(size_t k, uint16_t sepChunks)
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     this->sepChunks[k] = sepChunks;
 }
 
 void SctpInitAckChunk::insertSepChunks(size_t k, uint16_t sepChunks)
 {
-    if (k > sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     size_t newSize = sepChunks_arraysize + 1;
     uint16_t *sepChunks2 = new uint16_t[newSize];
     size_t i;
@@ -2693,14 +2903,14 @@ void SctpInitAckChunk::insertSepChunks(size_t k, uint16_t sepChunks)
     sepChunks_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertSepChunks(uint16_t sepChunks)
+void SctpInitAckChunk::appendSepChunks(uint16_t sepChunks)
 {
     insertSepChunks(sepChunks_arraysize, sepChunks);
 }
 
 void SctpInitAckChunk::eraseSepChunks(size_t k)
 {
-    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sepChunks_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sepChunks_arraysize, (unsigned long)k);
     size_t newSize = sepChunks_arraysize - 1;
     uint16_t *sepChunks2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -2720,7 +2930,7 @@ size_t SctpInitAckChunk::getHmacTypesArraySize() const
 
 uint16_t SctpInitAckChunk::getHmacTypes(size_t k) const
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size hmacTypes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     return this->hmacTypes[k];
 }
 
@@ -2739,13 +2949,13 @@ void SctpInitAckChunk::setHmacTypesArraySize(size_t newSize)
 
 void SctpInitAckChunk::setHmacTypes(size_t k, uint16_t hmacTypes)
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     this->hmacTypes[k] = hmacTypes;
 }
 
 void SctpInitAckChunk::insertHmacTypes(size_t k, uint16_t hmacTypes)
 {
-    if (k > hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     size_t newSize = hmacTypes_arraysize + 1;
     uint16_t *hmacTypes2 = new uint16_t[newSize];
     size_t i;
@@ -2759,14 +2969,14 @@ void SctpInitAckChunk::insertHmacTypes(size_t k, uint16_t hmacTypes)
     hmacTypes_arraysize = newSize;
 }
 
-void SctpInitAckChunk::insertHmacTypes(uint16_t hmacTypes)
+void SctpInitAckChunk::appendHmacTypes(uint16_t hmacTypes)
 {
     insertHmacTypes(hmacTypes_arraysize, hmacTypes);
 }
 
 void SctpInitAckChunk::eraseHmacTypes(size_t k)
 {
-    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= hmacTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)hmacTypes_arraysize, (unsigned long)k);
     size_t newSize = hmacTypes_arraysize - 1;
     uint16_t *hmacTypes2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -2782,7 +2992,7 @@ void SctpInitAckChunk::eraseHmacTypes(size_t k)
 class SctpInitAckChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_initTag,
         FIELD_a_rwnd,
@@ -2808,34 +3018,38 @@ class SctpInitAckChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpInitAckChunkDescriptor)
 
 SctpInitAckChunkDescriptor::SctpInitAckChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpInitAckChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpInitAckChunkDescriptor::~SctpInitAckChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpInitAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2845,34 +3059,34 @@ bool SctpInitAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpInitAckChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpInitAckChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpInitAckChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpInitAckChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 17+basedesc->getFieldCount() : 17;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 17+base->getFieldCount() : 17;
 }
 
 unsigned int SctpInitAckChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_initTag
@@ -2883,26 +3097,26 @@ unsigned int SctpInitAckChunkDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_forwardTsn
         FD_ISEDITABLE,    // FIELD_ipv4Supported
         FD_ISEDITABLE,    // FIELD_ipv6Supported
-        FD_ISARRAY,    // FIELD_addresses
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_cookie
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_unrecognizedParameters
-        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_stateCookie
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_addresses
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_cookie
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_unrecognizedParameters
+        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE,    // FIELD_stateCookie
         FD_ISEDITABLE,    // FIELD_msg_rwnd
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_random
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sctpChunkTypes
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sepChunks
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_hmacTypes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_random
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sctpChunkTypes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sepChunks
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_hmacTypes
     };
     return (field >= 0 && field < 17) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpInitAckChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "initTag",
@@ -2928,35 +3142,35 @@ const char *SctpInitAckChunkDescriptor::getFieldName(int field) const
 
 int SctpInitAckChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initTag") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "a_rwnd") == 0) return base+1;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "noOutStreams") == 0) return base+2;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "noInStreams") == 0) return base+3;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initTsn") == 0) return base+4;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "forwardTsn") == 0) return base+5;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "ipv4Supported") == 0) return base+6;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "ipv6Supported") == 0) return base+7;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addresses") == 0) return base+8;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cookie") == 0) return base+9;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "unrecognizedParameters") == 0) return base+10;
-    if (fieldName[0] == 's' && strcmp(fieldName, "stateCookie") == 0) return base+11;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "msg_rwnd") == 0) return base+12;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "random") == 0) return base+13;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sctpChunkTypes") == 0) return base+14;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sepChunks") == 0) return base+15;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hmacTypes") == 0) return base+16;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "initTag") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "a_rwnd") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "noOutStreams") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "noInStreams") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "initTsn") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "forwardTsn") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "ipv4Supported") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "ipv6Supported") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "addresses") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "cookie") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "unrecognizedParameters") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "stateCookie") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "msg_rwnd") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "random") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "sctpChunkTypes") == 0) return baseIndex + 14;
+    if (strcmp(fieldName, "sepChunks") == 0) return baseIndex + 15;
+    if (strcmp(fieldName, "hmacTypes") == 0) return baseIndex + 16;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpInitAckChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_initTag
@@ -2982,39 +3196,39 @@ const char *SctpInitAckChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpInitAckChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpInitAckChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpInitAckChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpInitAckChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpInitAckChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpInitAckChunk *pp = (SctpInitAckChunk *)object; (void)pp;
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
     switch (field) {
         case FIELD_addresses: return pp->getAddressesArraySize();
         case FIELD_cookie: return pp->getCookieArraySize();
@@ -3027,30 +3241,53 @@ int SctpInitAckChunkDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *SctpInitAckChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpInitAckChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpInitAckChunk *pp = (SctpInitAckChunk *)object; (void)pp;
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_addresses: pp->setAddressesArraySize(size); break;
+        case FIELD_cookie: pp->setCookieArraySize(size); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParametersArraySize(size); break;
+        case FIELD_random: pp->setRandomArraySize(size); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypesArraySize(size); break;
+        case FIELD_sepChunks: pp->setSepChunksArraySize(size); break;
+        case FIELD_hmacTypes: pp->setHmacTypesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpInitAckChunk'", field);
+    }
+}
+
+const char *SctpInitAckChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
     switch (field) {
         case FIELD_stateCookie: { const SctpCookie * value = pp->getStateCookie(); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpInitAckChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpInitAckChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpInitAckChunk *pp = (SctpInitAckChunk *)object; (void)pp;
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
     switch (field) {
         case FIELD_initTag: return ulong2string(pp->getInitTag());
         case FIELD_a_rwnd: return ulong2string(pp->getA_rwnd());
@@ -3063,7 +3300,7 @@ std::string SctpInitAckChunkDescriptor::getFieldValueAsString(void *object, int 
         case FIELD_addresses: return pp->getAddresses(i).str();
         case FIELD_cookie: return long2string(pp->getCookie(i));
         case FIELD_unrecognizedParameters: return ulong2string(pp->getUnrecognizedParameters(i));
-        case FIELD_stateCookie: {std::stringstream out; out << pp->getStateCookie(); return out.str();}
+        case FIELD_stateCookie: { auto obj = pp->getStateCookie(); return obj == nullptr ? "" : obj->str(); }
         case FIELD_msg_rwnd: return ulong2string(pp->getMsg_rwnd());
         case FIELD_random: return ulong2string(pp->getRandom(i));
         case FIELD_sctpChunkTypes: return ulong2string(pp->getSctpChunkTypes(i));
@@ -3073,42 +3310,107 @@ std::string SctpInitAckChunkDescriptor::getFieldValueAsString(void *object, int 
     }
 }
 
-bool SctpInitAckChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpInitAckChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpInitAckChunk *pp = (SctpInitAckChunk *)object; (void)pp;
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_initTag: pp->setInitTag(string2ulong(value)); return true;
-        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); return true;
-        case FIELD_noOutStreams: pp->setNoOutStreams(string2ulong(value)); return true;
-        case FIELD_noInStreams: pp->setNoInStreams(string2ulong(value)); return true;
-        case FIELD_initTsn: pp->setInitTsn(string2ulong(value)); return true;
-        case FIELD_forwardTsn: pp->setForwardTsn(string2bool(value)); return true;
-        case FIELD_ipv4Supported: pp->setIpv4Supported(string2bool(value)); return true;
-        case FIELD_ipv6Supported: pp->setIpv6Supported(string2bool(value)); return true;
-        case FIELD_cookie: pp->setCookie(i,string2long(value)); return true;
-        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); return true;
-        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); return true;
-        case FIELD_random: pp->setRandom(i,string2ulong(value)); return true;
-        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); return true;
-        case FIELD_sepChunks: pp->setSepChunks(i,string2ulong(value)); return true;
-        case FIELD_hmacTypes: pp->setHmacTypes(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_initTag: pp->setInitTag(string2ulong(value)); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); break;
+        case FIELD_noOutStreams: pp->setNoOutStreams(string2ulong(value)); break;
+        case FIELD_noInStreams: pp->setNoInStreams(string2ulong(value)); break;
+        case FIELD_initTsn: pp->setInitTsn(string2ulong(value)); break;
+        case FIELD_forwardTsn: pp->setForwardTsn(string2bool(value)); break;
+        case FIELD_ipv4Supported: pp->setIpv4Supported(string2bool(value)); break;
+        case FIELD_ipv6Supported: pp->setIpv6Supported(string2bool(value)); break;
+        case FIELD_cookie: pp->setCookie(i,string2long(value)); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); break;
+        case FIELD_random: pp->setRandom(i,string2ulong(value)); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); break;
+        case FIELD_sepChunks: pp->setSepChunks(i,string2ulong(value)); break;
+        case FIELD_hmacTypes: pp->setHmacTypes(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitAckChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpInitAckChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_initTag: return (omnetpp::intval_t)(pp->getInitTag());
+        case FIELD_a_rwnd: return (omnetpp::intval_t)(pp->getA_rwnd());
+        case FIELD_noOutStreams: return (omnetpp::intval_t)(pp->getNoOutStreams());
+        case FIELD_noInStreams: return (omnetpp::intval_t)(pp->getNoInStreams());
+        case FIELD_initTsn: return (omnetpp::intval_t)(pp->getInitTsn());
+        case FIELD_forwardTsn: return pp->getForwardTsn();
+        case FIELD_ipv4Supported: return pp->getIpv4Supported();
+        case FIELD_ipv6Supported: return pp->getIpv6Supported();
+        case FIELD_addresses: return omnetpp::toAnyPtr(&pp->getAddresses(i)); break;
+        case FIELD_cookie: return pp->getCookie(i);
+        case FIELD_unrecognizedParameters: return (omnetpp::intval_t)(pp->getUnrecognizedParameters(i));
+        case FIELD_stateCookie: return omnetpp::toAnyPtr(pp->getStateCookie()); break;
+        case FIELD_msg_rwnd: return (omnetpp::intval_t)(pp->getMsg_rwnd());
+        case FIELD_random: return (omnetpp::intval_t)(pp->getRandom(i));
+        case FIELD_sctpChunkTypes: return (omnetpp::intval_t)(pp->getSctpChunkTypes(i));
+        case FIELD_sepChunks: return (omnetpp::intval_t)(pp->getSepChunks(i));
+        case FIELD_hmacTypes: return (omnetpp::intval_t)(pp->getHmacTypes(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpInitAckChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpInitAckChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_initTag: pp->setInitTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_noOutStreams: pp->setNoOutStreams(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_noInStreams: pp->setNoInStreams(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_initTsn: pp->setInitTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_forwardTsn: pp->setForwardTsn(value.boolValue()); break;
+        case FIELD_ipv4Supported: pp->setIpv4Supported(value.boolValue()); break;
+        case FIELD_ipv6Supported: pp->setIpv6Supported(value.boolValue()); break;
+        case FIELD_cookie: pp->setCookie(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_stateCookie: pp->setStateCookie(omnetpp::fromAnyPtr<SctpCookie>(value.pointerValue())); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_random: pp->setRandom(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_sepChunks: pp->setSepChunks(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_hmacTypes: pp->setHmacTypes(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitAckChunk'", field);
     }
 }
 
 const char *SctpInitAckChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_stateCookie: return omnetpp::opp_typename(typeid(SctpCookie));
@@ -3116,19 +3418,36 @@ const char *SctpInitAckChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpInitAckChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpInitAckChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpInitAckChunk *pp = (SctpInitAckChunk *)object; (void)pp;
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_addresses: return toVoidPtr(&pp->getAddresses(i)); break;
-        case FIELD_stateCookie: return toVoidPtr(pp->getStateCookie()); break;
-        default: return nullptr;
+        case FIELD_addresses: return omnetpp::toAnyPtr(&pp->getAddresses(i)); break;
+        case FIELD_stateCookie: return omnetpp::toAnyPtr(pp->getStateCookie()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpInitAckChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpInitAckChunk *pp = omnetpp::fromAnyPtr<SctpInitAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_stateCookie: pp->setStateCookie(omnetpp::fromAnyPtr<SctpCookie>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpInitAckChunk'", field);
     }
 }
 
@@ -3213,7 +3532,7 @@ size_t SctpCookieEchoChunk::getCookieArraySize() const
 
 char SctpCookieEchoChunk::getCookie(size_t k) const
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size cookie_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     return this->cookie[k];
 }
 
@@ -3232,13 +3551,13 @@ void SctpCookieEchoChunk::setCookieArraySize(size_t newSize)
 
 void SctpCookieEchoChunk::setCookie(size_t k, char cookie)
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     this->cookie[k] = cookie;
 }
 
 void SctpCookieEchoChunk::insertCookie(size_t k, char cookie)
 {
-    if (k > cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     size_t newSize = cookie_arraysize + 1;
     char *cookie2 = new char[newSize];
     size_t i;
@@ -3252,14 +3571,14 @@ void SctpCookieEchoChunk::insertCookie(size_t k, char cookie)
     cookie_arraysize = newSize;
 }
 
-void SctpCookieEchoChunk::insertCookie(char cookie)
+void SctpCookieEchoChunk::appendCookie(char cookie)
 {
     insertCookie(cookie_arraysize, cookie);
 }
 
 void SctpCookieEchoChunk::eraseCookie(size_t k)
 {
-    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= cookie_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)cookie_arraysize, (unsigned long)k);
     size_t newSize = cookie_arraysize - 1;
     char *cookie2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -3289,7 +3608,7 @@ size_t SctpCookieEchoChunk::getUnrecognizedParametersArraySize() const
 
 uint8_t SctpCookieEchoChunk::getUnrecognizedParameters(size_t k) const
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size unrecognizedParameters_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     return this->unrecognizedParameters[k];
 }
 
@@ -3308,13 +3627,13 @@ void SctpCookieEchoChunk::setUnrecognizedParametersArraySize(size_t newSize)
 
 void SctpCookieEchoChunk::setUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     this->unrecognizedParameters[k] = unrecognizedParameters;
 }
 
 void SctpCookieEchoChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecognizedParameters)
 {
-    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize + 1;
     uint8_t *unrecognizedParameters2 = new uint8_t[newSize];
     size_t i;
@@ -3328,14 +3647,14 @@ void SctpCookieEchoChunk::insertUnrecognizedParameters(size_t k, uint8_t unrecog
     unrecognizedParameters_arraysize = newSize;
 }
 
-void SctpCookieEchoChunk::insertUnrecognizedParameters(uint8_t unrecognizedParameters)
+void SctpCookieEchoChunk::appendUnrecognizedParameters(uint8_t unrecognizedParameters)
 {
     insertUnrecognizedParameters(unrecognizedParameters_arraysize, unrecognizedParameters);
 }
 
 void SctpCookieEchoChunk::eraseUnrecognizedParameters(size_t k)
 {
-    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= unrecognizedParameters_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)unrecognizedParameters_arraysize, (unsigned long)k);
     size_t newSize = unrecognizedParameters_arraysize - 1;
     uint8_t *unrecognizedParameters2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -3351,7 +3670,7 @@ void SctpCookieEchoChunk::eraseUnrecognizedParameters(size_t k)
 class SctpCookieEchoChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_cookie,
         FIELD_stateCookie,
@@ -3363,34 +3682,38 @@ class SctpCookieEchoChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpCookieEchoChunkDescriptor)
 
 SctpCookieEchoChunkDescriptor::SctpCookieEchoChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpCookieEchoChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpCookieEchoChunkDescriptor::~SctpCookieEchoChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpCookieEchoChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3400,50 +3723,50 @@ bool SctpCookieEchoChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpCookieEchoChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpCookieEchoChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpCookieEchoChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpCookieEchoChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpCookieEchoChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_cookie
-        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_stateCookie
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_unrecognizedParameters
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_cookie
+        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE,    // FIELD_stateCookie
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_unrecognizedParameters
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpCookieEchoChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "cookie",
@@ -3455,21 +3778,21 @@ const char *SctpCookieEchoChunkDescriptor::getFieldName(int field) const
 
 int SctpCookieEchoChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cookie") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "stateCookie") == 0) return base+1;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "unrecognizedParameters") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "cookie") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "stateCookie") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "unrecognizedParameters") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpCookieEchoChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "char",    // FIELD_cookie
@@ -3481,39 +3804,39 @@ const char *SctpCookieEchoChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpCookieEchoChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpCookieEchoChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpCookieEchoChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpCookieEchoChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpCookieEchoChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpCookieEchoChunk *pp = (SctpCookieEchoChunk *)object; (void)pp;
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
     switch (field) {
         case FIELD_cookie: return pp->getCookieArraySize();
         case FIELD_unrecognizedParameters: return pp->getUnrecognizedParametersArraySize();
@@ -3521,61 +3844,117 @@ int SctpCookieEchoChunkDescriptor::getFieldArraySize(void *object, int field) co
     }
 }
 
-const char *SctpCookieEchoChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpCookieEchoChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookieEchoChunk *pp = (SctpCookieEchoChunk *)object; (void)pp;
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cookie: pp->setCookieArraySize(size); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParametersArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpCookieEchoChunk'", field);
+    }
+}
+
+const char *SctpCookieEchoChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
     switch (field) {
         case FIELD_stateCookie: { const SctpCookie * value = pp->getStateCookie(); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpCookieEchoChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpCookieEchoChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpCookieEchoChunk *pp = (SctpCookieEchoChunk *)object; (void)pp;
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
     switch (field) {
         case FIELD_cookie: return long2string(pp->getCookie(i));
-        case FIELD_stateCookie: {std::stringstream out; out << pp->getStateCookie(); return out.str();}
+        case FIELD_stateCookie: { auto obj = pp->getStateCookie(); return obj == nullptr ? "" : obj->str(); }
         case FIELD_unrecognizedParameters: return ulong2string(pp->getUnrecognizedParameters(i));
         default: return "";
     }
 }
 
-bool SctpCookieEchoChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpCookieEchoChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookieEchoChunk *pp = (SctpCookieEchoChunk *)object; (void)pp;
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_cookie: pp->setCookie(i,string2long(value)); return true;
-        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_cookie: pp->setCookie(i,string2long(value)); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieEchoChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpCookieEchoChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cookie: return pp->getCookie(i);
+        case FIELD_stateCookie: return omnetpp::toAnyPtr(pp->getStateCookie()); break;
+        case FIELD_unrecognizedParameters: return (omnetpp::intval_t)(pp->getUnrecognizedParameters(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpCookieEchoChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpCookieEchoChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cookie: pp->setCookie(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        case FIELD_stateCookie: pp->setStateCookie(omnetpp::fromAnyPtr<SctpCookie>(value.pointerValue())); break;
+        case FIELD_unrecognizedParameters: pp->setUnrecognizedParameters(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieEchoChunk'", field);
     }
 }
 
 const char *SctpCookieEchoChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_stateCookie: return omnetpp::opp_typename(typeid(SctpCookie));
@@ -3583,18 +3962,35 @@ const char *SctpCookieEchoChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpCookieEchoChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpCookieEchoChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpCookieEchoChunk *pp = (SctpCookieEchoChunk *)object; (void)pp;
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_stateCookie: return toVoidPtr(pp->getStateCookie()); break;
-        default: return nullptr;
+        case FIELD_stateCookie: return omnetpp::toAnyPtr(pp->getStateCookie()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpCookieEchoChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookieEchoChunk *pp = omnetpp::fromAnyPtr<SctpCookieEchoChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_stateCookie: pp->setStateCookie(omnetpp::fromAnyPtr<SctpCookie>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieEchoChunk'", field);
     }
 }
 
@@ -3681,12 +4077,12 @@ void SctpCookie::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->length);
 }
 
-omnetpp::simtime_t SctpCookie::getCreationTime() const
+::omnetpp::simtime_t SctpCookie::getCreationTime() const
 {
     return this->creationTime;
 }
 
-void SctpCookie::setCreationTime(omnetpp::simtime_t creationTime)
+void SctpCookie::setCreationTime(::omnetpp::simtime_t creationTime)
 {
     this->creationTime = creationTime;
 }
@@ -3718,7 +4114,7 @@ size_t SctpCookie::getLocalTieTagArraySize() const
 
 uint8_t SctpCookie::getLocalTieTag(size_t k) const
 {
-    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size localTieTag_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)localTieTag_arraysize, (unsigned long)k);
     return this->localTieTag[k];
 }
 
@@ -3737,13 +4133,13 @@ void SctpCookie::setLocalTieTagArraySize(size_t newSize)
 
 void SctpCookie::setLocalTieTag(size_t k, uint8_t localTieTag)
 {
-    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)localTieTag_arraysize, (unsigned long)k);
     this->localTieTag[k] = localTieTag;
 }
 
 void SctpCookie::insertLocalTieTag(size_t k, uint8_t localTieTag)
 {
-    if (k > localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)localTieTag_arraysize, (unsigned long)k);
     size_t newSize = localTieTag_arraysize + 1;
     uint8_t *localTieTag2 = new uint8_t[newSize];
     size_t i;
@@ -3757,14 +4153,14 @@ void SctpCookie::insertLocalTieTag(size_t k, uint8_t localTieTag)
     localTieTag_arraysize = newSize;
 }
 
-void SctpCookie::insertLocalTieTag(uint8_t localTieTag)
+void SctpCookie::appendLocalTieTag(uint8_t localTieTag)
 {
     insertLocalTieTag(localTieTag_arraysize, localTieTag);
 }
 
 void SctpCookie::eraseLocalTieTag(size_t k)
 {
-    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= localTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)localTieTag_arraysize, (unsigned long)k);
     size_t newSize = localTieTag_arraysize - 1;
     uint8_t *localTieTag2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -3784,7 +4180,7 @@ size_t SctpCookie::getPeerTieTagArraySize() const
 
 uint8_t SctpCookie::getPeerTieTag(size_t k) const
 {
-    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size peerTieTag_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peerTieTag_arraysize, (unsigned long)k);
     return this->peerTieTag[k];
 }
 
@@ -3803,13 +4199,13 @@ void SctpCookie::setPeerTieTagArraySize(size_t newSize)
 
 void SctpCookie::setPeerTieTag(size_t k, uint8_t peerTieTag)
 {
-    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peerTieTag_arraysize, (unsigned long)k);
     this->peerTieTag[k] = peerTieTag;
 }
 
 void SctpCookie::insertPeerTieTag(size_t k, uint8_t peerTieTag)
 {
-    if (k > peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peerTieTag_arraysize, (unsigned long)k);
     size_t newSize = peerTieTag_arraysize + 1;
     uint8_t *peerTieTag2 = new uint8_t[newSize];
     size_t i;
@@ -3823,14 +4219,14 @@ void SctpCookie::insertPeerTieTag(size_t k, uint8_t peerTieTag)
     peerTieTag_arraysize = newSize;
 }
 
-void SctpCookie::insertPeerTieTag(uint8_t peerTieTag)
+void SctpCookie::appendPeerTieTag(uint8_t peerTieTag)
 {
     insertPeerTieTag(peerTieTag_arraysize, peerTieTag);
 }
 
 void SctpCookie::erasePeerTieTag(size_t k)
 {
-    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peerTieTag_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peerTieTag_arraysize, (unsigned long)k);
     size_t newSize = peerTieTag_arraysize - 1;
     uint8_t *peerTieTag2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -3856,7 +4252,7 @@ void SctpCookie::setLength(uint32_t length)
 class SctpCookieDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_creationTime,
         FIELD_localTag,
@@ -3871,34 +4267,38 @@ class SctpCookieDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpCookieDescriptor)
 
 SctpCookieDescriptor::SctpCookieDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpCookie)), "omnetpp::cNamedObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpCookieDescriptor::~SctpCookieDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpCookieDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3908,41 +4308,41 @@ bool SctpCookieDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpCookieDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpCookieDescriptor::getProperty(const char *propertyname) const
+const char *SctpCookieDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpCookieDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 6+base->getFieldCount() : 6;
 }
 
 unsigned int SctpCookieDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        0,    // FIELD_creationTime
+        FD_ISEDITABLE,    // FIELD_creationTime
         FD_ISEDITABLE,    // FIELD_localTag
         FD_ISEDITABLE,    // FIELD_peerTag
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_localTieTag
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_peerTieTag
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_localTieTag
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_peerTieTag
         FD_ISEDITABLE,    // FIELD_length
     };
     return (field >= 0 && field < 6) ? fieldTypeFlags[field] : 0;
@@ -3950,11 +4350,11 @@ unsigned int SctpCookieDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpCookieDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "creationTime",
@@ -3969,24 +4369,24 @@ const char *SctpCookieDescriptor::getFieldName(int field) const
 
 int SctpCookieDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "creationTime") == 0) return base+0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "localTag") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peerTag") == 0) return base+2;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "localTieTag") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peerTieTag") == 0) return base+4;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+5;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "creationTime") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "localTag") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "peerTag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "localTieTag") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "peerTieTag") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 5;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpCookieDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "omnetpp::simtime_t",    // FIELD_creationTime
@@ -4001,39 +4401,39 @@ const char *SctpCookieDescriptor::getFieldTypeString(int field) const
 
 const char **SctpCookieDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpCookieDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpCookieDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpCookieDescriptor::getFieldArraySize(void *object, int field) const
+int SctpCookieDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpCookie *pp = (SctpCookie *)object; (void)pp;
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
     switch (field) {
         case FIELD_localTieTag: return pp->getLocalTieTagArraySize();
         case FIELD_peerTieTag: return pp->getPeerTieTagArraySize();
@@ -4041,29 +4441,47 @@ int SctpCookieDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *SctpCookieDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpCookieDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookie *pp = (SctpCookie *)object; (void)pp;
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
+    switch (field) {
+        case FIELD_localTieTag: pp->setLocalTieTagArraySize(size); break;
+        case FIELD_peerTieTag: pp->setPeerTieTagArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpCookie'", field);
+    }
+}
+
+const char *SctpCookieDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpCookieDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpCookieDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpCookie *pp = (SctpCookie *)object; (void)pp;
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
     switch (field) {
         case FIELD_creationTime: return simtime2string(pp->getCreationTime());
         case FIELD_localTag: return ulong2string(pp->getLocalTag());
@@ -4075,49 +4493,110 @@ std::string SctpCookieDescriptor::getFieldValueAsString(void *object, int field,
     }
 }
 
-bool SctpCookieDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpCookieDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookie *pp = (SctpCookie *)object; (void)pp;
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
     switch (field) {
-        case FIELD_localTag: pp->setLocalTag(string2ulong(value)); return true;
-        case FIELD_peerTag: pp->setPeerTag(string2ulong(value)); return true;
-        case FIELD_localTieTag: pp->setLocalTieTag(i,string2ulong(value)); return true;
-        case FIELD_peerTieTag: pp->setPeerTieTag(i,string2ulong(value)); return true;
-        case FIELD_length: pp->setLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_creationTime: pp->setCreationTime(string2simtime(value)); break;
+        case FIELD_localTag: pp->setLocalTag(string2ulong(value)); break;
+        case FIELD_peerTag: pp->setPeerTag(string2ulong(value)); break;
+        case FIELD_localTieTag: pp->setLocalTieTag(i,string2ulong(value)); break;
+        case FIELD_peerTieTag: pp->setPeerTieTag(i,string2ulong(value)); break;
+        case FIELD_length: pp->setLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookie'", field);
+    }
+}
+
+omnetpp::cValue SctpCookieDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
+    switch (field) {
+        case FIELD_creationTime: return pp->getCreationTime().dbl();
+        case FIELD_localTag: return (omnetpp::intval_t)(pp->getLocalTag());
+        case FIELD_peerTag: return (omnetpp::intval_t)(pp->getPeerTag());
+        case FIELD_localTieTag: return (omnetpp::intval_t)(pp->getLocalTieTag(i));
+        case FIELD_peerTieTag: return (omnetpp::intval_t)(pp->getPeerTieTag(i));
+        case FIELD_length: return (omnetpp::intval_t)(pp->getLength());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpCookie' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpCookieDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
+    switch (field) {
+        case FIELD_creationTime: pp->setCreationTime(value.doubleValue()); break;
+        case FIELD_localTag: pp->setLocalTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_peerTag: pp->setPeerTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_localTieTag: pp->setLocalTieTag(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_peerTieTag: pp->setPeerTieTag(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookie'", field);
     }
 }
 
 const char *SctpCookieDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpCookieDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpCookieDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpCookie *pp = (SctpCookie *)object; (void)pp;
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpCookieDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookie *pp = omnetpp::fromAnyPtr<SctpCookie>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookie'", field);
     }
 }
 
@@ -4161,7 +4640,7 @@ void SctpCookieAckChunk::parsimUnpack(omnetpp::cCommBuffer *b)
 class SctpCookieAckChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -4170,34 +4649,38 @@ class SctpCookieAckChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpCookieAckChunkDescriptor)
 
 SctpCookieAckChunkDescriptor::SctpCookieAckChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpCookieAckChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpCookieAckChunkDescriptor::~SctpCookieAckChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpCookieAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4207,170 +4690,234 @@ bool SctpCookieAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpCookieAckChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpCookieAckChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpCookieAckChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpCookieAckChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int SctpCookieAckChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *SctpCookieAckChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int SctpCookieAckChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpCookieAckChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **SctpCookieAckChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpCookieAckChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpCookieAckChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpCookieAckChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpCookieAckChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpCookieAckChunk *pp = (SctpCookieAckChunk *)object; (void)pp;
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpCookieAckChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpCookieAckChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookieAckChunk *pp = (SctpCookieAckChunk *)object; (void)pp;
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpCookieAckChunk'", field);
+    }
+}
+
+const char *SctpCookieAckChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpCookieAckChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpCookieAckChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpCookieAckChunk *pp = (SctpCookieAckChunk *)object; (void)pp;
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool SctpCookieAckChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpCookieAckChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpCookieAckChunk *pp = (SctpCookieAckChunk *)object; (void)pp;
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieAckChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpCookieAckChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpCookieAckChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpCookieAckChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieAckChunk'", field);
     }
 }
 
 const char *SctpCookieAckChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *SctpCookieAckChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpCookieAckChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpCookieAckChunk *pp = (SctpCookieAckChunk *)object; (void)pp;
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpCookieAckChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpCookieAckChunk *pp = omnetpp::fromAnyPtr<SctpCookieAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpCookieAckChunk'", field);
     }
 }
 
@@ -4479,22 +5026,22 @@ void SctpDataMsg::setBBit(bool bBit)
     this->bBit = bBit;
 }
 
-omnetpp::simtime_t SctpDataMsg::getEnqueuingTime() const
+::omnetpp::simtime_t SctpDataMsg::getEnqueuingTime() const
 {
     return this->enqueuingTime;
 }
 
-void SctpDataMsg::setEnqueuingTime(omnetpp::simtime_t enqueuingTime)
+void SctpDataMsg::setEnqueuingTime(::omnetpp::simtime_t enqueuingTime)
 {
     this->enqueuingTime = enqueuingTime;
 }
 
-omnetpp::simtime_t SctpDataMsg::getExpiryTime() const
+::omnetpp::simtime_t SctpDataMsg::getExpiryTime() const
 {
     return this->expiryTime;
 }
 
-void SctpDataMsg::setExpiryTime(omnetpp::simtime_t expiryTime)
+void SctpDataMsg::setExpiryTime(::omnetpp::simtime_t expiryTime)
 {
     this->expiryTime = expiryTime;
 }
@@ -4509,12 +5056,12 @@ void SctpDataMsg::setPpid(uint32_t ppid)
     this->ppid = ppid;
 }
 
-const L3Address& SctpDataMsg::getInitialDestination() const
+const ::inet::L3Address& SctpDataMsg::getInitialDestination() const
 {
     return this->initialDestination;
 }
 
-void SctpDataMsg::setInitialDestination(const L3Address& initialDestination)
+void SctpDataMsg::setInitialDestination(const ::inet::L3Address& initialDestination)
 {
     this->initialDestination = initialDestination;
 }
@@ -4622,7 +5169,7 @@ void SctpDataMsg::setSackNow(bool sackNow)
 class SctpDataMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_eBit,
         FIELD_bBit,
@@ -4647,34 +5194,38 @@ class SctpDataMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpDataMsgDescriptor)
 
 SctpDataMsgDescriptor::SctpDataMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpDataMsg)), "omnetpp::cPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpDataMsgDescriptor::~SctpDataMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpDataMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4684,40 +5235,40 @@ bool SctpDataMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpDataMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpDataMsgDescriptor::getProperty(const char *propertyname) const
+const char *SctpDataMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpDataMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 16+basedesc->getFieldCount() : 16;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 16+base->getFieldCount() : 16;
 }
 
 unsigned int SctpDataMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_eBit
         FD_ISEDITABLE,    // FIELD_bBit
-        0,    // FIELD_enqueuingTime
-        0,    // FIELD_expiryTime
+        FD_ISEDITABLE,    // FIELD_enqueuingTime
+        FD_ISEDITABLE,    // FIELD_expiryTime
         FD_ISEDITABLE,    // FIELD_ppid
         0,    // FIELD_initialDestination
         FD_ISEDITABLE,    // FIELD_msgNum
@@ -4736,11 +5287,11 @@ unsigned int SctpDataMsgDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpDataMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "eBit",
@@ -4765,34 +5316,34 @@ const char *SctpDataMsgDescriptor::getFieldName(int field) const
 
 int SctpDataMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "eBit") == 0) return base+0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bBit") == 0) return base+1;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "enqueuingTime") == 0) return base+2;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "expiryTime") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "ppid") == 0) return base+4;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initialDestination") == 0) return base+5;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "msgNum") == 0) return base+6;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sid") == 0) return base+7;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "ordered") == 0) return base+8;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "booksize") == 0) return base+9;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "rtx") == 0) return base+10;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragment") == 0) return base+11;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "prMethod") == 0) return base+12;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "priority") == 0) return base+13;
-    if (fieldName[0] == 's' && strcmp(fieldName, "strReset") == 0) return base+14;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sackNow") == 0) return base+15;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "eBit") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "bBit") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "enqueuingTime") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "expiryTime") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "ppid") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "initialDestination") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "msgNum") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "sid") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "ordered") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "booksize") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "rtx") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "fragment") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "prMethod") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "priority") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "strReset") == 0) return baseIndex + 14;
+    if (strcmp(fieldName, "sackNow") == 0) return baseIndex + 15;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpDataMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_eBit
@@ -4817,67 +5368,83 @@ const char *SctpDataMsgDescriptor::getFieldTypeString(int field) const
 
 const char **SctpDataMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpDataMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpDataMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpDataMsgDescriptor::getFieldArraySize(void *object, int field) const
+int SctpDataMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpDataMsg *pp = (SctpDataMsg *)object; (void)pp;
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpDataMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpDataMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDataMsg *pp = (SctpDataMsg *)object; (void)pp;
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpDataMsg'", field);
+    }
+}
+
+const char *SctpDataMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpDataMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpDataMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpDataMsg *pp = (SctpDataMsg *)object; (void)pp;
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
     switch (field) {
         case FIELD_eBit: return bool2string(pp->getEBit());
         case FIELD_bBit: return bool2string(pp->getBBit());
@@ -4899,58 +5466,139 @@ std::string SctpDataMsgDescriptor::getFieldValueAsString(void *object, int field
     }
 }
 
-bool SctpDataMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpDataMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDataMsg *pp = (SctpDataMsg *)object; (void)pp;
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_eBit: pp->setEBit(string2bool(value)); return true;
-        case FIELD_bBit: pp->setBBit(string2bool(value)); return true;
-        case FIELD_ppid: pp->setPpid(string2ulong(value)); return true;
-        case FIELD_msgNum: pp->setMsgNum(string2ulong(value)); return true;
-        case FIELD_sid: pp->setSid(string2ulong(value)); return true;
-        case FIELD_ordered: pp->setOrdered(string2bool(value)); return true;
-        case FIELD_booksize: pp->setBooksize(string2ulong(value)); return true;
-        case FIELD_rtx: pp->setRtx(string2ulong(value)); return true;
-        case FIELD_fragment: pp->setFragment(string2bool(value)); return true;
-        case FIELD_prMethod: pp->setPrMethod(string2ulong(value)); return true;
-        case FIELD_priority: pp->setPriority(string2ulong(value)); return true;
-        case FIELD_strReset: pp->setStrReset(string2bool(value)); return true;
-        case FIELD_sackNow: pp->setSackNow(string2bool(value)); return true;
-        default: return false;
+        case FIELD_eBit: pp->setEBit(string2bool(value)); break;
+        case FIELD_bBit: pp->setBBit(string2bool(value)); break;
+        case FIELD_enqueuingTime: pp->setEnqueuingTime(string2simtime(value)); break;
+        case FIELD_expiryTime: pp->setExpiryTime(string2simtime(value)); break;
+        case FIELD_ppid: pp->setPpid(string2ulong(value)); break;
+        case FIELD_msgNum: pp->setMsgNum(string2ulong(value)); break;
+        case FIELD_sid: pp->setSid(string2ulong(value)); break;
+        case FIELD_ordered: pp->setOrdered(string2bool(value)); break;
+        case FIELD_booksize: pp->setBooksize(string2ulong(value)); break;
+        case FIELD_rtx: pp->setRtx(string2ulong(value)); break;
+        case FIELD_fragment: pp->setFragment(string2bool(value)); break;
+        case FIELD_prMethod: pp->setPrMethod(string2ulong(value)); break;
+        case FIELD_priority: pp->setPriority(string2ulong(value)); break;
+        case FIELD_strReset: pp->setStrReset(string2bool(value)); break;
+        case FIELD_sackNow: pp->setSackNow(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataMsg'", field);
+    }
+}
+
+omnetpp::cValue SctpDataMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_eBit: return pp->getEBit();
+        case FIELD_bBit: return pp->getBBit();
+        case FIELD_enqueuingTime: return pp->getEnqueuingTime().dbl();
+        case FIELD_expiryTime: return pp->getExpiryTime().dbl();
+        case FIELD_ppid: return (omnetpp::intval_t)(pp->getPpid());
+        case FIELD_initialDestination: return omnetpp::toAnyPtr(&pp->getInitialDestination()); break;
+        case FIELD_msgNum: return (omnetpp::intval_t)(pp->getMsgNum());
+        case FIELD_sid: return (omnetpp::intval_t)(pp->getSid());
+        case FIELD_ordered: return pp->getOrdered();
+        case FIELD_booksize: return (omnetpp::intval_t)(pp->getBooksize());
+        case FIELD_rtx: return (omnetpp::intval_t)(pp->getRtx());
+        case FIELD_fragment: return pp->getFragment();
+        case FIELD_prMethod: return (omnetpp::intval_t)(pp->getPrMethod());
+        case FIELD_priority: return (omnetpp::intval_t)(pp->getPriority());
+        case FIELD_strReset: return pp->getStrReset();
+        case FIELD_sackNow: return pp->getSackNow();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpDataMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpDataMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_eBit: pp->setEBit(value.boolValue()); break;
+        case FIELD_bBit: pp->setBBit(value.boolValue()); break;
+        case FIELD_enqueuingTime: pp->setEnqueuingTime(value.doubleValue()); break;
+        case FIELD_expiryTime: pp->setExpiryTime(value.doubleValue()); break;
+        case FIELD_ppid: pp->setPpid(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_msgNum: pp->setMsgNum(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sid: pp->setSid(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_ordered: pp->setOrdered(value.boolValue()); break;
+        case FIELD_booksize: pp->setBooksize(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_rtx: pp->setRtx(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_fragment: pp->setFragment(value.boolValue()); break;
+        case FIELD_prMethod: pp->setPrMethod(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_priority: pp->setPriority(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_strReset: pp->setStrReset(value.boolValue()); break;
+        case FIELD_sackNow: pp->setSackNow(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataMsg'", field);
     }
 }
 
 const char *SctpDataMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpDataMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpDataMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpDataMsg *pp = (SctpDataMsg *)object; (void)pp;
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_initialDestination: return toVoidPtr(&pp->getInitialDestination()); break;
-        default: return nullptr;
+        case FIELD_initialDestination: return omnetpp::toAnyPtr(&pp->getInitialDestination()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpDataMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDataMsg *pp = omnetpp::fromAnyPtr<SctpDataMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataMsg'", field);
     }
 }
 
@@ -5101,22 +5749,22 @@ void SctpDataChunk::setPpid(uint32_t ppid)
     this->ppid = ppid;
 }
 
-omnetpp::simtime_t SctpDataChunk::getEnqueuingTime() const
+::omnetpp::simtime_t SctpDataChunk::getEnqueuingTime() const
 {
     return this->enqueuingTime;
 }
 
-void SctpDataChunk::setEnqueuingTime(omnetpp::simtime_t enqueuingTime)
+void SctpDataChunk::setEnqueuingTime(::omnetpp::simtime_t enqueuingTime)
 {
     this->enqueuingTime = enqueuingTime;
 }
 
-omnetpp::simtime_t SctpDataChunk::getFirstSendTime() const
+::omnetpp::simtime_t SctpDataChunk::getFirstSendTime() const
 {
     return this->firstSendTime;
 }
 
-void SctpDataChunk::setFirstSendTime(omnetpp::simtime_t firstSendTime)
+void SctpDataChunk::setFirstSendTime(::omnetpp::simtime_t firstSendTime)
 {
     this->firstSendTime = firstSendTime;
 }
@@ -5124,7 +5772,7 @@ void SctpDataChunk::setFirstSendTime(omnetpp::simtime_t firstSendTime)
 class SctpDataChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_eBit,
         FIELD_bBit,
@@ -5143,34 +5791,38 @@ class SctpDataChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpDataChunkDescriptor)
 
 SctpDataChunkDescriptor::SctpDataChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpDataChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpDataChunkDescriptor::~SctpDataChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpDataChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5180,34 +5832,34 @@ bool SctpDataChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpDataChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpDataChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpDataChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpDataChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 10+basedesc->getFieldCount() : 10;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 10+base->getFieldCount() : 10;
 }
 
 unsigned int SctpDataChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_eBit
@@ -5218,19 +5870,19 @@ unsigned int SctpDataChunkDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_sid
         FD_ISEDITABLE,    // FIELD_ssn
         FD_ISEDITABLE,    // FIELD_ppid
-        0,    // FIELD_enqueuingTime
-        0,    // FIELD_firstSendTime
+        FD_ISEDITABLE,    // FIELD_enqueuingTime
+        FD_ISEDITABLE,    // FIELD_firstSendTime
     };
     return (field >= 0 && field < 10) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpDataChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "eBit",
@@ -5249,28 +5901,28 @@ const char *SctpDataChunkDescriptor::getFieldName(int field) const
 
 int SctpDataChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "eBit") == 0) return base+0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bBit") == 0) return base+1;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "uBit") == 0) return base+2;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "iBit") == 0) return base+3;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tsn") == 0) return base+4;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sid") == 0) return base+5;
-    if (fieldName[0] == 's' && strcmp(fieldName, "ssn") == 0) return base+6;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "ppid") == 0) return base+7;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "enqueuingTime") == 0) return base+8;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "firstSendTime") == 0) return base+9;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "eBit") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "bBit") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "uBit") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "iBit") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "tsn") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "sid") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "ssn") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "ppid") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "enqueuingTime") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "firstSendTime") == 0) return baseIndex + 9;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpDataChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_eBit
@@ -5289,67 +5941,83 @@ const char *SctpDataChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpDataChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpDataChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpDataChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpDataChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpDataChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpDataChunk *pp = (SctpDataChunk *)object; (void)pp;
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpDataChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpDataChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDataChunk *pp = (SctpDataChunk *)object; (void)pp;
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpDataChunk'", field);
+    }
+}
+
+const char *SctpDataChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpDataChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpDataChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpDataChunk *pp = (SctpDataChunk *)object; (void)pp;
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
     switch (field) {
         case FIELD_eBit: return bool2string(pp->getEBit());
         case FIELD_bBit: return bool2string(pp->getBBit());
@@ -5365,52 +6033,122 @@ std::string SctpDataChunkDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool SctpDataChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpDataChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDataChunk *pp = (SctpDataChunk *)object; (void)pp;
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_eBit: pp->setEBit(string2bool(value)); return true;
-        case FIELD_bBit: pp->setBBit(string2bool(value)); return true;
-        case FIELD_uBit: pp->setUBit(string2bool(value)); return true;
-        case FIELD_iBit: pp->setIBit(string2bool(value)); return true;
-        case FIELD_tsn: pp->setTsn(string2ulong(value)); return true;
-        case FIELD_sid: pp->setSid(string2ulong(value)); return true;
-        case FIELD_ssn: pp->setSsn(string2ulong(value)); return true;
-        case FIELD_ppid: pp->setPpid(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_eBit: pp->setEBit(string2bool(value)); break;
+        case FIELD_bBit: pp->setBBit(string2bool(value)); break;
+        case FIELD_uBit: pp->setUBit(string2bool(value)); break;
+        case FIELD_iBit: pp->setIBit(string2bool(value)); break;
+        case FIELD_tsn: pp->setTsn(string2ulong(value)); break;
+        case FIELD_sid: pp->setSid(string2ulong(value)); break;
+        case FIELD_ssn: pp->setSsn(string2ulong(value)); break;
+        case FIELD_ppid: pp->setPpid(string2ulong(value)); break;
+        case FIELD_enqueuingTime: pp->setEnqueuingTime(string2simtime(value)); break;
+        case FIELD_firstSendTime: pp->setFirstSendTime(string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpDataChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_eBit: return pp->getEBit();
+        case FIELD_bBit: return pp->getBBit();
+        case FIELD_uBit: return pp->getUBit();
+        case FIELD_iBit: return pp->getIBit();
+        case FIELD_tsn: return (omnetpp::intval_t)(pp->getTsn());
+        case FIELD_sid: return (omnetpp::intval_t)(pp->getSid());
+        case FIELD_ssn: return (omnetpp::intval_t)(pp->getSsn());
+        case FIELD_ppid: return (omnetpp::intval_t)(pp->getPpid());
+        case FIELD_enqueuingTime: return pp->getEnqueuingTime().dbl();
+        case FIELD_firstSendTime: return pp->getFirstSendTime().dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpDataChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpDataChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_eBit: pp->setEBit(value.boolValue()); break;
+        case FIELD_bBit: pp->setBBit(value.boolValue()); break;
+        case FIELD_uBit: pp->setUBit(value.boolValue()); break;
+        case FIELD_iBit: pp->setIBit(value.boolValue()); break;
+        case FIELD_tsn: pp->setTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sid: pp->setSid(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_ssn: pp->setSsn(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_ppid: pp->setPpid(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_enqueuingTime: pp->setEnqueuingTime(value.doubleValue()); break;
+        case FIELD_firstSendTime: pp->setFirstSendTime(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataChunk'", field);
     }
 }
 
 const char *SctpDataChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpDataChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpDataChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpDataChunk *pp = (SctpDataChunk *)object; (void)pp;
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpDataChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDataChunk *pp = omnetpp::fromAnyPtr<SctpDataChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDataChunk'", field);
     }
 }
 
@@ -5505,7 +6243,7 @@ size_t SctpForwardTsnChunk::getSidArraySize() const
 
 uint16_t SctpForwardTsnChunk::getSid(size_t k) const
 {
-    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size sid_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sid_arraysize, (unsigned long)k);
     return this->sid[k];
 }
 
@@ -5524,13 +6262,13 @@ void SctpForwardTsnChunk::setSidArraySize(size_t newSize)
 
 void SctpForwardTsnChunk::setSid(size_t k, uint16_t sid)
 {
-    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sid_arraysize, (unsigned long)k);
     this->sid[k] = sid;
 }
 
 void SctpForwardTsnChunk::insertSid(size_t k, uint16_t sid)
 {
-    if (k > sid_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sid_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sid_arraysize, (unsigned long)k);
     size_t newSize = sid_arraysize + 1;
     uint16_t *sid2 = new uint16_t[newSize];
     size_t i;
@@ -5544,14 +6282,14 @@ void SctpForwardTsnChunk::insertSid(size_t k, uint16_t sid)
     sid_arraysize = newSize;
 }
 
-void SctpForwardTsnChunk::insertSid(uint16_t sid)
+void SctpForwardTsnChunk::appendSid(uint16_t sid)
 {
     insertSid(sid_arraysize, sid);
 }
 
 void SctpForwardTsnChunk::eraseSid(size_t k)
 {
-    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sid_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sid_arraysize, (unsigned long)k);
     size_t newSize = sid_arraysize - 1;
     uint16_t *sid2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -5571,7 +6309,7 @@ size_t SctpForwardTsnChunk::getSsnArraySize() const
 
 short SctpForwardTsnChunk::getSsn(size_t k) const
 {
-    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size ssn_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ssn_arraysize, (unsigned long)k);
     return this->ssn[k];
 }
 
@@ -5590,13 +6328,13 @@ void SctpForwardTsnChunk::setSsnArraySize(size_t newSize)
 
 void SctpForwardTsnChunk::setSsn(size_t k, short ssn)
 {
-    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ssn_arraysize, (unsigned long)k);
     this->ssn[k] = ssn;
 }
 
 void SctpForwardTsnChunk::insertSsn(size_t k, short ssn)
 {
-    if (k > ssn_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > ssn_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ssn_arraysize, (unsigned long)k);
     size_t newSize = ssn_arraysize + 1;
     short *ssn2 = new short[newSize];
     size_t i;
@@ -5610,14 +6348,14 @@ void SctpForwardTsnChunk::insertSsn(size_t k, short ssn)
     ssn_arraysize = newSize;
 }
 
-void SctpForwardTsnChunk::insertSsn(short ssn)
+void SctpForwardTsnChunk::appendSsn(short ssn)
 {
     insertSsn(ssn_arraysize, ssn);
 }
 
 void SctpForwardTsnChunk::eraseSsn(size_t k)
 {
-    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= ssn_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ssn_arraysize, (unsigned long)k);
     size_t newSize = ssn_arraysize - 1;
     short *ssn2 = (newSize == 0) ? nullptr : new short[newSize];
     size_t i;
@@ -5633,7 +6371,7 @@ void SctpForwardTsnChunk::eraseSsn(size_t k)
 class SctpForwardTsnChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_newCumTsn,
         FIELD_sid,
@@ -5645,34 +6383,38 @@ class SctpForwardTsnChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpForwardTsnChunkDescriptor)
 
 SctpForwardTsnChunkDescriptor::SctpForwardTsnChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpForwardTsnChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpForwardTsnChunkDescriptor::~SctpForwardTsnChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpForwardTsnChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5682,50 +6424,50 @@ bool SctpForwardTsnChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpForwardTsnChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpForwardTsnChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpForwardTsnChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpForwardTsnChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpForwardTsnChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_newCumTsn
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sid
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_ssn
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sid
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_ssn
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpForwardTsnChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "newCumTsn",
@@ -5737,21 +6479,21 @@ const char *SctpForwardTsnChunkDescriptor::getFieldName(int field) const
 
 int SctpForwardTsnChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "newCumTsn") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sid") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "ssn") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "newCumTsn") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "sid") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "ssn") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpForwardTsnChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_newCumTsn
@@ -5763,39 +6505,39 @@ const char *SctpForwardTsnChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpForwardTsnChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpForwardTsnChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpForwardTsnChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpForwardTsnChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpForwardTsnChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpForwardTsnChunk *pp = (SctpForwardTsnChunk *)object; (void)pp;
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
     switch (field) {
         case FIELD_sid: return pp->getSidArraySize();
         case FIELD_ssn: return pp->getSsnArraySize();
@@ -5803,29 +6545,47 @@ int SctpForwardTsnChunkDescriptor::getFieldArraySize(void *object, int field) co
     }
 }
 
-const char *SctpForwardTsnChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpForwardTsnChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpForwardTsnChunk *pp = (SctpForwardTsnChunk *)object; (void)pp;
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_sid: pp->setSidArraySize(size); break;
+        case FIELD_ssn: pp->setSsnArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpForwardTsnChunk'", field);
+    }
+}
+
+const char *SctpForwardTsnChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpForwardTsnChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpForwardTsnChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpForwardTsnChunk *pp = (SctpForwardTsnChunk *)object; (void)pp;
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
     switch (field) {
         case FIELD_newCumTsn: return ulong2string(pp->getNewCumTsn());
         case FIELD_sid: return ulong2string(pp->getSid(i));
@@ -5834,47 +6594,101 @@ std::string SctpForwardTsnChunkDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool SctpForwardTsnChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpForwardTsnChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpForwardTsnChunk *pp = (SctpForwardTsnChunk *)object; (void)pp;
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_newCumTsn: pp->setNewCumTsn(string2ulong(value)); return true;
-        case FIELD_sid: pp->setSid(i,string2ulong(value)); return true;
-        case FIELD_ssn: pp->setSsn(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_newCumTsn: pp->setNewCumTsn(string2ulong(value)); break;
+        case FIELD_sid: pp->setSid(i,string2ulong(value)); break;
+        case FIELD_ssn: pp->setSsn(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpForwardTsnChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpForwardTsnChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_newCumTsn: return (omnetpp::intval_t)(pp->getNewCumTsn());
+        case FIELD_sid: return (omnetpp::intval_t)(pp->getSid(i));
+        case FIELD_ssn: return pp->getSsn(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpForwardTsnChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpForwardTsnChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_newCumTsn: pp->setNewCumTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sid: pp->setSid(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_ssn: pp->setSsn(i,omnetpp::checked_int_cast<short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpForwardTsnChunk'", field);
     }
 }
 
 const char *SctpForwardTsnChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpForwardTsnChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpForwardTsnChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpForwardTsnChunk *pp = (SctpForwardTsnChunk *)object; (void)pp;
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpForwardTsnChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpForwardTsnChunk *pp = omnetpp::fromAnyPtr<SctpForwardTsnChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpForwardTsnChunk'", field);
     }
 }
 
@@ -6097,7 +6911,7 @@ size_t SctpSackChunk::getGapStartArraySize() const
 
 uint32_t SctpSackChunk::getGapStart(size_t k) const
 {
-    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size gapStart_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStart_arraysize, (unsigned long)k);
     return this->gapStart[k];
 }
 
@@ -6116,13 +6930,13 @@ void SctpSackChunk::setGapStartArraySize(size_t newSize)
 
 void SctpSackChunk::setGapStart(size_t k, uint32_t gapStart)
 {
-    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStart_arraysize, (unsigned long)k);
     this->gapStart[k] = gapStart;
 }
 
 void SctpSackChunk::insertGapStart(size_t k, uint32_t gapStart)
 {
-    if (k > gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStart_arraysize, (unsigned long)k);
     size_t newSize = gapStart_arraysize + 1;
     uint32_t *gapStart2 = new uint32_t[newSize];
     size_t i;
@@ -6136,14 +6950,14 @@ void SctpSackChunk::insertGapStart(size_t k, uint32_t gapStart)
     gapStart_arraysize = newSize;
 }
 
-void SctpSackChunk::insertGapStart(uint32_t gapStart)
+void SctpSackChunk::appendGapStart(uint32_t gapStart)
 {
     insertGapStart(gapStart_arraysize, gapStart);
 }
 
 void SctpSackChunk::eraseGapStart(size_t k)
 {
-    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= gapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStart_arraysize, (unsigned long)k);
     size_t newSize = gapStart_arraysize - 1;
     uint32_t *gapStart2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -6163,7 +6977,7 @@ size_t SctpSackChunk::getGapStopArraySize() const
 
 uint32_t SctpSackChunk::getGapStop(size_t k) const
 {
-    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size gapStop_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStop_arraysize, (unsigned long)k);
     return this->gapStop[k];
 }
 
@@ -6182,13 +6996,13 @@ void SctpSackChunk::setGapStopArraySize(size_t newSize)
 
 void SctpSackChunk::setGapStop(size_t k, uint32_t gapStop)
 {
-    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStop_arraysize, (unsigned long)k);
     this->gapStop[k] = gapStop;
 }
 
 void SctpSackChunk::insertGapStop(size_t k, uint32_t gapStop)
 {
-    if (k > gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStop_arraysize, (unsigned long)k);
     size_t newSize = gapStop_arraysize + 1;
     uint32_t *gapStop2 = new uint32_t[newSize];
     size_t i;
@@ -6202,14 +7016,14 @@ void SctpSackChunk::insertGapStop(size_t k, uint32_t gapStop)
     gapStop_arraysize = newSize;
 }
 
-void SctpSackChunk::insertGapStop(uint32_t gapStop)
+void SctpSackChunk::appendGapStop(uint32_t gapStop)
 {
     insertGapStop(gapStop_arraysize, gapStop);
 }
 
 void SctpSackChunk::eraseGapStop(size_t k)
 {
-    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= gapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)gapStop_arraysize, (unsigned long)k);
     size_t newSize = gapStop_arraysize - 1;
     uint32_t *gapStop2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -6229,7 +7043,7 @@ size_t SctpSackChunk::getDupTsnsArraySize() const
 
 uint32_t SctpSackChunk::getDupTsns(size_t k) const
 {
-    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size dupTsns_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dupTsns_arraysize, (unsigned long)k);
     return this->dupTsns[k];
 }
 
@@ -6248,13 +7062,13 @@ void SctpSackChunk::setDupTsnsArraySize(size_t newSize)
 
 void SctpSackChunk::setDupTsns(size_t k, uint32_t dupTsns)
 {
-    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dupTsns_arraysize, (unsigned long)k);
     this->dupTsns[k] = dupTsns;
 }
 
 void SctpSackChunk::insertDupTsns(size_t k, uint32_t dupTsns)
 {
-    if (k > dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dupTsns_arraysize, (unsigned long)k);
     size_t newSize = dupTsns_arraysize + 1;
     uint32_t *dupTsns2 = new uint32_t[newSize];
     size_t i;
@@ -6268,14 +7082,14 @@ void SctpSackChunk::insertDupTsns(size_t k, uint32_t dupTsns)
     dupTsns_arraysize = newSize;
 }
 
-void SctpSackChunk::insertDupTsns(uint32_t dupTsns)
+void SctpSackChunk::appendDupTsns(uint32_t dupTsns)
 {
     insertDupTsns(dupTsns_arraysize, dupTsns);
 }
 
 void SctpSackChunk::eraseDupTsns(size_t k)
 {
-    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= dupTsns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dupTsns_arraysize, (unsigned long)k);
     size_t newSize = dupTsns_arraysize - 1;
     uint32_t *dupTsns2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -6305,7 +7119,7 @@ size_t SctpSackChunk::getNrGapStartArraySize() const
 
 uint32_t SctpSackChunk::getNrGapStart(size_t k) const
 {
-    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size nrGapStart_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStart_arraysize, (unsigned long)k);
     return this->nrGapStart[k];
 }
 
@@ -6324,13 +7138,13 @@ void SctpSackChunk::setNrGapStartArraySize(size_t newSize)
 
 void SctpSackChunk::setNrGapStart(size_t k, uint32_t nrGapStart)
 {
-    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStart_arraysize, (unsigned long)k);
     this->nrGapStart[k] = nrGapStart;
 }
 
 void SctpSackChunk::insertNrGapStart(size_t k, uint32_t nrGapStart)
 {
-    if (k > nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStart_arraysize, (unsigned long)k);
     size_t newSize = nrGapStart_arraysize + 1;
     uint32_t *nrGapStart2 = new uint32_t[newSize];
     size_t i;
@@ -6344,14 +7158,14 @@ void SctpSackChunk::insertNrGapStart(size_t k, uint32_t nrGapStart)
     nrGapStart_arraysize = newSize;
 }
 
-void SctpSackChunk::insertNrGapStart(uint32_t nrGapStart)
+void SctpSackChunk::appendNrGapStart(uint32_t nrGapStart)
 {
     insertNrGapStart(nrGapStart_arraysize, nrGapStart);
 }
 
 void SctpSackChunk::eraseNrGapStart(size_t k)
 {
-    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStart_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStart_arraysize, (unsigned long)k);
     size_t newSize = nrGapStart_arraysize - 1;
     uint32_t *nrGapStart2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -6371,7 +7185,7 @@ size_t SctpSackChunk::getNrGapStopArraySize() const
 
 uint32_t SctpSackChunk::getNrGapStop(size_t k) const
 {
-    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size nrGapStop_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStop_arraysize, (unsigned long)k);
     return this->nrGapStop[k];
 }
 
@@ -6390,13 +7204,13 @@ void SctpSackChunk::setNrGapStopArraySize(size_t newSize)
 
 void SctpSackChunk::setNrGapStop(size_t k, uint32_t nrGapStop)
 {
-    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStop_arraysize, (unsigned long)k);
     this->nrGapStop[k] = nrGapStop;
 }
 
 void SctpSackChunk::insertNrGapStop(size_t k, uint32_t nrGapStop)
 {
-    if (k > nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStop_arraysize, (unsigned long)k);
     size_t newSize = nrGapStop_arraysize + 1;
     uint32_t *nrGapStop2 = new uint32_t[newSize];
     size_t i;
@@ -6410,14 +7224,14 @@ void SctpSackChunk::insertNrGapStop(size_t k, uint32_t nrGapStop)
     nrGapStop_arraysize = newSize;
 }
 
-void SctpSackChunk::insertNrGapStop(uint32_t nrGapStop)
+void SctpSackChunk::appendNrGapStop(uint32_t nrGapStop)
 {
     insertNrGapStop(nrGapStop_arraysize, nrGapStop);
 }
 
 void SctpSackChunk::eraseNrGapStop(size_t k)
 {
-    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= nrGapStop_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)nrGapStop_arraysize, (unsigned long)k);
     size_t newSize = nrGapStop_arraysize - 1;
     uint32_t *nrGapStop2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -6463,7 +7277,7 @@ void SctpSackChunk::setNrSubtractRGaps(bool nrSubtractRGaps)
 class SctpSackChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_cumTsnAck,
         FIELD_a_rwnd,
@@ -6487,34 +7301,38 @@ class SctpSackChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSackChunkDescriptor)
 
 SctpSackChunkDescriptor::SctpSackChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSackChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSackChunkDescriptor::~SctpSackChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSackChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -6524,34 +7342,34 @@ bool SctpSackChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpSackChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSackChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpSackChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSackChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 15+basedesc->getFieldCount() : 15;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 15+base->getFieldCount() : 15;
 }
 
 unsigned int SctpSackChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_cumTsnAck
@@ -6560,12 +7378,12 @@ unsigned int SctpSackChunkDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_numNrGaps
         FD_ISEDITABLE,    // FIELD_numDupTsns
         FD_ISEDITABLE,    // FIELD_isNrSack
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_gapStart
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_gapStop
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_dupTsns
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_gapStart
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_gapStop
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_dupTsns
         FD_ISEDITABLE,    // FIELD_sackSeqNum
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_nrGapStart
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_nrGapStop
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_nrGapStart
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_nrGapStop
         FD_ISEDITABLE,    // FIELD_msg_rwnd
         FD_ISEDITABLE,    // FIELD_dacPacketsRcvd
         FD_ISEDITABLE,    // FIELD_nrSubtractRGaps
@@ -6575,11 +7393,11 @@ unsigned int SctpSackChunkDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpSackChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "cumTsnAck",
@@ -6603,33 +7421,33 @@ const char *SctpSackChunkDescriptor::getFieldName(int field) const
 
 int SctpSackChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cumTsnAck") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "a_rwnd") == 0) return base+1;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "numGaps") == 0) return base+2;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "numNrGaps") == 0) return base+3;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "numDupTsns") == 0) return base+4;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "isNrSack") == 0) return base+5;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "gapStart") == 0) return base+6;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "gapStop") == 0) return base+7;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dupTsns") == 0) return base+8;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sackSeqNum") == 0) return base+9;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nrGapStart") == 0) return base+10;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nrGapStop") == 0) return base+11;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "msg_rwnd") == 0) return base+12;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dacPacketsRcvd") == 0) return base+13;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nrSubtractRGaps") == 0) return base+14;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "cumTsnAck") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "a_rwnd") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "numGaps") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "numNrGaps") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "numDupTsns") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "isNrSack") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "gapStart") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "gapStop") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "dupTsns") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "sackSeqNum") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "nrGapStart") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "nrGapStop") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "msg_rwnd") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "dacPacketsRcvd") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "nrSubtractRGaps") == 0) return baseIndex + 14;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSackChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_cumTsnAck
@@ -6653,39 +7471,39 @@ const char *SctpSackChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpSackChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSackChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSackChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSackChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSackChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSackChunk *pp = (SctpSackChunk *)object; (void)pp;
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
     switch (field) {
         case FIELD_gapStart: return pp->getGapStartArraySize();
         case FIELD_gapStop: return pp->getGapStopArraySize();
@@ -6696,29 +7514,50 @@ int SctpSackChunkDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *SctpSackChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSackChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSackChunk *pp = (SctpSackChunk *)object; (void)pp;
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_gapStart: pp->setGapStartArraySize(size); break;
+        case FIELD_gapStop: pp->setGapStopArraySize(size); break;
+        case FIELD_dupTsns: pp->setDupTsnsArraySize(size); break;
+        case FIELD_nrGapStart: pp->setNrGapStartArraySize(size); break;
+        case FIELD_nrGapStop: pp->setNrGapStopArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSackChunk'", field);
+    }
+}
+
+const char *SctpSackChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSackChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSackChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSackChunk *pp = (SctpSackChunk *)object; (void)pp;
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
     switch (field) {
         case FIELD_cumTsnAck: return ulong2string(pp->getCumTsnAck());
         case FIELD_a_rwnd: return ulong2string(pp->getA_rwnd());
@@ -6739,59 +7578,137 @@ std::string SctpSackChunkDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool SctpSackChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSackChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSackChunk *pp = (SctpSackChunk *)object; (void)pp;
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_cumTsnAck: pp->setCumTsnAck(string2ulong(value)); return true;
-        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); return true;
-        case FIELD_numGaps: pp->setNumGaps(string2ulong(value)); return true;
-        case FIELD_numNrGaps: pp->setNumNrGaps(string2ulong(value)); return true;
-        case FIELD_numDupTsns: pp->setNumDupTsns(string2ulong(value)); return true;
-        case FIELD_isNrSack: pp->setIsNrSack(string2bool(value)); return true;
-        case FIELD_gapStart: pp->setGapStart(i,string2ulong(value)); return true;
-        case FIELD_gapStop: pp->setGapStop(i,string2ulong(value)); return true;
-        case FIELD_dupTsns: pp->setDupTsns(i,string2ulong(value)); return true;
-        case FIELD_sackSeqNum: pp->setSackSeqNum(string2ulong(value)); return true;
-        case FIELD_nrGapStart: pp->setNrGapStart(i,string2ulong(value)); return true;
-        case FIELD_nrGapStop: pp->setNrGapStop(i,string2ulong(value)); return true;
-        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); return true;
-        case FIELD_dacPacketsRcvd: pp->setDacPacketsRcvd(string2ulong(value)); return true;
-        case FIELD_nrSubtractRGaps: pp->setNrSubtractRGaps(string2bool(value)); return true;
-        default: return false;
+        case FIELD_cumTsnAck: pp->setCumTsnAck(string2ulong(value)); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(string2ulong(value)); break;
+        case FIELD_numGaps: pp->setNumGaps(string2ulong(value)); break;
+        case FIELD_numNrGaps: pp->setNumNrGaps(string2ulong(value)); break;
+        case FIELD_numDupTsns: pp->setNumDupTsns(string2ulong(value)); break;
+        case FIELD_isNrSack: pp->setIsNrSack(string2bool(value)); break;
+        case FIELD_gapStart: pp->setGapStart(i,string2ulong(value)); break;
+        case FIELD_gapStop: pp->setGapStop(i,string2ulong(value)); break;
+        case FIELD_dupTsns: pp->setDupTsns(i,string2ulong(value)); break;
+        case FIELD_sackSeqNum: pp->setSackSeqNum(string2ulong(value)); break;
+        case FIELD_nrGapStart: pp->setNrGapStart(i,string2ulong(value)); break;
+        case FIELD_nrGapStop: pp->setNrGapStop(i,string2ulong(value)); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(string2ulong(value)); break;
+        case FIELD_dacPacketsRcvd: pp->setDacPacketsRcvd(string2ulong(value)); break;
+        case FIELD_nrSubtractRGaps: pp->setNrSubtractRGaps(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSackChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpSackChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cumTsnAck: return (omnetpp::intval_t)(pp->getCumTsnAck());
+        case FIELD_a_rwnd: return (omnetpp::intval_t)(pp->getA_rwnd());
+        case FIELD_numGaps: return (omnetpp::intval_t)(pp->getNumGaps());
+        case FIELD_numNrGaps: return (omnetpp::intval_t)(pp->getNumNrGaps());
+        case FIELD_numDupTsns: return (omnetpp::intval_t)(pp->getNumDupTsns());
+        case FIELD_isNrSack: return pp->isNrSack();
+        case FIELD_gapStart: return (omnetpp::intval_t)(pp->getGapStart(i));
+        case FIELD_gapStop: return (omnetpp::intval_t)(pp->getGapStop(i));
+        case FIELD_dupTsns: return (omnetpp::intval_t)(pp->getDupTsns(i));
+        case FIELD_sackSeqNum: return (omnetpp::intval_t)(pp->getSackSeqNum());
+        case FIELD_nrGapStart: return (omnetpp::intval_t)(pp->getNrGapStart(i));
+        case FIELD_nrGapStop: return (omnetpp::intval_t)(pp->getNrGapStop(i));
+        case FIELD_msg_rwnd: return (omnetpp::intval_t)(pp->getMsg_rwnd());
+        case FIELD_dacPacketsRcvd: return (omnetpp::intval_t)(pp->getDacPacketsRcvd());
+        case FIELD_nrSubtractRGaps: return pp->getNrSubtractRGaps();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSackChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSackChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cumTsnAck: pp->setCumTsnAck(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_a_rwnd: pp->setA_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_numGaps: pp->setNumGaps(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_numNrGaps: pp->setNumNrGaps(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_numDupTsns: pp->setNumDupTsns(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_isNrSack: pp->setIsNrSack(value.boolValue()); break;
+        case FIELD_gapStart: pp->setGapStart(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_gapStop: pp->setGapStop(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_dupTsns: pp->setDupTsns(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sackSeqNum: pp->setSackSeqNum(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_nrGapStart: pp->setNrGapStart(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_nrGapStop: pp->setNrGapStop(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_msg_rwnd: pp->setMsg_rwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_dacPacketsRcvd: pp->setDacPacketsRcvd(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_nrSubtractRGaps: pp->setNrSubtractRGaps(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSackChunk'", field);
     }
 }
 
 const char *SctpSackChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSackChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSackChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSackChunk *pp = (SctpSackChunk *)object; (void)pp;
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSackChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSackChunk *pp = omnetpp::fromAnyPtr<SctpSackChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSackChunk'", field);
     }
 }
 
@@ -6848,7 +7765,7 @@ void SctpAbortChunk::setT_Bit(bool T_Bit)
 class SctpAbortChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_T_Bit,
     };
@@ -6858,34 +7775,38 @@ class SctpAbortChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAbortChunkDescriptor)
 
 SctpAbortChunkDescriptor::SctpAbortChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpAbortChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAbortChunkDescriptor::~SctpAbortChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAbortChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -6895,34 +7816,34 @@ bool SctpAbortChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpAbortChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAbortChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpAbortChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAbortChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpAbortChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_T_Bit
@@ -6932,11 +7853,11 @@ unsigned int SctpAbortChunkDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpAbortChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "T_Bit",
@@ -6946,19 +7867,19 @@ const char *SctpAbortChunkDescriptor::getFieldName(int field) const
 
 int SctpAbortChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'T' && strcmp(fieldName, "T_Bit") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "T_Bit") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAbortChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_T_Bit
@@ -6968,112 +7889,178 @@ const char *SctpAbortChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpAbortChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAbortChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAbortChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAbortChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAbortChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAbortChunk *pp = (SctpAbortChunk *)object; (void)pp;
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpAbortChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAbortChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAbortChunk *pp = (SctpAbortChunk *)object; (void)pp;
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAbortChunk'", field);
+    }
+}
+
+const char *SctpAbortChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpAbortChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAbortChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAbortChunk *pp = (SctpAbortChunk *)object; (void)pp;
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
     switch (field) {
         case FIELD_T_Bit: return bool2string(pp->getT_Bit());
         default: return "";
     }
 }
 
-bool SctpAbortChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAbortChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAbortChunk *pp = (SctpAbortChunk *)object; (void)pp;
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_T_Bit: pp->setT_Bit(string2bool(value)); return true;
-        default: return false;
+        case FIELD_T_Bit: pp->setT_Bit(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAbortChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpAbortChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_T_Bit: return pp->getT_Bit();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAbortChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAbortChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_T_Bit: pp->setT_Bit(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAbortChunk'", field);
     }
 }
 
 const char *SctpAbortChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpAbortChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAbortChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAbortChunk *pp = (SctpAbortChunk *)object; (void)pp;
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAbortChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAbortChunk *pp = omnetpp::fromAnyPtr<SctpAbortChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAbortChunk'", field);
     }
 }
 
@@ -7137,22 +8124,22 @@ void SctpHeartbeatChunk::parsimUnpack(omnetpp::cCommBuffer *b)
     }
 }
 
-const L3Address& SctpHeartbeatChunk::getRemoteAddr() const
+const ::inet::L3Address& SctpHeartbeatChunk::getRemoteAddr() const
 {
     return this->remoteAddr;
 }
 
-void SctpHeartbeatChunk::setRemoteAddr(const L3Address& remoteAddr)
+void SctpHeartbeatChunk::setRemoteAddr(const ::inet::L3Address& remoteAddr)
 {
     this->remoteAddr = remoteAddr;
 }
 
-omnetpp::simtime_t SctpHeartbeatChunk::getTimeField() const
+::omnetpp::simtime_t SctpHeartbeatChunk::getTimeField() const
 {
     return this->timeField;
 }
 
-void SctpHeartbeatChunk::setTimeField(omnetpp::simtime_t timeField)
+void SctpHeartbeatChunk::setTimeField(::omnetpp::simtime_t timeField)
 {
     this->timeField = timeField;
 }
@@ -7164,7 +8151,7 @@ size_t SctpHeartbeatChunk::getInfoArraySize() const
 
 char SctpHeartbeatChunk::getInfo(size_t k) const
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size info_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     return this->info[k];
 }
 
@@ -7183,13 +8170,13 @@ void SctpHeartbeatChunk::setInfoArraySize(size_t newSize)
 
 void SctpHeartbeatChunk::setInfo(size_t k, char info)
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     this->info[k] = info;
 }
 
 void SctpHeartbeatChunk::insertInfo(size_t k, char info)
 {
-    if (k > info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     size_t newSize = info_arraysize + 1;
     char *info2 = new char[newSize];
     size_t i;
@@ -7203,14 +8190,14 @@ void SctpHeartbeatChunk::insertInfo(size_t k, char info)
     info_arraysize = newSize;
 }
 
-void SctpHeartbeatChunk::insertInfo(char info)
+void SctpHeartbeatChunk::appendInfo(char info)
 {
     insertInfo(info_arraysize, info);
 }
 
 void SctpHeartbeatChunk::eraseInfo(size_t k)
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     size_t newSize = info_arraysize - 1;
     char *info2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -7226,7 +8213,7 @@ void SctpHeartbeatChunk::eraseInfo(size_t k)
 class SctpHeartbeatChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_remoteAddr,
         FIELD_timeField,
@@ -7238,34 +8225,38 @@ class SctpHeartbeatChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpHeartbeatChunkDescriptor)
 
 SctpHeartbeatChunkDescriptor::SctpHeartbeatChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpHeartbeatChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpHeartbeatChunkDescriptor::~SctpHeartbeatChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpHeartbeatChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7275,50 +8266,50 @@ bool SctpHeartbeatChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpHeartbeatChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpHeartbeatChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpHeartbeatChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpHeartbeatChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpHeartbeatChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_remoteAddr
-        0,    // FIELD_timeField
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_info
+        FD_ISEDITABLE,    // FIELD_timeField
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_info
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpHeartbeatChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "remoteAddr",
@@ -7330,21 +8321,21 @@ const char *SctpHeartbeatChunkDescriptor::getFieldName(int field) const
 
 int SctpHeartbeatChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "remoteAddr") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "timeField") == 0) return base+1;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "info") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "remoteAddr") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "timeField") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "info") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpHeartbeatChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::L3Address",    // FIELD_remoteAddr
@@ -7356,68 +8347,85 @@ const char *SctpHeartbeatChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpHeartbeatChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpHeartbeatChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpHeartbeatChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpHeartbeatChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpHeartbeatChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatChunk *pp = (SctpHeartbeatChunk *)object; (void)pp;
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
     switch (field) {
         case FIELD_info: return pp->getInfoArraySize();
         default: return 0;
     }
 }
 
-const char *SctpHeartbeatChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpHeartbeatChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatChunk *pp = (SctpHeartbeatChunk *)object; (void)pp;
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_info: pp->setInfoArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpHeartbeatChunk'", field);
+    }
+}
+
+const char *SctpHeartbeatChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpHeartbeatChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpHeartbeatChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatChunk *pp = (SctpHeartbeatChunk *)object; (void)pp;
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
     switch (field) {
         case FIELD_remoteAddr: return pp->getRemoteAddr().str();
         case FIELD_timeField: return simtime2string(pp->getTimeField());
@@ -7426,46 +8434,100 @@ std::string SctpHeartbeatChunkDescriptor::getFieldValueAsString(void *object, in
     }
 }
 
-bool SctpHeartbeatChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpHeartbeatChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatChunk *pp = (SctpHeartbeatChunk *)object; (void)pp;
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_info: pp->setInfo(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_timeField: pp->setTimeField(string2simtime(value)); break;
+        case FIELD_info: pp->setInfo(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpHeartbeatChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_remoteAddr: return omnetpp::toAnyPtr(&pp->getRemoteAddr()); break;
+        case FIELD_timeField: return pp->getTimeField().dbl();
+        case FIELD_info: return pp->getInfo(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpHeartbeatChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpHeartbeatChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_timeField: pp->setTimeField(value.doubleValue()); break;
+        case FIELD_info: pp->setInfo(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatChunk'", field);
     }
 }
 
 const char *SctpHeartbeatChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpHeartbeatChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpHeartbeatChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatChunk *pp = (SctpHeartbeatChunk *)object; (void)pp;
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_remoteAddr: return toVoidPtr(&pp->getRemoteAddr()); break;
-        default: return nullptr;
+        case FIELD_remoteAddr: return omnetpp::toAnyPtr(&pp->getRemoteAddr()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpHeartbeatChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatChunk'", field);
     }
 }
 
@@ -7529,22 +8591,22 @@ void SctpHeartbeatAckChunk::parsimUnpack(omnetpp::cCommBuffer *b)
     }
 }
 
-const L3Address& SctpHeartbeatAckChunk::getRemoteAddr() const
+const ::inet::L3Address& SctpHeartbeatAckChunk::getRemoteAddr() const
 {
     return this->remoteAddr;
 }
 
-void SctpHeartbeatAckChunk::setRemoteAddr(const L3Address& remoteAddr)
+void SctpHeartbeatAckChunk::setRemoteAddr(const ::inet::L3Address& remoteAddr)
 {
     this->remoteAddr = remoteAddr;
 }
 
-omnetpp::simtime_t SctpHeartbeatAckChunk::getTimeField() const
+::omnetpp::simtime_t SctpHeartbeatAckChunk::getTimeField() const
 {
     return this->timeField;
 }
 
-void SctpHeartbeatAckChunk::setTimeField(omnetpp::simtime_t timeField)
+void SctpHeartbeatAckChunk::setTimeField(::omnetpp::simtime_t timeField)
 {
     this->timeField = timeField;
 }
@@ -7556,7 +8618,7 @@ size_t SctpHeartbeatAckChunk::getInfoArraySize() const
 
 char SctpHeartbeatAckChunk::getInfo(size_t k) const
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size info_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     return this->info[k];
 }
 
@@ -7575,13 +8637,13 @@ void SctpHeartbeatAckChunk::setInfoArraySize(size_t newSize)
 
 void SctpHeartbeatAckChunk::setInfo(size_t k, char info)
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     this->info[k] = info;
 }
 
 void SctpHeartbeatAckChunk::insertInfo(size_t k, char info)
 {
-    if (k > info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     size_t newSize = info_arraysize + 1;
     char *info2 = new char[newSize];
     size_t i;
@@ -7595,14 +8657,14 @@ void SctpHeartbeatAckChunk::insertInfo(size_t k, char info)
     info_arraysize = newSize;
 }
 
-void SctpHeartbeatAckChunk::insertInfo(char info)
+void SctpHeartbeatAckChunk::appendInfo(char info)
 {
     insertInfo(info_arraysize, info);
 }
 
 void SctpHeartbeatAckChunk::eraseInfo(size_t k)
 {
-    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= info_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)info_arraysize, (unsigned long)k);
     size_t newSize = info_arraysize - 1;
     char *info2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -7618,7 +8680,7 @@ void SctpHeartbeatAckChunk::eraseInfo(size_t k)
 class SctpHeartbeatAckChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_remoteAddr,
         FIELD_timeField,
@@ -7630,34 +8692,38 @@ class SctpHeartbeatAckChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpHeartbeatAckChunkDescriptor)
 
 SctpHeartbeatAckChunkDescriptor::SctpHeartbeatAckChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpHeartbeatAckChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpHeartbeatAckChunkDescriptor::~SctpHeartbeatAckChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpHeartbeatAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7667,50 +8733,50 @@ bool SctpHeartbeatAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpHeartbeatAckChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpHeartbeatAckChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpHeartbeatAckChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpHeartbeatAckChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpHeartbeatAckChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_remoteAddr
-        0,    // FIELD_timeField
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_info
+        FD_ISEDITABLE,    // FIELD_timeField
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_info
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpHeartbeatAckChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "remoteAddr",
@@ -7722,21 +8788,21 @@ const char *SctpHeartbeatAckChunkDescriptor::getFieldName(int field) const
 
 int SctpHeartbeatAckChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "remoteAddr") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "timeField") == 0) return base+1;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "info") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "remoteAddr") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "timeField") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "info") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpHeartbeatAckChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::L3Address",    // FIELD_remoteAddr
@@ -7748,68 +8814,85 @@ const char *SctpHeartbeatAckChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpHeartbeatAckChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpHeartbeatAckChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpHeartbeatAckChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpHeartbeatAckChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpHeartbeatAckChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatAckChunk *pp = (SctpHeartbeatAckChunk *)object; (void)pp;
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
     switch (field) {
         case FIELD_info: return pp->getInfoArraySize();
         default: return 0;
     }
 }
 
-const char *SctpHeartbeatAckChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpHeartbeatAckChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatAckChunk *pp = (SctpHeartbeatAckChunk *)object; (void)pp;
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_info: pp->setInfoArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpHeartbeatAckChunk'", field);
+    }
+}
+
+const char *SctpHeartbeatAckChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpHeartbeatAckChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpHeartbeatAckChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatAckChunk *pp = (SctpHeartbeatAckChunk *)object; (void)pp;
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
     switch (field) {
         case FIELD_remoteAddr: return pp->getRemoteAddr().str();
         case FIELD_timeField: return simtime2string(pp->getTimeField());
@@ -7818,46 +8901,100 @@ std::string SctpHeartbeatAckChunkDescriptor::getFieldValueAsString(void *object,
     }
 }
 
-bool SctpHeartbeatAckChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpHeartbeatAckChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatAckChunk *pp = (SctpHeartbeatAckChunk *)object; (void)pp;
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_info: pp->setInfo(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_timeField: pp->setTimeField(string2simtime(value)); break;
+        case FIELD_info: pp->setInfo(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatAckChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpHeartbeatAckChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_remoteAddr: return omnetpp::toAnyPtr(&pp->getRemoteAddr()); break;
+        case FIELD_timeField: return pp->getTimeField().dbl();
+        case FIELD_info: return pp->getInfo(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpHeartbeatAckChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpHeartbeatAckChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_timeField: pp->setTimeField(value.doubleValue()); break;
+        case FIELD_info: pp->setInfo(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatAckChunk'", field);
     }
 }
 
 const char *SctpHeartbeatAckChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpHeartbeatAckChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpHeartbeatAckChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpHeartbeatAckChunk *pp = (SctpHeartbeatAckChunk *)object; (void)pp;
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_remoteAddr: return toVoidPtr(&pp->getRemoteAddr()); break;
-        default: return nullptr;
+        case FIELD_remoteAddr: return omnetpp::toAnyPtr(&pp->getRemoteAddr()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpHeartbeatAckChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpHeartbeatAckChunk *pp = omnetpp::fromAnyPtr<SctpHeartbeatAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpHeartbeatAckChunk'", field);
     }
 }
 
@@ -7914,7 +9051,7 @@ void SctpShutdownChunk::setCumTsnAck(uint32_t cumTsnAck)
 class SctpShutdownChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_cumTsnAck,
     };
@@ -7924,34 +9061,38 @@ class SctpShutdownChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpShutdownChunkDescriptor)
 
 SctpShutdownChunkDescriptor::SctpShutdownChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpShutdownChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpShutdownChunkDescriptor::~SctpShutdownChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpShutdownChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -7961,34 +9102,34 @@ bool SctpShutdownChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpShutdownChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpShutdownChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpShutdownChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpShutdownChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpShutdownChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_cumTsnAck
@@ -7998,11 +9139,11 @@ unsigned int SctpShutdownChunkDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpShutdownChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "cumTsnAck",
@@ -8012,19 +9153,19 @@ const char *SctpShutdownChunkDescriptor::getFieldName(int field) const
 
 int SctpShutdownChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cumTsnAck") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "cumTsnAck") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpShutdownChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_cumTsnAck
@@ -8034,112 +9175,178 @@ const char *SctpShutdownChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpShutdownChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpShutdownChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpShutdownChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpShutdownChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpShutdownChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpShutdownChunk *pp = (SctpShutdownChunk *)object; (void)pp;
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpShutdownChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpShutdownChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownChunk *pp = (SctpShutdownChunk *)object; (void)pp;
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpShutdownChunk'", field);
+    }
+}
+
+const char *SctpShutdownChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpShutdownChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpShutdownChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownChunk *pp = (SctpShutdownChunk *)object; (void)pp;
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
     switch (field) {
         case FIELD_cumTsnAck: return ulong2string(pp->getCumTsnAck());
         default: return "";
     }
 }
 
-bool SctpShutdownChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpShutdownChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownChunk *pp = (SctpShutdownChunk *)object; (void)pp;
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_cumTsnAck: pp->setCumTsnAck(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_cumTsnAck: pp->setCumTsnAck(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpShutdownChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cumTsnAck: return (omnetpp::intval_t)(pp->getCumTsnAck());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpShutdownChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpShutdownChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cumTsnAck: pp->setCumTsnAck(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownChunk'", field);
     }
 }
 
 const char *SctpShutdownChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpShutdownChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpShutdownChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownChunk *pp = (SctpShutdownChunk *)object; (void)pp;
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpShutdownChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownChunk *pp = omnetpp::fromAnyPtr<SctpShutdownChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownChunk'", field);
     }
 }
 
@@ -8183,7 +9390,7 @@ void SctpShutdownAckChunk::parsimUnpack(omnetpp::cCommBuffer *b)
 class SctpShutdownAckChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -8192,34 +9399,38 @@ class SctpShutdownAckChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpShutdownAckChunkDescriptor)
 
 SctpShutdownAckChunkDescriptor::SctpShutdownAckChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpShutdownAckChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpShutdownAckChunkDescriptor::~SctpShutdownAckChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpShutdownAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -8229,170 +9440,234 @@ bool SctpShutdownAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpShutdownAckChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpShutdownAckChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpShutdownAckChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpShutdownAckChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int SctpShutdownAckChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *SctpShutdownAckChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int SctpShutdownAckChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpShutdownAckChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **SctpShutdownAckChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpShutdownAckChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpShutdownAckChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpShutdownAckChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpShutdownAckChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpShutdownAckChunk *pp = (SctpShutdownAckChunk *)object; (void)pp;
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpShutdownAckChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpShutdownAckChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownAckChunk *pp = (SctpShutdownAckChunk *)object; (void)pp;
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpShutdownAckChunk'", field);
+    }
+}
+
+const char *SctpShutdownAckChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpShutdownAckChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpShutdownAckChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownAckChunk *pp = (SctpShutdownAckChunk *)object; (void)pp;
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool SctpShutdownAckChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpShutdownAckChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownAckChunk *pp = (SctpShutdownAckChunk *)object; (void)pp;
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownAckChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpShutdownAckChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpShutdownAckChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpShutdownAckChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownAckChunk'", field);
     }
 }
 
 const char *SctpShutdownAckChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *SctpShutdownAckChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpShutdownAckChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownAckChunk *pp = (SctpShutdownAckChunk *)object; (void)pp;
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpShutdownAckChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownAckChunk *pp = omnetpp::fromAnyPtr<SctpShutdownAckChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownAckChunk'", field);
     }
 }
 
@@ -8449,7 +9724,7 @@ void SctpShutdownCompleteChunk::setTBit(bool TBit)
 class SctpShutdownCompleteChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_TBit,
     };
@@ -8459,34 +9734,38 @@ class SctpShutdownCompleteChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpShutdownCompleteChunkDescriptor)
 
 SctpShutdownCompleteChunkDescriptor::SctpShutdownCompleteChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpShutdownCompleteChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpShutdownCompleteChunkDescriptor::~SctpShutdownCompleteChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpShutdownCompleteChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -8496,34 +9775,34 @@ bool SctpShutdownCompleteChunkDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **SctpShutdownCompleteChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpShutdownCompleteChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpShutdownCompleteChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpShutdownCompleteChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpShutdownCompleteChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_TBit
@@ -8533,11 +9812,11 @@ unsigned int SctpShutdownCompleteChunkDescriptor::getFieldTypeFlags(int field) c
 
 const char *SctpShutdownCompleteChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "TBit",
@@ -8547,19 +9826,19 @@ const char *SctpShutdownCompleteChunkDescriptor::getFieldName(int field) const
 
 int SctpShutdownCompleteChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'T' && strcmp(fieldName, "TBit") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "TBit") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpShutdownCompleteChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_TBit
@@ -8569,112 +9848,178 @@ const char *SctpShutdownCompleteChunkDescriptor::getFieldTypeString(int field) c
 
 const char **SctpShutdownCompleteChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpShutdownCompleteChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpShutdownCompleteChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpShutdownCompleteChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpShutdownCompleteChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpShutdownCompleteChunk *pp = (SctpShutdownCompleteChunk *)object; (void)pp;
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpShutdownCompleteChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpShutdownCompleteChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownCompleteChunk *pp = (SctpShutdownCompleteChunk *)object; (void)pp;
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpShutdownCompleteChunk'", field);
+    }
+}
+
+const char *SctpShutdownCompleteChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpShutdownCompleteChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpShutdownCompleteChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownCompleteChunk *pp = (SctpShutdownCompleteChunk *)object; (void)pp;
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
     switch (field) {
         case FIELD_TBit: return bool2string(pp->getTBit());
         default: return "";
     }
 }
 
-bool SctpShutdownCompleteChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpShutdownCompleteChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpShutdownCompleteChunk *pp = (SctpShutdownCompleteChunk *)object; (void)pp;
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_TBit: pp->setTBit(string2bool(value)); return true;
-        default: return false;
+        case FIELD_TBit: pp->setTBit(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownCompleteChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpShutdownCompleteChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_TBit: return pp->getTBit();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpShutdownCompleteChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpShutdownCompleteChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_TBit: pp->setTBit(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownCompleteChunk'", field);
     }
 }
 
 const char *SctpShutdownCompleteChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpShutdownCompleteChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpShutdownCompleteChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpShutdownCompleteChunk *pp = (SctpShutdownCompleteChunk *)object; (void)pp;
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpShutdownCompleteChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpShutdownCompleteChunk *pp = omnetpp::fromAnyPtr<SctpShutdownCompleteChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpShutdownCompleteChunk'", field);
     }
 }
 
@@ -8710,7 +10055,7 @@ void SctpErrorChunk_Base::parsimPack(omnetpp::cCommBuffer *b) const
     ::inet::sctp::SctpChunk::parsimPack(b);
     doParsimPacking(b,this->TBit);
     doParsimPacking(b,this->MBit);
-    // field parameters is abstract -- please do packing in customized class
+    // field parameters is abstract or custom -- please do packing in customized class
 }
 
 void SctpErrorChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -8718,7 +10063,7 @@ void SctpErrorChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
     ::inet::sctp::SctpChunk::parsimUnpack(b);
     doParsimUnpacking(b,this->TBit);
     doParsimUnpacking(b,this->MBit);
-    // field parameters is abstract -- please do unpacking in customized class
+    // field parameters is abstract or custom -- please do unpacking in customized class
 }
 
 bool SctpErrorChunk_Base::getTBit() const
@@ -8744,7 +10089,7 @@ void SctpErrorChunk_Base::setMBit(bool MBit)
 class SctpErrorChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_TBit,
         FIELD_MBit,
@@ -8756,34 +10101,38 @@ class SctpErrorChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpErrorChunkDescriptor)
 
 SctpErrorChunkDescriptor::SctpErrorChunkDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpErrorChunk", "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpErrorChunkDescriptor::~SctpErrorChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpErrorChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -8793,51 +10142,51 @@ bool SctpErrorChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpErrorChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpErrorChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpErrorChunkDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpErrorChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpErrorChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_TBit
         FD_ISEDITABLE,    // FIELD_MBit
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_parameters
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_parameters
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpErrorChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "TBit",
@@ -8849,21 +10198,21 @@ const char *SctpErrorChunkDescriptor::getFieldName(int field) const
 
 int SctpErrorChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'T' && strcmp(fieldName, "TBit") == 0) return base+0;
-    if (fieldName[0] == 'M' && strcmp(fieldName, "MBit") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameters") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "TBit") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "MBit") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "parameters") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpErrorChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_TBit
@@ -8875,100 +10224,155 @@ const char *SctpErrorChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpErrorChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpErrorChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpErrorChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpErrorChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpErrorChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpErrorChunk_Base *pp = (SctpErrorChunk_Base *)object; (void)pp;
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_parameters: return pp->getParametersArraySize();
         default: return 0;
     }
 }
 
-const char *SctpErrorChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpErrorChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpErrorChunk_Base *pp = (SctpErrorChunk_Base *)object; (void)pp;
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: pp->setParametersArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpErrorChunk_Base'", field);
+    }
+}
+
+const char *SctpErrorChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_parameters: { const SctpParameter * value = pp->getParameters(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpErrorChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpErrorChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpErrorChunk_Base *pp = (SctpErrorChunk_Base *)object; (void)pp;
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_TBit: return bool2string(pp->getTBit());
         case FIELD_MBit: return bool2string(pp->getMBit());
-        case FIELD_parameters: {std::stringstream out; out << pp->getParameters(i); return out.str();}
+        case FIELD_parameters: { auto obj = pp->getParameters(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool SctpErrorChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpErrorChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpErrorChunk_Base *pp = (SctpErrorChunk_Base *)object; (void)pp;
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_TBit: pp->setTBit(string2bool(value)); return true;
-        case FIELD_MBit: pp->setMBit(string2bool(value)); return true;
-        default: return false;
+        case FIELD_TBit: pp->setTBit(string2bool(value)); break;
+        case FIELD_MBit: pp->setMBit(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorChunk_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpErrorChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_TBit: return pp->getTBit();
+        case FIELD_MBit: return pp->getMBit();
+        case FIELD_parameters: return omnetpp::toAnyPtr(pp->getParameters(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpErrorChunk_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpErrorChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_TBit: pp->setTBit(value.boolValue()); break;
+        case FIELD_MBit: pp->setMBit(value.boolValue()); break;
+        case FIELD_parameters: pp->setParameters(i,omnetpp::fromAnyPtr<SctpParameter>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorChunk_Base'", field);
     }
 }
 
 const char *SctpErrorChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_parameters: return omnetpp::opp_typename(typeid(SctpParameter));
@@ -8976,18 +10380,35 @@ const char *SctpErrorChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpErrorChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpErrorChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpErrorChunk_Base *pp = (SctpErrorChunk_Base *)object; (void)pp;
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_parameters: return toVoidPtr(pp->getParameters(i)); break;
-        default: return nullptr;
+        case FIELD_parameters: return omnetpp::toAnyPtr(pp->getParameters(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpErrorChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpErrorChunk_Base *pp = omnetpp::fromAnyPtr<SctpErrorChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: pp->setParameters(i,omnetpp::fromAnyPtr<SctpParameter>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorChunk_Base'", field);
     }
 }
 
@@ -9065,7 +10486,7 @@ size_t SctpParameter::getNameArraySize() const
 
 char SctpParameter::getName(size_t k) const
 {
-    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size name_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)name_arraysize, (unsigned long)k);
     return this->name[k];
 }
 
@@ -9084,13 +10505,13 @@ void SctpParameter::setNameArraySize(size_t newSize)
 
 void SctpParameter::setName(size_t k, char name)
 {
-    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)name_arraysize, (unsigned long)k);
     this->name[k] = name;
 }
 
 void SctpParameter::insertName(size_t k, char name)
 {
-    if (k > name_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > name_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)name_arraysize, (unsigned long)k);
     size_t newSize = name_arraysize + 1;
     char *name2 = new char[newSize];
     size_t i;
@@ -9104,14 +10525,14 @@ void SctpParameter::insertName(size_t k, char name)
     name_arraysize = newSize;
 }
 
-void SctpParameter::insertName(char name)
+void SctpParameter::appendName(char name)
 {
     insertName(name_arraysize, name);
 }
 
 void SctpParameter::eraseName(size_t k)
 {
-    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= name_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)name_arraysize, (unsigned long)k);
     size_t newSize = name_arraysize - 1;
     char *name2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -9127,7 +10548,7 @@ void SctpParameter::eraseName(size_t k)
 class SctpParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_parameterType,
         FIELD_name,
@@ -9138,34 +10559,38 @@ class SctpParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpParameterDescriptor)
 
 SctpParameterDescriptor::SctpParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpParameter)), "omnetpp::cPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpParameterDescriptor::~SctpParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -9175,49 +10600,49 @@ bool SctpParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_parameterType
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_name
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_name
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "parameterType",
@@ -9228,20 +10653,20 @@ const char *SctpParameterDescriptor::getFieldName(int field) const
 
 int SctpParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameterType") == 0) return base+0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "name") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "parameterType") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "name") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16",    // FIELD_parameterType
@@ -9252,68 +10677,85 @@ const char *SctpParameterDescriptor::getFieldTypeString(int field) const
 
 const char **SctpParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpParameter *pp = (SctpParameter *)object; (void)pp;
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
     switch (field) {
         case FIELD_name: return pp->getNameArraySize();
         default: return 0;
     }
 }
 
-const char *SctpParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpParameter *pp = (SctpParameter *)object; (void)pp;
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_name: pp->setNameArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpParameter'", field);
+    }
+}
+
+const char *SctpParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpParameter *pp = (SctpParameter *)object; (void)pp;
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
     switch (field) {
         case FIELD_parameterType: return ulong2string(pp->getParameterType());
         case FIELD_name: return long2string(pp->getName(i));
@@ -9321,46 +10763,98 @@ std::string SctpParameterDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool SctpParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpParameter *pp = (SctpParameter *)object; (void)pp;
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_parameterType: pp->setParameterType(string2ulong(value)); return true;
-        case FIELD_name: pp->setName(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_parameterType: pp->setParameterType(string2ulong(value)); break;
+        case FIELD_name: pp->setName(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameterType: return (omnetpp::intval_t)(pp->getParameterType());
+        case FIELD_name: return pp->getName(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameterType: pp->setParameterType(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_name: pp->setName(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpParameter'", field);
     }
 }
 
 const char *SctpParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpParameter *pp = (SctpParameter *)object; (void)pp;
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpParameter *pp = omnetpp::fromAnyPtr<SctpParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpParameter'", field);
     }
 }
 
@@ -9495,7 +10989,7 @@ void SctpPacketDropChunk::setTruncLength(uint16_t truncLength)
 class SctpPacketDropChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_cFlag,
         FIELD_tFlag,
@@ -9511,34 +11005,38 @@ class SctpPacketDropChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpPacketDropChunkDescriptor)
 
 SctpPacketDropChunkDescriptor::SctpPacketDropChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpPacketDropChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpPacketDropChunkDescriptor::~SctpPacketDropChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpPacketDropChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -9548,34 +11046,34 @@ bool SctpPacketDropChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpPacketDropChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpPacketDropChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpPacketDropChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpPacketDropChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int SctpPacketDropChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_cFlag
@@ -9591,11 +11089,11 @@ unsigned int SctpPacketDropChunkDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpPacketDropChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "cFlag",
@@ -9611,25 +11109,25 @@ const char *SctpPacketDropChunkDescriptor::getFieldName(int field) const
 
 int SctpPacketDropChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cFlag") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "tFlag") == 0) return base+1;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bFlag") == 0) return base+2;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "mFlag") == 0) return base+3;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "maxRwnd") == 0) return base+4;
-    if (fieldName[0] == 'q' && strcmp(fieldName, "queuedData") == 0) return base+5;
-    if (fieldName[0] == 't' && strcmp(fieldName, "truncLength") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "cFlag") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "tFlag") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "bFlag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "mFlag") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "maxRwnd") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "queuedData") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "truncLength") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpPacketDropChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_cFlag
@@ -9645,67 +11143,83 @@ const char *SctpPacketDropChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpPacketDropChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpPacketDropChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpPacketDropChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpPacketDropChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpPacketDropChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpPacketDropChunk *pp = (SctpPacketDropChunk *)object; (void)pp;
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpPacketDropChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpPacketDropChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpPacketDropChunk *pp = (SctpPacketDropChunk *)object; (void)pp;
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpPacketDropChunk'", field);
+    }
+}
+
+const char *SctpPacketDropChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpPacketDropChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpPacketDropChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpPacketDropChunk *pp = (SctpPacketDropChunk *)object; (void)pp;
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
     switch (field) {
         case FIELD_cFlag: return bool2string(pp->getCFlag());
         case FIELD_tFlag: return bool2string(pp->getTFlag());
@@ -9718,51 +11232,113 @@ std::string SctpPacketDropChunkDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool SctpPacketDropChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpPacketDropChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpPacketDropChunk *pp = (SctpPacketDropChunk *)object; (void)pp;
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_cFlag: pp->setCFlag(string2bool(value)); return true;
-        case FIELD_tFlag: pp->setTFlag(string2bool(value)); return true;
-        case FIELD_bFlag: pp->setBFlag(string2bool(value)); return true;
-        case FIELD_mFlag: pp->setMFlag(string2bool(value)); return true;
-        case FIELD_maxRwnd: pp->setMaxRwnd(string2ulong(value)); return true;
-        case FIELD_queuedData: pp->setQueuedData(string2ulong(value)); return true;
-        case FIELD_truncLength: pp->setTruncLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_cFlag: pp->setCFlag(string2bool(value)); break;
+        case FIELD_tFlag: pp->setTFlag(string2bool(value)); break;
+        case FIELD_bFlag: pp->setBFlag(string2bool(value)); break;
+        case FIELD_mFlag: pp->setMFlag(string2bool(value)); break;
+        case FIELD_maxRwnd: pp->setMaxRwnd(string2ulong(value)); break;
+        case FIELD_queuedData: pp->setQueuedData(string2ulong(value)); break;
+        case FIELD_truncLength: pp->setTruncLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpPacketDropChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpPacketDropChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cFlag: return pp->getCFlag();
+        case FIELD_tFlag: return pp->getTFlag();
+        case FIELD_bFlag: return pp->getBFlag();
+        case FIELD_mFlag: return pp->getMFlag();
+        case FIELD_maxRwnd: return (omnetpp::intval_t)(pp->getMaxRwnd());
+        case FIELD_queuedData: return (omnetpp::intval_t)(pp->getQueuedData());
+        case FIELD_truncLength: return (omnetpp::intval_t)(pp->getTruncLength());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpPacketDropChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpPacketDropChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_cFlag: pp->setCFlag(value.boolValue()); break;
+        case FIELD_tFlag: pp->setTFlag(value.boolValue()); break;
+        case FIELD_bFlag: pp->setBFlag(value.boolValue()); break;
+        case FIELD_mFlag: pp->setMFlag(value.boolValue()); break;
+        case FIELD_maxRwnd: pp->setMaxRwnd(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_queuedData: pp->setQueuedData(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_truncLength: pp->setTruncLength(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpPacketDropChunk'", field);
     }
 }
 
 const char *SctpPacketDropChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpPacketDropChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpPacketDropChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpPacketDropChunk *pp = (SctpPacketDropChunk *)object; (void)pp;
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpPacketDropChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpPacketDropChunk *pp = omnetpp::fromAnyPtr<SctpPacketDropChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpPacketDropChunk'", field);
     }
 }
 
@@ -9794,19 +11370,19 @@ void SctpStreamResetChunk_Base::copy(const SctpStreamResetChunk_Base& other)
 void SctpStreamResetChunk_Base::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::inet::sctp::SctpChunk::parsimPack(b);
-    // field parameters is abstract -- please do packing in customized class
+    // field parameters is abstract or custom -- please do packing in customized class
 }
 
 void SctpStreamResetChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::inet::sctp::SctpChunk::parsimUnpack(b);
-    // field parameters is abstract -- please do unpacking in customized class
+    // field parameters is abstract or custom -- please do unpacking in customized class
 }
 
 class SctpStreamResetChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_parameters,
     };
@@ -9816,34 +11392,38 @@ class SctpStreamResetChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpStreamResetChunkDescriptor)
 
 SctpStreamResetChunkDescriptor::SctpStreamResetChunkDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpStreamResetChunk", "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpStreamResetChunkDescriptor::~SctpStreamResetChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpStreamResetChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -9853,49 +11433,49 @@ bool SctpStreamResetChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpStreamResetChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpStreamResetChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpStreamResetChunkDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpStreamResetChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpStreamResetChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_parameters
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_parameters
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpStreamResetChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "parameters",
@@ -9905,19 +11485,19 @@ const char *SctpStreamResetChunkDescriptor::getFieldName(int field) const
 
 int SctpStreamResetChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameters") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "parameters") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpStreamResetChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::sctp::SctpParameter",    // FIELD_parameters
@@ -9927,96 +11507,147 @@ const char *SctpStreamResetChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpStreamResetChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpStreamResetChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpStreamResetChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpStreamResetChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpStreamResetChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetChunk_Base *pp = (SctpStreamResetChunk_Base *)object; (void)pp;
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_parameters: return pp->getParametersArraySize();
         default: return 0;
     }
 }
 
-const char *SctpStreamResetChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpStreamResetChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpStreamResetChunk_Base *pp = (SctpStreamResetChunk_Base *)object; (void)pp;
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: pp->setParametersArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpStreamResetChunk_Base'", field);
+    }
+}
+
+const char *SctpStreamResetChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_parameters: { const SctpParameter * value = pp->getParameters(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpStreamResetChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpStreamResetChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetChunk_Base *pp = (SctpStreamResetChunk_Base *)object; (void)pp;
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_parameters: {std::stringstream out; out << pp->getParameters(i); return out.str();}
+        case FIELD_parameters: { auto obj = pp->getParameters(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool SctpStreamResetChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpStreamResetChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpStreamResetChunk_Base *pp = (SctpStreamResetChunk_Base *)object; (void)pp;
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetChunk_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpStreamResetChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: return omnetpp::toAnyPtr(pp->getParameters(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpStreamResetChunk_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpStreamResetChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: pp->setParameters(i,omnetpp::fromAnyPtr<SctpParameter>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetChunk_Base'", field);
     }
 }
 
 const char *SctpStreamResetChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_parameters: return omnetpp::opp_typename(typeid(SctpParameter));
@@ -10024,18 +11655,35 @@ const char *SctpStreamResetChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpStreamResetChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpStreamResetChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetChunk_Base *pp = (SctpStreamResetChunk_Base *)object; (void)pp;
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_parameters: return toVoidPtr(pp->getParameters(i)); break;
-        default: return nullptr;
+        case FIELD_parameters: return omnetpp::toAnyPtr(pp->getParameters(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpStreamResetChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetChunk_Base *pp = omnetpp::fromAnyPtr<SctpStreamResetChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameters: pp->setParameters(i,omnetpp::fromAnyPtr<SctpParameter>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetChunk_Base'", field);
     }
 }
 
@@ -10139,7 +11787,7 @@ size_t SctpOutgoingSsnResetRequestParameter::getStreamNumbersArraySize() const
 
 uint16_t SctpOutgoingSsnResetRequestParameter::getStreamNumbers(size_t k) const
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size streamNumbers_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     return this->streamNumbers[k];
 }
 
@@ -10158,13 +11806,13 @@ void SctpOutgoingSsnResetRequestParameter::setStreamNumbersArraySize(size_t newS
 
 void SctpOutgoingSsnResetRequestParameter::setStreamNumbers(size_t k, uint16_t streamNumbers)
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     this->streamNumbers[k] = streamNumbers;
 }
 
 void SctpOutgoingSsnResetRequestParameter::insertStreamNumbers(size_t k, uint16_t streamNumbers)
 {
-    if (k > streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     size_t newSize = streamNumbers_arraysize + 1;
     uint16_t *streamNumbers2 = new uint16_t[newSize];
     size_t i;
@@ -10178,14 +11826,14 @@ void SctpOutgoingSsnResetRequestParameter::insertStreamNumbers(size_t k, uint16_
     streamNumbers_arraysize = newSize;
 }
 
-void SctpOutgoingSsnResetRequestParameter::insertStreamNumbers(uint16_t streamNumbers)
+void SctpOutgoingSsnResetRequestParameter::appendStreamNumbers(uint16_t streamNumbers)
 {
     insertStreamNumbers(streamNumbers_arraysize, streamNumbers);
 }
 
 void SctpOutgoingSsnResetRequestParameter::eraseStreamNumbers(size_t k)
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     size_t newSize = streamNumbers_arraysize - 1;
     uint16_t *streamNumbers2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -10201,7 +11849,7 @@ void SctpOutgoingSsnResetRequestParameter::eraseStreamNumbers(size_t k)
 class SctpOutgoingSsnResetRequestParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srReqSn,
         FIELD_srResSn,
@@ -10214,34 +11862,38 @@ class SctpOutgoingSsnResetRequestParameterDescriptor : public omnetpp::cClassDes
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpOutgoingSsnResetRequestParameterDescriptor)
 
 SctpOutgoingSsnResetRequestParameterDescriptor::SctpOutgoingSsnResetRequestParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpOutgoingSsnResetRequestParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpOutgoingSsnResetRequestParameterDescriptor::~SctpOutgoingSsnResetRequestParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpOutgoingSsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -10251,51 +11903,51 @@ bool SctpOutgoingSsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObjec
 
 const char **SctpOutgoingSsnResetRequestParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpOutgoingSsnResetRequestParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpOutgoingSsnResetRequestParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpOutgoingSsnResetRequestParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpOutgoingSsnResetRequestParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srReqSn
         FD_ISEDITABLE,    // FIELD_srResSn
         FD_ISEDITABLE,    // FIELD_lastTsn
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_streamNumbers
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_streamNumbers
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srReqSn",
@@ -10308,22 +11960,22 @@ const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldName(int fie
 
 int SctpOutgoingSsnResetRequestParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srReqSn") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srResSn") == 0) return base+1;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "lastTsn") == 0) return base+2;
-    if (fieldName[0] == 's' && strcmp(fieldName, "streamNumbers") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srReqSn") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "srResSn") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "lastTsn") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "streamNumbers") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_srReqSn
@@ -10336,68 +11988,85 @@ const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldTypeString(i
 
 const char **SctpOutgoingSsnResetRequestParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpOutgoingSsnResetRequestParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpOutgoingSsnResetRequestParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpOutgoingSsnResetRequestParameter *pp = (SctpOutgoingSsnResetRequestParameter *)object; (void)pp;
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         case FIELD_streamNumbers: return pp->getStreamNumbersArraySize();
         default: return 0;
     }
 }
 
-const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpOutgoingSsnResetRequestParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpOutgoingSsnResetRequestParameter *pp = (SctpOutgoingSsnResetRequestParameter *)object; (void)pp;
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_streamNumbers: pp->setStreamNumbersArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpOutgoingSsnResetRequestParameter'", field);
+    }
+}
+
+const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpOutgoingSsnResetRequestParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpOutgoingSsnResetRequestParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpOutgoingSsnResetRequestParameter *pp = (SctpOutgoingSsnResetRequestParameter *)object; (void)pp;
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         case FIELD_srReqSn: return ulong2string(pp->getSrReqSn());
         case FIELD_srResSn: return ulong2string(pp->getSrResSn());
@@ -10407,48 +12076,104 @@ std::string SctpOutgoingSsnResetRequestParameterDescriptor::getFieldValueAsStrin
     }
 }
 
-bool SctpOutgoingSsnResetRequestParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpOutgoingSsnResetRequestParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpOutgoingSsnResetRequestParameter *pp = (SctpOutgoingSsnResetRequestParameter *)object; (void)pp;
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); return true;
-        case FIELD_srResSn: pp->setSrResSn(string2ulong(value)); return true;
-        case FIELD_lastTsn: pp->setLastTsn(string2ulong(value)); return true;
-        case FIELD_streamNumbers: pp->setStreamNumbers(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); break;
+        case FIELD_srResSn: pp->setSrResSn(string2ulong(value)); break;
+        case FIELD_lastTsn: pp->setLastTsn(string2ulong(value)); break;
+        case FIELD_streamNumbers: pp->setStreamNumbers(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpOutgoingSsnResetRequestParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpOutgoingSsnResetRequestParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: return (omnetpp::intval_t)(pp->getSrReqSn());
+        case FIELD_srResSn: return (omnetpp::intval_t)(pp->getSrResSn());
+        case FIELD_lastTsn: return (omnetpp::intval_t)(pp->getLastTsn());
+        case FIELD_streamNumbers: return (omnetpp::intval_t)(pp->getStreamNumbers(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpOutgoingSsnResetRequestParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpOutgoingSsnResetRequestParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: pp->setSrReqSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_srResSn: pp->setSrResSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_lastTsn: pp->setLastTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_streamNumbers: pp->setStreamNumbers(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpOutgoingSsnResetRequestParameter'", field);
     }
 }
 
 const char *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpOutgoingSsnResetRequestParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpOutgoingSsnResetRequestParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpOutgoingSsnResetRequestParameter *pp = (SctpOutgoingSsnResetRequestParameter *)object; (void)pp;
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpOutgoingSsnResetRequestParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpOutgoingSsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpOutgoingSsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpOutgoingSsnResetRequestParameter'", field);
     }
 }
 
@@ -10524,7 +12249,7 @@ size_t SctpIncomingSsnResetRequestParameter_Base::getStreamNumbersArraySize() co
 
 uint16_t SctpIncomingSsnResetRequestParameter_Base::getStreamNumbers(size_t k) const
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size streamNumbers_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     return this->streamNumbers[k];
 }
 
@@ -10543,13 +12268,13 @@ void SctpIncomingSsnResetRequestParameter_Base::setStreamNumbersArraySize(size_t
 
 void SctpIncomingSsnResetRequestParameter_Base::setStreamNumbers(size_t k, uint16_t streamNumbers)
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     this->streamNumbers[k] = streamNumbers;
 }
 
 void SctpIncomingSsnResetRequestParameter_Base::insertStreamNumbers(size_t k, uint16_t streamNumbers)
 {
-    if (k > streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     size_t newSize = streamNumbers_arraysize + 1;
     uint16_t *streamNumbers2 = new uint16_t[newSize];
     size_t i;
@@ -10563,14 +12288,14 @@ void SctpIncomingSsnResetRequestParameter_Base::insertStreamNumbers(size_t k, ui
     streamNumbers_arraysize = newSize;
 }
 
-void SctpIncomingSsnResetRequestParameter_Base::insertStreamNumbers(uint16_t streamNumbers)
+void SctpIncomingSsnResetRequestParameter_Base::appendStreamNumbers(uint16_t streamNumbers)
 {
     insertStreamNumbers(streamNumbers_arraysize, streamNumbers);
 }
 
 void SctpIncomingSsnResetRequestParameter_Base::eraseStreamNumbers(size_t k)
 {
-    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= streamNumbers_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)streamNumbers_arraysize, (unsigned long)k);
     size_t newSize = streamNumbers_arraysize - 1;
     uint16_t *streamNumbers2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -10586,7 +12311,7 @@ void SctpIncomingSsnResetRequestParameter_Base::eraseStreamNumbers(size_t k)
 class SctpIncomingSsnResetRequestParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srReqSn,
         FIELD_streamNumbers,
@@ -10597,34 +12322,38 @@ class SctpIncomingSsnResetRequestParameterDescriptor : public omnetpp::cClassDes
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpIncomingSsnResetRequestParameterDescriptor)
 
 SctpIncomingSsnResetRequestParameterDescriptor::SctpIncomingSsnResetRequestParameterDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpIncomingSsnResetRequestParameter", "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpIncomingSsnResetRequestParameterDescriptor::~SctpIncomingSsnResetRequestParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpIncomingSsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -10634,50 +12363,50 @@ bool SctpIncomingSsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObjec
 
 const char **SctpIncomingSsnResetRequestParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpIncomingSsnResetRequestParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpIncomingSsnResetRequestParameterDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpIncomingSsnResetRequestParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpIncomingSsnResetRequestParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srReqSn
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_streamNumbers
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_streamNumbers
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srReqSn",
@@ -10688,20 +12417,20 @@ const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldName(int fie
 
 int SctpIncomingSsnResetRequestParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srReqSn") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "streamNumbers") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srReqSn") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "streamNumbers") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_srReqSn
@@ -10712,68 +12441,85 @@ const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldTypeString(i
 
 const char **SctpIncomingSsnResetRequestParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpIncomingSsnResetRequestParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpIncomingSsnResetRequestParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpIncomingSsnResetRequestParameter_Base *pp = (SctpIncomingSsnResetRequestParameter_Base *)object; (void)pp;
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
     switch (field) {
         case FIELD_streamNumbers: return pp->getStreamNumbersArraySize();
         default: return 0;
     }
 }
 
-const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpIncomingSsnResetRequestParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpIncomingSsnResetRequestParameter_Base *pp = (SctpIncomingSsnResetRequestParameter_Base *)object; (void)pp;
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_streamNumbers: pp->setStreamNumbersArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpIncomingSsnResetRequestParameter_Base'", field);
+    }
+}
+
+const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpIncomingSsnResetRequestParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpIncomingSsnResetRequestParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpIncomingSsnResetRequestParameter_Base *pp = (SctpIncomingSsnResetRequestParameter_Base *)object; (void)pp;
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
     switch (field) {
         case FIELD_srReqSn: return ulong2string(pp->getSrReqSn());
         case FIELD_streamNumbers: return ulong2string(pp->getStreamNumbers(i));
@@ -10781,46 +12527,98 @@ std::string SctpIncomingSsnResetRequestParameterDescriptor::getFieldValueAsStrin
     }
 }
 
-bool SctpIncomingSsnResetRequestParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpIncomingSsnResetRequestParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpIncomingSsnResetRequestParameter_Base *pp = (SctpIncomingSsnResetRequestParameter_Base *)object; (void)pp;
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); return true;
-        case FIELD_streamNumbers: pp->setStreamNumbers(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); break;
+        case FIELD_streamNumbers: pp->setStreamNumbers(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpIncomingSsnResetRequestParameter_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpIncomingSsnResetRequestParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: return (omnetpp::intval_t)(pp->getSrReqSn());
+        case FIELD_streamNumbers: return (omnetpp::intval_t)(pp->getStreamNumbers(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpIncomingSsnResetRequestParameter_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpIncomingSsnResetRequestParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: pp->setSrReqSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_streamNumbers: pp->setStreamNumbers(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpIncomingSsnResetRequestParameter_Base'", field);
     }
 }
 
 const char *SctpIncomingSsnResetRequestParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpIncomingSsnResetRequestParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpIncomingSsnResetRequestParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpIncomingSsnResetRequestParameter_Base *pp = (SctpIncomingSsnResetRequestParameter_Base *)object; (void)pp;
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpIncomingSsnResetRequestParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpIncomingSsnResetRequestParameter_Base *pp = omnetpp::fromAnyPtr<SctpIncomingSsnResetRequestParameter_Base>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpIncomingSsnResetRequestParameter_Base'", field);
     }
 }
 
@@ -10877,7 +12675,7 @@ void SctpSsnTsnResetRequestParameter::setSrReqSn(uint32_t srReqSn)
 class SctpSsnTsnResetRequestParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srReqSn,
     };
@@ -10887,34 +12685,38 @@ class SctpSsnTsnResetRequestParameterDescriptor : public omnetpp::cClassDescript
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSsnTsnResetRequestParameterDescriptor)
 
 SctpSsnTsnResetRequestParameterDescriptor::SctpSsnTsnResetRequestParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSsnTsnResetRequestParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSsnTsnResetRequestParameterDescriptor::~SctpSsnTsnResetRequestParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSsnTsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -10924,34 +12726,34 @@ bool SctpSsnTsnResetRequestParameterDescriptor::doesSupport(omnetpp::cObject *ob
 
 const char **SctpSsnTsnResetRequestParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSsnTsnResetRequestParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpSsnTsnResetRequestParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSsnTsnResetRequestParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpSsnTsnResetRequestParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srReqSn
@@ -10961,11 +12763,11 @@ unsigned int SctpSsnTsnResetRequestParameterDescriptor::getFieldTypeFlags(int fi
 
 const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srReqSn",
@@ -10975,19 +12777,19 @@ const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldName(int field) c
 
 int SctpSsnTsnResetRequestParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srReqSn") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srReqSn") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_srReqSn
@@ -10997,112 +12799,178 @@ const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldTypeString(int fi
 
 const char **SctpSsnTsnResetRequestParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSsnTsnResetRequestParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSsnTsnResetRequestParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSsnTsnResetRequestParameter *pp = (SctpSsnTsnResetRequestParameter *)object; (void)pp;
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSsnTsnResetRequestParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSsnTsnResetRequestParameter *pp = (SctpSsnTsnResetRequestParameter *)object; (void)pp;
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSsnTsnResetRequestParameter'", field);
+    }
+}
+
+const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSsnTsnResetRequestParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSsnTsnResetRequestParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSsnTsnResetRequestParameter *pp = (SctpSsnTsnResetRequestParameter *)object; (void)pp;
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
     switch (field) {
         case FIELD_srReqSn: return ulong2string(pp->getSrReqSn());
         default: return "";
     }
 }
 
-bool SctpSsnTsnResetRequestParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSsnTsnResetRequestParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSsnTsnResetRequestParameter *pp = (SctpSsnTsnResetRequestParameter *)object; (void)pp;
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSsnTsnResetRequestParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpSsnTsnResetRequestParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: return (omnetpp::intval_t)(pp->getSrReqSn());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSsnTsnResetRequestParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSsnTsnResetRequestParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: pp->setSrReqSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSsnTsnResetRequestParameter'", field);
     }
 }
 
 const char *SctpSsnTsnResetRequestParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSsnTsnResetRequestParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSsnTsnResetRequestParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSsnTsnResetRequestParameter *pp = (SctpSsnTsnResetRequestParameter *)object; (void)pp;
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSsnTsnResetRequestParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSsnTsnResetRequestParameter *pp = omnetpp::fromAnyPtr<SctpSsnTsnResetRequestParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSsnTsnResetRequestParameter'", field);
     }
 }
 
@@ -11198,7 +13066,7 @@ void SctpStreamResetResponseParameter::setReceiversNextTsn(uint32_t receiversNex
 class SctpStreamResetResponseParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srResSn,
         FIELD_result,
@@ -11211,34 +13079,38 @@ class SctpStreamResetResponseParameterDescriptor : public omnetpp::cClassDescrip
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpStreamResetResponseParameterDescriptor)
 
 SctpStreamResetResponseParameterDescriptor::SctpStreamResetResponseParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpStreamResetResponseParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpStreamResetResponseParameterDescriptor::~SctpStreamResetResponseParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpStreamResetResponseParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -11248,34 +13120,34 @@ bool SctpStreamResetResponseParameterDescriptor::doesSupport(omnetpp::cObject *o
 
 const char **SctpStreamResetResponseParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpStreamResetResponseParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpStreamResetResponseParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpStreamResetResponseParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpStreamResetResponseParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srResSn
@@ -11288,11 +13160,11 @@ unsigned int SctpStreamResetResponseParameterDescriptor::getFieldTypeFlags(int f
 
 const char *SctpStreamResetResponseParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srResSn",
@@ -11305,22 +13177,22 @@ const char *SctpStreamResetResponseParameterDescriptor::getFieldName(int field) 
 
 int SctpStreamResetResponseParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srResSn") == 0) return base+0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "result") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sendersNextTsn") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "receiversNextTsn") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srResSn") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "result") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "sendersNextTsn") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "receiversNextTsn") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpStreamResetResponseParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_srResSn
@@ -11333,67 +13205,83 @@ const char *SctpStreamResetResponseParameterDescriptor::getFieldTypeString(int f
 
 const char **SctpStreamResetResponseParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpStreamResetResponseParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpStreamResetResponseParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpStreamResetResponseParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpStreamResetResponseParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetResponseParameter *pp = (SctpStreamResetResponseParameter *)object; (void)pp;
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpStreamResetResponseParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpStreamResetResponseParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpStreamResetResponseParameter *pp = (SctpStreamResetResponseParameter *)object; (void)pp;
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpStreamResetResponseParameter'", field);
+    }
+}
+
+const char *SctpStreamResetResponseParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpStreamResetResponseParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpStreamResetResponseParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetResponseParameter *pp = (SctpStreamResetResponseParameter *)object; (void)pp;
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
     switch (field) {
         case FIELD_srResSn: return ulong2string(pp->getSrResSn());
         case FIELD_result: return ulong2string(pp->getResult());
@@ -11403,48 +13291,104 @@ std::string SctpStreamResetResponseParameterDescriptor::getFieldValueAsString(vo
     }
 }
 
-bool SctpStreamResetResponseParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpStreamResetResponseParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpStreamResetResponseParameter *pp = (SctpStreamResetResponseParameter *)object; (void)pp;
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_srResSn: pp->setSrResSn(string2ulong(value)); return true;
-        case FIELD_result: pp->setResult(string2ulong(value)); return true;
-        case FIELD_sendersNextTsn: pp->setSendersNextTsn(string2ulong(value)); return true;
-        case FIELD_receiversNextTsn: pp->setReceiversNextTsn(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srResSn: pp->setSrResSn(string2ulong(value)); break;
+        case FIELD_result: pp->setResult(string2ulong(value)); break;
+        case FIELD_sendersNextTsn: pp->setSendersNextTsn(string2ulong(value)); break;
+        case FIELD_receiversNextTsn: pp->setReceiversNextTsn(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetResponseParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpStreamResetResponseParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srResSn: return (omnetpp::intval_t)(pp->getSrResSn());
+        case FIELD_result: return (omnetpp::intval_t)(pp->getResult());
+        case FIELD_sendersNextTsn: return (omnetpp::intval_t)(pp->getSendersNextTsn());
+        case FIELD_receiversNextTsn: return (omnetpp::intval_t)(pp->getReceiversNextTsn());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpStreamResetResponseParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpStreamResetResponseParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srResSn: pp->setSrResSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_result: pp->setResult(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_sendersNextTsn: pp->setSendersNextTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_receiversNextTsn: pp->setReceiversNextTsn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetResponseParameter'", field);
     }
 }
 
 const char *SctpStreamResetResponseParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpStreamResetResponseParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpStreamResetResponseParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpStreamResetResponseParameter *pp = (SctpStreamResetResponseParameter *)object; (void)pp;
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpStreamResetResponseParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpStreamResetResponseParameter *pp = omnetpp::fromAnyPtr<SctpStreamResetResponseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpStreamResetResponseParameter'", field);
     }
 }
 
@@ -11527,7 +13471,7 @@ void SctpAddStreamsRequestParameter::setReserved(uint16_t reserved)
 class SctpAddStreamsRequestParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srReqSn,
         FIELD_numberOfStreams,
@@ -11539,34 +13483,38 @@ class SctpAddStreamsRequestParameterDescriptor : public omnetpp::cClassDescripto
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAddStreamsRequestParameterDescriptor)
 
 SctpAddStreamsRequestParameterDescriptor::SctpAddStreamsRequestParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpAddStreamsRequestParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAddStreamsRequestParameterDescriptor::~SctpAddStreamsRequestParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAddStreamsRequestParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -11576,34 +13524,34 @@ bool SctpAddStreamsRequestParameterDescriptor::doesSupport(omnetpp::cObject *obj
 
 const char **SctpAddStreamsRequestParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAddStreamsRequestParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpAddStreamsRequestParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAddStreamsRequestParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int SctpAddStreamsRequestParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_srReqSn
@@ -11615,11 +13563,11 @@ unsigned int SctpAddStreamsRequestParameterDescriptor::getFieldTypeFlags(int fie
 
 const char *SctpAddStreamsRequestParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srReqSn",
@@ -11631,21 +13579,21 @@ const char *SctpAddStreamsRequestParameterDescriptor::getFieldName(int field) co
 
 int SctpAddStreamsRequestParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srReqSn") == 0) return base+0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "numberOfStreams") == 0) return base+1;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srReqSn") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "numberOfStreams") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAddStreamsRequestParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_srReqSn
@@ -11657,67 +13605,83 @@ const char *SctpAddStreamsRequestParameterDescriptor::getFieldTypeString(int fie
 
 const char **SctpAddStreamsRequestParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAddStreamsRequestParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAddStreamsRequestParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAddStreamsRequestParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAddStreamsRequestParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAddStreamsRequestParameter *pp = (SctpAddStreamsRequestParameter *)object; (void)pp;
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpAddStreamsRequestParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAddStreamsRequestParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAddStreamsRequestParameter *pp = (SctpAddStreamsRequestParameter *)object; (void)pp;
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAddStreamsRequestParameter'", field);
+    }
+}
+
+const char *SctpAddStreamsRequestParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpAddStreamsRequestParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAddStreamsRequestParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAddStreamsRequestParameter *pp = (SctpAddStreamsRequestParameter *)object; (void)pp;
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
     switch (field) {
         case FIELD_srReqSn: return ulong2string(pp->getSrReqSn());
         case FIELD_numberOfStreams: return ulong2string(pp->getNumberOfStreams());
@@ -11726,47 +13690,101 @@ std::string SctpAddStreamsRequestParameterDescriptor::getFieldValueAsString(void
     }
 }
 
-bool SctpAddStreamsRequestParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAddStreamsRequestParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAddStreamsRequestParameter *pp = (SctpAddStreamsRequestParameter *)object; (void)pp;
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); return true;
-        case FIELD_numberOfStreams: pp->setNumberOfStreams(string2ulong(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_srReqSn: pp->setSrReqSn(string2ulong(value)); break;
+        case FIELD_numberOfStreams: pp->setNumberOfStreams(string2ulong(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddStreamsRequestParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpAddStreamsRequestParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: return (omnetpp::intval_t)(pp->getSrReqSn());
+        case FIELD_numberOfStreams: return (omnetpp::intval_t)(pp->getNumberOfStreams());
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAddStreamsRequestParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAddStreamsRequestParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_srReqSn: pp->setSrReqSn(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_numberOfStreams: pp->setNumberOfStreams(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddStreamsRequestParameter'", field);
     }
 }
 
 const char *SctpAddStreamsRequestParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpAddStreamsRequestParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAddStreamsRequestParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAddStreamsRequestParameter *pp = (SctpAddStreamsRequestParameter *)object; (void)pp;
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAddStreamsRequestParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAddStreamsRequestParameter *pp = omnetpp::fromAnyPtr<SctpAddStreamsRequestParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddStreamsRequestParameter'", field);
     }
 }
 
@@ -11862,7 +13880,7 @@ void SctpResetTimer::setOutAcked(bool outAcked)
 class SctpResetTimerDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_inSN,
         FIELD_inAcked,
@@ -11875,34 +13893,38 @@ class SctpResetTimerDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpResetTimerDescriptor)
 
 SctpResetTimerDescriptor::SctpResetTimerDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpResetTimer)), "omnetpp::cPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpResetTimerDescriptor::~SctpResetTimerDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpResetTimerDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -11912,34 +13934,34 @@ bool SctpResetTimerDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpResetTimerDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpResetTimerDescriptor::getProperty(const char *propertyname) const
+const char *SctpResetTimerDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpResetTimerDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpResetTimerDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_inSN
@@ -11952,11 +13974,11 @@ unsigned int SctpResetTimerDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpResetTimerDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "inSN",
@@ -11969,22 +13991,22 @@ const char *SctpResetTimerDescriptor::getFieldName(int field) const
 
 int SctpResetTimerDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "inSN") == 0) return base+0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "inAcked") == 0) return base+1;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "outSN") == 0) return base+2;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "outAcked") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "inSN") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "inAcked") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "outSN") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "outAcked") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpResetTimerDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_inSN
@@ -11997,67 +14019,83 @@ const char *SctpResetTimerDescriptor::getFieldTypeString(int field) const
 
 const char **SctpResetTimerDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpResetTimerDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpResetTimerDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpResetTimerDescriptor::getFieldArraySize(void *object, int field) const
+int SctpResetTimerDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpResetTimer *pp = (SctpResetTimer *)object; (void)pp;
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpResetTimerDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpResetTimerDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpResetTimer *pp = (SctpResetTimer *)object; (void)pp;
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpResetTimer'", field);
+    }
+}
+
+const char *SctpResetTimerDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpResetTimerDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpResetTimerDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpResetTimer *pp = (SctpResetTimer *)object; (void)pp;
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
     switch (field) {
         case FIELD_inSN: return ulong2string(pp->getInSN());
         case FIELD_inAcked: return bool2string(pp->getInAcked());
@@ -12067,48 +14105,104 @@ std::string SctpResetTimerDescriptor::getFieldValueAsString(void *object, int fi
     }
 }
 
-bool SctpResetTimerDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpResetTimerDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpResetTimer *pp = (SctpResetTimer *)object; (void)pp;
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
     switch (field) {
-        case FIELD_inSN: pp->setInSN(string2ulong(value)); return true;
-        case FIELD_inAcked: pp->setInAcked(string2bool(value)); return true;
-        case FIELD_outSN: pp->setOutSN(string2ulong(value)); return true;
-        case FIELD_outAcked: pp->setOutAcked(string2bool(value)); return true;
-        default: return false;
+        case FIELD_inSN: pp->setInSN(string2ulong(value)); break;
+        case FIELD_inAcked: pp->setInAcked(string2bool(value)); break;
+        case FIELD_outSN: pp->setOutSN(string2ulong(value)); break;
+        case FIELD_outAcked: pp->setOutAcked(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpResetTimer'", field);
+    }
+}
+
+omnetpp::cValue SctpResetTimerDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
+    switch (field) {
+        case FIELD_inSN: return (omnetpp::intval_t)(pp->getInSN());
+        case FIELD_inAcked: return pp->getInAcked();
+        case FIELD_outSN: return (omnetpp::intval_t)(pp->getOutSN());
+        case FIELD_outAcked: return pp->getOutAcked();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpResetTimer' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpResetTimerDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
+    switch (field) {
+        case FIELD_inSN: pp->setInSN(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_inAcked: pp->setInAcked(value.boolValue()); break;
+        case FIELD_outSN: pp->setOutSN(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_outAcked: pp->setOutAcked(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpResetTimer'", field);
     }
 }
 
 const char *SctpResetTimerDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpResetTimerDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpResetTimerDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpResetTimer *pp = (SctpResetTimer *)object; (void)pp;
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpResetTimerDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpResetTimer *pp = omnetpp::fromAnyPtr<SctpResetTimer>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpResetTimer'", field);
     }
 }
 
@@ -12212,7 +14306,7 @@ size_t SctpAuthenticationChunk::getHMACArraySize() const
 
 uint32_t SctpAuthenticationChunk::getHMAC(size_t k) const
 {
-    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size HMAC_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)HMAC_arraysize, (unsigned long)k);
     return this->HMAC[k];
 }
 
@@ -12231,13 +14325,13 @@ void SctpAuthenticationChunk::setHMACArraySize(size_t newSize)
 
 void SctpAuthenticationChunk::setHMAC(size_t k, uint32_t HMAC)
 {
-    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)HMAC_arraysize, (unsigned long)k);
     this->HMAC[k] = HMAC;
 }
 
 void SctpAuthenticationChunk::insertHMAC(size_t k, uint32_t HMAC)
 {
-    if (k > HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)HMAC_arraysize, (unsigned long)k);
     size_t newSize = HMAC_arraysize + 1;
     uint32_t *HMAC2 = new uint32_t[newSize];
     size_t i;
@@ -12251,14 +14345,14 @@ void SctpAuthenticationChunk::insertHMAC(size_t k, uint32_t HMAC)
     HMAC_arraysize = newSize;
 }
 
-void SctpAuthenticationChunk::insertHMAC(uint32_t HMAC)
+void SctpAuthenticationChunk::appendHMAC(uint32_t HMAC)
 {
     insertHMAC(HMAC_arraysize, HMAC);
 }
 
 void SctpAuthenticationChunk::eraseHMAC(size_t k)
 {
-    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= HMAC_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)HMAC_arraysize, (unsigned long)k);
     size_t newSize = HMAC_arraysize - 1;
     uint32_t *HMAC2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -12274,7 +14368,7 @@ void SctpAuthenticationChunk::eraseHMAC(size_t k)
 class SctpAuthenticationChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_sharedKey,
         FIELD_hMacIdentifier,
@@ -12287,34 +14381,38 @@ class SctpAuthenticationChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAuthenticationChunkDescriptor)
 
 SctpAuthenticationChunkDescriptor::SctpAuthenticationChunkDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpAuthenticationChunk)), "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAuthenticationChunkDescriptor::~SctpAuthenticationChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAuthenticationChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -12324,51 +14422,51 @@ bool SctpAuthenticationChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpAuthenticationChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAuthenticationChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpAuthenticationChunkDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAuthenticationChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpAuthenticationChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_sharedKey
         FD_ISEDITABLE,    // FIELD_hMacIdentifier
         FD_ISEDITABLE,    // FIELD_hMacOk
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_HMAC
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_HMAC
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpAuthenticationChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "sharedKey",
@@ -12381,22 +14479,22 @@ const char *SctpAuthenticationChunkDescriptor::getFieldName(int field) const
 
 int SctpAuthenticationChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sharedKey") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hMacIdentifier") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hMacOk") == 0) return base+2;
-    if (fieldName[0] == 'H' && strcmp(fieldName, "HMAC") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "sharedKey") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "hMacIdentifier") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "hMacOk") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "HMAC") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAuthenticationChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16",    // FIELD_sharedKey
@@ -12409,68 +14507,85 @@ const char *SctpAuthenticationChunkDescriptor::getFieldTypeString(int field) con
 
 const char **SctpAuthenticationChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAuthenticationChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAuthenticationChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAuthenticationChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAuthenticationChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAuthenticationChunk *pp = (SctpAuthenticationChunk *)object; (void)pp;
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
     switch (field) {
         case FIELD_HMAC: return pp->getHMACArraySize();
         default: return 0;
     }
 }
 
-const char *SctpAuthenticationChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAuthenticationChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAuthenticationChunk *pp = (SctpAuthenticationChunk *)object; (void)pp;
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_HMAC: pp->setHMACArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAuthenticationChunk'", field);
+    }
+}
+
+const char *SctpAuthenticationChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpAuthenticationChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAuthenticationChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAuthenticationChunk *pp = (SctpAuthenticationChunk *)object; (void)pp;
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
     switch (field) {
         case FIELD_sharedKey: return ulong2string(pp->getSharedKey());
         case FIELD_hMacIdentifier: return ulong2string(pp->getHMacIdentifier());
@@ -12480,48 +14595,104 @@ std::string SctpAuthenticationChunkDescriptor::getFieldValueAsString(void *objec
     }
 }
 
-bool SctpAuthenticationChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAuthenticationChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAuthenticationChunk *pp = (SctpAuthenticationChunk *)object; (void)pp;
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
     switch (field) {
-        case FIELD_sharedKey: pp->setSharedKey(string2ulong(value)); return true;
-        case FIELD_hMacIdentifier: pp->setHMacIdentifier(string2ulong(value)); return true;
-        case FIELD_hMacOk: pp->setHMacOk(string2bool(value)); return true;
-        case FIELD_HMAC: pp->setHMAC(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_sharedKey: pp->setSharedKey(string2ulong(value)); break;
+        case FIELD_hMacIdentifier: pp->setHMacIdentifier(string2ulong(value)); break;
+        case FIELD_hMacOk: pp->setHMacOk(string2bool(value)); break;
+        case FIELD_HMAC: pp->setHMAC(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAuthenticationChunk'", field);
+    }
+}
+
+omnetpp::cValue SctpAuthenticationChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_sharedKey: return (omnetpp::intval_t)(pp->getSharedKey());
+        case FIELD_hMacIdentifier: return (omnetpp::intval_t)(pp->getHMacIdentifier());
+        case FIELD_hMacOk: return pp->getHMacOk();
+        case FIELD_HMAC: return (omnetpp::intval_t)(pp->getHMAC(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAuthenticationChunk' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAuthenticationChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
+    switch (field) {
+        case FIELD_sharedKey: pp->setSharedKey(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_hMacIdentifier: pp->setHMacIdentifier(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_hMacOk: pp->setHMacOk(value.boolValue()); break;
+        case FIELD_HMAC: pp->setHMAC(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAuthenticationChunk'", field);
     }
 }
 
 const char *SctpAuthenticationChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpAuthenticationChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAuthenticationChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAuthenticationChunk *pp = (SctpAuthenticationChunk *)object; (void)pp;
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAuthenticationChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAuthenticationChunk *pp = omnetpp::fromAnyPtr<SctpAuthenticationChunk>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAuthenticationChunk'", field);
     }
 }
 
@@ -12559,7 +14730,7 @@ void SctpAsconfChunk_Base::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->serialNumber);
     doParsimPacking(b,this->addressParam);
     doParsimPacking(b,this->peerVTag);
-    // field asconfParams is abstract -- please do packing in customized class
+    // field asconfParams is abstract or custom -- please do packing in customized class
 }
 
 void SctpAsconfChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -12568,7 +14739,7 @@ void SctpAsconfChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->serialNumber);
     doParsimUnpacking(b,this->addressParam);
     doParsimUnpacking(b,this->peerVTag);
-    // field asconfParams is abstract -- please do unpacking in customized class
+    // field asconfParams is abstract or custom -- please do unpacking in customized class
 }
 
 uint32_t SctpAsconfChunk_Base::getSerialNumber() const
@@ -12581,12 +14752,12 @@ void SctpAsconfChunk_Base::setSerialNumber(uint32_t serialNumber)
     this->serialNumber = serialNumber;
 }
 
-const L3Address& SctpAsconfChunk_Base::getAddressParam() const
+const ::inet::L3Address& SctpAsconfChunk_Base::getAddressParam() const
 {
     return this->addressParam;
 }
 
-void SctpAsconfChunk_Base::setAddressParam(const L3Address& addressParam)
+void SctpAsconfChunk_Base::setAddressParam(const ::inet::L3Address& addressParam)
 {
     this->addressParam = addressParam;
 }
@@ -12604,7 +14775,7 @@ void SctpAsconfChunk_Base::setPeerVTag(uint32_t peerVTag)
 class SctpAsconfChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_serialNumber,
         FIELD_addressParam,
@@ -12617,34 +14788,38 @@ class SctpAsconfChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAsconfChunkDescriptor)
 
 SctpAsconfChunkDescriptor::SctpAsconfChunkDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpAsconfChunk", "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAsconfChunkDescriptor::~SctpAsconfChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAsconfChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -12654,52 +14829,52 @@ bool SctpAsconfChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpAsconfChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAsconfChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpAsconfChunkDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAsconfChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int SctpAsconfChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_serialNumber
         0,    // FIELD_addressParam
         FD_ISEDITABLE,    // FIELD_peerVTag
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_asconfParams
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_asconfParams
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpAsconfChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "serialNumber",
@@ -12712,22 +14887,22 @@ const char *SctpAsconfChunkDescriptor::getFieldName(int field) const
 
 int SctpAsconfChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "serialNumber") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addressParam") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peerVTag") == 0) return base+2;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "asconfParams") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "serialNumber") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "addressParam") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "peerVTag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "asconfParams") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAsconfChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_serialNumber
@@ -12740,101 +14915,157 @@ const char *SctpAsconfChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpAsconfChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAsconfChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAsconfChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAsconfChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAsconfChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAsconfChunk_Base *pp = (SctpAsconfChunk_Base *)object; (void)pp;
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_asconfParams: return pp->getAsconfParamsArraySize();
         default: return 0;
     }
 }
 
-const char *SctpAsconfChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAsconfChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAsconfChunk_Base *pp = (SctpAsconfChunk_Base *)object; (void)pp;
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_asconfParams: pp->setAsconfParamsArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAsconfChunk_Base'", field);
+    }
+}
+
+const char *SctpAsconfChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_asconfParams: { const SctpParameter * value = pp->getAsconfParams(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpAsconfChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAsconfChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAsconfChunk_Base *pp = (SctpAsconfChunk_Base *)object; (void)pp;
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_serialNumber: return ulong2string(pp->getSerialNumber());
         case FIELD_addressParam: return pp->getAddressParam().str();
         case FIELD_peerVTag: return ulong2string(pp->getPeerVTag());
-        case FIELD_asconfParams: {std::stringstream out; out << pp->getAsconfParams(i); return out.str();}
+        case FIELD_asconfParams: { auto obj = pp->getAsconfParams(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool SctpAsconfChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAsconfChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAsconfChunk_Base *pp = (SctpAsconfChunk_Base *)object; (void)pp;
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_serialNumber: pp->setSerialNumber(string2ulong(value)); return true;
-        case FIELD_peerVTag: pp->setPeerVTag(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_serialNumber: pp->setSerialNumber(string2ulong(value)); break;
+        case FIELD_peerVTag: pp->setPeerVTag(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfChunk_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpAsconfChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_serialNumber: return (omnetpp::intval_t)(pp->getSerialNumber());
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        case FIELD_peerVTag: return (omnetpp::intval_t)(pp->getPeerVTag());
+        case FIELD_asconfParams: return omnetpp::toAnyPtr(pp->getAsconfParams(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAsconfChunk_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAsconfChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_serialNumber: pp->setSerialNumber(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_peerVTag: pp->setPeerVTag(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_asconfParams: pp->setAsconfParams(i,omnetpp::fromAnyPtr<SctpParameter>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfChunk_Base'", field);
     }
 }
 
 const char *SctpAsconfChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_asconfParams: return omnetpp::opp_typename(typeid(SctpParameter));
@@ -12842,19 +15073,36 @@ const char *SctpAsconfChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpAsconfChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAsconfChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAsconfChunk_Base *pp = (SctpAsconfChunk_Base *)object; (void)pp;
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_addressParam: return toVoidPtr(&pp->getAddressParam()); break;
-        case FIELD_asconfParams: return toVoidPtr(pp->getAsconfParams(i)); break;
-        default: return nullptr;
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        case FIELD_asconfParams: return omnetpp::toAnyPtr(pp->getAsconfParams(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAsconfChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAsconfChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_asconfParams: pp->setAsconfParams(i,omnetpp::fromAnyPtr<SctpParameter>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfChunk_Base'", field);
     }
 }
 
@@ -12888,14 +15136,14 @@ void SctpAsconfAckChunk_Base::parsimPack(omnetpp::cCommBuffer *b) const
 {
     ::inet::sctp::SctpChunk::parsimPack(b);
     doParsimPacking(b,this->serialNumber);
-    // field asconfResponse is abstract -- please do packing in customized class
+    // field asconfResponse is abstract or custom -- please do packing in customized class
 }
 
 void SctpAsconfAckChunk_Base::parsimUnpack(omnetpp::cCommBuffer *b)
 {
     ::inet::sctp::SctpChunk::parsimUnpack(b);
     doParsimUnpacking(b,this->serialNumber);
-    // field asconfResponse is abstract -- please do unpacking in customized class
+    // field asconfResponse is abstract or custom -- please do unpacking in customized class
 }
 
 uint32_t SctpAsconfAckChunk_Base::getSerialNumber() const
@@ -12911,7 +15159,7 @@ void SctpAsconfAckChunk_Base::setSerialNumber(uint32_t serialNumber)
 class SctpAsconfAckChunkDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_serialNumber,
         FIELD_asconfResponse,
@@ -12922,34 +15170,38 @@ class SctpAsconfAckChunkDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAsconfAckChunkDescriptor)
 
 SctpAsconfAckChunkDescriptor::SctpAsconfAckChunkDescriptor() : omnetpp::cClassDescriptor("inet::sctp::SctpAsconfAckChunk", "inet::sctp::SctpChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAsconfAckChunkDescriptor::~SctpAsconfAckChunkDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAsconfAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -12959,50 +15211,50 @@ bool SctpAsconfAckChunkDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpAsconfAckChunkDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "customize",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAsconfAckChunkDescriptor::getProperty(const char *propertyname) const
+const char *SctpAsconfAckChunkDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "customize")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "customize")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAsconfAckChunkDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpAsconfAckChunkDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_serialNumber
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_asconfResponse
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_asconfResponse
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpAsconfAckChunkDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "serialNumber",
@@ -13013,20 +15265,20 @@ const char *SctpAsconfAckChunkDescriptor::getFieldName(int field) const
 
 int SctpAsconfAckChunkDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "serialNumber") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "asconfResponse") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "serialNumber") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "asconfResponse") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAsconfAckChunkDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_serialNumber
@@ -13037,98 +15289,151 @@ const char *SctpAsconfAckChunkDescriptor::getFieldTypeString(int field) const
 
 const char **SctpAsconfAckChunkDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAsconfAckChunkDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAsconfAckChunkDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAsconfAckChunkDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAsconfAckChunkDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAsconfAckChunk_Base *pp = (SctpAsconfAckChunk_Base *)object; (void)pp;
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_asconfResponse: return pp->getAsconfResponseArraySize();
         default: return 0;
     }
 }
 
-const char *SctpAsconfAckChunkDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAsconfAckChunkDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAsconfAckChunk_Base *pp = (SctpAsconfAckChunk_Base *)object; (void)pp;
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_asconfResponse: pp->setAsconfResponseArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAsconfAckChunk_Base'", field);
+    }
+}
+
+const char *SctpAsconfAckChunkDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_asconfResponse: { const SctpParameter * value = pp->getAsconfResponse(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string SctpAsconfAckChunkDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAsconfAckChunkDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAsconfAckChunk_Base *pp = (SctpAsconfAckChunk_Base *)object; (void)pp;
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
     switch (field) {
         case FIELD_serialNumber: return ulong2string(pp->getSerialNumber());
-        case FIELD_asconfResponse: {std::stringstream out; out << pp->getAsconfResponse(i); return out.str();}
+        case FIELD_asconfResponse: { auto obj = pp->getAsconfResponse(i); return obj == nullptr ? "" : obj->str(); }
         default: return "";
     }
 }
 
-bool SctpAsconfAckChunkDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAsconfAckChunkDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAsconfAckChunk_Base *pp = (SctpAsconfAckChunk_Base *)object; (void)pp;
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_serialNumber: pp->setSerialNumber(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_serialNumber: pp->setSerialNumber(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfAckChunk_Base'", field);
+    }
+}
+
+omnetpp::cValue SctpAsconfAckChunkDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_serialNumber: return (omnetpp::intval_t)(pp->getSerialNumber());
+        case FIELD_asconfResponse: return omnetpp::toAnyPtr(pp->getAsconfResponse(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAsconfAckChunk_Base' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAsconfAckChunkDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_serialNumber: pp->setSerialNumber(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_asconfResponse: pp->setAsconfResponse(i,omnetpp::fromAnyPtr<SctpParameter>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfAckChunk_Base'", field);
     }
 }
 
 const char *SctpAsconfAckChunkDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_asconfResponse: return omnetpp::opp_typename(typeid(SctpParameter));
@@ -13136,18 +15441,35 @@ const char *SctpAsconfAckChunkDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *SctpAsconfAckChunkDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAsconfAckChunkDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAsconfAckChunk_Base *pp = (SctpAsconfAckChunk_Base *)object; (void)pp;
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
     switch (field) {
-        case FIELD_asconfResponse: return toVoidPtr(pp->getAsconfResponse(i)); break;
-        default: return nullptr;
+        case FIELD_asconfResponse: return omnetpp::toAnyPtr(pp->getAsconfResponse(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAsconfAckChunkDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAsconfAckChunk_Base *pp = omnetpp::fromAnyPtr<SctpAsconfAckChunk_Base>(object); (void)pp;
+    switch (field) {
+        case FIELD_asconfResponse: pp->setAsconfResponse(i,omnetpp::fromAnyPtr<SctpParameter>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAsconfAckChunk_Base'", field);
     }
 }
 
@@ -13204,12 +15526,12 @@ void SctpAddIPParameter::setRequestCorrelationId(uint32_t requestCorrelationId)
     this->requestCorrelationId = requestCorrelationId;
 }
 
-const L3Address& SctpAddIPParameter::getAddressParam() const
+const ::inet::L3Address& SctpAddIPParameter::getAddressParam() const
 {
     return this->addressParam;
 }
 
-void SctpAddIPParameter::setAddressParam(const L3Address& addressParam)
+void SctpAddIPParameter::setAddressParam(const ::inet::L3Address& addressParam)
 {
     this->addressParam = addressParam;
 }
@@ -13217,7 +15539,7 @@ void SctpAddIPParameter::setAddressParam(const L3Address& addressParam)
 class SctpAddIPParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_requestCorrelationId,
         FIELD_addressParam,
@@ -13228,34 +15550,38 @@ class SctpAddIPParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpAddIPParameterDescriptor)
 
 SctpAddIPParameterDescriptor::SctpAddIPParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpAddIPParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpAddIPParameterDescriptor::~SctpAddIPParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpAddIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -13265,34 +15591,34 @@ bool SctpAddIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpAddIPParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpAddIPParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpAddIPParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpAddIPParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpAddIPParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_requestCorrelationId
@@ -13303,11 +15629,11 @@ unsigned int SctpAddIPParameterDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpAddIPParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "requestCorrelationId",
@@ -13318,20 +15644,20 @@ const char *SctpAddIPParameterDescriptor::getFieldName(int field) const
 
 int SctpAddIPParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "requestCorrelationId") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addressParam") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "requestCorrelationId") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "addressParam") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpAddIPParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_requestCorrelationId
@@ -13342,67 +15668,83 @@ const char *SctpAddIPParameterDescriptor::getFieldTypeString(int field) const
 
 const char **SctpAddIPParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpAddIPParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpAddIPParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpAddIPParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpAddIPParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpAddIPParameter *pp = (SctpAddIPParameter *)object; (void)pp;
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpAddIPParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpAddIPParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAddIPParameter *pp = (SctpAddIPParameter *)object; (void)pp;
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpAddIPParameter'", field);
+    }
+}
+
+const char *SctpAddIPParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpAddIPParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpAddIPParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpAddIPParameter *pp = (SctpAddIPParameter *)object; (void)pp;
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
     switch (field) {
         case FIELD_requestCorrelationId: return ulong2string(pp->getRequestCorrelationId());
         case FIELD_addressParam: return pp->getAddressParam().str();
@@ -13410,46 +15752,97 @@ std::string SctpAddIPParameterDescriptor::getFieldValueAsString(void *object, in
     }
 }
 
-bool SctpAddIPParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpAddIPParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpAddIPParameter *pp = (SctpAddIPParameter *)object; (void)pp;
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddIPParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpAddIPParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: return (omnetpp::intval_t)(pp->getRequestCorrelationId());
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpAddIPParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpAddIPParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddIPParameter'", field);
     }
 }
 
 const char *SctpAddIPParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpAddIPParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpAddIPParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpAddIPParameter *pp = (SctpAddIPParameter *)object; (void)pp;
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_addressParam: return toVoidPtr(&pp->getAddressParam()); break;
-        default: return nullptr;
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpAddIPParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpAddIPParameter *pp = omnetpp::fromAnyPtr<SctpAddIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpAddIPParameter'", field);
     }
 }
 
@@ -13506,12 +15899,12 @@ void SctpDeleteIPParameter::setRequestCorrelationId(uint32_t requestCorrelationI
     this->requestCorrelationId = requestCorrelationId;
 }
 
-const L3Address& SctpDeleteIPParameter::getAddressParam() const
+const ::inet::L3Address& SctpDeleteIPParameter::getAddressParam() const
 {
     return this->addressParam;
 }
 
-void SctpDeleteIPParameter::setAddressParam(const L3Address& addressParam)
+void SctpDeleteIPParameter::setAddressParam(const ::inet::L3Address& addressParam)
 {
     this->addressParam = addressParam;
 }
@@ -13519,7 +15912,7 @@ void SctpDeleteIPParameter::setAddressParam(const L3Address& addressParam)
 class SctpDeleteIPParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_requestCorrelationId,
         FIELD_addressParam,
@@ -13530,34 +15923,38 @@ class SctpDeleteIPParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpDeleteIPParameterDescriptor)
 
 SctpDeleteIPParameterDescriptor::SctpDeleteIPParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpDeleteIPParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpDeleteIPParameterDescriptor::~SctpDeleteIPParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpDeleteIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -13567,34 +15964,34 @@ bool SctpDeleteIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpDeleteIPParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpDeleteIPParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpDeleteIPParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpDeleteIPParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpDeleteIPParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_requestCorrelationId
@@ -13605,11 +16002,11 @@ unsigned int SctpDeleteIPParameterDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpDeleteIPParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "requestCorrelationId",
@@ -13620,20 +16017,20 @@ const char *SctpDeleteIPParameterDescriptor::getFieldName(int field) const
 
 int SctpDeleteIPParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "requestCorrelationId") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addressParam") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "requestCorrelationId") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "addressParam") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpDeleteIPParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_requestCorrelationId
@@ -13644,67 +16041,83 @@ const char *SctpDeleteIPParameterDescriptor::getFieldTypeString(int field) const
 
 const char **SctpDeleteIPParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpDeleteIPParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpDeleteIPParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpDeleteIPParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpDeleteIPParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpDeleteIPParameter *pp = (SctpDeleteIPParameter *)object; (void)pp;
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpDeleteIPParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpDeleteIPParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDeleteIPParameter *pp = (SctpDeleteIPParameter *)object; (void)pp;
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpDeleteIPParameter'", field);
+    }
+}
+
+const char *SctpDeleteIPParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpDeleteIPParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpDeleteIPParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpDeleteIPParameter *pp = (SctpDeleteIPParameter *)object; (void)pp;
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
     switch (field) {
         case FIELD_requestCorrelationId: return ulong2string(pp->getRequestCorrelationId());
         case FIELD_addressParam: return pp->getAddressParam().str();
@@ -13712,46 +16125,97 @@ std::string SctpDeleteIPParameterDescriptor::getFieldValueAsString(void *object,
     }
 }
 
-bool SctpDeleteIPParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpDeleteIPParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpDeleteIPParameter *pp = (SctpDeleteIPParameter *)object; (void)pp;
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDeleteIPParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpDeleteIPParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: return (omnetpp::intval_t)(pp->getRequestCorrelationId());
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpDeleteIPParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpDeleteIPParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDeleteIPParameter'", field);
     }
 }
 
 const char *SctpDeleteIPParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpDeleteIPParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpDeleteIPParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpDeleteIPParameter *pp = (SctpDeleteIPParameter *)object; (void)pp;
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_addressParam: return toVoidPtr(&pp->getAddressParam()); break;
-        default: return nullptr;
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpDeleteIPParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpDeleteIPParameter *pp = omnetpp::fromAnyPtr<SctpDeleteIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpDeleteIPParameter'", field);
     }
 }
 
@@ -13808,12 +16272,12 @@ void SctpSetPrimaryIPParameter::setRequestCorrelationId(uint32_t requestCorrelat
     this->requestCorrelationId = requestCorrelationId;
 }
 
-const L3Address& SctpSetPrimaryIPParameter::getAddressParam() const
+const ::inet::L3Address& SctpSetPrimaryIPParameter::getAddressParam() const
 {
     return this->addressParam;
 }
 
-void SctpSetPrimaryIPParameter::setAddressParam(const L3Address& addressParam)
+void SctpSetPrimaryIPParameter::setAddressParam(const ::inet::L3Address& addressParam)
 {
     this->addressParam = addressParam;
 }
@@ -13821,7 +16285,7 @@ void SctpSetPrimaryIPParameter::setAddressParam(const L3Address& addressParam)
 class SctpSetPrimaryIPParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_requestCorrelationId,
         FIELD_addressParam,
@@ -13832,34 +16296,38 @@ class SctpSetPrimaryIPParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSetPrimaryIPParameterDescriptor)
 
 SctpSetPrimaryIPParameterDescriptor::SctpSetPrimaryIPParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSetPrimaryIPParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSetPrimaryIPParameterDescriptor::~SctpSetPrimaryIPParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSetPrimaryIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -13869,34 +16337,34 @@ bool SctpSetPrimaryIPParameterDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **SctpSetPrimaryIPParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSetPrimaryIPParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpSetPrimaryIPParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSetPrimaryIPParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpSetPrimaryIPParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_requestCorrelationId
@@ -13907,11 +16375,11 @@ unsigned int SctpSetPrimaryIPParameterDescriptor::getFieldTypeFlags(int field) c
 
 const char *SctpSetPrimaryIPParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "requestCorrelationId",
@@ -13922,20 +16390,20 @@ const char *SctpSetPrimaryIPParameterDescriptor::getFieldName(int field) const
 
 int SctpSetPrimaryIPParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "requestCorrelationId") == 0) return base+0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "addressParam") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "requestCorrelationId") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "addressParam") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSetPrimaryIPParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_requestCorrelationId
@@ -13946,67 +16414,83 @@ const char *SctpSetPrimaryIPParameterDescriptor::getFieldTypeString(int field) c
 
 const char **SctpSetPrimaryIPParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSetPrimaryIPParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSetPrimaryIPParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSetPrimaryIPParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSetPrimaryIPParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSetPrimaryIPParameter *pp = (SctpSetPrimaryIPParameter *)object; (void)pp;
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpSetPrimaryIPParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSetPrimaryIPParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSetPrimaryIPParameter *pp = (SctpSetPrimaryIPParameter *)object; (void)pp;
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSetPrimaryIPParameter'", field);
+    }
+}
+
+const char *SctpSetPrimaryIPParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSetPrimaryIPParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSetPrimaryIPParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSetPrimaryIPParameter *pp = (SctpSetPrimaryIPParameter *)object; (void)pp;
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
     switch (field) {
         case FIELD_requestCorrelationId: return ulong2string(pp->getRequestCorrelationId());
         case FIELD_addressParam: return pp->getAddressParam().str();
@@ -14014,46 +16498,97 @@ std::string SctpSetPrimaryIPParameterDescriptor::getFieldValueAsString(void *obj
     }
 }
 
-bool SctpSetPrimaryIPParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSetPrimaryIPParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSetPrimaryIPParameter *pp = (SctpSetPrimaryIPParameter *)object; (void)pp;
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSetPrimaryIPParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpSetPrimaryIPParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: return (omnetpp::intval_t)(pp->getRequestCorrelationId());
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSetPrimaryIPParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSetPrimaryIPParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_requestCorrelationId: pp->setRequestCorrelationId(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSetPrimaryIPParameter'", field);
     }
 }
 
 const char *SctpSetPrimaryIPParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSetPrimaryIPParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSetPrimaryIPParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSetPrimaryIPParameter *pp = (SctpSetPrimaryIPParameter *)object; (void)pp;
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_addressParam: return toVoidPtr(&pp->getAddressParam()); break;
-        default: return nullptr;
+        case FIELD_addressParam: return omnetpp::toAnyPtr(&pp->getAddressParam()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSetPrimaryIPParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSetPrimaryIPParameter *pp = omnetpp::fromAnyPtr<SctpSetPrimaryIPParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSetPrimaryIPParameter'", field);
     }
 }
 
@@ -14118,7 +16653,7 @@ size_t SctpSupportedExtensionsParameter::getSctpChunkTypesArraySize() const
 
 uint16_t SctpSupportedExtensionsParameter::getSctpChunkTypes(size_t k) const
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size sctpChunkTypes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     return this->sctpChunkTypes[k];
 }
 
@@ -14137,13 +16672,13 @@ void SctpSupportedExtensionsParameter::setSctpChunkTypesArraySize(size_t newSize
 
 void SctpSupportedExtensionsParameter::setSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     this->sctpChunkTypes[k] = sctpChunkTypes;
 }
 
 void SctpSupportedExtensionsParameter::insertSctpChunkTypes(size_t k, uint16_t sctpChunkTypes)
 {
-    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize + 1;
     uint16_t *sctpChunkTypes2 = new uint16_t[newSize];
     size_t i;
@@ -14157,14 +16692,14 @@ void SctpSupportedExtensionsParameter::insertSctpChunkTypes(size_t k, uint16_t s
     sctpChunkTypes_arraysize = newSize;
 }
 
-void SctpSupportedExtensionsParameter::insertSctpChunkTypes(uint16_t sctpChunkTypes)
+void SctpSupportedExtensionsParameter::appendSctpChunkTypes(uint16_t sctpChunkTypes)
 {
     insertSctpChunkTypes(sctpChunkTypes_arraysize, sctpChunkTypes);
 }
 
 void SctpSupportedExtensionsParameter::eraseSctpChunkTypes(size_t k)
 {
-    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= sctpChunkTypes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)sctpChunkTypes_arraysize, (unsigned long)k);
     size_t newSize = sctpChunkTypes_arraysize - 1;
     uint16_t *sctpChunkTypes2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -14180,7 +16715,7 @@ void SctpSupportedExtensionsParameter::eraseSctpChunkTypes(size_t k)
 class SctpSupportedExtensionsParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_sctpChunkTypes,
     };
@@ -14190,34 +16725,38 @@ class SctpSupportedExtensionsParameterDescriptor : public omnetpp::cClassDescrip
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSupportedExtensionsParameterDescriptor)
 
 SctpSupportedExtensionsParameterDescriptor::SctpSupportedExtensionsParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSupportedExtensionsParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSupportedExtensionsParameterDescriptor::~SctpSupportedExtensionsParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSupportedExtensionsParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -14227,48 +16766,48 @@ bool SctpSupportedExtensionsParameterDescriptor::doesSupport(omnetpp::cObject *o
 
 const char **SctpSupportedExtensionsParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSupportedExtensionsParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpSupportedExtensionsParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSupportedExtensionsParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpSupportedExtensionsParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_sctpChunkTypes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_sctpChunkTypes
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *SctpSupportedExtensionsParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "sctpChunkTypes",
@@ -14278,19 +16817,19 @@ const char *SctpSupportedExtensionsParameterDescriptor::getFieldName(int field) 
 
 int SctpSupportedExtensionsParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sctpChunkTypes") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "sctpChunkTypes") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSupportedExtensionsParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16",    // FIELD_sctpChunkTypes
@@ -14300,113 +16839,180 @@ const char *SctpSupportedExtensionsParameterDescriptor::getFieldTypeString(int f
 
 const char **SctpSupportedExtensionsParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSupportedExtensionsParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSupportedExtensionsParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSupportedExtensionsParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSupportedExtensionsParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSupportedExtensionsParameter *pp = (SctpSupportedExtensionsParameter *)object; (void)pp;
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
     switch (field) {
         case FIELD_sctpChunkTypes: return pp->getSctpChunkTypesArraySize();
         default: return 0;
     }
 }
 
-const char *SctpSupportedExtensionsParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSupportedExtensionsParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSupportedExtensionsParameter *pp = (SctpSupportedExtensionsParameter *)object; (void)pp;
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSupportedExtensionsParameter'", field);
+    }
+}
+
+const char *SctpSupportedExtensionsParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSupportedExtensionsParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSupportedExtensionsParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSupportedExtensionsParameter *pp = (SctpSupportedExtensionsParameter *)object; (void)pp;
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
     switch (field) {
         case FIELD_sctpChunkTypes: return ulong2string(pp->getSctpChunkTypes(i));
         default: return "";
     }
 }
 
-bool SctpSupportedExtensionsParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSupportedExtensionsParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSupportedExtensionsParameter *pp = (SctpSupportedExtensionsParameter *)object; (void)pp;
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSupportedExtensionsParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpSupportedExtensionsParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunkTypes: return (omnetpp::intval_t)(pp->getSctpChunkTypes(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSupportedExtensionsParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSupportedExtensionsParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_sctpChunkTypes: pp->setSctpChunkTypes(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSupportedExtensionsParameter'", field);
     }
 }
 
 const char *SctpSupportedExtensionsParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSupportedExtensionsParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSupportedExtensionsParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSupportedExtensionsParameter *pp = (SctpSupportedExtensionsParameter *)object; (void)pp;
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSupportedExtensionsParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSupportedExtensionsParameter *pp = omnetpp::fromAnyPtr<SctpSupportedExtensionsParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSupportedExtensionsParameter'", field);
     }
 }
 
@@ -14476,7 +17082,7 @@ void SctpErrorCauseParameter::setErrorCauseType(uint32_t errorCauseType)
 class SctpErrorCauseParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_responseCorrelationId,
         FIELD_errorCauseType,
@@ -14487,34 +17093,38 @@ class SctpErrorCauseParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpErrorCauseParameterDescriptor)
 
 SctpErrorCauseParameterDescriptor::SctpErrorCauseParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpErrorCauseParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpErrorCauseParameterDescriptor::~SctpErrorCauseParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpErrorCauseParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -14524,34 +17134,34 @@ bool SctpErrorCauseParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpErrorCauseParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpErrorCauseParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpErrorCauseParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpErrorCauseParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int SctpErrorCauseParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_responseCorrelationId
@@ -14562,11 +17172,11 @@ unsigned int SctpErrorCauseParameterDescriptor::getFieldTypeFlags(int field) con
 
 const char *SctpErrorCauseParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "responseCorrelationId",
@@ -14577,20 +17187,20 @@ const char *SctpErrorCauseParameterDescriptor::getFieldName(int field) const
 
 int SctpErrorCauseParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "responseCorrelationId") == 0) return base+0;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "errorCauseType") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "responseCorrelationId") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "errorCauseType") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpErrorCauseParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_responseCorrelationId
@@ -14601,67 +17211,83 @@ const char *SctpErrorCauseParameterDescriptor::getFieldTypeString(int field) con
 
 const char **SctpErrorCauseParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpErrorCauseParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpErrorCauseParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpErrorCauseParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpErrorCauseParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpErrorCauseParameter *pp = (SctpErrorCauseParameter *)object; (void)pp;
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpErrorCauseParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpErrorCauseParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpErrorCauseParameter *pp = (SctpErrorCauseParameter *)object; (void)pp;
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpErrorCauseParameter'", field);
+    }
+}
+
+const char *SctpErrorCauseParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpErrorCauseParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpErrorCauseParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpErrorCauseParameter *pp = (SctpErrorCauseParameter *)object; (void)pp;
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
     switch (field) {
         case FIELD_responseCorrelationId: return ulong2string(pp->getResponseCorrelationId());
         case FIELD_errorCauseType: return ulong2string(pp->getErrorCauseType());
@@ -14669,46 +17295,98 @@ std::string SctpErrorCauseParameterDescriptor::getFieldValueAsString(void *objec
     }
 }
 
-bool SctpErrorCauseParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpErrorCauseParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpErrorCauseParameter *pp = (SctpErrorCauseParameter *)object; (void)pp;
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(string2ulong(value)); return true;
-        case FIELD_errorCauseType: pp->setErrorCauseType(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(string2ulong(value)); break;
+        case FIELD_errorCauseType: pp->setErrorCauseType(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorCauseParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpErrorCauseParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_responseCorrelationId: return (omnetpp::intval_t)(pp->getResponseCorrelationId());
+        case FIELD_errorCauseType: return (omnetpp::intval_t)(pp->getErrorCauseType());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpErrorCauseParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpErrorCauseParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_errorCauseType: pp->setErrorCauseType(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorCauseParameter'", field);
     }
 }
 
 const char *SctpErrorCauseParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpErrorCauseParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpErrorCauseParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpErrorCauseParameter *pp = (SctpErrorCauseParameter *)object; (void)pp;
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpErrorCauseParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpErrorCauseParameter'", field);
     }
 }
 
@@ -14765,7 +17443,7 @@ void SctpSimpleErrorCauseParameter::setValue(uint16_t value)
 class SctpSimpleErrorCauseParameterDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -14775,34 +17453,38 @@ class SctpSimpleErrorCauseParameterDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSimpleErrorCauseParameterDescriptor)
 
 SctpSimpleErrorCauseParameterDescriptor::SctpSimpleErrorCauseParameterDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSimpleErrorCauseParameter)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSimpleErrorCauseParameterDescriptor::~SctpSimpleErrorCauseParameterDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSimpleErrorCauseParameterDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -14812,34 +17494,34 @@ bool SctpSimpleErrorCauseParameterDescriptor::doesSupport(omnetpp::cObject *obj)
 
 const char **SctpSimpleErrorCauseParameterDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSimpleErrorCauseParameterDescriptor::getProperty(const char *propertyname) const
+const char *SctpSimpleErrorCauseParameterDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSimpleErrorCauseParameterDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpSimpleErrorCauseParameterDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_value
@@ -14849,11 +17531,11 @@ unsigned int SctpSimpleErrorCauseParameterDescriptor::getFieldTypeFlags(int fiel
 
 const char *SctpSimpleErrorCauseParameterDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -14863,19 +17545,19 @@ const char *SctpSimpleErrorCauseParameterDescriptor::getFieldName(int field) con
 
 int SctpSimpleErrorCauseParameterDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSimpleErrorCauseParameterDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16",    // FIELD_value
@@ -14885,112 +17567,178 @@ const char *SctpSimpleErrorCauseParameterDescriptor::getFieldTypeString(int fiel
 
 const char **SctpSimpleErrorCauseParameterDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSimpleErrorCauseParameterDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSimpleErrorCauseParameterDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSimpleErrorCauseParameterDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSimpleErrorCauseParameterDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSimpleErrorCauseParameter *pp = (SctpSimpleErrorCauseParameter *)object; (void)pp;
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpSimpleErrorCauseParameterDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSimpleErrorCauseParameterDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSimpleErrorCauseParameter *pp = (SctpSimpleErrorCauseParameter *)object; (void)pp;
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSimpleErrorCauseParameter'", field);
+    }
+}
+
+const char *SctpSimpleErrorCauseParameterDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSimpleErrorCauseParameterDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSimpleErrorCauseParameterDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSimpleErrorCauseParameter *pp = (SctpSimpleErrorCauseParameter *)object; (void)pp;
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
     switch (field) {
         case FIELD_value: return ulong2string(pp->getValue());
         default: return "";
     }
 }
 
-bool SctpSimpleErrorCauseParameterDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSimpleErrorCauseParameterDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSimpleErrorCauseParameter *pp = (SctpSimpleErrorCauseParameter *)object; (void)pp;
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
     switch (field) {
-        case FIELD_value: pp->setValue(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_value: pp->setValue(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSimpleErrorCauseParameter'", field);
+    }
+}
+
+omnetpp::cValue SctpSimpleErrorCauseParameterDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return (omnetpp::intval_t)(pp->getValue());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSimpleErrorCauseParameter' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSimpleErrorCauseParameterDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValue(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSimpleErrorCauseParameter'", field);
     }
 }
 
 const char *SctpSimpleErrorCauseParameterDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSimpleErrorCauseParameterDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSimpleErrorCauseParameterDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSimpleErrorCauseParameter *pp = (SctpSimpleErrorCauseParameter *)object; (void)pp;
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSimpleErrorCauseParameterDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSimpleErrorCauseParameter *pp = omnetpp::fromAnyPtr<SctpSimpleErrorCauseParameter>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSimpleErrorCauseParameter'", field);
     }
 }
 
@@ -15047,7 +17795,7 @@ void SctpSuccessIndication::setResponseCorrelationId(uint32_t responseCorrelatio
 class SctpSuccessIndicationDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_responseCorrelationId,
     };
@@ -15057,34 +17805,38 @@ class SctpSuccessIndicationDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(SctpSuccessIndicationDescriptor)
 
 SctpSuccessIndicationDescriptor::SctpSuccessIndicationDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::SctpSuccessIndication)), "inet::sctp::SctpParameter")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 SctpSuccessIndicationDescriptor::~SctpSuccessIndicationDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool SctpSuccessIndicationDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -15094,34 +17846,34 @@ bool SctpSuccessIndicationDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **SctpSuccessIndicationDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *SctpSuccessIndicationDescriptor::getProperty(const char *propertyname) const
+const char *SctpSuccessIndicationDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int SctpSuccessIndicationDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int SctpSuccessIndicationDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_responseCorrelationId
@@ -15131,11 +17883,11 @@ unsigned int SctpSuccessIndicationDescriptor::getFieldTypeFlags(int field) const
 
 const char *SctpSuccessIndicationDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "responseCorrelationId",
@@ -15145,19 +17897,19 @@ const char *SctpSuccessIndicationDescriptor::getFieldName(int field) const
 
 int SctpSuccessIndicationDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "responseCorrelationId") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "responseCorrelationId") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *SctpSuccessIndicationDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_responseCorrelationId
@@ -15167,112 +17919,178 @@ const char *SctpSuccessIndicationDescriptor::getFieldTypeString(int field) const
 
 const char **SctpSuccessIndicationDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *SctpSuccessIndicationDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *SctpSuccessIndicationDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int SctpSuccessIndicationDescriptor::getFieldArraySize(void *object, int field) const
+int SctpSuccessIndicationDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    SctpSuccessIndication *pp = (SctpSuccessIndication *)object; (void)pp;
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *SctpSuccessIndicationDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void SctpSuccessIndicationDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSuccessIndication *pp = (SctpSuccessIndication *)object; (void)pp;
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'SctpSuccessIndication'", field);
+    }
+}
+
+const char *SctpSuccessIndicationDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string SctpSuccessIndicationDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string SctpSuccessIndicationDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    SctpSuccessIndication *pp = (SctpSuccessIndication *)object; (void)pp;
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
     switch (field) {
         case FIELD_responseCorrelationId: return ulong2string(pp->getResponseCorrelationId());
         default: return "";
     }
 }
 
-bool SctpSuccessIndicationDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void SctpSuccessIndicationDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    SctpSuccessIndication *pp = (SctpSuccessIndication *)object; (void)pp;
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
     switch (field) {
-        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSuccessIndication'", field);
+    }
+}
+
+omnetpp::cValue SctpSuccessIndicationDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
+    switch (field) {
+        case FIELD_responseCorrelationId: return (omnetpp::intval_t)(pp->getResponseCorrelationId());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'SctpSuccessIndication' as cValue -- field index out of range?", field);
+    }
+}
+
+void SctpSuccessIndicationDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
+    switch (field) {
+        case FIELD_responseCorrelationId: pp->setResponseCorrelationId(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSuccessIndication'", field);
     }
 }
 
 const char *SctpSuccessIndicationDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *SctpSuccessIndicationDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr SctpSuccessIndicationDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    SctpSuccessIndication *pp = (SctpSuccessIndication *)object; (void)pp;
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void SctpSuccessIndicationDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    SctpSuccessIndication *pp = omnetpp::fromAnyPtr<SctpSuccessIndication>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'SctpSuccessIndication'", field);
     }
 }
 
@@ -15306,7 +18124,7 @@ void NatMessage::copy(const NatMessage& other)
     this->multi = other.multi;
     this->peer1 = other.peer1;
     delete [] this->peer1Addresses;
-    this->peer1Addresses = (other.peer1Addresses_arraysize==0) ? nullptr : new L3Address[other.peer1Addresses_arraysize];
+    this->peer1Addresses = (other.peer1Addresses_arraysize==0) ? nullptr : new ::inet::L3Address[other.peer1Addresses_arraysize];
     peer1Addresses_arraysize = other.peer1Addresses_arraysize;
     for (size_t i = 0; i < peer1Addresses_arraysize; i++) {
         this->peer1Addresses[i] = other.peer1Addresses[i];
@@ -15314,7 +18132,7 @@ void NatMessage::copy(const NatMessage& other)
     this->portPeer1 = other.portPeer1;
     this->peer2 = other.peer2;
     delete [] this->peer2Addresses;
-    this->peer2Addresses = (other.peer2Addresses_arraysize==0) ? nullptr : new L3Address[other.peer2Addresses_arraysize];
+    this->peer2Addresses = (other.peer2Addresses_arraysize==0) ? nullptr : new ::inet::L3Address[other.peer2Addresses_arraysize];
     peer2Addresses_arraysize = other.peer2Addresses_arraysize;
     for (size_t i = 0; i < peer2Addresses_arraysize; i++) {
         this->peer2Addresses[i] = other.peer2Addresses[i];
@@ -15346,7 +18164,7 @@ void NatMessage::parsimUnpack(omnetpp::cCommBuffer *b)
     if (peer1Addresses_arraysize == 0) {
         this->peer1Addresses = nullptr;
     } else {
-        this->peer1Addresses = new L3Address[peer1Addresses_arraysize];
+        this->peer1Addresses = new ::inet::L3Address[peer1Addresses_arraysize];
         doParsimArrayUnpacking(b,this->peer1Addresses,peer1Addresses_arraysize);
     }
     doParsimUnpacking(b,this->portPeer1);
@@ -15356,7 +18174,7 @@ void NatMessage::parsimUnpack(omnetpp::cCommBuffer *b)
     if (peer2Addresses_arraysize == 0) {
         this->peer2Addresses = nullptr;
     } else {
-        this->peer2Addresses = new L3Address[peer2Addresses_arraysize];
+        this->peer2Addresses = new ::inet::L3Address[peer2Addresses_arraysize];
         doParsimArrayUnpacking(b,this->peer2Addresses,peer2Addresses_arraysize);
     }
     doParsimUnpacking(b,this->portPeer2);
@@ -15387,15 +18205,15 @@ size_t NatMessage::getPeer1AddressesArraySize() const
     return peer1Addresses_arraysize;
 }
 
-const L3Address& NatMessage::getPeer1Addresses(size_t k) const
+const ::inet::L3Address& NatMessage::getPeer1Addresses(size_t k) const
 {
-    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size peer1Addresses_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer1Addresses_arraysize, (unsigned long)k);
     return this->peer1Addresses[k];
 }
 
 void NatMessage::setPeer1AddressesArraySize(size_t newSize)
 {
-    L3Address *peer1Addresses2 = (newSize==0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *peer1Addresses2 = (newSize==0) ? nullptr : new ::inet::L3Address[newSize];
     size_t minSize = peer1Addresses_arraysize < newSize ? peer1Addresses_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         peer1Addresses2[i] = this->peer1Addresses[i];
@@ -15404,17 +18222,17 @@ void NatMessage::setPeer1AddressesArraySize(size_t newSize)
     peer1Addresses_arraysize = newSize;
 }
 
-void NatMessage::setPeer1Addresses(size_t k, const L3Address& peer1Addresses)
+void NatMessage::setPeer1Addresses(size_t k, const ::inet::L3Address& peer1Addresses)
 {
-    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer1Addresses_arraysize, (unsigned long)k);
     this->peer1Addresses[k] = peer1Addresses;
 }
 
-void NatMessage::insertPeer1Addresses(size_t k, const L3Address& peer1Addresses)
+void NatMessage::insertPeer1Addresses(size_t k, const ::inet::L3Address& peer1Addresses)
 {
-    if (k > peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer1Addresses_arraysize, (unsigned long)k);
     size_t newSize = peer1Addresses_arraysize + 1;
-    L3Address *peer1Addresses2 = new L3Address[newSize];
+    ::inet::L3Address *peer1Addresses2 = new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         peer1Addresses2[i] = this->peer1Addresses[i];
@@ -15426,16 +18244,16 @@ void NatMessage::insertPeer1Addresses(size_t k, const L3Address& peer1Addresses)
     peer1Addresses_arraysize = newSize;
 }
 
-void NatMessage::insertPeer1Addresses(const L3Address& peer1Addresses)
+void NatMessage::appendPeer1Addresses(const ::inet::L3Address& peer1Addresses)
 {
     insertPeer1Addresses(peer1Addresses_arraysize, peer1Addresses);
 }
 
 void NatMessage::erasePeer1Addresses(size_t k)
 {
-    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peer1Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer1Addresses_arraysize, (unsigned long)k);
     size_t newSize = peer1Addresses_arraysize - 1;
-    L3Address *peer1Addresses2 = (newSize == 0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *peer1Addresses2 = (newSize == 0) ? nullptr : new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         peer1Addresses2[i] = this->peer1Addresses[i];
@@ -15471,15 +18289,15 @@ size_t NatMessage::getPeer2AddressesArraySize() const
     return peer2Addresses_arraysize;
 }
 
-const L3Address& NatMessage::getPeer2Addresses(size_t k) const
+const ::inet::L3Address& NatMessage::getPeer2Addresses(size_t k) const
 {
-    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size peer2Addresses_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer2Addresses_arraysize, (unsigned long)k);
     return this->peer2Addresses[k];
 }
 
 void NatMessage::setPeer2AddressesArraySize(size_t newSize)
 {
-    L3Address *peer2Addresses2 = (newSize==0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *peer2Addresses2 = (newSize==0) ? nullptr : new ::inet::L3Address[newSize];
     size_t minSize = peer2Addresses_arraysize < newSize ? peer2Addresses_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         peer2Addresses2[i] = this->peer2Addresses[i];
@@ -15488,17 +18306,17 @@ void NatMessage::setPeer2AddressesArraySize(size_t newSize)
     peer2Addresses_arraysize = newSize;
 }
 
-void NatMessage::setPeer2Addresses(size_t k, const L3Address& peer2Addresses)
+void NatMessage::setPeer2Addresses(size_t k, const ::inet::L3Address& peer2Addresses)
 {
-    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer2Addresses_arraysize, (unsigned long)k);
     this->peer2Addresses[k] = peer2Addresses;
 }
 
-void NatMessage::insertPeer2Addresses(size_t k, const L3Address& peer2Addresses)
+void NatMessage::insertPeer2Addresses(size_t k, const ::inet::L3Address& peer2Addresses)
 {
-    if (k > peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer2Addresses_arraysize, (unsigned long)k);
     size_t newSize = peer2Addresses_arraysize + 1;
-    L3Address *peer2Addresses2 = new L3Address[newSize];
+    ::inet::L3Address *peer2Addresses2 = new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         peer2Addresses2[i] = this->peer2Addresses[i];
@@ -15510,16 +18328,16 @@ void NatMessage::insertPeer2Addresses(size_t k, const L3Address& peer2Addresses)
     peer2Addresses_arraysize = newSize;
 }
 
-void NatMessage::insertPeer2Addresses(const L3Address& peer2Addresses)
+void NatMessage::appendPeer2Addresses(const ::inet::L3Address& peer2Addresses)
 {
     insertPeer2Addresses(peer2Addresses_arraysize, peer2Addresses);
 }
 
 void NatMessage::erasePeer2Addresses(size_t k)
 {
-    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= peer2Addresses_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)peer2Addresses_arraysize, (unsigned long)k);
     size_t newSize = peer2Addresses_arraysize - 1;
-    L3Address *peer2Addresses2 = (newSize == 0) ? nullptr : new L3Address[newSize];
+    ::inet::L3Address *peer2Addresses2 = (newSize == 0) ? nullptr : new ::inet::L3Address[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         peer2Addresses2[i] = this->peer2Addresses[i];
@@ -15543,7 +18361,7 @@ void NatMessage::setPortPeer2(uint32_t portPeer2)
 class NatMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_multi,
         FIELD_peer1,
@@ -15559,34 +18377,38 @@ class NatMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(NatMessageDescriptor)
 
 NatMessageDescriptor::NatMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::sctp::NatMessage)), "omnetpp::cMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 NatMessageDescriptor::~NatMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool NatMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -15596,42 +18418,42 @@ bool NatMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **NatMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *NatMessageDescriptor::getProperty(const char *propertyname) const
+const char *NatMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int NatMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int NatMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_multi
         FD_ISEDITABLE,    // FIELD_peer1
-        FD_ISARRAY,    // FIELD_peer1Addresses
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_peer1Addresses
         FD_ISEDITABLE,    // FIELD_portPeer1
         FD_ISEDITABLE,    // FIELD_peer2
-        FD_ISARRAY,    // FIELD_peer2Addresses
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_peer2Addresses
         FD_ISEDITABLE,    // FIELD_portPeer2
     };
     return (field >= 0 && field < 7) ? fieldTypeFlags[field] : 0;
@@ -15639,11 +18461,11 @@ unsigned int NatMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *NatMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "multi",
@@ -15659,25 +18481,25 @@ const char *NatMessageDescriptor::getFieldName(int field) const
 
 int NatMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "multi") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peer1") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peer1Addresses") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "portPeer1") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peer2") == 0) return base+4;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "peer2Addresses") == 0) return base+5;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "portPeer2") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "multi") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "peer1") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "peer1Addresses") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "portPeer1") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "peer2") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "peer2Addresses") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "portPeer2") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *NatMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_multi
@@ -15693,39 +18515,39 @@ const char *NatMessageDescriptor::getFieldTypeString(int field) const
 
 const char **NatMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *NatMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *NatMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int NatMessageDescriptor::getFieldArraySize(void *object, int field) const
+int NatMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    NatMessage *pp = (NatMessage *)object; (void)pp;
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
     switch (field) {
         case FIELD_peer1Addresses: return pp->getPeer1AddressesArraySize();
         case FIELD_peer2Addresses: return pp->getPeer2AddressesArraySize();
@@ -15733,29 +18555,47 @@ int NatMessageDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *NatMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void NatMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    NatMessage *pp = (NatMessage *)object; (void)pp;
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_peer1Addresses: pp->setPeer1AddressesArraySize(size); break;
+        case FIELD_peer2Addresses: pp->setPeer2AddressesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'NatMessage'", field);
+    }
+}
+
+const char *NatMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string NatMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string NatMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    NatMessage *pp = (NatMessage *)object; (void)pp;
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
     switch (field) {
         case FIELD_multi: return bool2string(pp->getMulti());
         case FIELD_peer1: return ulong2string(pp->getPeer1());
@@ -15768,54 +18608,118 @@ std::string NatMessageDescriptor::getFieldValueAsString(void *object, int field,
     }
 }
 
-bool NatMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void NatMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    NatMessage *pp = (NatMessage *)object; (void)pp;
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_multi: pp->setMulti(string2bool(value)); return true;
-        case FIELD_peer1: pp->setPeer1(string2ulong(value)); return true;
-        case FIELD_portPeer1: pp->setPortPeer1(string2ulong(value)); return true;
-        case FIELD_peer2: pp->setPeer2(string2ulong(value)); return true;
-        case FIELD_portPeer2: pp->setPortPeer2(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_multi: pp->setMulti(string2bool(value)); break;
+        case FIELD_peer1: pp->setPeer1(string2ulong(value)); break;
+        case FIELD_portPeer1: pp->setPortPeer1(string2ulong(value)); break;
+        case FIELD_peer2: pp->setPeer2(string2ulong(value)); break;
+        case FIELD_portPeer2: pp->setPortPeer2(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'NatMessage'", field);
+    }
+}
+
+omnetpp::cValue NatMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_multi: return pp->getMulti();
+        case FIELD_peer1: return (omnetpp::intval_t)(pp->getPeer1());
+        case FIELD_peer1Addresses: return omnetpp::toAnyPtr(&pp->getPeer1Addresses(i)); break;
+        case FIELD_portPeer1: return (omnetpp::intval_t)(pp->getPortPeer1());
+        case FIELD_peer2: return (omnetpp::intval_t)(pp->getPeer2());
+        case FIELD_peer2Addresses: return omnetpp::toAnyPtr(&pp->getPeer2Addresses(i)); break;
+        case FIELD_portPeer2: return (omnetpp::intval_t)(pp->getPortPeer2());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'NatMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void NatMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_multi: pp->setMulti(value.boolValue()); break;
+        case FIELD_peer1: pp->setPeer1(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_portPeer1: pp->setPortPeer1(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        case FIELD_peer2: pp->setPeer2(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_portPeer2: pp->setPortPeer2(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'NatMessage'", field);
     }
 }
 
 const char *NatMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *NatMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr NatMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    NatMessage *pp = (NatMessage *)object; (void)pp;
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_peer1Addresses: return toVoidPtr(&pp->getPeer1Addresses(i)); break;
-        case FIELD_peer2Addresses: return toVoidPtr(&pp->getPeer2Addresses(i)); break;
-        default: return nullptr;
+        case FIELD_peer1Addresses: return omnetpp::toAnyPtr(&pp->getPeer1Addresses(i)); break;
+        case FIELD_peer2Addresses: return omnetpp::toAnyPtr(&pp->getPeer2Addresses(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace sctp
-} // namespace inet
+void NatMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    NatMessage *pp = omnetpp::fromAnyPtr<NatMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'NatMessage'", field);
+    }
+}
+
+}  // namespace sctp
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

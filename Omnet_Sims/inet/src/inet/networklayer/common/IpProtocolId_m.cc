@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/common/IpProtocolId.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/common/IpProtocolId.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "IpProtocolId_m.h"
 
 namespace omnetpp {
@@ -149,100 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::IpProtocolId, (inet::IpProtocolId::IP_PROT_ICMP, inet::IpProtocolId::IP_PROT_IGMP, inet::IpProtocolId::IP_PROT_IP, inet::IpProtocolId::IP_PROT_TCP, inet::IpProtocolId::IP_PROT_EGP, inet::IpProtocolId::IP_PROT_IGP, inet::IpProtocolId::IP_PROT_UDP, inet::IpProtocolId::IP_PROT_XTP, inet::IpProtocolId::IP_PROT_IPv6, inet::IpProtocolId::IP_PROT_RSVP, inet::IpProtocolId::IP_PROT_IPv6_ICMP, inet::IpProtocolId::IP_PROT_NONE, inet::IpProtocolId::IP_PROT_EIGRP, inet::IpProtocolId::IP_PROT_OSPF, inet::IpProtocolId::IP_PROT_OSPFv3, inet::IpProtocolId::IP_PROT_PIM, inet::IpProtocolId::IP_PROT_VRRP, inet::IpProtocolId::IP_PROT_SCTP, inet::IpProtocolId::IP_PROT_DSR, inet::IpProtocolId::IP_PROT_MANET, inet::IpProtocolId::IP_PROT_IPv6EXT_HOP, inet::IpProtocolId::IP_PROT_IPv6EXT_DEST, inet::IpProtocolId::IP_PROT_IPv6EXT_ROUTING, inet::IpProtocolId::IP_PROT_IPv6EXT_FRAGMENT, inet::IpProtocolId::IP_PROT_IPv6EXT_AUTH, inet::IpProtocolId::IP_PROT_IPv6EXT_ESP, inet::IpProtocolId::IP_PROT_IPv6EXT_MOB, inet::IpProtocolId::IP_PROT_FLOODING, inet::IpProtocolId::IP_PROT_PROBABILISTIC, inet::IpProtocolId::IP_PROT_WISE, inet::IpProtocolId::IP_PROT_NEXT_HOP_FORWARDING, inet::IpProtocolId::IP_PROT_ECHO));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+}  // namespace inet
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+namespace omnetpp {
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::IpProtocolId");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::IpProtocolId"));
-    e->insert(IP_PROT_ICMP, "IP_PROT_ICMP");
-    e->insert(IP_PROT_IGMP, "IP_PROT_IGMP");
-    e->insert(IP_PROT_IP, "IP_PROT_IP");
-    e->insert(IP_PROT_TCP, "IP_PROT_TCP");
-    e->insert(IP_PROT_EGP, "IP_PROT_EGP");
-    e->insert(IP_PROT_IGP, "IP_PROT_IGP");
-    e->insert(IP_PROT_UDP, "IP_PROT_UDP");
-    e->insert(IP_PROT_XTP, "IP_PROT_XTP");
-    e->insert(IP_PROT_IPv6, "IP_PROT_IPv6");
-    e->insert(IP_PROT_RSVP, "IP_PROT_RSVP");
-    e->insert(IP_PROT_IPv6_ICMP, "IP_PROT_IPv6_ICMP");
-    e->insert(IP_PROT_NONE, "IP_PROT_NONE");
-    e->insert(IP_PROT_EIGRP, "IP_PROT_EIGRP");
-    e->insert(IP_PROT_OSPF, "IP_PROT_OSPF");
-    e->insert(IP_PROT_OSPFv3, "IP_PROT_OSPFv3");
-    e->insert(IP_PROT_PIM, "IP_PROT_PIM");
-    e->insert(IP_PROT_VRRP, "IP_PROT_VRRP");
-    e->insert(IP_PROT_SCTP, "IP_PROT_SCTP");
-    e->insert(IP_PROT_DSR, "IP_PROT_DSR");
-    e->insert(IP_PROT_MANET, "IP_PROT_MANET");
-    e->insert(IP_PROT_IPv6EXT_HOP, "IP_PROT_IPv6EXT_HOP");
-    e->insert(IP_PROT_IPv6EXT_DEST, "IP_PROT_IPv6EXT_DEST");
-    e->insert(IP_PROT_IPv6EXT_ROUTING, "IP_PROT_IPv6EXT_ROUTING");
-    e->insert(IP_PROT_IPv6EXT_FRAGMENT, "IP_PROT_IPv6EXT_FRAGMENT");
-    e->insert(IP_PROT_IPv6EXT_AUTH, "IP_PROT_IPv6EXT_AUTH");
-    e->insert(IP_PROT_IPv6EXT_ESP, "IP_PROT_IPv6EXT_ESP");
-    e->insert(IP_PROT_IPv6EXT_MOB, "IP_PROT_IPv6EXT_MOB");
-    e->insert(IP_PROT_FLOODING, "IP_PROT_FLOODING");
-    e->insert(IP_PROT_PROBABILISTIC, "IP_PROT_PROBABILISTIC");
-    e->insert(IP_PROT_WISE, "IP_PROT_WISE");
-    e->insert(IP_PROT_NEXT_HOP_FORWARDING, "IP_PROT_NEXT_HOP_FORWARDING");
-    e->insert(IP_PROT_ECHO, "IP_PROT_ECHO");
-)
-
-} // namespace inet
+}  // namespace omnetpp
 

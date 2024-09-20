@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/routing/gpsr/Gpsr.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/routing/gpsr/Gpsr.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Gpsr_m.h"
 
 namespace omnetpp {
@@ -149,78 +150,11 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::GpsrForwardingMode, (inet::GpsrForwardingMode::GPSR_GREEDY_ROUTING, inet::GpsrForwardingMode::GPSR_PERIMETER_ROUTING));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::GpsrForwardingMode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::GpsrForwardingMode"));
-    e->insert(GPSR_GREEDY_ROUTING, "GPSR_GREEDY_ROUTING");
-    e->insert(GPSR_PERIMETER_ROUTING, "GPSR_PERIMETER_ROUTING");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::GpsrPlanarizationMode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::GpsrPlanarizationMode"));
-    e->insert(GPSR_NO_PLANARIZATION, "GPSR_NO_PLANARIZATION");
-    e->insert(GPSR_GG_PLANARIZATION, "GPSR_GG_PLANARIZATION");
-    e->insert(GPSR_RNG_PLANARIZATION, "GPSR_RNG_PLANARIZATION");
-)
+Register_Enum(inet::GpsrPlanarizationMode, (inet::GpsrPlanarizationMode::GPSR_NO_PLANARIZATION, inet::GpsrPlanarizationMode::GPSR_GG_PLANARIZATION, inet::GpsrPlanarizationMode::GPSR_RNG_PLANARIZATION));
 
 Register_Class(GpsrBeacon)
 
@@ -290,7 +224,7 @@ void GpsrBeacon::setPosition(const Coord& position)
 class GpsrBeaconDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_address,
         FIELD_position,
@@ -301,34 +235,38 @@ class GpsrBeaconDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(GpsrBeaconDescriptor)
 
 GpsrBeaconDescriptor::GpsrBeaconDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::GpsrBeacon)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 GpsrBeaconDescriptor::~GpsrBeaconDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool GpsrBeaconDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -338,34 +276,34 @@ bool GpsrBeaconDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **GpsrBeaconDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *GpsrBeaconDescriptor::getProperty(const char *propertyname) const
+const char *GpsrBeaconDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int GpsrBeaconDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int GpsrBeaconDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_address
@@ -376,11 +314,11 @@ unsigned int GpsrBeaconDescriptor::getFieldTypeFlags(int field) const
 
 const char *GpsrBeaconDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "address",
@@ -391,20 +329,20 @@ const char *GpsrBeaconDescriptor::getFieldName(int field) const
 
 int GpsrBeaconDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "address") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "position") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "address") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "position") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *GpsrBeaconDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::L3Address",    // FIELD_address
@@ -415,95 +353,145 @@ const char *GpsrBeaconDescriptor::getFieldTypeString(int field) const
 
 const char **GpsrBeaconDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *GpsrBeaconDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *GpsrBeaconDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int GpsrBeaconDescriptor::getFieldArraySize(void *object, int field) const
+int GpsrBeaconDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    GpsrBeacon *pp = (GpsrBeacon *)object; (void)pp;
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *GpsrBeaconDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void GpsrBeaconDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GpsrBeacon *pp = (GpsrBeacon *)object; (void)pp;
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'GpsrBeacon'", field);
+    }
+}
+
+const char *GpsrBeaconDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string GpsrBeaconDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string GpsrBeaconDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    GpsrBeacon *pp = (GpsrBeacon *)object; (void)pp;
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
     switch (field) {
         case FIELD_address: return pp->getAddress().str();
-        case FIELD_position: {std::stringstream out; out << pp->getPosition(); return out.str();}
+        case FIELD_position: return "";
         default: return "";
     }
 }
 
-bool GpsrBeaconDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void GpsrBeaconDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GpsrBeacon *pp = (GpsrBeacon *)object; (void)pp;
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrBeacon'", field);
+    }
+}
+
+omnetpp::cValue GpsrBeaconDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
+    switch (field) {
+        case FIELD_address: return omnetpp::toAnyPtr(&pp->getAddress()); break;
+        case FIELD_position: return omnetpp::toAnyPtr(&pp->getPosition()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'GpsrBeacon' as cValue -- field index out of range?", field);
+    }
+}
+
+void GpsrBeaconDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrBeacon'", field);
     }
 }
 
 const char *GpsrBeaconDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_position: return omnetpp::opp_typename(typeid(Coord));
@@ -511,19 +499,35 @@ const char *GpsrBeaconDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *GpsrBeaconDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr GpsrBeaconDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    GpsrBeacon *pp = (GpsrBeacon *)object; (void)pp;
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
     switch (field) {
-        case FIELD_address: return toVoidPtr(&pp->getAddress()); break;
-        case FIELD_position: return toVoidPtr(&pp->getPosition()); break;
-        default: return nullptr;
+        case FIELD_address: return omnetpp::toAnyPtr(&pp->getAddress()); break;
+        case FIELD_position: return omnetpp::toAnyPtr(&pp->getPosition()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void GpsrBeaconDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GpsrBeacon *pp = omnetpp::fromAnyPtr<GpsrBeacon>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrBeacon'", field);
     }
 }
 
@@ -585,12 +589,12 @@ void GpsrOption::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->senderAddress);
 }
 
-inet::GpsrForwardingMode GpsrOption::getRoutingMode() const
+GpsrForwardingMode GpsrOption::getRoutingMode() const
 {
     return this->routingMode;
 }
 
-void GpsrOption::setRoutingMode(inet::GpsrForwardingMode routingMode)
+void GpsrOption::setRoutingMode(GpsrForwardingMode routingMode)
 {
     this->routingMode = routingMode;
 }
@@ -658,7 +662,7 @@ void GpsrOption::setSenderAddress(const L3Address& senderAddress)
 class GpsrOptionDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_routingMode,
         FIELD_destinationPosition,
@@ -674,34 +678,38 @@ class GpsrOptionDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(GpsrOptionDescriptor)
 
 GpsrOptionDescriptor::GpsrOptionDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::GpsrOption)), "inet::TlvOptionBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 GpsrOptionDescriptor::~GpsrOptionDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool GpsrOptionDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -711,37 +719,37 @@ bool GpsrOptionDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **GpsrOptionDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *GpsrOptionDescriptor::getProperty(const char *propertyname) const
+const char *GpsrOptionDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int GpsrOptionDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int GpsrOptionDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_routingMode
+        0,    // FIELD_routingMode
         FD_ISCOMPOUND,    // FIELD_destinationPosition
         FD_ISCOMPOUND,    // FIELD_perimeterRoutingStartPosition
         FD_ISCOMPOUND,    // FIELD_perimeterRoutingForwardPosition
@@ -754,11 +762,11 @@ unsigned int GpsrOptionDescriptor::getFieldTypeFlags(int field) const
 
 const char *GpsrOptionDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "routingMode",
@@ -774,25 +782,25 @@ const char *GpsrOptionDescriptor::getFieldName(int field) const
 
 int GpsrOptionDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routingMode") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destinationPosition") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "perimeterRoutingStartPosition") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "perimeterRoutingForwardPosition") == 0) return base+3;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "currentFaceFirstSenderAddress") == 0) return base+4;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "currentFaceFirstReceiverAddress") == 0) return base+5;
-    if (fieldName[0] == 's' && strcmp(fieldName, "senderAddress") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "routingMode") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "destinationPosition") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "perimeterRoutingStartPosition") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "perimeterRoutingForwardPosition") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "currentFaceFirstSenderAddress") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "currentFaceFirstReceiverAddress") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "senderAddress") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *GpsrOptionDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::GpsrForwardingMode",    // FIELD_routingMode
@@ -808,11 +816,11 @@ const char *GpsrOptionDescriptor::getFieldTypeString(int field) const
 
 const char **GpsrOptionDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_routingMode: {
@@ -823,64 +831,80 @@ const char **GpsrOptionDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *GpsrOptionDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *GpsrOptionDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_routingMode:
-            if (!strcmp(propertyname, "enum")) return "inet::GpsrForwardingMode";
+            if (!strcmp(propertyName, "enum")) return "inet::GpsrForwardingMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int GpsrOptionDescriptor::getFieldArraySize(void *object, int field) const
+int GpsrOptionDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    GpsrOption *pp = (GpsrOption *)object; (void)pp;
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *GpsrOptionDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void GpsrOptionDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GpsrOption *pp = (GpsrOption *)object; (void)pp;
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'GpsrOption'", field);
+    }
+}
+
+const char *GpsrOptionDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string GpsrOptionDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string GpsrOptionDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    GpsrOption *pp = (GpsrOption *)object; (void)pp;
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
     switch (field) {
         case FIELD_routingMode: return enum2string(pp->getRoutingMode(), "inet::GpsrForwardingMode");
-        case FIELD_destinationPosition: {std::stringstream out; out << pp->getDestinationPosition(); return out.str();}
-        case FIELD_perimeterRoutingStartPosition: {std::stringstream out; out << pp->getPerimeterRoutingStartPosition(); return out.str();}
-        case FIELD_perimeterRoutingForwardPosition: {std::stringstream out; out << pp->getPerimeterRoutingForwardPosition(); return out.str();}
+        case FIELD_destinationPosition: return "";
+        case FIELD_perimeterRoutingStartPosition: return "";
+        case FIELD_perimeterRoutingForwardPosition: return "";
         case FIELD_currentFaceFirstSenderAddress: return pp->getCurrentFaceFirstSenderAddress().str();
         case FIELD_currentFaceFirstReceiverAddress: return pp->getCurrentFaceFirstReceiverAddress().str();
         case FIELD_senderAddress: return pp->getSenderAddress().str();
@@ -888,28 +912,66 @@ std::string GpsrOptionDescriptor::getFieldValueAsString(void *object, int field,
     }
 }
 
-bool GpsrOptionDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void GpsrOptionDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GpsrOption *pp = (GpsrOption *)object; (void)pp;
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
     switch (field) {
-        case FIELD_routingMode: pp->setRoutingMode((inet::GpsrForwardingMode)string2enum(value, "inet::GpsrForwardingMode")); return true;
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrOption'", field);
+    }
+}
+
+omnetpp::cValue GpsrOptionDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
+    switch (field) {
+        case FIELD_routingMode: return static_cast<int>(pp->getRoutingMode());
+        case FIELD_destinationPosition: return omnetpp::toAnyPtr(&pp->getDestinationPosition()); break;
+        case FIELD_perimeterRoutingStartPosition: return omnetpp::toAnyPtr(&pp->getPerimeterRoutingStartPosition()); break;
+        case FIELD_perimeterRoutingForwardPosition: return omnetpp::toAnyPtr(&pp->getPerimeterRoutingForwardPosition()); break;
+        case FIELD_currentFaceFirstSenderAddress: return omnetpp::toAnyPtr(&pp->getCurrentFaceFirstSenderAddress()); break;
+        case FIELD_currentFaceFirstReceiverAddress: return omnetpp::toAnyPtr(&pp->getCurrentFaceFirstReceiverAddress()); break;
+        case FIELD_senderAddress: return omnetpp::toAnyPtr(&pp->getSenderAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'GpsrOption' as cValue -- field index out of range?", field);
+    }
+}
+
+void GpsrOptionDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrOption'", field);
     }
 }
 
 const char *GpsrOptionDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_destinationPosition: return omnetpp::opp_typename(typeid(Coord));
@@ -919,25 +981,45 @@ const char *GpsrOptionDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *GpsrOptionDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr GpsrOptionDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    GpsrOption *pp = (GpsrOption *)object; (void)pp;
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
     switch (field) {
-        case FIELD_destinationPosition: return toVoidPtr(&pp->getDestinationPosition()); break;
-        case FIELD_perimeterRoutingStartPosition: return toVoidPtr(&pp->getPerimeterRoutingStartPosition()); break;
-        case FIELD_perimeterRoutingForwardPosition: return toVoidPtr(&pp->getPerimeterRoutingForwardPosition()); break;
-        case FIELD_currentFaceFirstSenderAddress: return toVoidPtr(&pp->getCurrentFaceFirstSenderAddress()); break;
-        case FIELD_currentFaceFirstReceiverAddress: return toVoidPtr(&pp->getCurrentFaceFirstReceiverAddress()); break;
-        case FIELD_senderAddress: return toVoidPtr(&pp->getSenderAddress()); break;
-        default: return nullptr;
+        case FIELD_destinationPosition: return omnetpp::toAnyPtr(&pp->getDestinationPosition()); break;
+        case FIELD_perimeterRoutingStartPosition: return omnetpp::toAnyPtr(&pp->getPerimeterRoutingStartPosition()); break;
+        case FIELD_perimeterRoutingForwardPosition: return omnetpp::toAnyPtr(&pp->getPerimeterRoutingForwardPosition()); break;
+        case FIELD_currentFaceFirstSenderAddress: return omnetpp::toAnyPtr(&pp->getCurrentFaceFirstSenderAddress()); break;
+        case FIELD_currentFaceFirstReceiverAddress: return omnetpp::toAnyPtr(&pp->getCurrentFaceFirstReceiverAddress()); break;
+        case FIELD_senderAddress: return omnetpp::toAnyPtr(&pp->getSenderAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void GpsrOptionDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GpsrOption *pp = omnetpp::fromAnyPtr<GpsrOption>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GpsrOption'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

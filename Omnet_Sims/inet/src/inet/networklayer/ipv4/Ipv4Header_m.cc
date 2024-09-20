@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/ipv4/Ipv4Header.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/ipv4/Ipv4Header.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Ipv4Header_m.h"
 
 namespace omnetpp {
@@ -149,97 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::Ipv4OptionClass, (inet::Ipv4OptionClass::IPOPTION_CLASS_CONTROL, inet::Ipv4OptionClass::IPOPTION_CLASS_RESERVED, inet::Ipv4OptionClass::IPOPTION_CLASS_DEBUGGING, inet::Ipv4OptionClass::IPOPTION_CLASS_RESERVED2));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+Register_Enum(inet::Ipv4OptionType, (inet::Ipv4OptionType::IPOPTION_END_OF_OPTIONS, inet::Ipv4OptionType::IPOPTION_NO_OPTION, inet::Ipv4OptionType::IPOPTION_STREAM_ID, inet::Ipv4OptionType::IPOPTION_TIMESTAMP, inet::Ipv4OptionType::IPOPTION_SECURITY, inet::Ipv4OptionType::IPOPTION_LOOSE_SOURCE_ROUTING, inet::Ipv4OptionType::IPOPTION_RECORD_ROUTE, inet::Ipv4OptionType::IPOPTION_STRICT_SOURCE_ROUTING, inet::Ipv4OptionType::IPOPTION_ROUTER_ALERT, inet::Ipv4OptionType::IPOPTION_TLV_GPSR, inet::Ipv4OptionType::IPOPTION_V2_MARKING, inet::Ipv4OptionType::IP_SWIFT_OVERHEAD));
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Ipv4OptionClass");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Ipv4OptionClass"));
-    e->insert(IPOPTION_CLASS_CONTROL, "IPOPTION_CLASS_CONTROL");
-    e->insert(IPOPTION_CLASS_RESERVED, "IPOPTION_CLASS_RESERVED");
-    e->insert(IPOPTION_CLASS_DEBUGGING, "IPOPTION_CLASS_DEBUGGING");
-    e->insert(IPOPTION_CLASS_RESERVED2, "IPOPTION_CLASS_RESERVED2");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Ipv4OptionType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Ipv4OptionType"));
-    e->insert(IPOPTION_END_OF_OPTIONS, "IPOPTION_END_OF_OPTIONS");
-    e->insert(IPOPTION_NO_OPTION, "IPOPTION_NO_OPTION");
-    e->insert(IPOPTION_STREAM_ID, "IPOPTION_STREAM_ID");
-    e->insert(IPOPTION_TIMESTAMP, "IPOPTION_TIMESTAMP");
-    e->insert(IPOPTION_SECURITY, "IPOPTION_SECURITY");
-    e->insert(IPOPTION_LOOSE_SOURCE_ROUTING, "IPOPTION_LOOSE_SOURCE_ROUTING");
-    e->insert(IPOPTION_RECORD_ROUTE, "IPOPTION_RECORD_ROUTE");
-    e->insert(IPOPTION_STRICT_SOURCE_ROUTING, "IPOPTION_STRICT_SOURCE_ROUTING");
-    e->insert(IPOPTION_ROUTER_ALERT, "IPOPTION_ROUTER_ALERT");
-    e->insert(IPOPTION_TLV_GPSR, "IPOPTION_TLV_GPSR");
-    e->insert(IPOPTION_V2_MARKING, "IPOPTION_V2_MARKING");
-    e->insert(IP_SWIFT_OVERHEAD, "IP_SWIFT_OVERHEAD");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::TimestampFlag");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::TimestampFlag"));
-    e->insert(IP_TIMESTAMP_TIMESTAMP_ONLY, "IP_TIMESTAMP_TIMESTAMP_ONLY");
-    e->insert(IP_TIMESTAMP_WITH_ADDRESS, "IP_TIMESTAMP_WITH_ADDRESS");
-    e->insert(IP_TIMESTAMP_SENDER_INIT_ADDRESS, "IP_TIMESTAMP_SENDER_INIT_ADDRESS");
-)
+Register_Enum(inet::TimestampFlag, (inet::TimestampFlag::IP_TIMESTAMP_TIMESTAMP_ONLY, inet::TimestampFlag::IP_TIMESTAMP_WITH_ADDRESS, inet::TimestampFlag::IP_TIMESTAMP_SENDER_INIT_ADDRESS));
 
 Register_Class(Ipv4Option)
 
@@ -281,7 +198,7 @@ void Ipv4Option::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv4OptionDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -290,34 +207,38 @@ class Ipv4OptionDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionDescriptor)
 
 Ipv4OptionDescriptor::Ipv4OptionDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4Option)), "inet::TlvOptionBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionDescriptor::~Ipv4OptionDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -327,170 +248,234 @@ bool Ipv4OptionDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv4OptionDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv4OptionDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv4OptionDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv4OptionDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4Option *pp = (Ipv4Option *)object; (void)pp;
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4Option *pp = (Ipv4Option *)object; (void)pp;
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4Option'", field);
+    }
+}
+
+const char *Ipv4OptionDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4Option *pp = (Ipv4Option *)object; (void)pp;
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv4OptionDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4Option *pp = (Ipv4Option *)object; (void)pp;
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Option'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4Option' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Option'", field);
     }
 }
 
 const char *Ipv4OptionDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv4OptionDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4Option *pp = (Ipv4Option *)object; (void)pp;
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4Option *pp = omnetpp::fromAnyPtr<Ipv4Option>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Option'", field);
     }
 }
 
@@ -536,7 +521,7 @@ void Ipv4OptionNop::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv4OptionNopDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -545,34 +530,38 @@ class Ipv4OptionNopDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionNopDescriptor)
 
 Ipv4OptionNopDescriptor::Ipv4OptionNopDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionNop)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionNopDescriptor::~Ipv4OptionNopDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionNopDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -582,170 +571,234 @@ bool Ipv4OptionNopDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionNopDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionNopDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionNopDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionNopDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv4OptionNopDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv4OptionNopDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv4OptionNopDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionNopDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv4OptionNopDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionNopDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionNopDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionNopDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionNopDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionNop *pp = (Ipv4OptionNop *)object; (void)pp;
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionNopDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionNopDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionNop *pp = (Ipv4OptionNop *)object; (void)pp;
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionNop'", field);
+    }
+}
+
+const char *Ipv4OptionNopDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionNopDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionNopDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionNop *pp = (Ipv4OptionNop *)object; (void)pp;
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv4OptionNopDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionNopDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionNop *pp = (Ipv4OptionNop *)object; (void)pp;
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionNop'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionNopDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionNop' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionNopDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionNop'", field);
     }
 }
 
 const char *Ipv4OptionNopDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv4OptionNopDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionNopDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionNop *pp = (Ipv4OptionNop *)object; (void)pp;
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionNopDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionNop *pp = omnetpp::fromAnyPtr<Ipv4OptionNop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionNop'", field);
     }
 }
 
@@ -791,7 +844,7 @@ void Ipv4OptionEnd::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv4OptionEndDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -800,34 +853,38 @@ class Ipv4OptionEndDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionEndDescriptor)
 
 Ipv4OptionEndDescriptor::Ipv4OptionEndDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionEnd)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionEndDescriptor::~Ipv4OptionEndDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionEndDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -837,170 +894,234 @@ bool Ipv4OptionEndDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionEndDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionEndDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionEndDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionEndDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv4OptionEndDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv4OptionEndDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv4OptionEndDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionEndDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv4OptionEndDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionEndDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionEndDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionEndDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionEndDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionEnd *pp = (Ipv4OptionEnd *)object; (void)pp;
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionEndDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionEndDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionEnd *pp = (Ipv4OptionEnd *)object; (void)pp;
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionEnd'", field);
+    }
+}
+
+const char *Ipv4OptionEndDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionEndDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionEndDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionEnd *pp = (Ipv4OptionEnd *)object; (void)pp;
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv4OptionEndDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionEndDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionEnd *pp = (Ipv4OptionEnd *)object; (void)pp;
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionEnd'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionEndDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionEnd' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionEndDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionEnd'", field);
     }
 }
 
 const char *Ipv4OptionEndDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv4OptionEndDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionEndDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionEnd *pp = (Ipv4OptionEnd *)object; (void)pp;
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionEndDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionEnd *pp = omnetpp::fromAnyPtr<Ipv4OptionEnd>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionEnd'", field);
     }
 }
 
@@ -1078,7 +1199,7 @@ size_t Ipv4OptionRecordRoute::getRecordAddressArraySize() const
 
 const Ipv4Address& Ipv4OptionRecordRoute::getRecordAddress(size_t k) const
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size recordAddress_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     return this->recordAddress[k];
 }
 
@@ -1095,13 +1216,13 @@ void Ipv4OptionRecordRoute::setRecordAddressArraySize(size_t newSize)
 
 void Ipv4OptionRecordRoute::setRecordAddress(size_t k, const Ipv4Address& recordAddress)
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     this->recordAddress[k] = recordAddress;
 }
 
 void Ipv4OptionRecordRoute::insertRecordAddress(size_t k, const Ipv4Address& recordAddress)
 {
-    if (k > recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     size_t newSize = recordAddress_arraysize + 1;
     Ipv4Address *recordAddress2 = new Ipv4Address[newSize];
     size_t i;
@@ -1115,14 +1236,14 @@ void Ipv4OptionRecordRoute::insertRecordAddress(size_t k, const Ipv4Address& rec
     recordAddress_arraysize = newSize;
 }
 
-void Ipv4OptionRecordRoute::insertRecordAddress(const Ipv4Address& recordAddress)
+void Ipv4OptionRecordRoute::appendRecordAddress(const Ipv4Address& recordAddress)
 {
     insertRecordAddress(recordAddress_arraysize, recordAddress);
 }
 
 void Ipv4OptionRecordRoute::eraseRecordAddress(size_t k)
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     size_t newSize = recordAddress_arraysize - 1;
     Ipv4Address *recordAddress2 = (newSize == 0) ? nullptr : new Ipv4Address[newSize];
     size_t i;
@@ -1138,7 +1259,7 @@ void Ipv4OptionRecordRoute::eraseRecordAddress(size_t k)
 class Ipv4OptionRecordRouteDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_nextAddressIdx,
         FIELD_recordAddress,
@@ -1149,34 +1270,38 @@ class Ipv4OptionRecordRouteDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionRecordRouteDescriptor)
 
 Ipv4OptionRecordRouteDescriptor::Ipv4OptionRecordRouteDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionRecordRoute)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionRecordRouteDescriptor::~Ipv4OptionRecordRouteDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionRecordRouteDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1186,49 +1311,49 @@ bool Ipv4OptionRecordRouteDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionRecordRouteDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionRecordRouteDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionRecordRouteDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionRecordRouteDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Ipv4OptionRecordRouteDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_nextAddressIdx
-        FD_ISARRAY,    // FIELD_recordAddress
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_recordAddress
     };
     return (field >= 0 && field < 2) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv4OptionRecordRouteDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "nextAddressIdx",
@@ -1239,20 +1364,20 @@ const char *Ipv4OptionRecordRouteDescriptor::getFieldName(int field) const
 
 int Ipv4OptionRecordRouteDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nextAddressIdx") == 0) return base+0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "recordAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "nextAddressIdx") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "recordAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionRecordRouteDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_nextAddressIdx
@@ -1263,68 +1388,85 @@ const char *Ipv4OptionRecordRouteDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionRecordRouteDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionRecordRouteDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionRecordRouteDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionRecordRouteDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionRecordRouteDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRecordRoute *pp = (Ipv4OptionRecordRoute *)object; (void)pp;
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
     switch (field) {
         case FIELD_recordAddress: return pp->getRecordAddressArraySize();
         default: return 0;
     }
 }
 
-const char *Ipv4OptionRecordRouteDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionRecordRouteDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRecordRoute *pp = (Ipv4OptionRecordRoute *)object; (void)pp;
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
+    switch (field) {
+        case FIELD_recordAddress: pp->setRecordAddressArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionRecordRoute'", field);
+    }
+}
+
+const char *Ipv4OptionRecordRouteDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionRecordRouteDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionRecordRouteDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRecordRoute *pp = (Ipv4OptionRecordRoute *)object; (void)pp;
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
     switch (field) {
         case FIELD_nextAddressIdx: return long2string(pp->getNextAddressIdx());
         case FIELD_recordAddress: return pp->getRecordAddress(i).str();
@@ -1332,46 +1474,97 @@ std::string Ipv4OptionRecordRouteDescriptor::getFieldValueAsString(void *object,
     }
 }
 
-bool Ipv4OptionRecordRouteDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionRecordRouteDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRecordRoute *pp = (Ipv4OptionRecordRoute *)object; (void)pp;
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
     switch (field) {
-        case FIELD_nextAddressIdx: pp->setNextAddressIdx(string2long(value)); return true;
-        default: return false;
+        case FIELD_nextAddressIdx: pp->setNextAddressIdx(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRecordRoute'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionRecordRouteDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
+    switch (field) {
+        case FIELD_nextAddressIdx: return pp->getNextAddressIdx();
+        case FIELD_recordAddress: return omnetpp::toAnyPtr(&pp->getRecordAddress(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionRecordRoute' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionRecordRouteDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
+    switch (field) {
+        case FIELD_nextAddressIdx: pp->setNextAddressIdx(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRecordRoute'", field);
     }
 }
 
 const char *Ipv4OptionRecordRouteDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionRecordRouteDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionRecordRouteDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRecordRoute *pp = (Ipv4OptionRecordRoute *)object; (void)pp;
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
     switch (field) {
-        case FIELD_recordAddress: return toVoidPtr(&pp->getRecordAddress(i)); break;
-        default: return nullptr;
+        case FIELD_recordAddress: return omnetpp::toAnyPtr(&pp->getRecordAddress(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionRecordRouteDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRecordRoute *pp = omnetpp::fromAnyPtr<Ipv4OptionRecordRoute>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRecordRoute'", field);
     }
 }
 
@@ -1414,7 +1607,7 @@ void Ipv4OptionTimestamp::copy(const Ipv4OptionTimestamp& other)
         this->recordAddress[i] = other.recordAddress[i];
     }
     delete [] this->recordTimestamp;
-    this->recordTimestamp = (other.recordTimestamp_arraysize==0) ? nullptr : new omnetpp::simtime_t[other.recordTimestamp_arraysize];
+    this->recordTimestamp = (other.recordTimestamp_arraysize==0) ? nullptr : new ::omnetpp::simtime_t[other.recordTimestamp_arraysize];
     recordTimestamp_arraysize = other.recordTimestamp_arraysize;
     for (size_t i = 0; i < recordTimestamp_arraysize; i++) {
         this->recordTimestamp[i] = other.recordTimestamp[i];
@@ -1452,17 +1645,17 @@ void Ipv4OptionTimestamp::parsimUnpack(omnetpp::cCommBuffer *b)
     if (recordTimestamp_arraysize == 0) {
         this->recordTimestamp = nullptr;
     } else {
-        this->recordTimestamp = new omnetpp::simtime_t[recordTimestamp_arraysize];
+        this->recordTimestamp = new ::omnetpp::simtime_t[recordTimestamp_arraysize];
         doParsimArrayUnpacking(b,this->recordTimestamp,recordTimestamp_arraysize);
     }
 }
 
-inet::TimestampFlag Ipv4OptionTimestamp::getFlag() const
+TimestampFlag Ipv4OptionTimestamp::getFlag() const
 {
     return this->flag;
 }
 
-void Ipv4OptionTimestamp::setFlag(inet::TimestampFlag flag)
+void Ipv4OptionTimestamp::setFlag(TimestampFlag flag)
 {
     this->flag = flag;
 }
@@ -1494,7 +1687,7 @@ size_t Ipv4OptionTimestamp::getRecordAddressArraySize() const
 
 const Ipv4Address& Ipv4OptionTimestamp::getRecordAddress(size_t k) const
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size recordAddress_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     return this->recordAddress[k];
 }
 
@@ -1511,13 +1704,13 @@ void Ipv4OptionTimestamp::setRecordAddressArraySize(size_t newSize)
 
 void Ipv4OptionTimestamp::setRecordAddress(size_t k, const Ipv4Address& recordAddress)
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     this->recordAddress[k] = recordAddress;
 }
 
 void Ipv4OptionTimestamp::insertRecordAddress(size_t k, const Ipv4Address& recordAddress)
 {
-    if (k > recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     size_t newSize = recordAddress_arraysize + 1;
     Ipv4Address *recordAddress2 = new Ipv4Address[newSize];
     size_t i;
@@ -1531,14 +1724,14 @@ void Ipv4OptionTimestamp::insertRecordAddress(size_t k, const Ipv4Address& recor
     recordAddress_arraysize = newSize;
 }
 
-void Ipv4OptionTimestamp::insertRecordAddress(const Ipv4Address& recordAddress)
+void Ipv4OptionTimestamp::appendRecordAddress(const Ipv4Address& recordAddress)
 {
     insertRecordAddress(recordAddress_arraysize, recordAddress);
 }
 
 void Ipv4OptionTimestamp::eraseRecordAddress(size_t k)
 {
-    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordAddress_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordAddress_arraysize, (unsigned long)k);
     size_t newSize = recordAddress_arraysize - 1;
     Ipv4Address *recordAddress2 = (newSize == 0) ? nullptr : new Ipv4Address[newSize];
     size_t i;
@@ -1556,15 +1749,15 @@ size_t Ipv4OptionTimestamp::getRecordTimestampArraySize() const
     return recordTimestamp_arraysize;
 }
 
-omnetpp::simtime_t Ipv4OptionTimestamp::getRecordTimestamp(size_t k) const
+::omnetpp::simtime_t Ipv4OptionTimestamp::getRecordTimestamp(size_t k) const
 {
-    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size recordTimestamp_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordTimestamp_arraysize, (unsigned long)k);
     return this->recordTimestamp[k];
 }
 
 void Ipv4OptionTimestamp::setRecordTimestampArraySize(size_t newSize)
 {
-    omnetpp::simtime_t *recordTimestamp2 = (newSize==0) ? nullptr : new omnetpp::simtime_t[newSize];
+    ::omnetpp::simtime_t *recordTimestamp2 = (newSize==0) ? nullptr : new ::omnetpp::simtime_t[newSize];
     size_t minSize = recordTimestamp_arraysize < newSize ? recordTimestamp_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         recordTimestamp2[i] = this->recordTimestamp[i];
@@ -1575,17 +1768,17 @@ void Ipv4OptionTimestamp::setRecordTimestampArraySize(size_t newSize)
     recordTimestamp_arraysize = newSize;
 }
 
-void Ipv4OptionTimestamp::setRecordTimestamp(size_t k, omnetpp::simtime_t recordTimestamp)
+void Ipv4OptionTimestamp::setRecordTimestamp(size_t k, ::omnetpp::simtime_t recordTimestamp)
 {
-    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordTimestamp_arraysize, (unsigned long)k);
     this->recordTimestamp[k] = recordTimestamp;
 }
 
-void Ipv4OptionTimestamp::insertRecordTimestamp(size_t k, omnetpp::simtime_t recordTimestamp)
+void Ipv4OptionTimestamp::insertRecordTimestamp(size_t k, ::omnetpp::simtime_t recordTimestamp)
 {
-    if (k > recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordTimestamp_arraysize, (unsigned long)k);
     size_t newSize = recordTimestamp_arraysize + 1;
-    omnetpp::simtime_t *recordTimestamp2 = new omnetpp::simtime_t[newSize];
+    ::omnetpp::simtime_t *recordTimestamp2 = new ::omnetpp::simtime_t[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         recordTimestamp2[i] = this->recordTimestamp[i];
@@ -1597,16 +1790,16 @@ void Ipv4OptionTimestamp::insertRecordTimestamp(size_t k, omnetpp::simtime_t rec
     recordTimestamp_arraysize = newSize;
 }
 
-void Ipv4OptionTimestamp::insertRecordTimestamp(omnetpp::simtime_t recordTimestamp)
+void Ipv4OptionTimestamp::appendRecordTimestamp(::omnetpp::simtime_t recordTimestamp)
 {
     insertRecordTimestamp(recordTimestamp_arraysize, recordTimestamp);
 }
 
 void Ipv4OptionTimestamp::eraseRecordTimestamp(size_t k)
 {
-    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= recordTimestamp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)recordTimestamp_arraysize, (unsigned long)k);
     size_t newSize = recordTimestamp_arraysize - 1;
-    omnetpp::simtime_t *recordTimestamp2 = (newSize == 0) ? nullptr : new omnetpp::simtime_t[newSize];
+    ::omnetpp::simtime_t *recordTimestamp2 = (newSize == 0) ? nullptr : new ::omnetpp::simtime_t[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         recordTimestamp2[i] = this->recordTimestamp[i];
@@ -1620,7 +1813,7 @@ void Ipv4OptionTimestamp::eraseRecordTimestamp(size_t k)
 class Ipv4OptionTimestampDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_flag,
         FIELD_overflow,
@@ -1634,34 +1827,38 @@ class Ipv4OptionTimestampDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionTimestampDescriptor)
 
 Ipv4OptionTimestampDescriptor::Ipv4OptionTimestampDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionTimestamp)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionTimestampDescriptor::~Ipv4OptionTimestampDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionTimestampDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1671,52 +1868,52 @@ bool Ipv4OptionTimestampDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionTimestampDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionTimestampDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionTimestampDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionTimestampDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int Ipv4OptionTimestampDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_flag
         FD_ISEDITABLE,    // FIELD_overflow
         FD_ISEDITABLE,    // FIELD_nextIdx
-        FD_ISARRAY,    // FIELD_recordAddress
-        FD_ISARRAY,    // FIELD_recordTimestamp
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_recordAddress
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_recordTimestamp
     };
     return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv4OptionTimestampDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "flag",
@@ -1730,23 +1927,23 @@ const char *Ipv4OptionTimestampDescriptor::getFieldName(int field) const
 
 int Ipv4OptionTimestampDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "flag") == 0) return base+0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "overflow") == 0) return base+1;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nextIdx") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "recordAddress") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "recordTimestamp") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "flag") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "overflow") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "nextIdx") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "recordAddress") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "recordTimestamp") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionTimestampDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::TimestampFlag",    // FIELD_flag
@@ -1760,11 +1957,11 @@ const char *Ipv4OptionTimestampDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionTimestampDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_flag: {
@@ -1775,31 +1972,31 @@ const char **Ipv4OptionTimestampDescriptor::getFieldPropertyNames(int field) con
     }
 }
 
-const char *Ipv4OptionTimestampDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionTimestampDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_flag:
-            if (!strcmp(propertyname, "enum")) return "inet::TimestampFlag";
+            if (!strcmp(propertyName, "enum")) return "inet::TimestampFlag";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ipv4OptionTimestampDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionTimestampDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionTimestamp *pp = (Ipv4OptionTimestamp *)object; (void)pp;
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
     switch (field) {
         case FIELD_recordAddress: return pp->getRecordAddressArraySize();
         case FIELD_recordTimestamp: return pp->getRecordTimestampArraySize();
@@ -1807,29 +2004,47 @@ int Ipv4OptionTimestampDescriptor::getFieldArraySize(void *object, int field) co
     }
 }
 
-const char *Ipv4OptionTimestampDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionTimestampDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionTimestamp *pp = (Ipv4OptionTimestamp *)object; (void)pp;
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
+    switch (field) {
+        case FIELD_recordAddress: pp->setRecordAddressArraySize(size); break;
+        case FIELD_recordTimestamp: pp->setRecordTimestampArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionTimestamp'", field);
+    }
+}
+
+const char *Ipv4OptionTimestampDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionTimestampDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionTimestampDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionTimestamp *pp = (Ipv4OptionTimestamp *)object; (void)pp;
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
     switch (field) {
         case FIELD_flag: return enum2string(pp->getFlag(), "inet::TimestampFlag");
         case FIELD_overflow: return long2string(pp->getOverflow());
@@ -1840,47 +2055,104 @@ std::string Ipv4OptionTimestampDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool Ipv4OptionTimestampDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionTimestampDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionTimestamp *pp = (Ipv4OptionTimestamp *)object; (void)pp;
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
     switch (field) {
-        case FIELD_overflow: pp->setOverflow(string2long(value)); return true;
-        case FIELD_nextIdx: pp->setNextIdx(string2long(value)); return true;
-        default: return false;
+        case FIELD_overflow: pp->setOverflow(string2long(value)); break;
+        case FIELD_nextIdx: pp->setNextIdx(string2long(value)); break;
+        case FIELD_recordTimestamp: pp->setRecordTimestamp(i,string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionTimestamp'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionTimestampDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
+    switch (field) {
+        case FIELD_flag: return static_cast<int>(pp->getFlag());
+        case FIELD_overflow: return pp->getOverflow();
+        case FIELD_nextIdx: return pp->getNextIdx();
+        case FIELD_recordAddress: return omnetpp::toAnyPtr(&pp->getRecordAddress(i)); break;
+        case FIELD_recordTimestamp: return pp->getRecordTimestamp(i).dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionTimestamp' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionTimestampDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
+    switch (field) {
+        case FIELD_overflow: pp->setOverflow(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_nextIdx: pp->setNextIdx(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_recordTimestamp: pp->setRecordTimestamp(i,value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionTimestamp'", field);
     }
 }
 
 const char *Ipv4OptionTimestampDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionTimestampDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionTimestampDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionTimestamp *pp = (Ipv4OptionTimestamp *)object; (void)pp;
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
     switch (field) {
-        case FIELD_recordAddress: return toVoidPtr(&pp->getRecordAddress(i)); break;
-        default: return nullptr;
+        case FIELD_recordAddress: return omnetpp::toAnyPtr(&pp->getRecordAddress(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionTimestampDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionTimestamp *pp = omnetpp::fromAnyPtr<Ipv4OptionTimestamp>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionTimestamp'", field);
     }
 }
 
@@ -1940,7 +2212,7 @@ void Ipv4OptionStreamId::setStreamId(short streamId)
 class Ipv4OptionStreamIdDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_streamId,
     };
@@ -1950,34 +2222,38 @@ class Ipv4OptionStreamIdDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionStreamIdDescriptor)
 
 Ipv4OptionStreamIdDescriptor::Ipv4OptionStreamIdDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionStreamId)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionStreamIdDescriptor::~Ipv4OptionStreamIdDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionStreamIdDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1987,34 +2263,34 @@ bool Ipv4OptionStreamIdDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionStreamIdDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionStreamIdDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionStreamIdDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionStreamIdDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv4OptionStreamIdDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_streamId
@@ -2024,11 +2300,11 @@ unsigned int Ipv4OptionStreamIdDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv4OptionStreamIdDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "streamId",
@@ -2038,19 +2314,19 @@ const char *Ipv4OptionStreamIdDescriptor::getFieldName(int field) const
 
 int Ipv4OptionStreamIdDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "streamId") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "streamId") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionStreamIdDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_streamId
@@ -2060,112 +2336,178 @@ const char *Ipv4OptionStreamIdDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionStreamIdDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionStreamIdDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionStreamIdDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionStreamIdDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionStreamIdDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionStreamId *pp = (Ipv4OptionStreamId *)object; (void)pp;
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionStreamIdDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionStreamIdDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionStreamId *pp = (Ipv4OptionStreamId *)object; (void)pp;
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionStreamId'", field);
+    }
+}
+
+const char *Ipv4OptionStreamIdDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionStreamIdDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionStreamIdDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionStreamId *pp = (Ipv4OptionStreamId *)object; (void)pp;
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
     switch (field) {
         case FIELD_streamId: return long2string(pp->getStreamId());
         default: return "";
     }
 }
 
-bool Ipv4OptionStreamIdDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionStreamIdDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionStreamId *pp = (Ipv4OptionStreamId *)object; (void)pp;
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
     switch (field) {
-        case FIELD_streamId: pp->setStreamId(string2long(value)); return true;
-        default: return false;
+        case FIELD_streamId: pp->setStreamId(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionStreamId'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionStreamIdDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
+    switch (field) {
+        case FIELD_streamId: return pp->getStreamId();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionStreamId' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionStreamIdDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
+    switch (field) {
+        case FIELD_streamId: pp->setStreamId(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionStreamId'", field);
     }
 }
 
 const char *Ipv4OptionStreamIdDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionStreamIdDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionStreamIdDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionStreamId *pp = (Ipv4OptionStreamId *)object; (void)pp;
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionStreamIdDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionStreamId *pp = omnetpp::fromAnyPtr<Ipv4OptionStreamId>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionStreamId'", field);
     }
 }
 
@@ -2225,7 +2567,7 @@ void Ipv4OptionRouterAlert::setRouterAlert(uint16_t routerAlert)
 class Ipv4OptionRouterAlertDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_routerAlert,
     };
@@ -2235,34 +2577,38 @@ class Ipv4OptionRouterAlertDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionRouterAlertDescriptor)
 
 Ipv4OptionRouterAlertDescriptor::Ipv4OptionRouterAlertDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionRouterAlert)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionRouterAlertDescriptor::~Ipv4OptionRouterAlertDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionRouterAlertDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2272,34 +2618,34 @@ bool Ipv4OptionRouterAlertDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionRouterAlertDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionRouterAlertDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionRouterAlertDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionRouterAlertDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv4OptionRouterAlertDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_routerAlert
@@ -2309,11 +2655,11 @@ unsigned int Ipv4OptionRouterAlertDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv4OptionRouterAlertDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "routerAlert",
@@ -2323,19 +2669,19 @@ const char *Ipv4OptionRouterAlertDescriptor::getFieldName(int field) const
 
 int Ipv4OptionRouterAlertDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routerAlert") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "routerAlert") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionRouterAlertDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_routerAlert
@@ -2345,112 +2691,178 @@ const char *Ipv4OptionRouterAlertDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionRouterAlertDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionRouterAlertDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionRouterAlertDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionRouterAlertDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionRouterAlertDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRouterAlert *pp = (Ipv4OptionRouterAlert *)object; (void)pp;
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionRouterAlertDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionRouterAlertDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRouterAlert *pp = (Ipv4OptionRouterAlert *)object; (void)pp;
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionRouterAlert'", field);
+    }
+}
+
+const char *Ipv4OptionRouterAlertDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionRouterAlertDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionRouterAlertDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRouterAlert *pp = (Ipv4OptionRouterAlert *)object; (void)pp;
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
     switch (field) {
         case FIELD_routerAlert: return ulong2string(pp->getRouterAlert());
         default: return "";
     }
 }
 
-bool Ipv4OptionRouterAlertDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionRouterAlertDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRouterAlert *pp = (Ipv4OptionRouterAlert *)object; (void)pp;
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
     switch (field) {
-        case FIELD_routerAlert: pp->setRouterAlert(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_routerAlert: pp->setRouterAlert(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRouterAlert'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionRouterAlertDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
+    switch (field) {
+        case FIELD_routerAlert: return (omnetpp::intval_t)(pp->getRouterAlert());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionRouterAlert' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionRouterAlertDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
+    switch (field) {
+        case FIELD_routerAlert: pp->setRouterAlert(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRouterAlert'", field);
     }
 }
 
 const char *Ipv4OptionRouterAlertDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionRouterAlertDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionRouterAlertDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionRouterAlert *pp = (Ipv4OptionRouterAlert *)object; (void)pp;
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionRouterAlertDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionRouterAlert *pp = omnetpp::fromAnyPtr<Ipv4OptionRouterAlert>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionRouterAlert'", field);
     }
 }
 
@@ -2515,7 +2927,7 @@ size_t Ipv4OptionUnknown::getBytesArraySize() const
 
 uint8_t Ipv4OptionUnknown::getBytes(size_t k) const
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size bytes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     return this->bytes[k];
 }
 
@@ -2534,13 +2946,13 @@ void Ipv4OptionUnknown::setBytesArraySize(size_t newSize)
 
 void Ipv4OptionUnknown::setBytes(size_t k, uint8_t bytes)
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     this->bytes[k] = bytes;
 }
 
 void Ipv4OptionUnknown::insertBytes(size_t k, uint8_t bytes)
 {
-    if (k > bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     size_t newSize = bytes_arraysize + 1;
     uint8_t *bytes2 = new uint8_t[newSize];
     size_t i;
@@ -2554,14 +2966,14 @@ void Ipv4OptionUnknown::insertBytes(size_t k, uint8_t bytes)
     bytes_arraysize = newSize;
 }
 
-void Ipv4OptionUnknown::insertBytes(uint8_t bytes)
+void Ipv4OptionUnknown::appendBytes(uint8_t bytes)
 {
     insertBytes(bytes_arraysize, bytes);
 }
 
 void Ipv4OptionUnknown::eraseBytes(size_t k)
 {
-    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= bytes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)bytes_arraysize, (unsigned long)k);
     size_t newSize = bytes_arraysize - 1;
     uint8_t *bytes2 = (newSize == 0) ? nullptr : new uint8_t[newSize];
     size_t i;
@@ -2577,7 +2989,7 @@ void Ipv4OptionUnknown::eraseBytes(size_t k)
 class Ipv4OptionUnknownDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_bytes,
     };
@@ -2587,34 +2999,38 @@ class Ipv4OptionUnknownDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionUnknownDescriptor)
 
 Ipv4OptionUnknownDescriptor::Ipv4OptionUnknownDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionUnknown)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionUnknownDescriptor::~Ipv4OptionUnknownDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionUnknownDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2624,48 +3040,48 @@ bool Ipv4OptionUnknownDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionUnknownDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionUnknownDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionUnknownDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionUnknownDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Ipv4OptionUnknownDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_bytes
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_bytes
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Ipv4OptionUnknownDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "bytes",
@@ -2675,19 +3091,19 @@ const char *Ipv4OptionUnknownDescriptor::getFieldName(int field) const
 
 int Ipv4OptionUnknownDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bytes") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "bytes") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionUnknownDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_bytes
@@ -2697,113 +3113,180 @@ const char *Ipv4OptionUnknownDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionUnknownDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionUnknownDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionUnknownDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionUnknownDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionUnknownDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionUnknown *pp = (Ipv4OptionUnknown *)object; (void)pp;
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
     switch (field) {
         case FIELD_bytes: return pp->getBytesArraySize();
         default: return 0;
     }
 }
 
-const char *Ipv4OptionUnknownDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionUnknownDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionUnknown *pp = (Ipv4OptionUnknown *)object; (void)pp;
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: pp->setBytesArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionUnknown'", field);
+    }
+}
+
+const char *Ipv4OptionUnknownDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionUnknownDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionUnknownDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionUnknown *pp = (Ipv4OptionUnknown *)object; (void)pp;
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
     switch (field) {
         case FIELD_bytes: return ulong2string(pp->getBytes(i));
         default: return "";
     }
 }
 
-bool Ipv4OptionUnknownDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionUnknownDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionUnknown *pp = (Ipv4OptionUnknown *)object; (void)pp;
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
     switch (field) {
-        case FIELD_bytes: pp->setBytes(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_bytes: pp->setBytes(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionUnknown'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionUnknownDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: return (omnetpp::intval_t)(pp->getBytes(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionUnknown' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionUnknownDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
+    switch (field) {
+        case FIELD_bytes: pp->setBytes(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionUnknown'", field);
     }
 }
 
 const char *Ipv4OptionUnknownDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionUnknownDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionUnknownDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionUnknown *pp = (Ipv4OptionUnknown *)object; (void)pp;
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionUnknownDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionUnknown *pp = omnetpp::fromAnyPtr<Ipv4OptionUnknown>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionUnknown'", field);
     }
 }
 
@@ -2915,7 +3398,7 @@ void Ipv4OptionV2Marking::setIs_control_message(bool is_control_message)
 class Ipv4OptionV2MarkingDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_flow_let_id,
         FIELD_seq,
@@ -2929,34 +3412,38 @@ class Ipv4OptionV2MarkingDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionV2MarkingDescriptor)
 
 Ipv4OptionV2MarkingDescriptor::Ipv4OptionV2MarkingDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionV2Marking)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionV2MarkingDescriptor::~Ipv4OptionV2MarkingDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionV2MarkingDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2966,34 +3453,34 @@ bool Ipv4OptionV2MarkingDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionV2MarkingDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionV2MarkingDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionV2MarkingDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionV2MarkingDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int Ipv4OptionV2MarkingDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_flow_let_id
@@ -3007,11 +3494,11 @@ unsigned int Ipv4OptionV2MarkingDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv4OptionV2MarkingDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "flow_let_id",
@@ -3025,23 +3512,23 @@ const char *Ipv4OptionV2MarkingDescriptor::getFieldName(int field) const
 
 int Ipv4OptionV2MarkingDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "flow_let_id") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "seq") == 0) return base+1;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "ret_num") == 0) return base+2;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "is_first_packet") == 0) return base+3;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "is_control_message") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "flow_let_id") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "seq") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "ret_num") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "is_first_packet") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "is_control_message") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionV2MarkingDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_flow_let_id
@@ -3055,67 +3542,83 @@ const char *Ipv4OptionV2MarkingDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4OptionV2MarkingDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionV2MarkingDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionV2MarkingDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionV2MarkingDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionV2MarkingDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionV2Marking *pp = (Ipv4OptionV2Marking *)object; (void)pp;
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionV2MarkingDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionV2MarkingDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionV2Marking *pp = (Ipv4OptionV2Marking *)object; (void)pp;
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionV2Marking'", field);
+    }
+}
+
+const char *Ipv4OptionV2MarkingDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionV2MarkingDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionV2MarkingDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionV2Marking *pp = (Ipv4OptionV2Marking *)object; (void)pp;
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
     switch (field) {
         case FIELD_flow_let_id: return long2string(pp->getFlow_let_id());
         case FIELD_seq: return ulong2string(pp->getSeq());
@@ -3126,49 +3629,107 @@ std::string Ipv4OptionV2MarkingDescriptor::getFieldValueAsString(void *object, i
     }
 }
 
-bool Ipv4OptionV2MarkingDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionV2MarkingDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionV2Marking *pp = (Ipv4OptionV2Marking *)object; (void)pp;
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
     switch (field) {
-        case FIELD_flow_let_id: pp->setFlow_let_id(string2long(value)); return true;
-        case FIELD_seq: pp->setSeq(string2ulong(value)); return true;
-        case FIELD_ret_num: pp->setRet_num(string2ulong(value)); return true;
-        case FIELD_is_first_packet: pp->setIs_first_packet(string2bool(value)); return true;
-        case FIELD_is_control_message: pp->setIs_control_message(string2bool(value)); return true;
-        default: return false;
+        case FIELD_flow_let_id: pp->setFlow_let_id(string2long(value)); break;
+        case FIELD_seq: pp->setSeq(string2ulong(value)); break;
+        case FIELD_ret_num: pp->setRet_num(string2ulong(value)); break;
+        case FIELD_is_first_packet: pp->setIs_first_packet(string2bool(value)); break;
+        case FIELD_is_control_message: pp->setIs_control_message(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionV2Marking'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionV2MarkingDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
+    switch (field) {
+        case FIELD_flow_let_id: return pp->getFlow_let_id();
+        case FIELD_seq: return omnetpp::checked_int_cast<omnetpp::intval_t>(pp->getSeq());
+        case FIELD_ret_num: return omnetpp::checked_int_cast<omnetpp::intval_t>(pp->getRet_num());
+        case FIELD_is_first_packet: return pp->getIs_first_packet();
+        case FIELD_is_control_message: return pp->getIs_control_message();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionV2Marking' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionV2MarkingDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
+    switch (field) {
+        case FIELD_flow_let_id: pp->setFlow_let_id(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_seq: pp->setSeq(omnetpp::checked_int_cast<unsigned long>(value.intValue())); break;
+        case FIELD_ret_num: pp->setRet_num(omnetpp::checked_int_cast<unsigned long>(value.intValue())); break;
+        case FIELD_is_first_packet: pp->setIs_first_packet(value.boolValue()); break;
+        case FIELD_is_control_message: pp->setIs_control_message(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionV2Marking'", field);
     }
 }
 
 const char *Ipv4OptionV2MarkingDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Ipv4OptionV2MarkingDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionV2MarkingDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionV2Marking *pp = (Ipv4OptionV2Marking *)object; (void)pp;
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionV2MarkingDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionV2Marking *pp = omnetpp::fromAnyPtr<Ipv4OptionV2Marking>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionV2Marking'", field);
     }
 }
 
@@ -3214,7 +3775,7 @@ void Ipv4OptionSwift::parsimUnpack(omnetpp::cCommBuffer *b)
 class Ipv4OptionSwiftDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -3223,34 +3784,38 @@ class Ipv4OptionSwiftDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4OptionSwiftDescriptor)
 
 Ipv4OptionSwiftDescriptor::Ipv4OptionSwiftDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4OptionSwift)), "inet::Ipv4Option")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4OptionSwiftDescriptor::~Ipv4OptionSwiftDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4OptionSwiftDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3260,170 +3825,234 @@ bool Ipv4OptionSwiftDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4OptionSwiftDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4OptionSwiftDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4OptionSwiftDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4OptionSwiftDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int Ipv4OptionSwiftDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *Ipv4OptionSwiftDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int Ipv4OptionSwiftDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4OptionSwiftDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **Ipv4OptionSwiftDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Ipv4OptionSwiftDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4OptionSwiftDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Ipv4OptionSwiftDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4OptionSwiftDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionSwift *pp = (Ipv4OptionSwift *)object; (void)pp;
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4OptionSwiftDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4OptionSwiftDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionSwift *pp = (Ipv4OptionSwift *)object; (void)pp;
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4OptionSwift'", field);
+    }
+}
+
+const char *Ipv4OptionSwiftDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4OptionSwiftDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4OptionSwiftDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionSwift *pp = (Ipv4OptionSwift *)object; (void)pp;
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool Ipv4OptionSwiftDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4OptionSwiftDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4OptionSwift *pp = (Ipv4OptionSwift *)object; (void)pp;
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionSwift'", field);
+    }
+}
+
+omnetpp::cValue Ipv4OptionSwiftDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4OptionSwift' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4OptionSwiftDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionSwift'", field);
     }
 }
 
 const char *Ipv4OptionSwiftDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *Ipv4OptionSwiftDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4OptionSwiftDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4OptionSwift *pp = (Ipv4OptionSwift *)object; (void)pp;
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Ipv4OptionSwiftDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4OptionSwift *pp = omnetpp::fromAnyPtr<Ipv4OptionSwift>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4OptionSwift'", field);
     }
 }
 
@@ -3638,12 +4267,12 @@ void Ipv4Header::setTimeToLive(short timeToLive)
     this->timeToLive = timeToLive;
 }
 
-inet::IpProtocolId Ipv4Header::getProtocolId() const
+IpProtocolId Ipv4Header::getProtocolId() const
 {
     return this->protocolId;
 }
 
-void Ipv4Header::setProtocolId(inet::IpProtocolId protocolId)
+void Ipv4Header::setProtocolId(IpProtocolId protocolId)
 {
     handleChange();
     this->protocolId = protocolId;
@@ -3660,12 +4289,12 @@ void Ipv4Header::setCrc(uint16_t crc)
     this->crc = crc;
 }
 
-inet::CrcMode Ipv4Header::getCrcMode() const
+CrcMode Ipv4Header::getCrcMode() const
 {
     return this->crcMode;
 }
 
-void Ipv4Header::setCrcMode(inet::CrcMode crcMode)
+void Ipv4Header::setCrcMode(CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
@@ -3707,7 +4336,7 @@ void Ipv4Header::setOptions(const TlvOptions& options)
 class Ipv4HeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_version,
         FIELD_headerLength,
@@ -3733,34 +4362,38 @@ class Ipv4HeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Ipv4HeaderDescriptor)
 
 Ipv4HeaderDescriptor::Ipv4HeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Ipv4Header)), "inet::NetworkHeaderBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Ipv4HeaderDescriptor::~Ipv4HeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Ipv4HeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3770,34 +4403,34 @@ bool Ipv4HeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Ipv4HeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Ipv4HeaderDescriptor::getProperty(const char *propertyname) const
+const char *Ipv4HeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Ipv4HeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 17+basedesc->getFieldCount() : 17;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 17+base->getFieldCount() : 17;
 }
 
 unsigned int Ipv4HeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_version
@@ -3823,11 +4456,11 @@ unsigned int Ipv4HeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *Ipv4HeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "version",
@@ -3853,35 +4486,35 @@ const char *Ipv4HeaderDescriptor::getFieldName(int field) const
 
 int Ipv4HeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "version") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "headerLength") == 0) return base+1;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "diffServCodePoint") == 0) return base+2;
-    if (fieldName[0] == 't' && strcmp(fieldName, "typeOfService") == 0) return base+3;
-    if (fieldName[0] == 't' && strcmp(fieldName, "totalLengthField") == 0) return base+4;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "identification") == 0) return base+5;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reservedBit") == 0) return base+6;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "moreFragments") == 0) return base+7;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dontFragment") == 0) return base+8;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fragmentOffset") == 0) return base+9;
-    if (fieldName[0] == 't' && strcmp(fieldName, "timeToLive") == 0) return base+10;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocolId") == 0) return base+11;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crc") == 0) return base+12;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crcMode") == 0) return base+13;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srcAddress") == 0) return base+14;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destAddress") == 0) return base+15;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+16;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "version") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "headerLength") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "diffServCodePoint") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "typeOfService") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "totalLengthField") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "identification") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "reservedBit") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "moreFragments") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "dontFragment") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "fragmentOffset") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "timeToLive") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "protocolId") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "crc") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "crcMode") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "srcAddress") == 0) return baseIndex + 14;
+    if (strcmp(fieldName, "destAddress") == 0) return baseIndex + 15;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 16;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Ipv4HeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_version
@@ -3907,11 +4540,11 @@ const char *Ipv4HeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Ipv4HeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocolId: {
@@ -3926,62 +4559,78 @@ const char **Ipv4HeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *Ipv4HeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Ipv4HeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocolId:
-            if (!strcmp(propertyname, "enum")) return "inet::IpProtocolId";
+            if (!strcmp(propertyName, "enum")) return "inet::IpProtocolId";
             return nullptr;
         case FIELD_crcMode:
-            if (!strcmp(propertyname, "enum")) return "inet::CrcMode";
+            if (!strcmp(propertyName, "enum")) return "inet::CrcMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Ipv4HeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Ipv4HeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Ipv4Header *pp = (Ipv4Header *)object; (void)pp;
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Ipv4HeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Ipv4HeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4Header *pp = (Ipv4Header *)object; (void)pp;
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Ipv4Header'", field);
+    }
+}
+
+const char *Ipv4HeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Ipv4HeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Ipv4HeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Ipv4Header *pp = (Ipv4Header *)object; (void)pp;
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
     switch (field) {
         case FIELD_version: return long2string(pp->getVersion());
         case FIELD_headerLength: return unit2string(pp->getHeaderLength());
@@ -3999,44 +4648,105 @@ std::string Ipv4HeaderDescriptor::getFieldValueAsString(void *object, int field,
         case FIELD_crcMode: return enum2string(pp->getCrcMode(), "inet::CrcMode");
         case FIELD_srcAddress: return pp->getSrcAddress().str();
         case FIELD_destAddress: return pp->getDestAddress().str();
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool Ipv4HeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Ipv4HeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Ipv4Header *pp = (Ipv4Header *)object; (void)pp;
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
     switch (field) {
-        case FIELD_version: pp->setVersion(string2long(value)); return true;
-        case FIELD_headerLength: pp->setHeaderLength(B(string2long(value))); return true;
-        case FIELD_diffServCodePoint: pp->setDiffServCodePoint(string2long(value)); return true;
-        case FIELD_typeOfService: pp->setTypeOfService(string2long(value)); return true;
-        case FIELD_totalLengthField: pp->setTotalLengthField(B(string2long(value))); return true;
-        case FIELD_identification: pp->setIdentification(string2ulong(value)); return true;
-        case FIELD_reservedBit: pp->setReservedBit(string2bool(value)); return true;
-        case FIELD_moreFragments: pp->setMoreFragments(string2bool(value)); return true;
-        case FIELD_dontFragment: pp->setDontFragment(string2bool(value)); return true;
-        case FIELD_fragmentOffset: pp->setFragmentOffset(string2ulong(value)); return true;
-        case FIELD_timeToLive: pp->setTimeToLive(string2long(value)); return true;
-        case FIELD_crc: pp->setCrc(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_version: pp->setVersion(string2long(value)); break;
+        case FIELD_headerLength: pp->setHeaderLength(B(string2long(value))); break;
+        case FIELD_diffServCodePoint: pp->setDiffServCodePoint(string2long(value)); break;
+        case FIELD_typeOfService: pp->setTypeOfService(string2long(value)); break;
+        case FIELD_totalLengthField: pp->setTotalLengthField(B(string2long(value))); break;
+        case FIELD_identification: pp->setIdentification(string2ulong(value)); break;
+        case FIELD_reservedBit: pp->setReservedBit(string2bool(value)); break;
+        case FIELD_moreFragments: pp->setMoreFragments(string2bool(value)); break;
+        case FIELD_dontFragment: pp->setDontFragment(string2bool(value)); break;
+        case FIELD_fragmentOffset: pp->setFragmentOffset(string2ulong(value)); break;
+        case FIELD_timeToLive: pp->setTimeToLive(string2long(value)); break;
+        case FIELD_crc: pp->setCrc(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Header'", field);
+    }
+}
+
+omnetpp::cValue Ipv4HeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: return pp->getVersion();
+        case FIELD_headerLength: throw omnetpp::cRuntimeError("Cannot return field 'inet::Ipv4Header::headerLength' (type 'B') as cValue, please provide @toValue in the msg file");
+        case FIELD_diffServCodePoint: return pp->getDiffServCodePoint();
+        case FIELD_typeOfService: return pp->getTypeOfService();
+        case FIELD_totalLengthField: throw omnetpp::cRuntimeError("Cannot return field 'inet::Ipv4Header::totalLengthField' (type 'B') as cValue, please provide @toValue in the msg file");
+        case FIELD_identification: return (omnetpp::intval_t)(pp->getIdentification());
+        case FIELD_reservedBit: return pp->getReservedBit();
+        case FIELD_moreFragments: return pp->getMoreFragments();
+        case FIELD_dontFragment: return pp->getDontFragment();
+        case FIELD_fragmentOffset: return (omnetpp::intval_t)(pp->getFragmentOffset());
+        case FIELD_timeToLive: return pp->getTimeToLive();
+        case FIELD_protocolId: return static_cast<int>(pp->getProtocolId());
+        case FIELD_crc: return (omnetpp::intval_t)(pp->getCrc());
+        case FIELD_crcMode: return static_cast<int>(pp->getCrcMode());
+        case FIELD_srcAddress: return omnetpp::toAnyPtr(&pp->getSrcAddress()); break;
+        case FIELD_destAddress: return omnetpp::toAnyPtr(&pp->getDestAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Ipv4Header' as cValue -- field index out of range?", field);
+    }
+}
+
+void Ipv4HeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: pp->setVersion(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_headerLength: throw omnetpp::cRuntimeError("Cannot set field 'inet::Ipv4Header::headerLength' (type 'B') from cValue, please provide @fromValue in the msg file");
+        case FIELD_diffServCodePoint: pp->setDiffServCodePoint(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_typeOfService: pp->setTypeOfService(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_totalLengthField: throw omnetpp::cRuntimeError("Cannot set field 'inet::Ipv4Header::totalLengthField' (type 'B') from cValue, please provide @fromValue in the msg file");
+        case FIELD_identification: pp->setIdentification(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_reservedBit: pp->setReservedBit(value.boolValue()); break;
+        case FIELD_moreFragments: pp->setMoreFragments(value.boolValue()); break;
+        case FIELD_dontFragment: pp->setDontFragment(value.boolValue()); break;
+        case FIELD_fragmentOffset: pp->setFragmentOffset(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_timeToLive: pp->setTimeToLive(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_crc: pp->setCrc(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Header'", field);
     }
 }
 
 const char *Ipv4HeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(TlvOptions));
@@ -4044,22 +4754,42 @@ const char *Ipv4HeaderDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Ipv4HeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Ipv4HeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Ipv4Header *pp = (Ipv4Header *)object; (void)pp;
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
     switch (field) {
-        case FIELD_srcAddress: return toVoidPtr(&pp->getSrcAddress()); break;
-        case FIELD_destAddress: return toVoidPtr(&pp->getDestAddress()); break;
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_srcAddress: return omnetpp::toAnyPtr(&pp->getSrcAddress()); break;
+        case FIELD_destAddress: return omnetpp::toAnyPtr(&pp->getDestAddress()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Ipv4HeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Ipv4Header *pp = omnetpp::fromAnyPtr<Ipv4Header>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Ipv4Header'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

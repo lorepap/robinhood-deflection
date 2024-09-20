@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/applications/httptools/common/HttpMessages.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/applications/httptools/common/HttpMessages.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "HttpMessages_m.h"
 
 namespace omnetpp {
@@ -149,64 +150,8 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace httptools {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(HttpBaseMessage)
 
@@ -346,7 +291,7 @@ void HttpBaseMessage::setPayload(const char * payload)
 class HttpBaseMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_targetUrl,
         FIELD_originatorUrl,
@@ -362,34 +307,38 @@ class HttpBaseMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(HttpBaseMessageDescriptor)
 
 HttpBaseMessageDescriptor::HttpBaseMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::httptools::HttpBaseMessage)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 HttpBaseMessageDescriptor::~HttpBaseMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool HttpBaseMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -399,34 +348,34 @@ bool HttpBaseMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **HttpBaseMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *HttpBaseMessageDescriptor::getProperty(const char *propertyname) const
+const char *HttpBaseMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int HttpBaseMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int HttpBaseMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_targetUrl
@@ -442,11 +391,11 @@ unsigned int HttpBaseMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *HttpBaseMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "targetUrl",
@@ -462,25 +411,25 @@ const char *HttpBaseMessageDescriptor::getFieldName(int field) const
 
 int HttpBaseMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "targetUrl") == 0) return base+0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "originatorUrl") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocol") == 0) return base+2;
-    if (fieldName[0] == 'k' && strcmp(fieldName, "keepAlive") == 0) return base+3;
-    if (fieldName[0] == 's' && strcmp(fieldName, "serial") == 0) return base+4;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "heading") == 0) return base+5;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "payload") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "targetUrl") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "originatorUrl") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "protocol") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "keepAlive") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "serial") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "heading") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "payload") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *HttpBaseMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "string",    // FIELD_targetUrl
@@ -496,67 +445,83 @@ const char *HttpBaseMessageDescriptor::getFieldTypeString(int field) const
 
 const char **HttpBaseMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *HttpBaseMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *HttpBaseMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int HttpBaseMessageDescriptor::getFieldArraySize(void *object, int field) const
+int HttpBaseMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    HttpBaseMessage *pp = (HttpBaseMessage *)object; (void)pp;
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *HttpBaseMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void HttpBaseMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpBaseMessage *pp = (HttpBaseMessage *)object; (void)pp;
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'HttpBaseMessage'", field);
+    }
+}
+
+const char *HttpBaseMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string HttpBaseMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string HttpBaseMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    HttpBaseMessage *pp = (HttpBaseMessage *)object; (void)pp;
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
     switch (field) {
         case FIELD_targetUrl: return oppstring2string(pp->getTargetUrl());
         case FIELD_originatorUrl: return oppstring2string(pp->getOriginatorUrl());
@@ -569,51 +534,113 @@ std::string HttpBaseMessageDescriptor::getFieldValueAsString(void *object, int f
     }
 }
 
-bool HttpBaseMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void HttpBaseMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpBaseMessage *pp = (HttpBaseMessage *)object; (void)pp;
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_targetUrl: pp->setTargetUrl((value)); return true;
-        case FIELD_originatorUrl: pp->setOriginatorUrl((value)); return true;
-        case FIELD_protocol: pp->setProtocol(string2long(value)); return true;
-        case FIELD_keepAlive: pp->setKeepAlive(string2bool(value)); return true;
-        case FIELD_serial: pp->setSerial(string2long(value)); return true;
-        case FIELD_heading: pp->setHeading((value)); return true;
-        case FIELD_payload: pp->setPayload((value)); return true;
-        default: return false;
+        case FIELD_targetUrl: pp->setTargetUrl((value)); break;
+        case FIELD_originatorUrl: pp->setOriginatorUrl((value)); break;
+        case FIELD_protocol: pp->setProtocol(string2long(value)); break;
+        case FIELD_keepAlive: pp->setKeepAlive(string2bool(value)); break;
+        case FIELD_serial: pp->setSerial(string2long(value)); break;
+        case FIELD_heading: pp->setHeading((value)); break;
+        case FIELD_payload: pp->setPayload((value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpBaseMessage'", field);
+    }
+}
+
+omnetpp::cValue HttpBaseMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_targetUrl: return pp->getTargetUrl();
+        case FIELD_originatorUrl: return pp->getOriginatorUrl();
+        case FIELD_protocol: return pp->getProtocol();
+        case FIELD_keepAlive: return pp->getKeepAlive();
+        case FIELD_serial: return pp->getSerial();
+        case FIELD_heading: return pp->getHeading();
+        case FIELD_payload: return pp->getPayload();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'HttpBaseMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void HttpBaseMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_targetUrl: pp->setTargetUrl(value.stringValue()); break;
+        case FIELD_originatorUrl: pp->setOriginatorUrl(value.stringValue()); break;
+        case FIELD_protocol: pp->setProtocol(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_keepAlive: pp->setKeepAlive(value.boolValue()); break;
+        case FIELD_serial: pp->setSerial(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_heading: pp->setHeading(value.stringValue()); break;
+        case FIELD_payload: pp->setPayload(value.stringValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpBaseMessage'", field);
     }
 }
 
 const char *HttpBaseMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *HttpBaseMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr HttpBaseMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    HttpBaseMessage *pp = (HttpBaseMessage *)object; (void)pp;
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void HttpBaseMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpBaseMessage *pp = omnetpp::fromAnyPtr<HttpBaseMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpBaseMessage'", field);
     }
 }
 
@@ -671,7 +698,7 @@ void HttpRequestMessage::setBadRequest(bool badRequest)
 class HttpRequestMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_badRequest,
     };
@@ -681,34 +708,38 @@ class HttpRequestMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(HttpRequestMessageDescriptor)
 
 HttpRequestMessageDescriptor::HttpRequestMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::httptools::HttpRequestMessage)), "inet::httptools::HttpBaseMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 HttpRequestMessageDescriptor::~HttpRequestMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool HttpRequestMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -718,34 +749,34 @@ bool HttpRequestMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **HttpRequestMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *HttpRequestMessageDescriptor::getProperty(const char *propertyname) const
+const char *HttpRequestMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int HttpRequestMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int HttpRequestMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_badRequest
@@ -755,11 +786,11 @@ unsigned int HttpRequestMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *HttpRequestMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "badRequest",
@@ -769,19 +800,19 @@ const char *HttpRequestMessageDescriptor::getFieldName(int field) const
 
 int HttpRequestMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "badRequest") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "badRequest") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *HttpRequestMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_badRequest
@@ -791,123 +822,182 @@ const char *HttpRequestMessageDescriptor::getFieldTypeString(int field) const
 
 const char **HttpRequestMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *HttpRequestMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *HttpRequestMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int HttpRequestMessageDescriptor::getFieldArraySize(void *object, int field) const
+int HttpRequestMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    HttpRequestMessage *pp = (HttpRequestMessage *)object; (void)pp;
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *HttpRequestMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void HttpRequestMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpRequestMessage *pp = (HttpRequestMessage *)object; (void)pp;
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'HttpRequestMessage'", field);
+    }
+}
+
+const char *HttpRequestMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string HttpRequestMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string HttpRequestMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    HttpRequestMessage *pp = (HttpRequestMessage *)object; (void)pp;
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
     switch (field) {
         case FIELD_badRequest: return bool2string(pp->getBadRequest());
         default: return "";
     }
 }
 
-bool HttpRequestMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void HttpRequestMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpRequestMessage *pp = (HttpRequestMessage *)object; (void)pp;
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_badRequest: pp->setBadRequest(string2bool(value)); return true;
-        default: return false;
+        case FIELD_badRequest: pp->setBadRequest(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpRequestMessage'", field);
+    }
+}
+
+omnetpp::cValue HttpRequestMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_badRequest: return pp->getBadRequest();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'HttpRequestMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void HttpRequestMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_badRequest: pp->setBadRequest(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpRequestMessage'", field);
     }
 }
 
 const char *HttpRequestMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *HttpRequestMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr HttpRequestMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    HttpRequestMessage *pp = (HttpRequestMessage *)object; (void)pp;
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::httptools::HttpContentType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::httptools::HttpContentType"));
-    e->insert(CT_UNKNOWN, "CT_UNKNOWN");
-    e->insert(CT_HTML, "CT_HTML");
-    e->insert(CT_IMAGE, "CT_IMAGE");
-    e->insert(CT_TEXT, "CT_TEXT");
-)
+void HttpRequestMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpRequestMessage *pp = omnetpp::fromAnyPtr<HttpRequestMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpRequestMessage'", field);
+    }
+}
+
+Register_Enum(inet::httptools::HttpContentType, (inet::httptools::HttpContentType::CT_UNKNOWN, inet::httptools::HttpContentType::CT_HTML, inet::httptools::HttpContentType::CT_IMAGE, inet::httptools::HttpContentType::CT_TEXT));
 
 Register_Class(HttpReplyMessage)
 
@@ -963,12 +1053,12 @@ void HttpReplyMessage::setResult(int result)
     this->result = result;
 }
 
-inet::httptools::HttpContentType HttpReplyMessage::getContentType() const
+HttpContentType HttpReplyMessage::getContentType() const
 {
     return this->contentType;
 }
 
-void HttpReplyMessage::setContentType(inet::httptools::HttpContentType contentType)
+void HttpReplyMessage::setContentType(HttpContentType contentType)
 {
     handleChange();
     this->contentType = contentType;
@@ -977,7 +1067,7 @@ void HttpReplyMessage::setContentType(inet::httptools::HttpContentType contentTy
 class HttpReplyMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_result,
         FIELD_contentType,
@@ -988,34 +1078,38 @@ class HttpReplyMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(HttpReplyMessageDescriptor)
 
 HttpReplyMessageDescriptor::HttpReplyMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::httptools::HttpReplyMessage)), "inet::httptools::HttpBaseMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 HttpReplyMessageDescriptor::~HttpReplyMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool HttpReplyMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1025,34 +1119,34 @@ bool HttpReplyMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **HttpReplyMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *HttpReplyMessageDescriptor::getProperty(const char *propertyname) const
+const char *HttpReplyMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int HttpReplyMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int HttpReplyMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_result
@@ -1063,11 +1157,11 @@ unsigned int HttpReplyMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *HttpReplyMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "result",
@@ -1078,20 +1172,20 @@ const char *HttpReplyMessageDescriptor::getFieldName(int field) const
 
 int HttpReplyMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "result") == 0) return base+0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "contentType") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "result") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "contentType") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *HttpReplyMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_result
@@ -1102,11 +1196,11 @@ const char *HttpReplyMessageDescriptor::getFieldTypeString(int field) const
 
 const char **HttpReplyMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_contentType: {
@@ -1117,59 +1211,75 @@ const char **HttpReplyMessageDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *HttpReplyMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *HttpReplyMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_contentType:
-            if (!strcmp(propertyname, "enum")) return "inet::httptools::HttpContentType";
+            if (!strcmp(propertyName, "enum")) return "inet::httptools::HttpContentType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int HttpReplyMessageDescriptor::getFieldArraySize(void *object, int field) const
+int HttpReplyMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    HttpReplyMessage *pp = (HttpReplyMessage *)object; (void)pp;
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *HttpReplyMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void HttpReplyMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpReplyMessage *pp = (HttpReplyMessage *)object; (void)pp;
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'HttpReplyMessage'", field);
+    }
+}
+
+const char *HttpReplyMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string HttpReplyMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string HttpReplyMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    HttpReplyMessage *pp = (HttpReplyMessage *)object; (void)pp;
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
     switch (field) {
         case FIELD_result: return long2string(pp->getResult());
         case FIELD_contentType: return enum2string(pp->getContentType(), "inet::httptools::HttpContentType");
@@ -1177,48 +1287,103 @@ std::string HttpReplyMessageDescriptor::getFieldValueAsString(void *object, int 
     }
 }
 
-bool HttpReplyMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void HttpReplyMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpReplyMessage *pp = (HttpReplyMessage *)object; (void)pp;
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_result: pp->setResult(string2long(value)); return true;
-        default: return false;
+        case FIELD_result: pp->setResult(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpReplyMessage'", field);
+    }
+}
+
+omnetpp::cValue HttpReplyMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_result: return pp->getResult();
+        case FIELD_contentType: return static_cast<int>(pp->getContentType());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'HttpReplyMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void HttpReplyMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_result: pp->setResult(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpReplyMessage'", field);
     }
 }
 
 const char *HttpReplyMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *HttpReplyMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr HttpReplyMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    HttpReplyMessage *pp = (HttpReplyMessage *)object; (void)pp;
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace httptools
-} // namespace inet
+void HttpReplyMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpReplyMessage *pp = omnetpp::fromAnyPtr<HttpReplyMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpReplyMessage'", field);
+    }
+}
+
+}  // namespace httptools
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

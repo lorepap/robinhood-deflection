@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/linklayer/ethernet/EtherFrame.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/linklayer/ethernet/EtherFrame.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "EtherFrame_m.h"
 
 namespace omnetpp {
@@ -149,69 +150,9 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::EthernetControlOpCode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::EthernetControlOpCode"));
-    e->insert(ETHERNET_CONTROL_PAUSE, "ETHERNET_CONTROL_PAUSE");
-)
+Register_Enum(inet::EthernetControlOpCode, (inet::EthernetControlOpCode::ETHERNET_CONTROL_PAUSE));
 
 Register_Class(EthernetMacHeader)
 
@@ -367,14 +308,16 @@ const Ieee8021qHeader * EthernetMacHeader::getCTag() const
 void EthernetMacHeader::setCTag(Ieee8021qHeader * cTag)
 {
     handleChange();
-    if (this->cTag != nullptr) throw omnetpp::cRuntimeError("setCTag(): a value is already set, remove it first with dropCTag()");
+    if (this->cTag != nullptr) throw omnetpp::cRuntimeError("setCTag(): a value is already set, remove it first with removeCTag()");
     this->cTag = cTag;
+    if (this->cTag != nullptr && this->cTag->isOwnedObject()) take((cOwnedObject*)this->cTag);
 }
 
-Ieee8021qHeader * EthernetMacHeader::dropCTag()
+Ieee8021qHeader * EthernetMacHeader::removeCTag()
 {
     handleChange();
     Ieee8021qHeader * retval = this->cTag;
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->cTag = nullptr;
     return retval;
 }
@@ -387,14 +330,16 @@ const Ieee8021qHeader * EthernetMacHeader::getSTag() const
 void EthernetMacHeader::setSTag(Ieee8021qHeader * sTag)
 {
     handleChange();
-    if (this->sTag != nullptr) throw omnetpp::cRuntimeError("setSTag(): a value is already set, remove it first with dropSTag()");
+    if (this->sTag != nullptr) throw omnetpp::cRuntimeError("setSTag(): a value is already set, remove it first with removeSTag()");
     this->sTag = sTag;
+    if (this->sTag != nullptr && this->sTag->isOwnedObject()) take((cOwnedObject*)this->sTag);
 }
 
-Ieee8021qHeader * EthernetMacHeader::dropSTag()
+Ieee8021qHeader * EthernetMacHeader::removeSTag()
 {
     handleChange();
     Ieee8021qHeader * retval = this->sTag;
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->sTag = nullptr;
     return retval;
 }
@@ -564,56 +509,56 @@ void EthernetMacHeader::setQueue_occupancy(uint16_t queue_occupancy)
     this->queue_occupancy = queue_occupancy;
 }
 
-omnetpp::simtime_t EthernetMacHeader::getTime_packet_received_at_nic() const
+::omnetpp::simtime_t EthernetMacHeader::getTime_packet_received_at_nic() const
 {
     return this->time_packet_received_at_nic;
 }
 
-void EthernetMacHeader::setTime_packet_received_at_nic(omnetpp::simtime_t time_packet_received_at_nic)
+void EthernetMacHeader::setTime_packet_received_at_nic(::omnetpp::simtime_t time_packet_received_at_nic)
 {
     handleChange();
     this->time_packet_received_at_nic = time_packet_received_at_nic;
 }
 
-omnetpp::simtime_t EthernetMacHeader::getLocal_nic_rx_delay() const
+::omnetpp::simtime_t EthernetMacHeader::getLocal_nic_rx_delay() const
 {
     return this->local_nic_rx_delay;
 }
 
-void EthernetMacHeader::setLocal_nic_rx_delay(omnetpp::simtime_t local_nic_rx_delay)
+void EthernetMacHeader::setLocal_nic_rx_delay(::omnetpp::simtime_t local_nic_rx_delay)
 {
     handleChange();
     this->local_nic_rx_delay = local_nic_rx_delay;
 }
 
-omnetpp::simtime_t EthernetMacHeader::getRemote_queueing_time() const
+::omnetpp::simtime_t EthernetMacHeader::getRemote_queueing_time() const
 {
     return this->remote_queueing_time;
 }
 
-void EthernetMacHeader::setRemote_queueing_time(omnetpp::simtime_t remote_queueing_time)
+void EthernetMacHeader::setRemote_queueing_time(::omnetpp::simtime_t remote_queueing_time)
 {
     handleChange();
     this->remote_queueing_time = remote_queueing_time;
 }
 
-omnetpp::simtime_t EthernetMacHeader::getFabric_delay_time_sent_from_source() const
+::omnetpp::simtime_t EthernetMacHeader::getFabric_delay_time_sent_from_source() const
 {
     return this->fabric_delay_time_sent_from_source;
 }
 
-void EthernetMacHeader::setFabric_delay_time_sent_from_source(omnetpp::simtime_t fabric_delay_time_sent_from_source)
+void EthernetMacHeader::setFabric_delay_time_sent_from_source(::omnetpp::simtime_t fabric_delay_time_sent_from_source)
 {
     handleChange();
     this->fabric_delay_time_sent_from_source = fabric_delay_time_sent_from_source;
 }
 
-omnetpp::simtime_t EthernetMacHeader::getTime_packet_sent_from_src() const
+::omnetpp::simtime_t EthernetMacHeader::getTime_packet_sent_from_src() const
 {
     return this->time_packet_sent_from_src;
 }
 
-void EthernetMacHeader::setTime_packet_sent_from_src(omnetpp::simtime_t time_packet_sent_from_src)
+void EthernetMacHeader::setTime_packet_sent_from_src(::omnetpp::simtime_t time_packet_sent_from_src)
 {
     handleChange();
     this->time_packet_sent_from_src = time_packet_sent_from_src;
@@ -633,7 +578,7 @@ void EthernetMacHeader::setIs_deflected(bool is_deflected)
 class EthernetMacHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_dest,
         FIELD_src,
@@ -667,34 +612,38 @@ class EthernetMacHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(EthernetMacHeaderDescriptor)
 
 EthernetMacHeaderDescriptor::EthernetMacHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::EthernetMacHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 EthernetMacHeaderDescriptor::~EthernetMacHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool EthernetMacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -704,40 +653,40 @@ bool EthernetMacHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **EthernetMacHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *EthernetMacHeaderDescriptor::getProperty(const char *propertyname) const
+const char *EthernetMacHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int EthernetMacHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 25+basedesc->getFieldCount() : 25;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 25+base->getFieldCount() : 25;
 }
 
 unsigned int EthernetMacHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_dest
         0,    // FIELD_src
-        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_cTag
-        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_sTag
+        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE,    // FIELD_cTag
+        FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE,    // FIELD_sTag
         FD_ISEDITABLE,    // FIELD_typeOrLength
         FD_ISEDITABLE,    // FIELD_hop_count
         FD_ISEDITABLE,    // FIELD_isFB
@@ -753,11 +702,11 @@ unsigned int EthernetMacHeaderDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,    // FIELD_offset
         FD_ISEDITABLE,    // FIELD_is_v2_dropped_packet_header
         FD_ISEDITABLE,    // FIELD_queue_occupancy
-        0,    // FIELD_time_packet_received_at_nic
-        0,    // FIELD_local_nic_rx_delay
-        0,    // FIELD_remote_queueing_time
-        0,    // FIELD_fabric_delay_time_sent_from_source
-        0,    // FIELD_time_packet_sent_from_src
+        FD_ISEDITABLE,    // FIELD_time_packet_received_at_nic
+        FD_ISEDITABLE,    // FIELD_local_nic_rx_delay
+        FD_ISEDITABLE,    // FIELD_remote_queueing_time
+        FD_ISEDITABLE,    // FIELD_fabric_delay_time_sent_from_source
+        FD_ISEDITABLE,    // FIELD_time_packet_sent_from_src
         FD_ISEDITABLE,    // FIELD_is_deflected
     };
     return (field >= 0 && field < 25) ? fieldTypeFlags[field] : 0;
@@ -765,11 +714,11 @@ unsigned int EthernetMacHeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *EthernetMacHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "dest",
@@ -803,43 +752,43 @@ const char *EthernetMacHeaderDescriptor::getFieldName(int field) const
 
 int EthernetMacHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dest") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "src") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "cTag") == 0) return base+2;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sTag") == 0) return base+3;
-    if (fieldName[0] == 't' && strcmp(fieldName, "typeOrLength") == 0) return base+4;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hop_count") == 0) return base+5;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "isFB") == 0) return base+6;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "allow_same_input_output") == 0) return base+7;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "original_interface_id") == 0) return base+8;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bouncedDistance") == 0) return base+9;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "maxBouncedDistance") == 0) return base+10;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bouncedHop") == 0) return base+11;
-    if (fieldName[0] == 't' && strcmp(fieldName, "totalHopNum") == 0) return base+12;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "is_bursty") == 0) return base+13;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "payload_length") == 0) return base+14;
-    if (fieldName[0] == 't' && strcmp(fieldName, "total_length") == 0) return base+15;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "offset") == 0) return base+16;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "is_v2_dropped_packet_header") == 0) return base+17;
-    if (fieldName[0] == 'q' && strcmp(fieldName, "queue_occupancy") == 0) return base+18;
-    if (fieldName[0] == 't' && strcmp(fieldName, "time_packet_received_at_nic") == 0) return base+19;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "local_nic_rx_delay") == 0) return base+20;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "remote_queueing_time") == 0) return base+21;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fabric_delay_time_sent_from_source") == 0) return base+22;
-    if (fieldName[0] == 't' && strcmp(fieldName, "time_packet_sent_from_src") == 0) return base+23;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "is_deflected") == 0) return base+24;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "dest") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "src") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "cTag") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "sTag") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "typeOrLength") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "hop_count") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "isFB") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "allow_same_input_output") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "original_interface_id") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "bouncedDistance") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "maxBouncedDistance") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "bouncedHop") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "totalHopNum") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "is_bursty") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "payload_length") == 0) return baseIndex + 14;
+    if (strcmp(fieldName, "total_length") == 0) return baseIndex + 15;
+    if (strcmp(fieldName, "offset") == 0) return baseIndex + 16;
+    if (strcmp(fieldName, "is_v2_dropped_packet_header") == 0) return baseIndex + 17;
+    if (strcmp(fieldName, "queue_occupancy") == 0) return baseIndex + 18;
+    if (strcmp(fieldName, "time_packet_received_at_nic") == 0) return baseIndex + 19;
+    if (strcmp(fieldName, "local_nic_rx_delay") == 0) return baseIndex + 20;
+    if (strcmp(fieldName, "remote_queueing_time") == 0) return baseIndex + 21;
+    if (strcmp(fieldName, "fabric_delay_time_sent_from_source") == 0) return baseIndex + 22;
+    if (strcmp(fieldName, "time_packet_sent_from_src") == 0) return baseIndex + 23;
+    if (strcmp(fieldName, "is_deflected") == 0) return baseIndex + 24;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *EthernetMacHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::MacAddress",    // FIELD_dest
@@ -873,11 +822,11 @@ const char *EthernetMacHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **EthernetMacHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_cTag: {
@@ -892,48 +841,64 @@ const char **EthernetMacHeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *EthernetMacHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *EthernetMacHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_cTag:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         case FIELD_sTag:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int EthernetMacHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int EthernetMacHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    EthernetMacHeader *pp = (EthernetMacHeader *)object; (void)pp;
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *EthernetMacHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void EthernetMacHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetMacHeader *pp = (EthernetMacHeader *)object; (void)pp;
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'EthernetMacHeader'", field);
+    }
+}
+
+const char *EthernetMacHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
     switch (field) {
         case FIELD_cTag: { const Ieee8021qHeader * value = pp->getCTag(); return omnetpp::opp_typename(typeid(*value)); }
         case FIELD_sTag: { const Ieee8021qHeader * value = pp->getSTag(); return omnetpp::opp_typename(typeid(*value)); }
@@ -941,20 +906,20 @@ const char *EthernetMacHeaderDescriptor::getFieldDynamicTypeString(void *object,
     }
 }
 
-std::string EthernetMacHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string EthernetMacHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    EthernetMacHeader *pp = (EthernetMacHeader *)object; (void)pp;
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
     switch (field) {
         case FIELD_dest: return pp->getDest().str();
         case FIELD_src: return pp->getSrc().str();
-        case FIELD_cTag: {std::stringstream out; out << pp->getCTag(); return out.str();}
-        case FIELD_sTag: {std::stringstream out; out << pp->getSTag(); return out.str();}
+        case FIELD_cTag: { auto obj = pp->getCTag(); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_sTag: { auto obj = pp->getSTag(); return obj == nullptr ? "" : obj->str(); }
         case FIELD_typeOrLength: return long2string(pp->getTypeOrLength());
         case FIELD_hop_count: return long2string(pp->getHop_count());
         case FIELD_isFB: return bool2string(pp->isFB());
@@ -980,43 +945,128 @@ std::string EthernetMacHeaderDescriptor::getFieldValueAsString(void *object, int
     }
 }
 
-bool EthernetMacHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void EthernetMacHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetMacHeader *pp = (EthernetMacHeader *)object; (void)pp;
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_typeOrLength: pp->setTypeOrLength(string2long(value)); return true;
-        case FIELD_hop_count: pp->setHop_count(string2long(value)); return true;
-        case FIELD_isFB: pp->setIsFB(string2bool(value)); return true;
-        case FIELD_allow_same_input_output: pp->setAllow_same_input_output(string2bool(value)); return true;
-        case FIELD_original_interface_id: pp->setOriginal_interface_id(string2long(value)); return true;
-        case FIELD_bouncedDistance: pp->setBouncedDistance(string2long(value)); return true;
-        case FIELD_maxBouncedDistance: pp->setMaxBouncedDistance(string2long(value)); return true;
-        case FIELD_bouncedHop: pp->setBouncedHop(string2long(value)); return true;
-        case FIELD_totalHopNum: pp->setTotalHopNum(string2long(value)); return true;
-        case FIELD_is_bursty: pp->setIs_bursty(string2bool(value)); return true;
-        case FIELD_payload_length: pp->setPayload_length(b(string2long(value))); return true;
-        case FIELD_total_length: pp->setTotal_length(b(string2long(value))); return true;
-        case FIELD_offset: pp->setOffset(b(string2long(value))); return true;
-        case FIELD_is_v2_dropped_packet_header: pp->setIs_v2_dropped_packet_header(string2bool(value)); return true;
-        case FIELD_queue_occupancy: pp->setQueue_occupancy(string2ulong(value)); return true;
-        case FIELD_is_deflected: pp->setIs_deflected(string2bool(value)); return true;
-        default: return false;
+        case FIELD_typeOrLength: pp->setTypeOrLength(string2long(value)); break;
+        case FIELD_hop_count: pp->setHop_count(string2long(value)); break;
+        case FIELD_isFB: pp->setIsFB(string2bool(value)); break;
+        case FIELD_allow_same_input_output: pp->setAllow_same_input_output(string2bool(value)); break;
+        case FIELD_original_interface_id: pp->setOriginal_interface_id(string2long(value)); break;
+        case FIELD_bouncedDistance: pp->setBouncedDistance(string2long(value)); break;
+        case FIELD_maxBouncedDistance: pp->setMaxBouncedDistance(string2long(value)); break;
+        case FIELD_bouncedHop: pp->setBouncedHop(string2long(value)); break;
+        case FIELD_totalHopNum: pp->setTotalHopNum(string2long(value)); break;
+        case FIELD_is_bursty: pp->setIs_bursty(string2bool(value)); break;
+        case FIELD_payload_length: pp->setPayload_length(b(string2long(value))); break;
+        case FIELD_total_length: pp->setTotal_length(b(string2long(value))); break;
+        case FIELD_offset: pp->setOffset(b(string2long(value))); break;
+        case FIELD_is_v2_dropped_packet_header: pp->setIs_v2_dropped_packet_header(string2bool(value)); break;
+        case FIELD_queue_occupancy: pp->setQueue_occupancy(string2ulong(value)); break;
+        case FIELD_time_packet_received_at_nic: pp->setTime_packet_received_at_nic(string2simtime(value)); break;
+        case FIELD_local_nic_rx_delay: pp->setLocal_nic_rx_delay(string2simtime(value)); break;
+        case FIELD_remote_queueing_time: pp->setRemote_queueing_time(string2simtime(value)); break;
+        case FIELD_fabric_delay_time_sent_from_source: pp->setFabric_delay_time_sent_from_source(string2simtime(value)); break;
+        case FIELD_time_packet_sent_from_src: pp->setTime_packet_sent_from_src(string2simtime(value)); break;
+        case FIELD_is_deflected: pp->setIs_deflected(string2bool(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetMacHeader'", field);
+    }
+}
+
+omnetpp::cValue EthernetMacHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_dest: return omnetpp::toAnyPtr(&pp->getDest()); break;
+        case FIELD_src: return omnetpp::toAnyPtr(&pp->getSrc()); break;
+        case FIELD_cTag: return omnetpp::toAnyPtr(pp->getCTag()); break;
+        case FIELD_sTag: return omnetpp::toAnyPtr(pp->getSTag()); break;
+        case FIELD_typeOrLength: return pp->getTypeOrLength();
+        case FIELD_hop_count: return pp->getHop_count();
+        case FIELD_isFB: return pp->isFB();
+        case FIELD_allow_same_input_output: return pp->getAllow_same_input_output();
+        case FIELD_original_interface_id: return pp->getOriginal_interface_id();
+        case FIELD_bouncedDistance: return pp->getBouncedDistance();
+        case FIELD_maxBouncedDistance: return pp->getMaxBouncedDistance();
+        case FIELD_bouncedHop: return pp->getBouncedHop();
+        case FIELD_totalHopNum: return pp->getTotalHopNum();
+        case FIELD_is_bursty: return pp->getIs_bursty();
+        case FIELD_payload_length: throw omnetpp::cRuntimeError("Cannot return field 'inet::EthernetMacHeader::payload_length' (type 'b') as cValue, please provide @toValue in the msg file");
+        case FIELD_total_length: throw omnetpp::cRuntimeError("Cannot return field 'inet::EthernetMacHeader::total_length' (type 'b') as cValue, please provide @toValue in the msg file");
+        case FIELD_offset: throw omnetpp::cRuntimeError("Cannot return field 'inet::EthernetMacHeader::offset' (type 'b') as cValue, please provide @toValue in the msg file");
+        case FIELD_is_v2_dropped_packet_header: return pp->getIs_v2_dropped_packet_header();
+        case FIELD_queue_occupancy: return (omnetpp::intval_t)(pp->getQueue_occupancy());
+        case FIELD_time_packet_received_at_nic: return pp->getTime_packet_received_at_nic().dbl();
+        case FIELD_local_nic_rx_delay: return pp->getLocal_nic_rx_delay().dbl();
+        case FIELD_remote_queueing_time: return pp->getRemote_queueing_time().dbl();
+        case FIELD_fabric_delay_time_sent_from_source: return pp->getFabric_delay_time_sent_from_source().dbl();
+        case FIELD_time_packet_sent_from_src: return pp->getTime_packet_sent_from_src().dbl();
+        case FIELD_is_deflected: return pp->getIs_deflected();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'EthernetMacHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void EthernetMacHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_cTag: pp->setCTag(omnetpp::fromAnyPtr<Ieee8021qHeader>(value.pointerValue())); break;
+        case FIELD_sTag: pp->setSTag(omnetpp::fromAnyPtr<Ieee8021qHeader>(value.pointerValue())); break;
+        case FIELD_typeOrLength: pp->setTypeOrLength(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_hop_count: pp->setHop_count(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_isFB: pp->setIsFB(value.boolValue()); break;
+        case FIELD_allow_same_input_output: pp->setAllow_same_input_output(value.boolValue()); break;
+        case FIELD_original_interface_id: pp->setOriginal_interface_id(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_bouncedDistance: pp->setBouncedDistance(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_maxBouncedDistance: pp->setMaxBouncedDistance(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_bouncedHop: pp->setBouncedHop(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_totalHopNum: pp->setTotalHopNum(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_is_bursty: pp->setIs_bursty(value.boolValue()); break;
+        case FIELD_payload_length: throw omnetpp::cRuntimeError("Cannot set field 'inet::EthernetMacHeader::payload_length' (type 'b') from cValue, please provide @fromValue in the msg file");
+        case FIELD_total_length: throw omnetpp::cRuntimeError("Cannot set field 'inet::EthernetMacHeader::total_length' (type 'b') from cValue, please provide @fromValue in the msg file");
+        case FIELD_offset: throw omnetpp::cRuntimeError("Cannot set field 'inet::EthernetMacHeader::offset' (type 'b') from cValue, please provide @fromValue in the msg file");
+        case FIELD_is_v2_dropped_packet_header: pp->setIs_v2_dropped_packet_header(value.boolValue()); break;
+        case FIELD_queue_occupancy: pp->setQueue_occupancy(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_time_packet_received_at_nic: pp->setTime_packet_received_at_nic(value.doubleValue()); break;
+        case FIELD_local_nic_rx_delay: pp->setLocal_nic_rx_delay(value.doubleValue()); break;
+        case FIELD_remote_queueing_time: pp->setRemote_queueing_time(value.doubleValue()); break;
+        case FIELD_fabric_delay_time_sent_from_source: pp->setFabric_delay_time_sent_from_source(value.doubleValue()); break;
+        case FIELD_time_packet_sent_from_src: pp->setTime_packet_sent_from_src(value.doubleValue()); break;
+        case FIELD_is_deflected: pp->setIs_deflected(value.boolValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetMacHeader'", field);
     }
 }
 
 const char *EthernetMacHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_cTag: return omnetpp::opp_typename(typeid(Ieee8021qHeader));
@@ -1025,21 +1075,39 @@ const char *EthernetMacHeaderDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *EthernetMacHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr EthernetMacHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    EthernetMacHeader *pp = (EthernetMacHeader *)object; (void)pp;
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_dest: return toVoidPtr(&pp->getDest()); break;
-        case FIELD_src: return toVoidPtr(&pp->getSrc()); break;
-        case FIELD_cTag: return toVoidPtr(pp->getCTag()); break;
-        case FIELD_sTag: return toVoidPtr(pp->getSTag()); break;
-        default: return nullptr;
+        case FIELD_dest: return omnetpp::toAnyPtr(&pp->getDest()); break;
+        case FIELD_src: return omnetpp::toAnyPtr(&pp->getSrc()); break;
+        case FIELD_cTag: return omnetpp::toAnyPtr(pp->getCTag()); break;
+        case FIELD_sTag: return omnetpp::toAnyPtr(pp->getSTag()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void EthernetMacHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetMacHeader *pp = omnetpp::fromAnyPtr<EthernetMacHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_cTag: pp->setCTag(omnetpp::fromAnyPtr<Ieee8021qHeader>(ptr)); break;
+        case FIELD_sTag: pp->setSTag(omnetpp::fromAnyPtr<Ieee8021qHeader>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetMacHeader'", field);
     }
 }
 
@@ -1097,7 +1165,7 @@ void EthernetControlFrame::setOpCode(int opCode)
 class EthernetControlFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_opCode,
     };
@@ -1107,34 +1175,38 @@ class EthernetControlFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(EthernetControlFrameDescriptor)
 
 EthernetControlFrameDescriptor::EthernetControlFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::EthernetControlFrame)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 EthernetControlFrameDescriptor::~EthernetControlFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool EthernetControlFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1144,34 +1216,34 @@ bool EthernetControlFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **EthernetControlFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *EthernetControlFrameDescriptor::getProperty(const char *propertyname) const
+const char *EthernetControlFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int EthernetControlFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int EthernetControlFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_opCode
@@ -1181,11 +1253,11 @@ unsigned int EthernetControlFrameDescriptor::getFieldTypeFlags(int field) const
 
 const char *EthernetControlFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "opCode",
@@ -1195,19 +1267,19 @@ const char *EthernetControlFrameDescriptor::getFieldName(int field) const
 
 int EthernetControlFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "opCode") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "opCode") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *EthernetControlFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_opCode
@@ -1217,112 +1289,178 @@ const char *EthernetControlFrameDescriptor::getFieldTypeString(int field) const
 
 const char **EthernetControlFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *EthernetControlFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *EthernetControlFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int EthernetControlFrameDescriptor::getFieldArraySize(void *object, int field) const
+int EthernetControlFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    EthernetControlFrame *pp = (EthernetControlFrame *)object; (void)pp;
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *EthernetControlFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void EthernetControlFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetControlFrame *pp = (EthernetControlFrame *)object; (void)pp;
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'EthernetControlFrame'", field);
+    }
+}
+
+const char *EthernetControlFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string EthernetControlFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string EthernetControlFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    EthernetControlFrame *pp = (EthernetControlFrame *)object; (void)pp;
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
     switch (field) {
         case FIELD_opCode: return long2string(pp->getOpCode());
         default: return "";
     }
 }
 
-bool EthernetControlFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void EthernetControlFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetControlFrame *pp = (EthernetControlFrame *)object; (void)pp;
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
     switch (field) {
-        case FIELD_opCode: pp->setOpCode(string2long(value)); return true;
-        default: return false;
+        case FIELD_opCode: pp->setOpCode(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetControlFrame'", field);
+    }
+}
+
+omnetpp::cValue EthernetControlFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_opCode: return pp->getOpCode();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'EthernetControlFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void EthernetControlFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_opCode: pp->setOpCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetControlFrame'", field);
     }
 }
 
 const char *EthernetControlFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *EthernetControlFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr EthernetControlFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    EthernetControlFrame *pp = (EthernetControlFrame *)object; (void)pp;
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void EthernetControlFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetControlFrame *pp = omnetpp::fromAnyPtr<EthernetControlFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetControlFrame'", field);
     }
 }
 
@@ -1383,7 +1521,7 @@ void EthernetPauseFrame::setPauseTime(int pauseTime)
 class EthernetPauseFrameDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_pauseTime,
     };
@@ -1393,34 +1531,38 @@ class EthernetPauseFrameDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(EthernetPauseFrameDescriptor)
 
 EthernetPauseFrameDescriptor::EthernetPauseFrameDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::EthernetPauseFrame)), "inet::EthernetControlFrame")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 EthernetPauseFrameDescriptor::~EthernetPauseFrameDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool EthernetPauseFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1430,34 +1572,34 @@ bool EthernetPauseFrameDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **EthernetPauseFrameDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *EthernetPauseFrameDescriptor::getProperty(const char *propertyname) const
+const char *EthernetPauseFrameDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int EthernetPauseFrameDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int EthernetPauseFrameDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_pauseTime
@@ -1467,11 +1609,11 @@ unsigned int EthernetPauseFrameDescriptor::getFieldTypeFlags(int field) const
 
 const char *EthernetPauseFrameDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "pauseTime",
@@ -1481,19 +1623,19 @@ const char *EthernetPauseFrameDescriptor::getFieldName(int field) const
 
 int EthernetPauseFrameDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "pauseTime") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "pauseTime") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *EthernetPauseFrameDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_pauseTime
@@ -1503,112 +1645,178 @@ const char *EthernetPauseFrameDescriptor::getFieldTypeString(int field) const
 
 const char **EthernetPauseFrameDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *EthernetPauseFrameDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *EthernetPauseFrameDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int EthernetPauseFrameDescriptor::getFieldArraySize(void *object, int field) const
+int EthernetPauseFrameDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    EthernetPauseFrame *pp = (EthernetPauseFrame *)object; (void)pp;
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *EthernetPauseFrameDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void EthernetPauseFrameDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetPauseFrame *pp = (EthernetPauseFrame *)object; (void)pp;
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'EthernetPauseFrame'", field);
+    }
+}
+
+const char *EthernetPauseFrameDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string EthernetPauseFrameDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string EthernetPauseFrameDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    EthernetPauseFrame *pp = (EthernetPauseFrame *)object; (void)pp;
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
     switch (field) {
         case FIELD_pauseTime: return long2string(pp->getPauseTime());
         default: return "";
     }
 }
 
-bool EthernetPauseFrameDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void EthernetPauseFrameDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetPauseFrame *pp = (EthernetPauseFrame *)object; (void)pp;
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
     switch (field) {
-        case FIELD_pauseTime: pp->setPauseTime(string2long(value)); return true;
-        default: return false;
+        case FIELD_pauseTime: pp->setPauseTime(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPauseFrame'", field);
+    }
+}
+
+omnetpp::cValue EthernetPauseFrameDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_pauseTime: return pp->getPauseTime();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'EthernetPauseFrame' as cValue -- field index out of range?", field);
+    }
+}
+
+void EthernetPauseFrameDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
+    switch (field) {
+        case FIELD_pauseTime: pp->setPauseTime(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPauseFrame'", field);
     }
 }
 
 const char *EthernetPauseFrameDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *EthernetPauseFrameDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr EthernetPauseFrameDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    EthernetPauseFrame *pp = (EthernetPauseFrame *)object; (void)pp;
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void EthernetPauseFrameDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetPauseFrame *pp = omnetpp::fromAnyPtr<EthernetPauseFrame>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPauseFrame'", field);
     }
 }
 
@@ -1652,7 +1860,7 @@ void EthernetPadding::parsimUnpack(omnetpp::cCommBuffer *b)
 class EthernetPaddingDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1661,34 +1869,38 @@ class EthernetPaddingDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(EthernetPaddingDescriptor)
 
 EthernetPaddingDescriptor::EthernetPaddingDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::EthernetPadding)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 EthernetPaddingDescriptor::~EthernetPaddingDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool EthernetPaddingDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1698,170 +1910,234 @@ bool EthernetPaddingDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **EthernetPaddingDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *EthernetPaddingDescriptor::getProperty(const char *propertyname) const
+const char *EthernetPaddingDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int EthernetPaddingDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int EthernetPaddingDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *EthernetPaddingDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int EthernetPaddingDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *EthernetPaddingDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **EthernetPaddingDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *EthernetPaddingDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *EthernetPaddingDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int EthernetPaddingDescriptor::getFieldArraySize(void *object, int field) const
+int EthernetPaddingDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    EthernetPadding *pp = (EthernetPadding *)object; (void)pp;
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *EthernetPaddingDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void EthernetPaddingDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetPadding *pp = (EthernetPadding *)object; (void)pp;
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'EthernetPadding'", field);
+    }
+}
+
+const char *EthernetPaddingDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string EthernetPaddingDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string EthernetPaddingDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    EthernetPadding *pp = (EthernetPadding *)object; (void)pp;
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool EthernetPaddingDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void EthernetPaddingDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetPadding *pp = (EthernetPadding *)object; (void)pp;
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPadding'", field);
+    }
+}
+
+omnetpp::cValue EthernetPaddingDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'EthernetPadding' as cValue -- field index out of range?", field);
+    }
+}
+
+void EthernetPaddingDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPadding'", field);
     }
 }
 
 const char *EthernetPaddingDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *EthernetPaddingDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr EthernetPaddingDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    EthernetPadding *pp = (EthernetPadding *)object; (void)pp;
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void EthernetPaddingDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetPadding *pp = omnetpp::fromAnyPtr<EthernetPadding>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetPadding'", field);
     }
 }
 
@@ -1921,12 +2197,12 @@ void EthernetFcs::setFcs(uint32_t fcs)
     this->fcs = fcs;
 }
 
-inet::FcsMode EthernetFcs::getFcsMode() const
+FcsMode EthernetFcs::getFcsMode() const
 {
     return this->fcsMode;
 }
 
-void EthernetFcs::setFcsMode(inet::FcsMode fcsMode)
+void EthernetFcs::setFcsMode(FcsMode fcsMode)
 {
     handleChange();
     this->fcsMode = fcsMode;
@@ -1935,7 +2211,7 @@ void EthernetFcs::setFcsMode(inet::FcsMode fcsMode)
 class EthernetFcsDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_fcs,
         FIELD_fcsMode,
@@ -1946,34 +2222,38 @@ class EthernetFcsDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(EthernetFcsDescriptor)
 
 EthernetFcsDescriptor::EthernetFcsDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::EthernetFcs)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 EthernetFcsDescriptor::~EthernetFcsDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool EthernetFcsDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1983,34 +2263,34 @@ bool EthernetFcsDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **EthernetFcsDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *EthernetFcsDescriptor::getProperty(const char *propertyname) const
+const char *EthernetFcsDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int EthernetFcsDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int EthernetFcsDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_fcs
@@ -2021,11 +2301,11 @@ unsigned int EthernetFcsDescriptor::getFieldTypeFlags(int field) const
 
 const char *EthernetFcsDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "fcs",
@@ -2036,20 +2316,20 @@ const char *EthernetFcsDescriptor::getFieldName(int field) const
 
 int EthernetFcsDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcs") == 0) return base+0;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "fcsMode") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "fcs") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "fcsMode") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *EthernetFcsDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_fcs
@@ -2060,11 +2340,11 @@ const char *EthernetFcsDescriptor::getFieldTypeString(int field) const
 
 const char **EthernetFcsDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode: {
@@ -2075,59 +2355,75 @@ const char **EthernetFcsDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *EthernetFcsDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *EthernetFcsDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_fcsMode:
-            if (!strcmp(propertyname, "enum")) return "inet::FcsMode";
+            if (!strcmp(propertyName, "enum")) return "inet::FcsMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int EthernetFcsDescriptor::getFieldArraySize(void *object, int field) const
+int EthernetFcsDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    EthernetFcs *pp = (EthernetFcs *)object; (void)pp;
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *EthernetFcsDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void EthernetFcsDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetFcs *pp = (EthernetFcs *)object; (void)pp;
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'EthernetFcs'", field);
+    }
+}
+
+const char *EthernetFcsDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string EthernetFcsDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string EthernetFcsDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    EthernetFcs *pp = (EthernetFcs *)object; (void)pp;
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
     switch (field) {
         case FIELD_fcs: return ulong2string(pp->getFcs());
         case FIELD_fcsMode: return enum2string(pp->getFcsMode(), "inet::FcsMode");
@@ -2135,47 +2431,102 @@ std::string EthernetFcsDescriptor::getFieldValueAsString(void *object, int field
     }
 }
 
-bool EthernetFcsDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void EthernetFcsDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    EthernetFcs *pp = (EthernetFcs *)object; (void)pp;
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
     switch (field) {
-        case FIELD_fcs: pp->setFcs(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_fcs: pp->setFcs(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetFcs'", field);
+    }
+}
+
+omnetpp::cValue EthernetFcsDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: return (omnetpp::intval_t)(pp->getFcs());
+        case FIELD_fcsMode: return static_cast<int>(pp->getFcsMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'EthernetFcs' as cValue -- field index out of range?", field);
+    }
+}
+
+void EthernetFcsDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
+    switch (field) {
+        case FIELD_fcs: pp->setFcs(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetFcs'", field);
     }
 }
 
 const char *EthernetFcsDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *EthernetFcsDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr EthernetFcsDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    EthernetFcs *pp = (EthernetFcs *)object; (void)pp;
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void EthernetFcsDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    EthernetFcs *pp = omnetpp::fromAnyPtr<EthernetFcs>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'EthernetFcs'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

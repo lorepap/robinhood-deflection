@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/ipv4/IgmpMessage.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/ipv4/IgmpMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "IgmpMessage_m.h"
 
 namespace omnetpp {
@@ -149,73 +150,9 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::IgmpType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::IgmpType"));
-    e->insert(IGMP_MEMBERSHIP_QUERY, "IGMP_MEMBERSHIP_QUERY");
-    e->insert(IGMPV1_MEMBERSHIP_REPORT, "IGMPV1_MEMBERSHIP_REPORT");
-    e->insert(IGMPV2_MEMBERSHIP_REPORT, "IGMPV2_MEMBERSHIP_REPORT");
-    e->insert(IGMPV2_LEAVE_GROUP, "IGMPV2_LEAVE_GROUP");
-    e->insert(IGMPV3_MEMBERSHIP_REPORT, "IGMPV3_MEMBERSHIP_REPORT");
-)
+Register_Enum(inet::IgmpType, (inet::IgmpType::IGMP_MEMBERSHIP_QUERY, inet::IgmpType::IGMPV1_MEMBERSHIP_REPORT, inet::IgmpType::IGMPV2_MEMBERSHIP_REPORT, inet::IgmpType::IGMPV2_LEAVE_GROUP, inet::IgmpType::IGMPV3_MEMBERSHIP_REPORT));
 
 Register_Class(IgmpMessage)
 
@@ -263,12 +200,12 @@ void IgmpMessage::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->crcMode);
 }
 
-inet::IgmpType IgmpMessage::getType() const
+IgmpType IgmpMessage::getType() const
 {
     return this->type;
 }
 
-void IgmpMessage::setType(inet::IgmpType type)
+void IgmpMessage::setType(IgmpType type)
 {
     handleChange();
     this->type = type;
@@ -285,12 +222,12 @@ void IgmpMessage::setCrc(uint16_t crc)
     this->crc = crc;
 }
 
-inet::CrcMode IgmpMessage::getCrcMode() const
+CrcMode IgmpMessage::getCrcMode() const
 {
     return this->crcMode;
 }
 
-void IgmpMessage::setCrcMode(inet::CrcMode crcMode)
+void IgmpMessage::setCrcMode(CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
@@ -299,7 +236,7 @@ void IgmpMessage::setCrcMode(inet::CrcMode crcMode)
 class IgmpMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_crc,
@@ -311,34 +248,38 @@ class IgmpMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(IgmpMessageDescriptor)
 
 IgmpMessageDescriptor::IgmpMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::IgmpMessage)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 IgmpMessageDescriptor::~IgmpMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool IgmpMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -348,37 +289,37 @@ bool IgmpMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **IgmpMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *IgmpMessageDescriptor::getProperty(const char *propertyname) const
+const char *IgmpMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int IgmpMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int IgmpMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_type
+        0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_crc
         0,    // FIELD_crcMode
     };
@@ -387,11 +328,11 @@ unsigned int IgmpMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *IgmpMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -403,21 +344,21 @@ const char *IgmpMessageDescriptor::getFieldName(int field) const
 
 int IgmpMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crc") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crcMode") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "crc") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "crcMode") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *IgmpMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::IgmpType",    // FIELD_type
@@ -429,11 +370,11 @@ const char *IgmpMessageDescriptor::getFieldTypeString(int field) const
 
 const char **IgmpMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -448,62 +389,78 @@ const char **IgmpMessageDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *IgmpMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *IgmpMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::IgmpType";
+            if (!strcmp(propertyName, "enum")) return "inet::IgmpType";
             return nullptr;
         case FIELD_crcMode:
-            if (!strcmp(propertyname, "enum")) return "inet::CrcMode";
+            if (!strcmp(propertyName, "enum")) return "inet::CrcMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int IgmpMessageDescriptor::getFieldArraySize(void *object, int field) const
+int IgmpMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    IgmpMessage *pp = (IgmpMessage *)object; (void)pp;
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *IgmpMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void IgmpMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    IgmpMessage *pp = (IgmpMessage *)object; (void)pp;
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'IgmpMessage'", field);
+    }
+}
+
+const char *IgmpMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string IgmpMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string IgmpMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    IgmpMessage *pp = (IgmpMessage *)object; (void)pp;
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::IgmpType");
         case FIELD_crc: return ulong2string(pp->getCrc());
@@ -512,46 +469,97 @@ std::string IgmpMessageDescriptor::getFieldValueAsString(void *object, int field
     }
 }
 
-bool IgmpMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void IgmpMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    IgmpMessage *pp = (IgmpMessage *)object; (void)pp;
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_type: pp->setType((inet::IgmpType)string2enum(value, "inet::IgmpType")); return true;
-        case FIELD_crc: pp->setCrc(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_crc: pp->setCrc(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpMessage'", field);
+    }
+}
+
+omnetpp::cValue IgmpMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_crc: return (omnetpp::intval_t)(pp->getCrc());
+        case FIELD_crcMode: return static_cast<int>(pp->getCrcMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'IgmpMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void IgmpMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_crc: pp->setCrc(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpMessage'", field);
     }
 }
 
 const char *IgmpMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *IgmpMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr IgmpMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    IgmpMessage *pp = (IgmpMessage *)object; (void)pp;
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void IgmpMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    IgmpMessage *pp = omnetpp::fromAnyPtr<IgmpMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpMessage'", field);
     }
 }
 
@@ -611,7 +619,7 @@ void IgmpQuery::setGroupAddress(const Ipv4Address& groupAddress)
 class IgmpQueryDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_groupAddress,
     };
@@ -621,34 +629,38 @@ class IgmpQueryDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(IgmpQueryDescriptor)
 
 IgmpQueryDescriptor::IgmpQueryDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::IgmpQuery)), "inet::IgmpMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 IgmpQueryDescriptor::~IgmpQueryDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool IgmpQueryDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -658,34 +670,34 @@ bool IgmpQueryDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **IgmpQueryDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *IgmpQueryDescriptor::getProperty(const char *propertyname) const
+const char *IgmpQueryDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int IgmpQueryDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int IgmpQueryDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_groupAddress
@@ -695,11 +707,11 @@ unsigned int IgmpQueryDescriptor::getFieldTypeFlags(int field) const
 
 const char *IgmpQueryDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "groupAddress",
@@ -709,19 +721,19 @@ const char *IgmpQueryDescriptor::getFieldName(int field) const
 
 int IgmpQueryDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupAddress") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "groupAddress") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *IgmpQueryDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv4Address",    // FIELD_groupAddress
@@ -731,112 +743,177 @@ const char *IgmpQueryDescriptor::getFieldTypeString(int field) const
 
 const char **IgmpQueryDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *IgmpQueryDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *IgmpQueryDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int IgmpQueryDescriptor::getFieldArraySize(void *object, int field) const
+int IgmpQueryDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    IgmpQuery *pp = (IgmpQuery *)object; (void)pp;
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *IgmpQueryDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void IgmpQueryDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    IgmpQuery *pp = (IgmpQuery *)object; (void)pp;
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'IgmpQuery'", field);
+    }
+}
+
+const char *IgmpQueryDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string IgmpQueryDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string IgmpQueryDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    IgmpQuery *pp = (IgmpQuery *)object; (void)pp;
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
     switch (field) {
         case FIELD_groupAddress: return pp->getGroupAddress().str();
         default: return "";
     }
 }
 
-bool IgmpQueryDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void IgmpQueryDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    IgmpQuery *pp = (IgmpQuery *)object; (void)pp;
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpQuery'", field);
+    }
+}
+
+omnetpp::cValue IgmpQueryDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
+    switch (field) {
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'IgmpQuery' as cValue -- field index out of range?", field);
+    }
+}
+
+void IgmpQueryDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpQuery'", field);
     }
 }
 
 const char *IgmpQueryDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *IgmpQueryDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr IgmpQueryDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    IgmpQuery *pp = (IgmpQuery *)object; (void)pp;
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
     switch (field) {
-        case FIELD_groupAddress: return toVoidPtr(&pp->getGroupAddress()); break;
-        default: return nullptr;
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void IgmpQueryDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    IgmpQuery *pp = omnetpp::fromAnyPtr<IgmpQuery>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'IgmpQuery'", field);
     }
 }
 
@@ -896,7 +973,7 @@ void Igmpv1Query::setUnused(uint8_t unused)
 class Igmpv1QueryDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_unused,
     };
@@ -906,34 +983,38 @@ class Igmpv1QueryDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv1QueryDescriptor)
 
 Igmpv1QueryDescriptor::Igmpv1QueryDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv1Query)), "inet::IgmpQuery")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv1QueryDescriptor::~Igmpv1QueryDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv1QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -943,34 +1024,34 @@ bool Igmpv1QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv1QueryDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv1QueryDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv1QueryDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv1QueryDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Igmpv1QueryDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_unused
@@ -980,11 +1061,11 @@ unsigned int Igmpv1QueryDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv1QueryDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "unused",
@@ -994,19 +1075,19 @@ const char *Igmpv1QueryDescriptor::getFieldName(int field) const
 
 int Igmpv1QueryDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "unused") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "unused") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv1QueryDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_unused
@@ -1016,112 +1097,178 @@ const char *Igmpv1QueryDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv1QueryDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv1QueryDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv1QueryDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv1QueryDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv1QueryDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv1Query *pp = (Igmpv1Query *)object; (void)pp;
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv1QueryDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv1QueryDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv1Query *pp = (Igmpv1Query *)object; (void)pp;
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv1Query'", field);
+    }
+}
+
+const char *Igmpv1QueryDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv1QueryDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv1QueryDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv1Query *pp = (Igmpv1Query *)object; (void)pp;
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
     switch (field) {
         case FIELD_unused: return ulong2string(pp->getUnused());
         default: return "";
     }
 }
 
-bool Igmpv1QueryDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv1QueryDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv1Query *pp = (Igmpv1Query *)object; (void)pp;
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
     switch (field) {
-        case FIELD_unused: pp->setUnused(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_unused: pp->setUnused(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Query'", field);
+    }
+}
+
+omnetpp::cValue Igmpv1QueryDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_unused: return (omnetpp::intval_t)(pp->getUnused());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv1Query' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv1QueryDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_unused: pp->setUnused(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Query'", field);
     }
 }
 
 const char *Igmpv1QueryDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Igmpv1QueryDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv1QueryDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv1Query *pp = (Igmpv1Query *)object; (void)pp;
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Igmpv1QueryDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv1Query *pp = omnetpp::fromAnyPtr<Igmpv1Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Query'", field);
     }
 }
 
@@ -1196,7 +1343,7 @@ void Igmpv1Report::setGroupAddress(const Ipv4Address& groupAddress)
 class Igmpv1ReportDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_unused,
         FIELD_groupAddress,
@@ -1207,34 +1354,38 @@ class Igmpv1ReportDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv1ReportDescriptor)
 
 Igmpv1ReportDescriptor::Igmpv1ReportDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv1Report)), "inet::IgmpMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv1ReportDescriptor::~Igmpv1ReportDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv1ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1244,34 +1395,34 @@ bool Igmpv1ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv1ReportDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv1ReportDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv1ReportDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv1ReportDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Igmpv1ReportDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_unused
@@ -1282,11 +1433,11 @@ unsigned int Igmpv1ReportDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv1ReportDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "unused",
@@ -1297,20 +1448,20 @@ const char *Igmpv1ReportDescriptor::getFieldName(int field) const
 
 int Igmpv1ReportDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'u' && strcmp(fieldName, "unused") == 0) return base+0;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "unused") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "groupAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv1ReportDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_unused
@@ -1321,67 +1472,83 @@ const char *Igmpv1ReportDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv1ReportDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv1ReportDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv1ReportDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv1ReportDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv1ReportDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv1Report *pp = (Igmpv1Report *)object; (void)pp;
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv1ReportDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv1ReportDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv1Report *pp = (Igmpv1Report *)object; (void)pp;
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv1Report'", field);
+    }
+}
+
+const char *Igmpv1ReportDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv1ReportDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv1ReportDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv1Report *pp = (Igmpv1Report *)object; (void)pp;
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
     switch (field) {
         case FIELD_unused: return ulong2string(pp->getUnused());
         case FIELD_groupAddress: return pp->getGroupAddress().str();
@@ -1389,46 +1556,97 @@ std::string Igmpv1ReportDescriptor::getFieldValueAsString(void *object, int fiel
     }
 }
 
-bool Igmpv1ReportDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv1ReportDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv1Report *pp = (Igmpv1Report *)object; (void)pp;
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
     switch (field) {
-        case FIELD_unused: pp->setUnused(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_unused: pp->setUnused(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Report'", field);
+    }
+}
+
+omnetpp::cValue Igmpv1ReportDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_unused: return (omnetpp::intval_t)(pp->getUnused());
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv1Report' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv1ReportDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_unused: pp->setUnused(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Report'", field);
     }
 }
 
 const char *Igmpv1ReportDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Igmpv1ReportDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv1ReportDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv1Report *pp = (Igmpv1Report *)object; (void)pp;
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
     switch (field) {
-        case FIELD_groupAddress: return toVoidPtr(&pp->getGroupAddress()); break;
-        default: return nullptr;
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Igmpv1ReportDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv1Report *pp = omnetpp::fromAnyPtr<Igmpv1Report>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv1Report'", field);
     }
 }
 
@@ -1488,7 +1706,7 @@ void Igmpv2Query::setMaxRespTimeCode(uint8_t maxRespTimeCode)
 class Igmpv2QueryDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_maxRespTimeCode,
     };
@@ -1498,34 +1716,38 @@ class Igmpv2QueryDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv2QueryDescriptor)
 
 Igmpv2QueryDescriptor::Igmpv2QueryDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv2Query)), "inet::IgmpQuery")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv2QueryDescriptor::~Igmpv2QueryDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv2QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1535,34 +1757,34 @@ bool Igmpv2QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv2QueryDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv2QueryDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv2QueryDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv2QueryDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Igmpv2QueryDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_maxRespTimeCode
@@ -1572,11 +1794,11 @@ unsigned int Igmpv2QueryDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv2QueryDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "maxRespTimeCode",
@@ -1586,19 +1808,19 @@ const char *Igmpv2QueryDescriptor::getFieldName(int field) const
 
 int Igmpv2QueryDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "maxRespTimeCode") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "maxRespTimeCode") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv2QueryDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_maxRespTimeCode
@@ -1608,112 +1830,178 @@ const char *Igmpv2QueryDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv2QueryDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv2QueryDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv2QueryDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv2QueryDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv2QueryDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv2Query *pp = (Igmpv2Query *)object; (void)pp;
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv2QueryDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv2QueryDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Query *pp = (Igmpv2Query *)object; (void)pp;
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv2Query'", field);
+    }
+}
+
+const char *Igmpv2QueryDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv2QueryDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv2QueryDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Query *pp = (Igmpv2Query *)object; (void)pp;
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
     switch (field) {
         case FIELD_maxRespTimeCode: return ulong2string(pp->getMaxRespTimeCode());
         default: return "";
     }
 }
 
-bool Igmpv2QueryDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv2QueryDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Query *pp = (Igmpv2Query *)object; (void)pp;
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
     switch (field) {
-        case FIELD_maxRespTimeCode: pp->setMaxRespTimeCode(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_maxRespTimeCode: pp->setMaxRespTimeCode(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Query'", field);
+    }
+}
+
+omnetpp::cValue Igmpv2QueryDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTimeCode: return (omnetpp::intval_t)(pp->getMaxRespTimeCode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv2Query' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv2QueryDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTimeCode: pp->setMaxRespTimeCode(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Query'", field);
     }
 }
 
 const char *Igmpv2QueryDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Igmpv2QueryDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv2QueryDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Query *pp = (Igmpv2Query *)object; (void)pp;
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Igmpv2QueryDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Query *pp = omnetpp::fromAnyPtr<Igmpv2Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Query'", field);
     }
 }
 
@@ -1788,7 +2076,7 @@ void Igmpv2Report::setGroupAddress(const Ipv4Address& groupAddress)
 class Igmpv2ReportDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_maxRespTime,
         FIELD_groupAddress,
@@ -1799,34 +2087,38 @@ class Igmpv2ReportDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv2ReportDescriptor)
 
 Igmpv2ReportDescriptor::Igmpv2ReportDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv2Report)), "inet::IgmpMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv2ReportDescriptor::~Igmpv2ReportDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv2ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1836,34 +2128,34 @@ bool Igmpv2ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv2ReportDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv2ReportDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv2ReportDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv2ReportDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Igmpv2ReportDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_maxRespTime
@@ -1874,11 +2166,11 @@ unsigned int Igmpv2ReportDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv2ReportDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "maxRespTime",
@@ -1889,20 +2181,20 @@ const char *Igmpv2ReportDescriptor::getFieldName(int field) const
 
 int Igmpv2ReportDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "maxRespTime") == 0) return base+0;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "maxRespTime") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "groupAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv2ReportDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_maxRespTime
@@ -1913,67 +2205,83 @@ const char *Igmpv2ReportDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv2ReportDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv2ReportDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv2ReportDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv2ReportDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv2ReportDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv2Report *pp = (Igmpv2Report *)object; (void)pp;
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv2ReportDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv2ReportDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Report *pp = (Igmpv2Report *)object; (void)pp;
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv2Report'", field);
+    }
+}
+
+const char *Igmpv2ReportDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv2ReportDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv2ReportDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Report *pp = (Igmpv2Report *)object; (void)pp;
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
     switch (field) {
         case FIELD_maxRespTime: return ulong2string(pp->getMaxRespTime());
         case FIELD_groupAddress: return pp->getGroupAddress().str();
@@ -1981,46 +2289,97 @@ std::string Igmpv2ReportDescriptor::getFieldValueAsString(void *object, int fiel
     }
 }
 
-bool Igmpv2ReportDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv2ReportDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Report *pp = (Igmpv2Report *)object; (void)pp;
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
     switch (field) {
-        case FIELD_maxRespTime: pp->setMaxRespTime(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_maxRespTime: pp->setMaxRespTime(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Report'", field);
+    }
+}
+
+omnetpp::cValue Igmpv2ReportDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTime: return (omnetpp::intval_t)(pp->getMaxRespTime());
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv2Report' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv2ReportDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTime: pp->setMaxRespTime(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Report'", field);
     }
 }
 
 const char *Igmpv2ReportDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Igmpv2ReportDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv2ReportDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Report *pp = (Igmpv2Report *)object; (void)pp;
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
     switch (field) {
-        case FIELD_groupAddress: return toVoidPtr(&pp->getGroupAddress()); break;
-        default: return nullptr;
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Igmpv2ReportDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Report *pp = omnetpp::fromAnyPtr<Igmpv2Report>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Report'", field);
     }
 }
 
@@ -2095,7 +2454,7 @@ void Igmpv2Leave::setGroupAddress(const Ipv4Address& groupAddress)
 class Igmpv2LeaveDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_maxRespTime,
         FIELD_groupAddress,
@@ -2106,34 +2465,38 @@ class Igmpv2LeaveDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv2LeaveDescriptor)
 
 Igmpv2LeaveDescriptor::Igmpv2LeaveDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv2Leave)), "inet::IgmpMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv2LeaveDescriptor::~Igmpv2LeaveDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv2LeaveDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2143,34 +2506,34 @@ bool Igmpv2LeaveDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv2LeaveDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv2LeaveDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv2LeaveDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv2LeaveDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Igmpv2LeaveDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_maxRespTime
@@ -2181,11 +2544,11 @@ unsigned int Igmpv2LeaveDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv2LeaveDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "maxRespTime",
@@ -2196,20 +2559,20 @@ const char *Igmpv2LeaveDescriptor::getFieldName(int field) const
 
 int Igmpv2LeaveDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "maxRespTime") == 0) return base+0;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupAddress") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "maxRespTime") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "groupAddress") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv2LeaveDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_maxRespTime
@@ -2220,67 +2583,83 @@ const char *Igmpv2LeaveDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv2LeaveDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv2LeaveDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv2LeaveDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv2LeaveDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv2LeaveDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv2Leave *pp = (Igmpv2Leave *)object; (void)pp;
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv2LeaveDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv2LeaveDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Leave *pp = (Igmpv2Leave *)object; (void)pp;
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv2Leave'", field);
+    }
+}
+
+const char *Igmpv2LeaveDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv2LeaveDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv2LeaveDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Leave *pp = (Igmpv2Leave *)object; (void)pp;
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
     switch (field) {
         case FIELD_maxRespTime: return ulong2string(pp->getMaxRespTime());
         case FIELD_groupAddress: return pp->getGroupAddress().str();
@@ -2288,46 +2667,97 @@ std::string Igmpv2LeaveDescriptor::getFieldValueAsString(void *object, int field
     }
 }
 
-bool Igmpv2LeaveDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv2LeaveDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv2Leave *pp = (Igmpv2Leave *)object; (void)pp;
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
     switch (field) {
-        case FIELD_maxRespTime: pp->setMaxRespTime(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_maxRespTime: pp->setMaxRespTime(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Leave'", field);
+    }
+}
+
+omnetpp::cValue Igmpv2LeaveDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTime: return (omnetpp::intval_t)(pp->getMaxRespTime());
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv2Leave' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv2LeaveDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
+    switch (field) {
+        case FIELD_maxRespTime: pp->setMaxRespTime(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Leave'", field);
     }
 }
 
 const char *Igmpv2LeaveDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Igmpv2LeaveDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv2LeaveDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv2Leave *pp = (Igmpv2Leave *)object; (void)pp;
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
     switch (field) {
-        case FIELD_groupAddress: return toVoidPtr(&pp->getGroupAddress()); break;
-        default: return nullptr;
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Igmpv2LeaveDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv2Leave *pp = omnetpp::fromAnyPtr<Igmpv2Leave>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv2Leave'", field);
     }
 }
 
@@ -2443,7 +2873,7 @@ void Igmpv3Query::setSourceList(const Ipv4AddressVector& sourceList)
 class Igmpv3QueryDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_resv,
         FIELD_suppressRouterProc,
@@ -2457,34 +2887,38 @@ class Igmpv3QueryDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv3QueryDescriptor)
 
 Igmpv3QueryDescriptor::Igmpv3QueryDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv3Query)), "inet::Igmpv2Query")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv3QueryDescriptor::~Igmpv3QueryDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv3QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2494,34 +2928,34 @@ bool Igmpv3QueryDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv3QueryDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv3QueryDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv3QueryDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv3QueryDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int Igmpv3QueryDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_resv
@@ -2535,11 +2969,11 @@ unsigned int Igmpv3QueryDescriptor::getFieldTypeFlags(int field) const
 
 const char *Igmpv3QueryDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "resv",
@@ -2553,23 +2987,23 @@ const char *Igmpv3QueryDescriptor::getFieldName(int field) const
 
 int Igmpv3QueryDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "resv") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "suppressRouterProc") == 0) return base+1;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "robustnessVariable") == 0) return base+2;
-    if (fieldName[0] == 'q' && strcmp(fieldName, "queryIntervalCode") == 0) return base+3;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sourceList") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "resv") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "suppressRouterProc") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "robustnessVariable") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "queryIntervalCode") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "sourceList") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv3QueryDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_resv
@@ -2583,102 +3017,159 @@ const char *Igmpv3QueryDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv3QueryDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv3QueryDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv3QueryDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv3QueryDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv3QueryDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv3Query *pp = (Igmpv3Query *)object; (void)pp;
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Igmpv3QueryDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv3QueryDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv3Query *pp = (Igmpv3Query *)object; (void)pp;
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv3Query'", field);
+    }
+}
+
+const char *Igmpv3QueryDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv3QueryDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv3QueryDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv3Query *pp = (Igmpv3Query *)object; (void)pp;
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
     switch (field) {
         case FIELD_resv: return ulong2string(pp->getResv());
         case FIELD_suppressRouterProc: return bool2string(pp->getSuppressRouterProc());
         case FIELD_robustnessVariable: return ulong2string(pp->getRobustnessVariable());
         case FIELD_queryIntervalCode: return ulong2string(pp->getQueryIntervalCode());
-        case FIELD_sourceList: {std::stringstream out; out << pp->getSourceList(); return out.str();}
+        case FIELD_sourceList: return "";
         default: return "";
     }
 }
 
-bool Igmpv3QueryDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv3QueryDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv3Query *pp = (Igmpv3Query *)object; (void)pp;
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
     switch (field) {
-        case FIELD_resv: pp->setResv(string2ulong(value)); return true;
-        case FIELD_suppressRouterProc: pp->setSuppressRouterProc(string2bool(value)); return true;
-        case FIELD_robustnessVariable: pp->setRobustnessVariable(string2ulong(value)); return true;
-        case FIELD_queryIntervalCode: pp->setQueryIntervalCode(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_resv: pp->setResv(string2ulong(value)); break;
+        case FIELD_suppressRouterProc: pp->setSuppressRouterProc(string2bool(value)); break;
+        case FIELD_robustnessVariable: pp->setRobustnessVariable(string2ulong(value)); break;
+        case FIELD_queryIntervalCode: pp->setQueryIntervalCode(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Query'", field);
+    }
+}
+
+omnetpp::cValue Igmpv3QueryDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_resv: return (omnetpp::intval_t)(pp->getResv());
+        case FIELD_suppressRouterProc: return pp->getSuppressRouterProc();
+        case FIELD_robustnessVariable: return (omnetpp::intval_t)(pp->getRobustnessVariable());
+        case FIELD_queryIntervalCode: return (omnetpp::intval_t)(pp->getQueryIntervalCode());
+        case FIELD_sourceList: return omnetpp::toAnyPtr(&pp->getSourceList()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv3Query' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv3QueryDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
+    switch (field) {
+        case FIELD_resv: pp->setResv(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_suppressRouterProc: pp->setSuppressRouterProc(value.boolValue()); break;
+        case FIELD_robustnessVariable: pp->setRobustnessVariable(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_queryIntervalCode: pp->setQueryIntervalCode(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Query'", field);
     }
 }
 
 const char *Igmpv3QueryDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_sourceList: return omnetpp::opp_typename(typeid(Ipv4AddressVector));
@@ -2686,31 +3177,38 @@ const char *Igmpv3QueryDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Igmpv3QueryDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv3QueryDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv3Query *pp = (Igmpv3Query *)object; (void)pp;
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
     switch (field) {
-        case FIELD_sourceList: return toVoidPtr(&pp->getSourceList()); break;
-        default: return nullptr;
+        case FIELD_sourceList: return omnetpp::toAnyPtr(&pp->getSourceList()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::GroupRecordType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::GroupRecordType"));
-    e->insert(MODE_IS_INCLUDE, "MODE_IS_INCLUDE");
-    e->insert(MODE_IS_EXCLUDE, "MODE_IS_EXCLUDE");
-    e->insert(CHANGE_TO_INCLUDE_MODE, "CHANGE_TO_INCLUDE_MODE");
-    e->insert(CHANGE_TO_EXCLUDE_MODE, "CHANGE_TO_EXCLUDE_MODE");
-    e->insert(ALLOW_NEW_SOURCES, "ALLOW_NEW_SOURCES");
-    e->insert(BLOCK_OLD_SOURCE, "BLOCK_OLD_SOURCE");
-)
+void Igmpv3QueryDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv3Query *pp = omnetpp::fromAnyPtr<Igmpv3Query>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Query'", field);
+    }
+}
+
+Register_Enum(inet::GroupRecordType, (inet::GroupRecordType::MODE_IS_INCLUDE, inet::GroupRecordType::MODE_IS_EXCLUDE, inet::GroupRecordType::CHANGE_TO_INCLUDE_MODE, inet::GroupRecordType::CHANGE_TO_EXCLUDE_MODE, inet::GroupRecordType::ALLOW_NEW_SOURCES, inet::GroupRecordType::BLOCK_OLD_SOURCE));
 
 GroupRecord::GroupRecord()
 {
@@ -2807,7 +3305,7 @@ size_t GroupRecord::getAuxDataArraySize() const
 
 uint32_t GroupRecord::getAuxData(size_t k) const
 {
-    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size auxData_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)auxData_arraysize, (unsigned long)k);
     return this->auxData[k];
 }
 
@@ -2826,13 +3324,13 @@ void GroupRecord::setAuxDataArraySize(size_t newSize)
 
 void GroupRecord::setAuxData(size_t k, uint32_t auxData)
 {
-    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)auxData_arraysize, (unsigned long)k);
     this->auxData[k] = auxData;
 }
 
 void GroupRecord::insertAuxData(size_t k, uint32_t auxData)
 {
-    if (k > auxData_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > auxData_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)auxData_arraysize, (unsigned long)k);
     size_t newSize = auxData_arraysize + 1;
     uint32_t *auxData2 = new uint32_t[newSize];
     size_t i;
@@ -2846,14 +3344,14 @@ void GroupRecord::insertAuxData(size_t k, uint32_t auxData)
     auxData_arraysize = newSize;
 }
 
-void GroupRecord::insertAuxData(uint32_t auxData)
+void GroupRecord::appendAuxData(uint32_t auxData)
 {
     insertAuxData(auxData_arraysize, auxData);
 }
 
 void GroupRecord::eraseAuxData(size_t k)
 {
-    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= auxData_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)auxData_arraysize, (unsigned long)k);
     size_t newSize = auxData_arraysize - 1;
     uint32_t *auxData2 = (newSize == 0) ? nullptr : new uint32_t[newSize];
     size_t i;
@@ -2869,7 +3367,7 @@ void GroupRecord::eraseAuxData(size_t k)
 class GroupRecordDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_recordType,
         FIELD_groupAddress,
@@ -2882,34 +3380,38 @@ class GroupRecordDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(GroupRecordDescriptor)
 
 GroupRecordDescriptor::GroupRecordDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::GroupRecord)), "")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 GroupRecordDescriptor::~GroupRecordDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool GroupRecordDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2919,52 +3421,52 @@ bool GroupRecordDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **GroupRecordDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "packetData",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *GroupRecordDescriptor::getProperty(const char *propertyname) const
+const char *GroupRecordDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "packetData")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "packetData")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int GroupRecordDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 4+basedesc->getFieldCount() : 4;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 4+base->getFieldCount() : 4;
 }
 
 unsigned int GroupRecordDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_recordType
         0,    // FIELD_groupAddress
         FD_ISCOMPOUND,    // FIELD_sourceList
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_auxData
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_auxData
     };
     return (field >= 0 && field < 4) ? fieldTypeFlags[field] : 0;
 }
 
 const char *GroupRecordDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "recordType",
@@ -2977,22 +3479,22 @@ const char *GroupRecordDescriptor::getFieldName(int field) const
 
 int GroupRecordDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "recordType") == 0) return base+0;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupAddress") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sourceList") == 0) return base+2;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "auxData") == 0) return base+3;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "recordType") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "groupAddress") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "sourceList") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "auxData") == 0) return baseIndex + 3;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *GroupRecordDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_recordType
@@ -3005,11 +3507,11 @@ const char *GroupRecordDescriptor::getFieldTypeString(int field) const
 
 const char **GroupRecordDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_recordType: {
@@ -3020,93 +3522,148 @@ const char **GroupRecordDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *GroupRecordDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *GroupRecordDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_recordType:
-            if (!strcmp(propertyname, "enum")) return "GroupRecordType";
-            if (!strcmp(propertyname, "enum")) return "inet::GroupRecordType";
+            if (!strcmp(propertyName, "enum")) return "GroupRecordType";
+            if (!strcmp(propertyName, "enum")) return "inet::GroupRecordType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int GroupRecordDescriptor::getFieldArraySize(void *object, int field) const
+int GroupRecordDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    GroupRecord *pp = (GroupRecord *)object; (void)pp;
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
     switch (field) {
         case FIELD_auxData: return pp->getAuxDataArraySize();
         default: return 0;
     }
 }
 
-const char *GroupRecordDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void GroupRecordDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GroupRecord *pp = (GroupRecord *)object; (void)pp;
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
+    switch (field) {
+        case FIELD_auxData: pp->setAuxDataArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'GroupRecord'", field);
+    }
+}
+
+const char *GroupRecordDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string GroupRecordDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string GroupRecordDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    GroupRecord *pp = (GroupRecord *)object; (void)pp;
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
     switch (field) {
         case FIELD_recordType: return enum2string(pp->getRecordType(), "inet::GroupRecordType");
         case FIELD_groupAddress: return pp->getGroupAddress().str();
-        case FIELD_sourceList: {std::stringstream out; out << pp->getSourceList(); return out.str();}
+        case FIELD_sourceList: return "";
         case FIELD_auxData: return ulong2string(pp->getAuxData(i));
         default: return "";
     }
 }
 
-bool GroupRecordDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void GroupRecordDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    GroupRecord *pp = (GroupRecord *)object; (void)pp;
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
     switch (field) {
-        case FIELD_recordType: pp->setRecordType((inet::GroupRecordType)string2enum(value, "inet::GroupRecordType")); return true;
-        case FIELD_auxData: pp->setAuxData(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_recordType: pp->setRecordType((inet::GroupRecordType)string2enum(value, "inet::GroupRecordType")); break;
+        case FIELD_auxData: pp->setAuxData(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GroupRecord'", field);
+    }
+}
+
+omnetpp::cValue GroupRecordDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
+    switch (field) {
+        case FIELD_recordType: return pp->getRecordType();
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        case FIELD_sourceList: return omnetpp::toAnyPtr(&pp->getSourceList()); break;
+        case FIELD_auxData: return (omnetpp::intval_t)(pp->getAuxData(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'GroupRecord' as cValue -- field index out of range?", field);
+    }
+}
+
+void GroupRecordDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
+    switch (field) {
+        case FIELD_recordType: pp->setRecordType((inet::GroupRecordType)value.intValue()); break;
+        case FIELD_auxData: pp->setAuxData(i,omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GroupRecord'", field);
     }
 }
 
 const char *GroupRecordDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_sourceList: return omnetpp::opp_typename(typeid(Ipv4AddressVector));
@@ -3114,19 +3671,35 @@ const char *GroupRecordDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *GroupRecordDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr GroupRecordDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    GroupRecord *pp = (GroupRecord *)object; (void)pp;
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
     switch (field) {
-        case FIELD_groupAddress: return toVoidPtr(&pp->getGroupAddress()); break;
-        case FIELD_sourceList: return toVoidPtr(&pp->getSourceList()); break;
-        default: return nullptr;
+        case FIELD_groupAddress: return omnetpp::toAnyPtr(&pp->getGroupAddress()); break;
+        case FIELD_sourceList: return omnetpp::toAnyPtr(&pp->getSourceList()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void GroupRecordDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    GroupRecord *pp = omnetpp::fromAnyPtr<GroupRecord>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'GroupRecord'", field);
     }
 }
 
@@ -3221,7 +3794,7 @@ size_t Igmpv3Report::getGroupRecordArraySize() const
 
 const GroupRecord& Igmpv3Report::getGroupRecord(size_t k) const
 {
-    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size groupRecord_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)groupRecord_arraysize, (unsigned long)k);
     return this->groupRecord[k];
 }
 
@@ -3239,15 +3812,15 @@ void Igmpv3Report::setGroupRecordArraySize(size_t newSize)
 
 void Igmpv3Report::setGroupRecord(size_t k, const GroupRecord& groupRecord)
 {
-    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)groupRecord_arraysize, (unsigned long)k);
     handleChange();
     this->groupRecord[k] = groupRecord;
 }
 
 void Igmpv3Report::insertGroupRecord(size_t k, const GroupRecord& groupRecord)
 {
+    if (k > groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)groupRecord_arraysize, (unsigned long)k);
     handleChange();
-    if (k > groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = groupRecord_arraysize + 1;
     GroupRecord *groupRecord2 = new GroupRecord[newSize];
     size_t i;
@@ -3261,14 +3834,14 @@ void Igmpv3Report::insertGroupRecord(size_t k, const GroupRecord& groupRecord)
     groupRecord_arraysize = newSize;
 }
 
-void Igmpv3Report::insertGroupRecord(const GroupRecord& groupRecord)
+void Igmpv3Report::appendGroupRecord(const GroupRecord& groupRecord)
 {
     insertGroupRecord(groupRecord_arraysize, groupRecord);
 }
 
 void Igmpv3Report::eraseGroupRecord(size_t k)
 {
-    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= groupRecord_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)groupRecord_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = groupRecord_arraysize - 1;
     GroupRecord *groupRecord2 = (newSize == 0) ? nullptr : new GroupRecord[newSize];
@@ -3285,7 +3858,7 @@ void Igmpv3Report::eraseGroupRecord(size_t k)
 class Igmpv3ReportDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_resv1,
         FIELD_resv2,
@@ -3297,34 +3870,38 @@ class Igmpv3ReportDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Igmpv3ReportDescriptor)
 
 Igmpv3ReportDescriptor::Igmpv3ReportDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Igmpv3Report)), "inet::IgmpMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Igmpv3ReportDescriptor::~Igmpv3ReportDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Igmpv3ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3334,50 +3911,50 @@ bool Igmpv3ReportDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Igmpv3ReportDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Igmpv3ReportDescriptor::getProperty(const char *propertyname) const
+const char *Igmpv3ReportDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Igmpv3ReportDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Igmpv3ReportDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_resv1
         FD_ISEDITABLE,    // FIELD_resv2
-        FD_ISARRAY | FD_ISCOMPOUND,    // FIELD_groupRecord
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISRESIZABLE,    // FIELD_groupRecord
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Igmpv3ReportDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "resv1",
@@ -3389,21 +3966,21 @@ const char *Igmpv3ReportDescriptor::getFieldName(int field) const
 
 int Igmpv3ReportDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "resv1") == 0) return base+0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "resv2") == 0) return base+1;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "groupRecord") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "resv1") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "resv2") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "groupRecord") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Igmpv3ReportDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_resv1
@@ -3415,99 +3992,153 @@ const char *Igmpv3ReportDescriptor::getFieldTypeString(int field) const
 
 const char **Igmpv3ReportDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Igmpv3ReportDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Igmpv3ReportDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Igmpv3ReportDescriptor::getFieldArraySize(void *object, int field) const
+int Igmpv3ReportDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Igmpv3Report *pp = (Igmpv3Report *)object; (void)pp;
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
     switch (field) {
         case FIELD_groupRecord: return pp->getGroupRecordArraySize();
         default: return 0;
     }
 }
 
-const char *Igmpv3ReportDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Igmpv3ReportDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv3Report *pp = (Igmpv3Report *)object; (void)pp;
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_groupRecord: pp->setGroupRecordArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Igmpv3Report'", field);
+    }
+}
+
+const char *Igmpv3ReportDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Igmpv3ReportDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Igmpv3ReportDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Igmpv3Report *pp = (Igmpv3Report *)object; (void)pp;
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
     switch (field) {
         case FIELD_resv1: return ulong2string(pp->getResv1());
         case FIELD_resv2: return ulong2string(pp->getResv2());
-        case FIELD_groupRecord: {std::stringstream out; out << pp->getGroupRecord(i); return out.str();}
+        case FIELD_groupRecord: return "";
         default: return "";
     }
 }
 
-bool Igmpv3ReportDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Igmpv3ReportDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Igmpv3Report *pp = (Igmpv3Report *)object; (void)pp;
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
     switch (field) {
-        case FIELD_resv1: pp->setResv1(string2ulong(value)); return true;
-        case FIELD_resv2: pp->setResv2(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_resv1: pp->setResv1(string2ulong(value)); break;
+        case FIELD_resv2: pp->setResv2(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Report'", field);
+    }
+}
+
+omnetpp::cValue Igmpv3ReportDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_resv1: return (omnetpp::intval_t)(pp->getResv1());
+        case FIELD_resv2: return (omnetpp::intval_t)(pp->getResv2());
+        case FIELD_groupRecord: return omnetpp::toAnyPtr(&pp->getGroupRecord(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Igmpv3Report' as cValue -- field index out of range?", field);
+    }
+}
+
+void Igmpv3ReportDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
+    switch (field) {
+        case FIELD_resv1: pp->setResv1(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_resv2: pp->setResv2(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Report'", field);
     }
 }
 
 const char *Igmpv3ReportDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_groupRecord: return omnetpp::opp_typename(typeid(GroupRecord));
@@ -3515,20 +4146,40 @@ const char *Igmpv3ReportDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *Igmpv3ReportDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Igmpv3ReportDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Igmpv3Report *pp = (Igmpv3Report *)object; (void)pp;
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
     switch (field) {
-        case FIELD_groupRecord: return toVoidPtr(&pp->getGroupRecord(i)); break;
-        default: return nullptr;
+        case FIELD_groupRecord: return omnetpp::toAnyPtr(&pp->getGroupRecord(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Igmpv3ReportDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Igmpv3Report *pp = omnetpp::fromAnyPtr<Igmpv3Report>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Igmpv3Report'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

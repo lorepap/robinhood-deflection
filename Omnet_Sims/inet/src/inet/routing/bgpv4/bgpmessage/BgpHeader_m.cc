@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/routing/bgpv4/bgpmessage/BgpHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/routing/bgpv4/bgpmessage/BgpHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "BgpHeader_m.h"
 
 namespace omnetpp {
@@ -149,64 +150,8 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace bgp {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(BgpAsPathSegment)
 
@@ -266,12 +211,12 @@ void BgpAsPathSegment::parsimUnpack(omnetpp::cCommBuffer *b)
     }
 }
 
-inet::bgp::BgpPathSegmentType BgpAsPathSegment::getType() const
+BgpPathSegmentType BgpAsPathSegment::getType() const
 {
     return this->type;
 }
 
-void BgpAsPathSegment::setType(inet::bgp::BgpPathSegmentType type)
+void BgpAsPathSegment::setType(BgpPathSegmentType type)
 {
     this->type = type;
 }
@@ -293,7 +238,7 @@ size_t BgpAsPathSegment::getAsValueArraySize() const
 
 uint16_t BgpAsPathSegment::getAsValue(size_t k) const
 {
-    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size asValue_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)asValue_arraysize, (unsigned long)k);
     return this->asValue[k];
 }
 
@@ -312,13 +257,13 @@ void BgpAsPathSegment::setAsValueArraySize(size_t newSize)
 
 void BgpAsPathSegment::setAsValue(size_t k, uint16_t asValue)
 {
-    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)asValue_arraysize, (unsigned long)k);
     this->asValue[k] = asValue;
 }
 
 void BgpAsPathSegment::insertAsValue(size_t k, uint16_t asValue)
 {
-    if (k > asValue_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > asValue_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)asValue_arraysize, (unsigned long)k);
     size_t newSize = asValue_arraysize + 1;
     uint16_t *asValue2 = new uint16_t[newSize];
     size_t i;
@@ -332,14 +277,14 @@ void BgpAsPathSegment::insertAsValue(size_t k, uint16_t asValue)
     asValue_arraysize = newSize;
 }
 
-void BgpAsPathSegment::insertAsValue(uint16_t asValue)
+void BgpAsPathSegment::appendAsValue(uint16_t asValue)
 {
     insertAsValue(asValue_arraysize, asValue);
 }
 
 void BgpAsPathSegment::eraseAsValue(size_t k)
 {
-    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= asValue_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)asValue_arraysize, (unsigned long)k);
     size_t newSize = asValue_arraysize - 1;
     uint16_t *asValue2 = (newSize == 0) ? nullptr : new uint16_t[newSize];
     size_t i;
@@ -355,7 +300,7 @@ void BgpAsPathSegment::eraseAsValue(size_t k)
 class BgpAsPathSegmentDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_length,
@@ -367,34 +312,38 @@ class BgpAsPathSegmentDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpAsPathSegmentDescriptor)
 
 BgpAsPathSegmentDescriptor::BgpAsPathSegmentDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpAsPathSegment)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpAsPathSegmentDescriptor::~BgpAsPathSegmentDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpAsPathSegmentDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -404,50 +353,50 @@ bool BgpAsPathSegmentDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpAsPathSegmentDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpAsPathSegmentDescriptor::getProperty(const char *propertyname) const
+const char *BgpAsPathSegmentDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpAsPathSegmentDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int BgpAsPathSegmentDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_length
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_asValue
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_asValue
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpAsPathSegmentDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -459,21 +408,21 @@ const char *BgpAsPathSegmentDescriptor::getFieldName(int field) const
 
 int BgpAsPathSegmentDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+1;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "asValue") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "asValue") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpAsPathSegmentDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::bgp::BgpPathSegmentType",    // FIELD_type
@@ -485,11 +434,11 @@ const char *BgpAsPathSegmentDescriptor::getFieldTypeString(int field) const
 
 const char **BgpAsPathSegmentDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -500,60 +449,77 @@ const char **BgpAsPathSegmentDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *BgpAsPathSegmentDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpAsPathSegmentDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::bgp::BgpPathSegmentType";
+            if (!strcmp(propertyName, "enum")) return "inet::bgp::BgpPathSegmentType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpAsPathSegmentDescriptor::getFieldArraySize(void *object, int field) const
+int BgpAsPathSegmentDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpAsPathSegment *pp = (BgpAsPathSegment *)object; (void)pp;
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
     switch (field) {
         case FIELD_asValue: return pp->getAsValueArraySize();
         default: return 0;
     }
 }
 
-const char *BgpAsPathSegmentDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpAsPathSegmentDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpAsPathSegment *pp = (BgpAsPathSegment *)object; (void)pp;
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
+    switch (field) {
+        case FIELD_asValue: pp->setAsValueArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpAsPathSegment'", field);
+    }
+}
+
+const char *BgpAsPathSegmentDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpAsPathSegmentDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpAsPathSegmentDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpAsPathSegment *pp = (BgpAsPathSegment *)object; (void)pp;
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::bgp::BgpPathSegmentType");
         case FIELD_length: return ulong2string(pp->getLength());
@@ -562,57 +528,103 @@ std::string BgpAsPathSegmentDescriptor::getFieldValueAsString(void *object, int 
     }
 }
 
-bool BgpAsPathSegmentDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpAsPathSegmentDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpAsPathSegment *pp = (BgpAsPathSegment *)object; (void)pp;
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
     switch (field) {
-        case FIELD_length: pp->setLength(string2ulong(value)); return true;
-        case FIELD_asValue: pp->setAsValue(i,string2ulong(value)); return true;
-        default: return false;
+        case FIELD_length: pp->setLength(string2ulong(value)); break;
+        case FIELD_asValue: pp->setAsValue(i,string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpAsPathSegment'", field);
+    }
+}
+
+omnetpp::cValue BgpAsPathSegmentDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_length: return (omnetpp::intval_t)(pp->getLength());
+        case FIELD_asValue: return (omnetpp::intval_t)(pp->getAsValue(i));
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpAsPathSegment' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpAsPathSegmentDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_asValue: pp->setAsValue(i,omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpAsPathSegment'", field);
     }
 }
 
 const char *BgpAsPathSegmentDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpAsPathSegmentDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpAsPathSegmentDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpAsPathSegment *pp = (BgpAsPathSegment *)object; (void)pp;
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::bgp::BgpType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::bgp::BgpType"));
-    e->insert(BGP_OPEN, "BGP_OPEN");
-    e->insert(BGP_UPDATE, "BGP_UPDATE");
-    e->insert(BGP_NOTIFICATION, "BGP_NOTIFICATION");
-    e->insert(BGP_KEEPALIVE, "BGP_KEEPALIVE");
-)
+void BgpAsPathSegmentDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpAsPathSegment *pp = omnetpp::fromAnyPtr<BgpAsPathSegment>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpAsPathSegment'", field);
+    }
+}
+
+Register_Enum(inet::bgp::BgpType, (inet::bgp::BgpType::BGP_OPEN, inet::bgp::BgpType::BGP_UPDATE, inet::bgp::BgpType::BGP_NOTIFICATION, inet::bgp::BgpType::BGP_KEEPALIVE));
 
 Register_Class(BgpHeader)
 
@@ -672,13 +684,13 @@ size_t BgpHeader::getMarkerArraySize() const
 
 uint8_t BgpHeader::getMarker(size_t k) const
 {
-    if (k >= 16) throw omnetpp::cRuntimeError("Array of size 16 indexed by %lu", (unsigned long)k);
+    if (k >= 16) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)16, (unsigned long)k);
     return this->marker[k];
 }
 
 void BgpHeader::setMarker(size_t k, uint8_t marker)
 {
-    if (k >= 16) throw omnetpp::cRuntimeError("Array of size 16 indexed by %lu", (unsigned long)k);
+    if (k >= 16) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)16, (unsigned long)k);
     handleChange();
     this->marker[k] = marker;
 }
@@ -694,12 +706,12 @@ void BgpHeader::setTotalLength(uint16_t totalLength)
     this->totalLength = totalLength;
 }
 
-inet::bgp::BgpType BgpHeader::getType() const
+BgpType BgpHeader::getType() const
 {
     return this->type;
 }
 
-void BgpHeader::setType(inet::bgp::BgpType type)
+void BgpHeader::setType(BgpType type)
 {
     handleChange();
     this->type = type;
@@ -708,7 +720,7 @@ void BgpHeader::setType(inet::bgp::BgpType type)
 class BgpHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_marker,
         FIELD_totalLength,
@@ -720,34 +732,38 @@ class BgpHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpHeaderDescriptor)
 
 BgpHeaderDescriptor::BgpHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpHeader)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpHeaderDescriptor::~BgpHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -757,50 +773,50 @@ bool BgpHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpHeaderDescriptor::getProperty(const char *propertyname) const
+const char *BgpHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int BgpHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISARRAY | FD_ISEDITABLE,    // FIELD_marker
         FD_ISEDITABLE,    // FIELD_totalLength
-        0,    // FIELD_type
+        FD_ISEDITABLE,    // FIELD_type
     };
     return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "marker",
@@ -812,21 +828,21 @@ const char *BgpHeaderDescriptor::getFieldName(int field) const
 
 int BgpHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "marker") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "totalLength") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "marker") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "totalLength") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_marker
@@ -838,11 +854,11 @@ const char *BgpHeaderDescriptor::getFieldTypeString(int field) const
 
 const char **BgpHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -853,60 +869,76 @@ const char **BgpHeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *BgpHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::bgp::BgpType";
+            if (!strcmp(propertyName, "enum")) return "inet::bgp::BgpType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int BgpHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpHeader *pp = (BgpHeader *)object; (void)pp;
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
     switch (field) {
         case FIELD_marker: return 16;
         default: return 0;
     }
 }
 
-const char *BgpHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpHeader *pp = (BgpHeader *)object; (void)pp;
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpHeader'", field);
+    }
+}
+
+const char *BgpHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpHeader *pp = (BgpHeader *)object; (void)pp;
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
     switch (field) {
         case FIELD_marker: return ulong2string(pp->getMarker(i));
         case FIELD_totalLength: return ulong2string(pp->getTotalLength());
@@ -915,46 +947,101 @@ std::string BgpHeaderDescriptor::getFieldValueAsString(void *object, int field, 
     }
 }
 
-bool BgpHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpHeader *pp = (BgpHeader *)object; (void)pp;
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_marker: pp->setMarker(i,string2ulong(value)); return true;
-        case FIELD_totalLength: pp->setTotalLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_marker: pp->setMarker(i,string2ulong(value)); break;
+        case FIELD_totalLength: pp->setTotalLength(string2ulong(value)); break;
+        case FIELD_type: pp->setType((inet::bgp::BgpType)string2enum(value, "inet::bgp::BgpType")); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpHeader'", field);
+    }
+}
+
+omnetpp::cValue BgpHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_marker: return (omnetpp::intval_t)(pp->getMarker(i));
+        case FIELD_totalLength: return (omnetpp::intval_t)(pp->getTotalLength());
+        case FIELD_type: return static_cast<int>(pp->getType());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_marker: pp->setMarker(i,omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_totalLength: pp->setTotalLength(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_type: pp->setType(static_cast<inet::bgp::BgpType>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpHeader'", field);
     }
 }
 
 const char *BgpHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpHeader *pp = (BgpHeader *)object; (void)pp;
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpHeader *pp = omnetpp::fromAnyPtr<BgpHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpHeader'", field);
     }
 }
 
@@ -999,7 +1086,7 @@ void BgpKeepAliveMessage::parsimUnpack(omnetpp::cCommBuffer *b)
 class BgpKeepAliveMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -1008,34 +1095,38 @@ class BgpKeepAliveMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpKeepAliveMessageDescriptor)
 
 BgpKeepAliveMessageDescriptor::BgpKeepAliveMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpKeepAliveMessage)), "inet::bgp::BgpHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpKeepAliveMessageDescriptor::~BgpKeepAliveMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpKeepAliveMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1045,170 +1136,234 @@ bool BgpKeepAliveMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpKeepAliveMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpKeepAliveMessageDescriptor::getProperty(const char *propertyname) const
+const char *BgpKeepAliveMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpKeepAliveMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int BgpKeepAliveMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *BgpKeepAliveMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int BgpKeepAliveMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpKeepAliveMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **BgpKeepAliveMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpKeepAliveMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpKeepAliveMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpKeepAliveMessageDescriptor::getFieldArraySize(void *object, int field) const
+int BgpKeepAliveMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpKeepAliveMessage *pp = (BgpKeepAliveMessage *)object; (void)pp;
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpKeepAliveMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpKeepAliveMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpKeepAliveMessage *pp = (BgpKeepAliveMessage *)object; (void)pp;
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpKeepAliveMessage'", field);
+    }
+}
+
+const char *BgpKeepAliveMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpKeepAliveMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpKeepAliveMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpKeepAliveMessage *pp = (BgpKeepAliveMessage *)object; (void)pp;
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool BgpKeepAliveMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpKeepAliveMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpKeepAliveMessage *pp = (BgpKeepAliveMessage *)object; (void)pp;
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpKeepAliveMessage'", field);
+    }
+}
+
+omnetpp::cValue BgpKeepAliveMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpKeepAliveMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpKeepAliveMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpKeepAliveMessage'", field);
     }
 }
 
 const char *BgpKeepAliveMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *BgpKeepAliveMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpKeepAliveMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpKeepAliveMessage *pp = (BgpKeepAliveMessage *)object; (void)pp;
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpKeepAliveMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpKeepAliveMessage *pp = omnetpp::fromAnyPtr<BgpKeepAliveMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpKeepAliveMessage'", field);
     }
 }
 
@@ -1273,7 +1428,7 @@ void BgpOptionalParameterBase::setParameterValueLength(unsigned short parameterV
 class BgpOptionalParameterBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_parameterType,
         FIELD_parameterValueLength,
@@ -1284,34 +1439,38 @@ class BgpOptionalParameterBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpOptionalParameterBaseDescriptor)
 
 BgpOptionalParameterBaseDescriptor::BgpOptionalParameterBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpOptionalParameterBase)), "")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpOptionalParameterBaseDescriptor::~BgpOptionalParameterBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpOptionalParameterBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1321,35 +1480,35 @@ bool BgpOptionalParameterBaseDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **BgpOptionalParameterBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "packetData",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpOptionalParameterBaseDescriptor::getProperty(const char *propertyname) const
+const char *BgpOptionalParameterBaseDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "packetData")) return "";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "packetData")) return "";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpOptionalParameterBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int BgpOptionalParameterBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_parameterType
@@ -1360,11 +1519,11 @@ unsigned int BgpOptionalParameterBaseDescriptor::getFieldTypeFlags(int field) co
 
 const char *BgpOptionalParameterBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "parameterType",
@@ -1375,20 +1534,20 @@ const char *BgpOptionalParameterBaseDescriptor::getFieldName(int field) const
 
 int BgpOptionalParameterBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameterType") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameterValueLength") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "parameterType") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "parameterValueLength") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpOptionalParameterBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_parameterType
@@ -1399,67 +1558,83 @@ const char *BgpOptionalParameterBaseDescriptor::getFieldTypeString(int field) co
 
 const char **BgpOptionalParameterBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpOptionalParameterBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpOptionalParameterBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpOptionalParameterBaseDescriptor::getFieldArraySize(void *object, int field) const
+int BgpOptionalParameterBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterBase *pp = (BgpOptionalParameterBase *)object; (void)pp;
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpOptionalParameterBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpOptionalParameterBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterBase *pp = (BgpOptionalParameterBase *)object; (void)pp;
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpOptionalParameterBase'", field);
+    }
+}
+
+const char *BgpOptionalParameterBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpOptionalParameterBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpOptionalParameterBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterBase *pp = (BgpOptionalParameterBase *)object; (void)pp;
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
     switch (field) {
         case FIELD_parameterType: return long2string(pp->getParameterType());
         case FIELD_parameterValueLength: return ulong2string(pp->getParameterValueLength());
@@ -1467,46 +1642,98 @@ std::string BgpOptionalParameterBaseDescriptor::getFieldValueAsString(void *obje
     }
 }
 
-bool BgpOptionalParameterBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpOptionalParameterBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterBase *pp = (BgpOptionalParameterBase *)object; (void)pp;
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
     switch (field) {
-        case FIELD_parameterType: pp->setParameterType(string2long(value)); return true;
-        case FIELD_parameterValueLength: pp->setParameterValueLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_parameterType: pp->setParameterType(string2long(value)); break;
+        case FIELD_parameterValueLength: pp->setParameterValueLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterBase'", field);
+    }
+}
+
+omnetpp::cValue BgpOptionalParameterBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameterType: return pp->getParameterType();
+        case FIELD_parameterValueLength: return (omnetpp::intval_t)(pp->getParameterValueLength());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpOptionalParameterBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpOptionalParameterBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameterType: pp->setParameterType(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_parameterValueLength: pp->setParameterValueLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterBase'", field);
     }
 }
 
 const char *BgpOptionalParameterBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpOptionalParameterBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpOptionalParameterBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterBase *pp = (BgpOptionalParameterBase *)object; (void)pp;
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpOptionalParameterBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterBase *pp = omnetpp::fromAnyPtr<BgpOptionalParameterBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterBase'", field);
     }
 }
 
@@ -1569,7 +1796,7 @@ size_t BgpOptionalParameterRaw::getValueArraySize() const
 
 char BgpOptionalParameterRaw::getValue(size_t k) const
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size value_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     return this->value[k];
 }
 
@@ -1588,13 +1815,13 @@ void BgpOptionalParameterRaw::setValueArraySize(size_t newSize)
 
 void BgpOptionalParameterRaw::setValue(size_t k, char value)
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     this->value[k] = value;
 }
 
 void BgpOptionalParameterRaw::insertValue(size_t k, char value)
 {
-    if (k > value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     size_t newSize = value_arraysize + 1;
     char *value2 = new char[newSize];
     size_t i;
@@ -1608,14 +1835,14 @@ void BgpOptionalParameterRaw::insertValue(size_t k, char value)
     value_arraysize = newSize;
 }
 
-void BgpOptionalParameterRaw::insertValue(char value)
+void BgpOptionalParameterRaw::appendValue(char value)
 {
     insertValue(value_arraysize, value);
 }
 
 void BgpOptionalParameterRaw::eraseValue(size_t k)
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     size_t newSize = value_arraysize - 1;
     char *value2 = (newSize == 0) ? nullptr : new char[newSize];
     size_t i;
@@ -1631,7 +1858,7 @@ void BgpOptionalParameterRaw::eraseValue(size_t k)
 class BgpOptionalParameterRawDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -1641,34 +1868,38 @@ class BgpOptionalParameterRawDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpOptionalParameterRawDescriptor)
 
 BgpOptionalParameterRawDescriptor::BgpOptionalParameterRawDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpOptionalParameterRaw)), "inet::bgp::BgpOptionalParameterBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpOptionalParameterRawDescriptor::~BgpOptionalParameterRawDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpOptionalParameterRawDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1678,48 +1909,48 @@ bool BgpOptionalParameterRawDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpOptionalParameterRawDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpOptionalParameterRawDescriptor::getProperty(const char *propertyname) const
+const char *BgpOptionalParameterRawDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpOptionalParameterRawDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpOptionalParameterRawDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISEDITABLE,    // FIELD_value
+        FD_ISARRAY | FD_ISEDITABLE | FD_ISRESIZABLE,    // FIELD_value
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpOptionalParameterRawDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -1729,19 +1960,19 @@ const char *BgpOptionalParameterRawDescriptor::getFieldName(int field) const
 
 int BgpOptionalParameterRawDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpOptionalParameterRawDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "char",    // FIELD_value
@@ -1751,113 +1982,180 @@ const char *BgpOptionalParameterRawDescriptor::getFieldTypeString(int field) con
 
 const char **BgpOptionalParameterRawDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpOptionalParameterRawDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpOptionalParameterRawDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpOptionalParameterRawDescriptor::getFieldArraySize(void *object, int field) const
+int BgpOptionalParameterRawDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterRaw *pp = (BgpOptionalParameterRaw *)object; (void)pp;
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
     switch (field) {
         case FIELD_value: return pp->getValueArraySize();
         default: return 0;
     }
 }
 
-const char *BgpOptionalParameterRawDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpOptionalParameterRawDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterRaw *pp = (BgpOptionalParameterRaw *)object; (void)pp;
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValueArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpOptionalParameterRaw'", field);
+    }
+}
+
+const char *BgpOptionalParameterRawDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpOptionalParameterRawDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpOptionalParameterRawDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterRaw *pp = (BgpOptionalParameterRaw *)object; (void)pp;
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
     switch (field) {
         case FIELD_value: return long2string(pp->getValue(i));
         default: return "";
     }
 }
 
-bool BgpOptionalParameterRawDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpOptionalParameterRawDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterRaw *pp = (BgpOptionalParameterRaw *)object; (void)pp;
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
     switch (field) {
-        case FIELD_value: pp->setValue(i,string2long(value)); return true;
-        default: return false;
+        case FIELD_value: pp->setValue(i,string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterRaw'", field);
+    }
+}
+
+omnetpp::cValue BgpOptionalParameterRawDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return pp->getValue(i);
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpOptionalParameterRaw' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpOptionalParameterRawDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValue(i,omnetpp::checked_int_cast<char>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterRaw'", field);
     }
 }
 
 const char *BgpOptionalParameterRawDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpOptionalParameterRawDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpOptionalParameterRawDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpOptionalParameterRaw *pp = (BgpOptionalParameterRaw *)object; (void)pp;
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpOptionalParameterRawDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOptionalParameterRaw *pp = omnetpp::fromAnyPtr<BgpOptionalParameterRaw>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOptionalParameterRaw'", field);
     }
 }
 
@@ -1963,23 +2261,23 @@ void BgpOpenMessage::setMyAS(uint16_t myAS)
     this->myAS = myAS;
 }
 
-omnetpp::simtime_t BgpOpenMessage::getHoldTime() const
+::omnetpp::simtime_t BgpOpenMessage::getHoldTime() const
 {
     return this->holdTime;
 }
 
-void BgpOpenMessage::setHoldTime(omnetpp::simtime_t holdTime)
+void BgpOpenMessage::setHoldTime(::omnetpp::simtime_t holdTime)
 {
     handleChange();
     this->holdTime = holdTime;
 }
 
-const Ipv4Address& BgpOpenMessage::getBGPIdentifier() const
+const ::inet::Ipv4Address& BgpOpenMessage::getBGPIdentifier() const
 {
     return this->BGPIdentifier;
 }
 
-void BgpOpenMessage::setBGPIdentifier(const Ipv4Address& BGPIdentifier)
+void BgpOpenMessage::setBGPIdentifier(const ::inet::Ipv4Address& BGPIdentifier)
 {
     handleChange();
     this->BGPIdentifier = BGPIdentifier;
@@ -2003,7 +2301,7 @@ size_t BgpOpenMessage::getOptionalParameterArraySize() const
 
 const BgpOptionalParameterBase * BgpOpenMessage::getOptionalParameter(size_t k) const
 {
-    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size optionalParameter_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)optionalParameter_arraysize, (unsigned long)k);
     return this->optionalParameter[k];
 }
 
@@ -2025,15 +2323,15 @@ void BgpOpenMessage::setOptionalParameterArraySize(size_t newSize)
 
 void BgpOpenMessage::setOptionalParameter(size_t k, BgpOptionalParameterBase * optionalParameter)
 {
-    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)optionalParameter_arraysize, (unsigned long)k);
     handleChange();
-    if (this->optionalParameter[k] != nullptr) throw omnetpp::cRuntimeError("setOptionalParameter(): a value is already set, remove it first with dropOptionalParameter()");
+    if (this->optionalParameter[k] != nullptr) throw omnetpp::cRuntimeError("setOptionalParameter(): a value is already set, remove it first with removeOptionalParameter()");
     this->optionalParameter[k] = optionalParameter;
 }
 
-BgpOptionalParameterBase * BgpOpenMessage::dropOptionalParameter(size_t k)
+BgpOptionalParameterBase * BgpOpenMessage::removeOptionalParameter(size_t k)
 {
-    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)optionalParameter_arraysize, (unsigned long)k);
     handleChange();
     BgpOptionalParameterBase * retval = this->optionalParameter[k];
     this->optionalParameter[k] = nullptr;
@@ -2042,8 +2340,8 @@ BgpOptionalParameterBase * BgpOpenMessage::dropOptionalParameter(size_t k)
 
 void BgpOpenMessage::insertOptionalParameter(size_t k, BgpOptionalParameterBase * optionalParameter)
 {
+    if (k > optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)optionalParameter_arraysize, (unsigned long)k);
     handleChange();
-    if (k > optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = optionalParameter_arraysize + 1;
     BgpOptionalParameterBase * *optionalParameter2 = new BgpOptionalParameterBase *[newSize];
     size_t i;
@@ -2057,14 +2355,14 @@ void BgpOpenMessage::insertOptionalParameter(size_t k, BgpOptionalParameterBase 
     optionalParameter_arraysize = newSize;
 }
 
-void BgpOpenMessage::insertOptionalParameter(BgpOptionalParameterBase * optionalParameter)
+void BgpOpenMessage::appendOptionalParameter(BgpOptionalParameterBase * optionalParameter)
 {
     insertOptionalParameter(optionalParameter_arraysize, optionalParameter);
 }
 
 void BgpOpenMessage::eraseOptionalParameter(size_t k)
 {
-    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= optionalParameter_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)optionalParameter_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = optionalParameter_arraysize - 1;
     BgpOptionalParameterBase * *optionalParameter2 = (newSize == 0) ? nullptr : new BgpOptionalParameterBase *[newSize];
@@ -2082,7 +2380,7 @@ void BgpOpenMessage::eraseOptionalParameter(size_t k)
 class BgpOpenMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_version,
         FIELD_myAS,
@@ -2097,34 +2395,38 @@ class BgpOpenMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpOpenMessageDescriptor)
 
 BgpOpenMessageDescriptor::BgpOpenMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpOpenMessage)), "inet::bgp::BgpHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpOpenMessageDescriptor::~BgpOpenMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpOpenMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2134,53 +2436,53 @@ bool BgpOpenMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpOpenMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpOpenMessageDescriptor::getProperty(const char *propertyname) const
+const char *BgpOpenMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpOpenMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 6+base->getFieldCount() : 6;
 }
 
 unsigned int BgpOpenMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_version
         FD_ISEDITABLE,    // FIELD_myAS
-        0,    // FIELD_holdTime
+        FD_ISEDITABLE,    // FIELD_holdTime
         0,    // FIELD_BGPIdentifier
         FD_ISEDITABLE,    // FIELD_optionalParametersLength
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER,    // FIELD_optionalParameter
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_optionalParameter
     };
     return (field >= 0 && field < 6) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpOpenMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "version",
@@ -2195,24 +2497,24 @@ const char *BgpOpenMessageDescriptor::getFieldName(int field) const
 
 int BgpOpenMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "version") == 0) return base+0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "myAS") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "holdTime") == 0) return base+2;
-    if (fieldName[0] == 'B' && strcmp(fieldName, "BGPIdentifier") == 0) return base+3;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "optionalParametersLength") == 0) return base+4;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "optionalParameter") == 0) return base+5;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "version") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "myAS") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "holdTime") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "BGPIdentifier") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "optionalParametersLength") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "optionalParameter") == 0) return baseIndex + 5;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpOpenMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_version
@@ -2227,11 +2529,11 @@ const char *BgpOpenMessageDescriptor::getFieldTypeString(int field) const
 
 const char **BgpOpenMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_optionalParameter: {
@@ -2242,96 +2544,157 @@ const char **BgpOpenMessageDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *BgpOpenMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpOpenMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_optionalParameter:
-            if (!strcmp(propertyname, "owned")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpOpenMessageDescriptor::getFieldArraySize(void *object, int field) const
+int BgpOpenMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpOpenMessage *pp = (BgpOpenMessage *)object; (void)pp;
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
     switch (field) {
         case FIELD_optionalParameter: return pp->getOptionalParameterArraySize();
         default: return 0;
     }
 }
 
-const char *BgpOpenMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpOpenMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOpenMessage *pp = (BgpOpenMessage *)object; (void)pp;
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_optionalParameter: pp->setOptionalParameterArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpOpenMessage'", field);
+    }
+}
+
+const char *BgpOpenMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
     switch (field) {
         case FIELD_optionalParameter: { const BgpOptionalParameterBase * value = pp->getOptionalParameter(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string BgpOpenMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpOpenMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpOpenMessage *pp = (BgpOpenMessage *)object; (void)pp;
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
     switch (field) {
         case FIELD_version: return ulong2string(pp->getVersion());
         case FIELD_myAS: return ulong2string(pp->getMyAS());
         case FIELD_holdTime: return simtime2string(pp->getHoldTime());
         case FIELD_BGPIdentifier: return pp->getBGPIdentifier().str();
         case FIELD_optionalParametersLength: return ulong2string(pp->getOptionalParametersLength());
-        case FIELD_optionalParameter: {std::stringstream out; out << pp->getOptionalParameter(i); return out.str();}
+        case FIELD_optionalParameter: return "";
         default: return "";
     }
 }
 
-bool BgpOpenMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpOpenMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpOpenMessage *pp = (BgpOpenMessage *)object; (void)pp;
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_version: pp->setVersion(string2ulong(value)); return true;
-        case FIELD_myAS: pp->setMyAS(string2ulong(value)); return true;
-        case FIELD_optionalParametersLength: pp->setOptionalParametersLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_version: pp->setVersion(string2ulong(value)); break;
+        case FIELD_myAS: pp->setMyAS(string2ulong(value)); break;
+        case FIELD_holdTime: pp->setHoldTime(string2simtime(value)); break;
+        case FIELD_optionalParametersLength: pp->setOptionalParametersLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOpenMessage'", field);
+    }
+}
+
+omnetpp::cValue BgpOpenMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: return (omnetpp::intval_t)(pp->getVersion());
+        case FIELD_myAS: return (omnetpp::intval_t)(pp->getMyAS());
+        case FIELD_holdTime: return pp->getHoldTime().dbl();
+        case FIELD_BGPIdentifier: return omnetpp::toAnyPtr(&pp->getBGPIdentifier()); break;
+        case FIELD_optionalParametersLength: return (omnetpp::intval_t)(pp->getOptionalParametersLength());
+        case FIELD_optionalParameter: return omnetpp::toAnyPtr(pp->getOptionalParameter(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpOpenMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpOpenMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: pp->setVersion(omnetpp::checked_int_cast<uint8_t>(value.intValue())); break;
+        case FIELD_myAS: pp->setMyAS(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_holdTime: pp->setHoldTime(value.doubleValue()); break;
+        case FIELD_optionalParametersLength: pp->setOptionalParametersLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_optionalParameter: pp->setOptionalParameter(i,omnetpp::fromAnyPtr<BgpOptionalParameterBase>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOpenMessage'", field);
     }
 }
 
 const char *BgpOpenMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_optionalParameter: return omnetpp::opp_typename(typeid(BgpOptionalParameterBase));
@@ -2339,33 +2702,40 @@ const char *BgpOpenMessageDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *BgpOpenMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpOpenMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpOpenMessage *pp = (BgpOpenMessage *)object; (void)pp;
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_BGPIdentifier: return toVoidPtr(&pp->getBGPIdentifier()); break;
-        case FIELD_optionalParameter: return toVoidPtr(pp->getOptionalParameter(i)); break;
-        default: return nullptr;
+        case FIELD_BGPIdentifier: return omnetpp::toAnyPtr(&pp->getBGPIdentifier()); break;
+        case FIELD_optionalParameter: return omnetpp::toAnyPtr(pp->getOptionalParameter(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::bgp::BgpUpdateAttributeTypeCode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::bgp::BgpUpdateAttributeTypeCode"));
-    e->insert(ORIGIN, "ORIGIN");
-    e->insert(AS_PATH, "AS_PATH");
-    e->insert(NEXT_HOP, "NEXT_HOP");
-    e->insert(MULTI_EXIT_DISC, "MULTI_EXIT_DISC");
-    e->insert(LOCAL_PREF, "LOCAL_PREF");
-    e->insert(ATOMIC_AGGREGATE, "ATOMIC_AGGREGATE");
-    e->insert(AGGREGATOR, "AGGREGATOR");
-)
+void BgpOpenMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpOpenMessage *pp = omnetpp::fromAnyPtr<BgpOpenMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_optionalParameter: pp->setOptionalParameter(i,omnetpp::fromAnyPtr<BgpOptionalParameterBase>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpOpenMessage'", field);
+    }
+}
+
+Register_Enum(inet::bgp::BgpUpdateAttributeTypeCode, (inet::bgp::BgpUpdateAttributeTypeCode::ORIGIN, inet::bgp::BgpUpdateAttributeTypeCode::AS_PATH, inet::bgp::BgpUpdateAttributeTypeCode::NEXT_HOP, inet::bgp::BgpUpdateAttributeTypeCode::MULTI_EXIT_DISC, inet::bgp::BgpUpdateAttributeTypeCode::LOCAL_PREF, inet::bgp::BgpUpdateAttributeTypeCode::ATOMIC_AGGREGATE, inet::bgp::BgpUpdateAttributeTypeCode::AGGREGATOR));
 
 Register_Class(BgpUpdatePathAttributes)
 
@@ -2473,12 +2843,12 @@ void BgpUpdatePathAttributes::setReserved(unsigned short reserved)
     this->reserved = reserved;
 }
 
-inet::bgp::BgpUpdateAttributeTypeCode BgpUpdatePathAttributes::getTypeCode() const
+BgpUpdateAttributeTypeCode BgpUpdatePathAttributes::getTypeCode() const
 {
     return this->typeCode;
 }
 
-void BgpUpdatePathAttributes::setTypeCode(inet::bgp::BgpUpdateAttributeTypeCode typeCode)
+void BgpUpdatePathAttributes::setTypeCode(BgpUpdateAttributeTypeCode typeCode)
 {
     this->typeCode = typeCode;
 }
@@ -2496,7 +2866,7 @@ void BgpUpdatePathAttributes::setLength(unsigned short length)
 class BgpUpdatePathAttributesDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_optionalBit,
         FIELD_transitiveBit,
@@ -2512,34 +2882,38 @@ class BgpUpdatePathAttributesDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesDescriptor)
 
 BgpUpdatePathAttributesDescriptor::BgpUpdatePathAttributesDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributes)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesDescriptor::~BgpUpdatePathAttributesDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2549,34 +2923,34 @@ bool BgpUpdatePathAttributesDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpUpdatePathAttributesDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int BgpUpdatePathAttributesDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_optionalBit
@@ -2584,7 +2958,7 @@ unsigned int BgpUpdatePathAttributesDescriptor::getFieldTypeFlags(int field) con
         FD_ISEDITABLE,    // FIELD_partialBit
         FD_ISEDITABLE,    // FIELD_extendedLengthBit
         FD_ISEDITABLE,    // FIELD_reserved
-        0,    // FIELD_typeCode
+        FD_ISEDITABLE,    // FIELD_typeCode
         FD_ISEDITABLE,    // FIELD_length
     };
     return (field >= 0 && field < 7) ? fieldTypeFlags[field] : 0;
@@ -2592,11 +2966,11 @@ unsigned int BgpUpdatePathAttributesDescriptor::getFieldTypeFlags(int field) con
 
 const char *BgpUpdatePathAttributesDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "optionalBit",
@@ -2612,25 +2986,25 @@ const char *BgpUpdatePathAttributesDescriptor::getFieldName(int field) const
 
 int BgpUpdatePathAttributesDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "optionalBit") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "transitiveBit") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "partialBit") == 0) return base+2;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "extendedLengthBit") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+4;
-    if (fieldName[0] == 't' && strcmp(fieldName, "typeCode") == 0) return base+5;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "optionalBit") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "transitiveBit") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "partialBit") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "extendedLengthBit") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "typeCode") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "bool",    // FIELD_optionalBit
@@ -2646,11 +3020,11 @@ const char *BgpUpdatePathAttributesDescriptor::getFieldTypeString(int field) con
 
 const char **BgpUpdatePathAttributesDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_typeCode: {
@@ -2661,59 +3035,75 @@ const char **BgpUpdatePathAttributesDescriptor::getFieldPropertyNames(int field)
     }
 }
 
-const char *BgpUpdatePathAttributesDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_typeCode:
-            if (!strcmp(propertyname, "enum")) return "inet::bgp::BgpUpdateAttributeTypeCode";
+            if (!strcmp(propertyName, "enum")) return "inet::bgp::BgpUpdateAttributeTypeCode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributes *pp = (BgpUpdatePathAttributes *)object; (void)pp;
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributes *pp = (BgpUpdatePathAttributes *)object; (void)pp;
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributes'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributes *pp = (BgpUpdatePathAttributes *)object; (void)pp;
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
     switch (field) {
         case FIELD_optionalBit: return bool2string(pp->getOptionalBit());
         case FIELD_transitiveBit: return bool2string(pp->getTransitiveBit());
@@ -2726,50 +3116,113 @@ std::string BgpUpdatePathAttributesDescriptor::getFieldValueAsString(void *objec
     }
 }
 
-bool BgpUpdatePathAttributesDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributes *pp = (BgpUpdatePathAttributes *)object; (void)pp;
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
     switch (field) {
-        case FIELD_optionalBit: pp->setOptionalBit(string2bool(value)); return true;
-        case FIELD_transitiveBit: pp->setTransitiveBit(string2bool(value)); return true;
-        case FIELD_partialBit: pp->setPartialBit(string2bool(value)); return true;
-        case FIELD_extendedLengthBit: pp->setExtendedLengthBit(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_length: pp->setLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_optionalBit: pp->setOptionalBit(string2bool(value)); break;
+        case FIELD_transitiveBit: pp->setTransitiveBit(string2bool(value)); break;
+        case FIELD_partialBit: pp->setPartialBit(string2bool(value)); break;
+        case FIELD_extendedLengthBit: pp->setExtendedLengthBit(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_typeCode: pp->setTypeCode((inet::bgp::BgpUpdateAttributeTypeCode)string2enum(value, "inet::bgp::BgpUpdateAttributeTypeCode")); break;
+        case FIELD_length: pp->setLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributes'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
+    switch (field) {
+        case FIELD_optionalBit: return pp->getOptionalBit();
+        case FIELD_transitiveBit: return pp->getTransitiveBit();
+        case FIELD_partialBit: return pp->getPartialBit();
+        case FIELD_extendedLengthBit: return pp->getExtendedLengthBit();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_typeCode: return static_cast<int>(pp->getTypeCode());
+        case FIELD_length: return (omnetpp::intval_t)(pp->getLength());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributes' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
+    switch (field) {
+        case FIELD_optionalBit: pp->setOptionalBit(value.boolValue()); break;
+        case FIELD_transitiveBit: pp->setTransitiveBit(value.boolValue()); break;
+        case FIELD_partialBit: pp->setPartialBit(value.boolValue()); break;
+        case FIELD_extendedLengthBit: pp->setExtendedLengthBit(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        case FIELD_typeCode: pp->setTypeCode(static_cast<inet::bgp::BgpUpdateAttributeTypeCode>(value.intValue())); break;
+        case FIELD_length: pp->setLength(omnetpp::checked_int_cast<unsigned short>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributes'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributes *pp = (BgpUpdatePathAttributes *)object; (void)pp;
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributes *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributes'", field);
     }
 }
 
@@ -2818,12 +3271,12 @@ void BgpUpdatePathAttributesOrigin::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->value);
 }
 
-inet::bgp::BgpSessionType BgpUpdatePathAttributesOrigin::getValue() const
+BgpSessionType BgpUpdatePathAttributesOrigin::getValue() const
 {
     return this->value;
 }
 
-void BgpUpdatePathAttributesOrigin::setValue(inet::bgp::BgpSessionType value)
+void BgpUpdatePathAttributesOrigin::setValue(BgpSessionType value)
 {
     this->value = value;
 }
@@ -2831,7 +3284,7 @@ void BgpUpdatePathAttributesOrigin::setValue(inet::bgp::BgpSessionType value)
 class BgpUpdatePathAttributesOriginDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -2841,34 +3294,38 @@ class BgpUpdatePathAttributesOriginDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesOriginDescriptor)
 
 BgpUpdatePathAttributesOriginDescriptor::BgpUpdatePathAttributesOriginDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesOrigin)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesOriginDescriptor::~BgpUpdatePathAttributesOriginDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesOriginDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2878,34 +3335,34 @@ bool BgpUpdatePathAttributesOriginDescriptor::doesSupport(omnetpp::cObject *obj)
 
 const char **BgpUpdatePathAttributesOriginDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesOriginDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesOriginDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesOriginDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpUpdatePathAttributesOriginDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_value
@@ -2915,11 +3372,11 @@ unsigned int BgpUpdatePathAttributesOriginDescriptor::getFieldTypeFlags(int fiel
 
 const char *BgpUpdatePathAttributesOriginDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -2929,19 +3386,19 @@ const char *BgpUpdatePathAttributesOriginDescriptor::getFieldName(int field) con
 
 int BgpUpdatePathAttributesOriginDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesOriginDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::bgp::BgpSessionType",    // FIELD_value
@@ -2951,11 +3408,11 @@ const char *BgpUpdatePathAttributesOriginDescriptor::getFieldTypeString(int fiel
 
 const char **BgpUpdatePathAttributesOriginDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_value: {
@@ -2966,103 +3423,168 @@ const char **BgpUpdatePathAttributesOriginDescriptor::getFieldPropertyNames(int 
     }
 }
 
-const char *BgpUpdatePathAttributesOriginDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesOriginDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_value:
-            if (!strcmp(propertyname, "enum")) return "inet::bgp::BgpSessionType";
+            if (!strcmp(propertyName, "enum")) return "inet::bgp::BgpSessionType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesOriginDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesOriginDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesOrigin *pp = (BgpUpdatePathAttributesOrigin *)object; (void)pp;
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesOriginDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesOriginDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesOrigin *pp = (BgpUpdatePathAttributesOrigin *)object; (void)pp;
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesOrigin'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesOriginDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesOriginDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesOriginDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesOrigin *pp = (BgpUpdatePathAttributesOrigin *)object; (void)pp;
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
     switch (field) {
         case FIELD_value: return enum2string(pp->getValue(), "inet::bgp::BgpSessionType");
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesOriginDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesOriginDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesOrigin *pp = (BgpUpdatePathAttributesOrigin *)object; (void)pp;
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesOrigin'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesOriginDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return static_cast<int>(pp->getValue());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesOrigin' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesOriginDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesOrigin'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesOriginDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesOriginDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesOriginDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesOrigin *pp = (BgpUpdatePathAttributesOrigin *)object; (void)pp;
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesOriginDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesOrigin *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesOrigin>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesOrigin'", field);
     }
 }
 
@@ -3132,7 +3654,7 @@ size_t BgpUpdatePathAttributesAsPath::getValueArraySize() const
 
 const BgpAsPathSegment& BgpUpdatePathAttributesAsPath::getValue(size_t k) const
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size value_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     return this->value[k];
 }
 
@@ -3149,13 +3671,13 @@ void BgpUpdatePathAttributesAsPath::setValueArraySize(size_t newSize)
 
 void BgpUpdatePathAttributesAsPath::setValue(size_t k, const BgpAsPathSegment& value)
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     this->value[k] = value;
 }
 
 void BgpUpdatePathAttributesAsPath::insertValue(size_t k, const BgpAsPathSegment& value)
 {
-    if (k > value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     size_t newSize = value_arraysize + 1;
     BgpAsPathSegment *value2 = new BgpAsPathSegment[newSize];
     size_t i;
@@ -3169,14 +3691,14 @@ void BgpUpdatePathAttributesAsPath::insertValue(size_t k, const BgpAsPathSegment
     value_arraysize = newSize;
 }
 
-void BgpUpdatePathAttributesAsPath::insertValue(const BgpAsPathSegment& value)
+void BgpUpdatePathAttributesAsPath::appendValue(const BgpAsPathSegment& value)
 {
     insertValue(value_arraysize, value);
 }
 
 void BgpUpdatePathAttributesAsPath::eraseValue(size_t k)
 {
-    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= value_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)value_arraysize, (unsigned long)k);
     size_t newSize = value_arraysize - 1;
     BgpAsPathSegment *value2 = (newSize == 0) ? nullptr : new BgpAsPathSegment[newSize];
     size_t i;
@@ -3192,7 +3714,7 @@ void BgpUpdatePathAttributesAsPath::eraseValue(size_t k)
 class BgpUpdatePathAttributesAsPathDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -3202,34 +3724,38 @@ class BgpUpdatePathAttributesAsPathDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesAsPathDescriptor)
 
 BgpUpdatePathAttributesAsPathDescriptor::BgpUpdatePathAttributesAsPathDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesAsPath)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesAsPathDescriptor::~BgpUpdatePathAttributesAsPathDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesAsPathDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3239,48 +3765,48 @@ bool BgpUpdatePathAttributesAsPathDescriptor::doesSupport(omnetpp::cObject *obj)
 
 const char **BgpUpdatePathAttributesAsPathDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesAsPathDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesAsPathDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesAsPathDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpUpdatePathAttributesAsPathDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISCOBJECT,    // FIELD_value
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISCOBJECT | FD_ISRESIZABLE,    // FIELD_value
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -3290,19 +3816,19 @@ const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldName(int field) con
 
 int BgpUpdatePathAttributesAsPathDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::bgp::BgpAsPathSegment",    // FIELD_value
@@ -3312,95 +3838,145 @@ const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldTypeString(int fiel
 
 const char **BgpUpdatePathAttributesAsPathDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesAsPathDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesAsPathDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAsPath *pp = (BgpUpdatePathAttributesAsPath *)object; (void)pp;
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
     switch (field) {
         case FIELD_value: return pp->getValueArraySize();
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesAsPathDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAsPath *pp = (BgpUpdatePathAttributesAsPath *)object; (void)pp;
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValueArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesAsPath'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesAsPathDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesAsPathDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAsPath *pp = (BgpUpdatePathAttributesAsPath *)object; (void)pp;
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
     switch (field) {
-        case FIELD_value: {std::stringstream out; out << pp->getValue(i); return out.str();}
+        case FIELD_value: return pp->getValue(i).str();
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesAsPathDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesAsPathDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAsPath *pp = (BgpUpdatePathAttributesAsPath *)object; (void)pp;
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAsPath'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesAsPathDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return omnetpp::toAnyPtr(&pp->getValue(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesAsPath' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesAsPathDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAsPath'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_value: return omnetpp::opp_typename(typeid(BgpAsPathSegment));
@@ -3408,18 +3984,34 @@ const char *BgpUpdatePathAttributesAsPathDescriptor::getFieldStructName(int fiel
     };
 }
 
-void *BgpUpdatePathAttributesAsPathDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesAsPathDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAsPath *pp = (BgpUpdatePathAttributesAsPath *)object; (void)pp;
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
     switch (field) {
-        case FIELD_value: return toVoidPtr(&pp->getValue(i)); break;
-        default: return nullptr;
+        case FIELD_value: return omnetpp::toAnyPtr(&pp->getValue(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesAsPathDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAsPath *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAsPath>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAsPath'", field);
     }
 }
 
@@ -3468,12 +4060,12 @@ void BgpUpdatePathAttributesNextHop::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->value);
 }
 
-const Ipv4Address& BgpUpdatePathAttributesNextHop::getValue() const
+const ::inet::Ipv4Address& BgpUpdatePathAttributesNextHop::getValue() const
 {
     return this->value;
 }
 
-void BgpUpdatePathAttributesNextHop::setValue(const Ipv4Address& value)
+void BgpUpdatePathAttributesNextHop::setValue(const ::inet::Ipv4Address& value)
 {
     this->value = value;
 }
@@ -3481,7 +4073,7 @@ void BgpUpdatePathAttributesNextHop::setValue(const Ipv4Address& value)
 class BgpUpdatePathAttributesNextHopDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -3491,34 +4083,38 @@ class BgpUpdatePathAttributesNextHopDescriptor : public omnetpp::cClassDescripto
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesNextHopDescriptor)
 
 BgpUpdatePathAttributesNextHopDescriptor::BgpUpdatePathAttributesNextHopDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesNextHop)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesNextHopDescriptor::~BgpUpdatePathAttributesNextHopDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesNextHopDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3528,34 +4124,34 @@ bool BgpUpdatePathAttributesNextHopDescriptor::doesSupport(omnetpp::cObject *obj
 
 const char **BgpUpdatePathAttributesNextHopDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesNextHopDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesNextHopDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesNextHopDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpUpdatePathAttributesNextHopDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_value
@@ -3565,11 +4161,11 @@ unsigned int BgpUpdatePathAttributesNextHopDescriptor::getFieldTypeFlags(int fie
 
 const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -3579,19 +4175,19 @@ const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldName(int field) co
 
 int BgpUpdatePathAttributesNextHopDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Ipv4Address",    // FIELD_value
@@ -3601,112 +4197,177 @@ const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldTypeString(int fie
 
 const char **BgpUpdatePathAttributesNextHopDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesNextHopDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesNextHopDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesNextHop *pp = (BgpUpdatePathAttributesNextHop *)object; (void)pp;
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesNextHopDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesNextHop *pp = (BgpUpdatePathAttributesNextHop *)object; (void)pp;
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesNextHop'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesNextHopDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesNextHopDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesNextHop *pp = (BgpUpdatePathAttributesNextHop *)object; (void)pp;
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
     switch (field) {
         case FIELD_value: return pp->getValue().str();
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesNextHopDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesNextHopDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesNextHop *pp = (BgpUpdatePathAttributesNextHop *)object; (void)pp;
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesNextHop'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesNextHopDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return omnetpp::toAnyPtr(&pp->getValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesNextHop' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesNextHopDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesNextHop'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesNextHopDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesNextHopDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesNextHopDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesNextHop *pp = (BgpUpdatePathAttributesNextHop *)object; (void)pp;
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
     switch (field) {
-        case FIELD_value: return toVoidPtr(&pp->getValue()); break;
-        default: return nullptr;
+        case FIELD_value: return omnetpp::toAnyPtr(&pp->getValue()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesNextHopDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesNextHop *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesNextHop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesNextHop'", field);
     }
 }
 
@@ -3768,7 +4429,7 @@ void BgpUpdatePathAttributesMultiExitDisc::setValue(uint32_t value)
 class BgpUpdatePathAttributesMultiExitDiscDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -3778,34 +4439,38 @@ class BgpUpdatePathAttributesMultiExitDiscDescriptor : public omnetpp::cClassDes
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesMultiExitDiscDescriptor)
 
 BgpUpdatePathAttributesMultiExitDiscDescriptor::BgpUpdatePathAttributesMultiExitDiscDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesMultiExitDisc)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesMultiExitDiscDescriptor::~BgpUpdatePathAttributesMultiExitDiscDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesMultiExitDiscDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -3815,34 +4480,34 @@ bool BgpUpdatePathAttributesMultiExitDiscDescriptor::doesSupport(omnetpp::cObjec
 
 const char **BgpUpdatePathAttributesMultiExitDiscDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_value
@@ -3852,11 +4517,11 @@ unsigned int BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldTypeFlags(i
 
 const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -3866,19 +4531,19 @@ const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldName(int fie
 
 int BgpUpdatePathAttributesMultiExitDiscDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_value
@@ -3888,112 +4553,178 @@ const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldTypeString(i
 
 const char **BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesMultiExitDisc *pp = (BgpUpdatePathAttributesMultiExitDisc *)object; (void)pp;
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesMultiExitDiscDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesMultiExitDisc *pp = (BgpUpdatePathAttributesMultiExitDisc *)object; (void)pp;
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesMultiExitDisc'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesMultiExitDisc *pp = (BgpUpdatePathAttributesMultiExitDisc *)object; (void)pp;
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
     switch (field) {
         case FIELD_value: return ulong2string(pp->getValue());
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesMultiExitDiscDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesMultiExitDiscDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesMultiExitDisc *pp = (BgpUpdatePathAttributesMultiExitDisc *)object; (void)pp;
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
     switch (field) {
-        case FIELD_value: pp->setValue(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_value: pp->setValue(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesMultiExitDisc'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return (omnetpp::intval_t)(pp->getValue());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesMultiExitDisc' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesMultiExitDiscDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValue(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesMultiExitDisc'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesMultiExitDiscDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesMultiExitDisc *pp = (BgpUpdatePathAttributesMultiExitDisc *)object; (void)pp;
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesMultiExitDiscDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesMultiExitDisc *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesMultiExitDisc>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesMultiExitDisc'", field);
     }
 }
 
@@ -4055,7 +4786,7 @@ void BgpUpdatePathAttributesLocalPref::setValue(uint32_t value)
 class BgpUpdatePathAttributesLocalPrefDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_value,
     };
@@ -4065,34 +4796,38 @@ class BgpUpdatePathAttributesLocalPrefDescriptor : public omnetpp::cClassDescrip
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesLocalPrefDescriptor)
 
 BgpUpdatePathAttributesLocalPrefDescriptor::BgpUpdatePathAttributesLocalPrefDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesLocalPref)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesLocalPrefDescriptor::~BgpUpdatePathAttributesLocalPrefDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesLocalPrefDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4102,34 +4837,34 @@ bool BgpUpdatePathAttributesLocalPrefDescriptor::doesSupport(omnetpp::cObject *o
 
 const char **BgpUpdatePathAttributesLocalPrefDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesLocalPrefDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesLocalPrefDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesLocalPrefDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int BgpUpdatePathAttributesLocalPrefDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_value
@@ -4139,11 +4874,11 @@ unsigned int BgpUpdatePathAttributesLocalPrefDescriptor::getFieldTypeFlags(int f
 
 const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "value",
@@ -4153,19 +4888,19 @@ const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldName(int field) 
 
 int BgpUpdatePathAttributesLocalPrefDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "value") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "value") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32_t",    // FIELD_value
@@ -4175,112 +4910,178 @@ const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldTypeString(int f
 
 const char **BgpUpdatePathAttributesLocalPrefDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesLocalPrefDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesLocalPrefDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesLocalPref *pp = (BgpUpdatePathAttributesLocalPref *)object; (void)pp;
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesLocalPrefDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesLocalPref *pp = (BgpUpdatePathAttributesLocalPref *)object; (void)pp;
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesLocalPref'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesLocalPrefDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesLocalPrefDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesLocalPref *pp = (BgpUpdatePathAttributesLocalPref *)object; (void)pp;
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
     switch (field) {
         case FIELD_value: return ulong2string(pp->getValue());
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesLocalPrefDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesLocalPrefDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesLocalPref *pp = (BgpUpdatePathAttributesLocalPref *)object; (void)pp;
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
     switch (field) {
-        case FIELD_value: pp->setValue(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_value: pp->setValue(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesLocalPref'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesLocalPrefDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: return (omnetpp::intval_t)(pp->getValue());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesLocalPref' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesLocalPrefDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
+    switch (field) {
+        case FIELD_value: pp->setValue(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesLocalPref'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesLocalPrefDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesLocalPrefDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesLocalPref *pp = (BgpUpdatePathAttributesLocalPref *)object; (void)pp;
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesLocalPrefDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesLocalPref *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesLocalPref>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesLocalPref'", field);
     }
 }
 
@@ -4328,7 +5129,7 @@ void BgpUpdatePathAttributesAtomicAggregate::parsimUnpack(omnetpp::cCommBuffer *
 class BgpUpdatePathAttributesAtomicAggregateDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
     };
   public:
@@ -4337,34 +5138,38 @@ class BgpUpdatePathAttributesAtomicAggregateDescriptor : public omnetpp::cClassD
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesAtomicAggregateDescriptor)
 
 BgpUpdatePathAttributesAtomicAggregateDescriptor::BgpUpdatePathAttributesAtomicAggregateDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesAtomicAggregate)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesAtomicAggregateDescriptor::~BgpUpdatePathAttributesAtomicAggregateDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesAtomicAggregateDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4374,170 +5179,234 @@ bool BgpUpdatePathAttributesAtomicAggregateDescriptor::doesSupport(omnetpp::cObj
 
 const char **BgpUpdatePathAttributesAtomicAggregateDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 0+basedesc->getFieldCount() : 0;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 0+base->getFieldCount() : 0;
 }
 
 unsigned int BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     return 0;
 }
 
 const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 int BgpUpdatePathAttributesAtomicAggregateDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
 const char **BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAtomicAggregate *pp = (BgpUpdatePathAttributesAtomicAggregate *)object; (void)pp;
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesAtomicAggregateDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAtomicAggregate *pp = (BgpUpdatePathAttributesAtomicAggregate *)object; (void)pp;
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesAtomicAggregate'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAtomicAggregate *pp = (BgpUpdatePathAttributesAtomicAggregate *)object; (void)pp;
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
     switch (field) {
         default: return "";
     }
 }
 
-bool BgpUpdatePathAttributesAtomicAggregateDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesAtomicAggregateDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAtomicAggregate *pp = (BgpUpdatePathAttributesAtomicAggregate *)object; (void)pp;
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAtomicAggregate'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesAtomicAggregate' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesAtomicAggregateDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAtomicAggregate'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     return nullptr;
 }
 
-void *BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesAtomicAggregateDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAtomicAggregate *pp = (BgpUpdatePathAttributesAtomicAggregate *)object; (void)pp;
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesAtomicAggregateDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAtomicAggregate *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAtomicAggregate>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAtomicAggregate'", field);
     }
 }
 
@@ -4599,12 +5468,12 @@ void BgpUpdatePathAttributesAggregator::setAsNumber(uint16_t asNumber)
     this->asNumber = asNumber;
 }
 
-const Ipv4Address& BgpUpdatePathAttributesAggregator::getBgpSpeaker() const
+const ::inet::Ipv4Address& BgpUpdatePathAttributesAggregator::getBgpSpeaker() const
 {
     return this->bgpSpeaker;
 }
 
-void BgpUpdatePathAttributesAggregator::setBgpSpeaker(const Ipv4Address& bgpSpeaker)
+void BgpUpdatePathAttributesAggregator::setBgpSpeaker(const ::inet::Ipv4Address& bgpSpeaker)
 {
     this->bgpSpeaker = bgpSpeaker;
 }
@@ -4612,7 +5481,7 @@ void BgpUpdatePathAttributesAggregator::setBgpSpeaker(const Ipv4Address& bgpSpea
 class BgpUpdatePathAttributesAggregatorDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_asNumber,
         FIELD_bgpSpeaker,
@@ -4623,34 +5492,38 @@ class BgpUpdatePathAttributesAggregatorDescriptor : public omnetpp::cClassDescri
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdatePathAttributesAggregatorDescriptor)
 
 BgpUpdatePathAttributesAggregatorDescriptor::BgpUpdatePathAttributesAggregatorDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdatePathAttributesAggregator)), "inet::bgp::BgpUpdatePathAttributes")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdatePathAttributesAggregatorDescriptor::~BgpUpdatePathAttributesAggregatorDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdatePathAttributesAggregatorDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4660,34 +5533,34 @@ bool BgpUpdatePathAttributesAggregatorDescriptor::doesSupport(omnetpp::cObject *
 
 const char **BgpUpdatePathAttributesAggregatorDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdatePathAttributesAggregatorDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdatePathAttributesAggregatorDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdatePathAttributesAggregatorDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int BgpUpdatePathAttributesAggregatorDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_asNumber
@@ -4698,11 +5571,11 @@ unsigned int BgpUpdatePathAttributesAggregatorDescriptor::getFieldTypeFlags(int 
 
 const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "asNumber",
@@ -4713,20 +5586,20 @@ const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldName(int field)
 
 int BgpUpdatePathAttributesAggregatorDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "asNumber") == 0) return base+0;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "bgpSpeaker") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "asNumber") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "bgpSpeaker") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_asNumber
@@ -4737,67 +5610,83 @@ const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldTypeString(int 
 
 const char **BgpUpdatePathAttributesAggregatorDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdatePathAttributesAggregatorDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdatePathAttributesAggregatorDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAggregator *pp = (BgpUpdatePathAttributesAggregator *)object; (void)pp;
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdatePathAttributesAggregatorDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAggregator *pp = (BgpUpdatePathAttributesAggregator *)object; (void)pp;
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdatePathAttributesAggregator'", field);
+    }
+}
+
+const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdatePathAttributesAggregatorDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdatePathAttributesAggregatorDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAggregator *pp = (BgpUpdatePathAttributesAggregator *)object; (void)pp;
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
     switch (field) {
         case FIELD_asNumber: return ulong2string(pp->getAsNumber());
         case FIELD_bgpSpeaker: return pp->getBgpSpeaker().str();
@@ -4805,52 +5694,102 @@ std::string BgpUpdatePathAttributesAggregatorDescriptor::getFieldValueAsString(v
     }
 }
 
-bool BgpUpdatePathAttributesAggregatorDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdatePathAttributesAggregatorDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAggregator *pp = (BgpUpdatePathAttributesAggregator *)object; (void)pp;
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
     switch (field) {
-        case FIELD_asNumber: pp->setAsNumber(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_asNumber: pp->setAsNumber(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAggregator'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdatePathAttributesAggregatorDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
+    switch (field) {
+        case FIELD_asNumber: return (omnetpp::intval_t)(pp->getAsNumber());
+        case FIELD_bgpSpeaker: return omnetpp::toAnyPtr(&pp->getBgpSpeaker()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdatePathAttributesAggregator' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdatePathAttributesAggregatorDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
+    switch (field) {
+        case FIELD_asNumber: pp->setAsNumber(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAggregator'", field);
     }
 }
 
 const char *BgpUpdatePathAttributesAggregatorDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdatePathAttributesAggregatorDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdatePathAttributesAggregatorDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdatePathAttributesAggregator *pp = (BgpUpdatePathAttributesAggregator *)object; (void)pp;
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
     switch (field) {
-        case FIELD_bgpSpeaker: return toVoidPtr(&pp->getBgpSpeaker()); break;
-        default: return nullptr;
+        case FIELD_bgpSpeaker: return omnetpp::toAnyPtr(&pp->getBgpSpeaker()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdatePathAttributesAggregatorDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdatePathAttributesAggregator *pp = omnetpp::fromAnyPtr<BgpUpdatePathAttributesAggregator>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdatePathAttributesAggregator'", field);
     }
 }
 
 BgpUpdateWithdrawnRoutes::BgpUpdateWithdrawnRoutes()
 {
-    this->length = 0;
 }
 
 void __doPacking(omnetpp::cCommBuffer *b, const BgpUpdateWithdrawnRoutes& a)
@@ -4868,7 +5807,7 @@ void __doUnpacking(omnetpp::cCommBuffer *b, BgpUpdateWithdrawnRoutes& a)
 class BgpUpdateWithdrawnRoutesDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_length,
         FIELD_prefix,
@@ -4879,34 +5818,38 @@ class BgpUpdateWithdrawnRoutesDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdateWithdrawnRoutesDescriptor)
 
 BgpUpdateWithdrawnRoutesDescriptor::BgpUpdateWithdrawnRoutesDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdateWithdrawnRoutes)), "")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdateWithdrawnRoutesDescriptor::~BgpUpdateWithdrawnRoutesDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdateWithdrawnRoutesDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -4916,34 +5859,34 @@ bool BgpUpdateWithdrawnRoutesDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **BgpUpdateWithdrawnRoutesDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdateWithdrawnRoutesDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdateWithdrawnRoutesDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdateWithdrawnRoutesDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int BgpUpdateWithdrawnRoutesDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_length
@@ -4954,11 +5897,11 @@ unsigned int BgpUpdateWithdrawnRoutesDescriptor::getFieldTypeFlags(int field) co
 
 const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "length",
@@ -4969,20 +5912,20 @@ const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldName(int field) const
 
 int BgpUpdateWithdrawnRoutesDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "prefix") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "prefix") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "unsigned char",    // FIELD_length
@@ -4993,67 +5936,83 @@ const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldTypeString(int field) co
 
 const char **BgpUpdateWithdrawnRoutesDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdateWithdrawnRoutesDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdateWithdrawnRoutesDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdateWithdrawnRoutes *pp = (BgpUpdateWithdrawnRoutes *)object; (void)pp;
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdateWithdrawnRoutesDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateWithdrawnRoutes *pp = (BgpUpdateWithdrawnRoutes *)object; (void)pp;
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdateWithdrawnRoutes'", field);
+    }
+}
+
+const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdateWithdrawnRoutesDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdateWithdrawnRoutesDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateWithdrawnRoutes *pp = (BgpUpdateWithdrawnRoutes *)object; (void)pp;
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
     switch (field) {
         case FIELD_length: return ulong2string(pp->length);
         case FIELD_prefix: return pp->prefix.str();
@@ -5061,52 +6020,102 @@ std::string BgpUpdateWithdrawnRoutesDescriptor::getFieldValueAsString(void *obje
     }
 }
 
-bool BgpUpdateWithdrawnRoutesDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdateWithdrawnRoutesDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateWithdrawnRoutes *pp = (BgpUpdateWithdrawnRoutes *)object; (void)pp;
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
     switch (field) {
-        case FIELD_length: pp->length = string2ulong(value); return true;
-        default: return false;
+        case FIELD_length: pp->length = string2ulong(value); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateWithdrawnRoutes'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdateWithdrawnRoutesDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: return (omnetpp::intval_t)(pp->length);
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->prefix); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdateWithdrawnRoutes' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdateWithdrawnRoutesDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: pp->length = omnetpp::checked_int_cast<unsigned char>(value.intValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateWithdrawnRoutes'", field);
     }
 }
 
 const char *BgpUpdateWithdrawnRoutesDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdateWithdrawnRoutesDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdateWithdrawnRoutesDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateWithdrawnRoutes *pp = (BgpUpdateWithdrawnRoutes *)object; (void)pp;
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
     switch (field) {
-        case FIELD_prefix: return toVoidPtr(&pp->prefix); break;
-        default: return nullptr;
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->prefix); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdateWithdrawnRoutesDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateWithdrawnRoutes *pp = omnetpp::fromAnyPtr<BgpUpdateWithdrawnRoutes>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateWithdrawnRoutes'", field);
     }
 }
 
 BgpUpdateNlri::BgpUpdateNlri()
 {
-    this->length = 0;
 }
 
 void __doPacking(omnetpp::cCommBuffer *b, const BgpUpdateNlri& a)
@@ -5124,7 +6133,7 @@ void __doUnpacking(omnetpp::cCommBuffer *b, BgpUpdateNlri& a)
 class BgpUpdateNlriDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_length,
         FIELD_prefix,
@@ -5135,34 +6144,38 @@ class BgpUpdateNlriDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdateNlriDescriptor)
 
 BgpUpdateNlriDescriptor::BgpUpdateNlriDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdateNlri)), "")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdateNlriDescriptor::~BgpUpdateNlriDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdateNlriDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5172,34 +6185,34 @@ bool BgpUpdateNlriDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpUpdateNlriDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdateNlriDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdateNlriDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdateNlriDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int BgpUpdateNlriDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_length
@@ -5210,11 +6223,11 @@ unsigned int BgpUpdateNlriDescriptor::getFieldTypeFlags(int field) const
 
 const char *BgpUpdateNlriDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "length",
@@ -5225,20 +6238,20 @@ const char *BgpUpdateNlriDescriptor::getFieldName(int field) const
 
 int BgpUpdateNlriDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "length") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "prefix") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "length") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "prefix") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdateNlriDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint8_t",    // FIELD_length
@@ -5249,67 +6262,83 @@ const char *BgpUpdateNlriDescriptor::getFieldTypeString(int field) const
 
 const char **BgpUpdateNlriDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *BgpUpdateNlriDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdateNlriDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int BgpUpdateNlriDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdateNlriDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdateNlri *pp = (BgpUpdateNlri *)object; (void)pp;
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *BgpUpdateNlriDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdateNlriDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateNlri *pp = (BgpUpdateNlri *)object; (void)pp;
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdateNlri'", field);
+    }
+}
+
+const char *BgpUpdateNlriDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string BgpUpdateNlriDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdateNlriDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateNlri *pp = (BgpUpdateNlri *)object; (void)pp;
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
     switch (field) {
         case FIELD_length: return ulong2string(pp->length);
         case FIELD_prefix: return pp->prefix.str();
@@ -5317,46 +6346,97 @@ std::string BgpUpdateNlriDescriptor::getFieldValueAsString(void *object, int fie
     }
 }
 
-bool BgpUpdateNlriDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdateNlriDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateNlri *pp = (BgpUpdateNlri *)object; (void)pp;
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
     switch (field) {
-        case FIELD_length: pp->length = string2ulong(value); return true;
-        default: return false;
+        case FIELD_length: pp->length = string2ulong(value); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateNlri'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdateNlriDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: return (omnetpp::intval_t)(pp->length);
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->prefix); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdateNlri' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdateNlriDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
+    switch (field) {
+        case FIELD_length: pp->length = omnetpp::checked_int_cast<uint8_t>(value.intValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateNlri'", field);
     }
 }
 
 const char *BgpUpdateNlriDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *BgpUpdateNlriDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdateNlriDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateNlri *pp = (BgpUpdateNlri *)object; (void)pp;
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
     switch (field) {
-        case FIELD_prefix: return toVoidPtr(&pp->prefix); break;
-        default: return nullptr;
+        case FIELD_prefix: return omnetpp::toAnyPtr(&pp->prefix); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void BgpUpdateNlriDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateNlri *pp = omnetpp::fromAnyPtr<BgpUpdateNlri>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateNlri'", field);
     }
 }
 
@@ -5483,7 +6563,7 @@ size_t BgpUpdateMessage::getWithdrawnRoutesArraySize() const
 
 const BgpUpdateWithdrawnRoutes& BgpUpdateMessage::getWithdrawnRoutes(size_t k) const
 {
-    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size withdrawnRoutes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)withdrawnRoutes_arraysize, (unsigned long)k);
     return this->withdrawnRoutes[k];
 }
 
@@ -5501,15 +6581,15 @@ void BgpUpdateMessage::setWithdrawnRoutesArraySize(size_t newSize)
 
 void BgpUpdateMessage::setWithdrawnRoutes(size_t k, const BgpUpdateWithdrawnRoutes& withdrawnRoutes)
 {
-    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)withdrawnRoutes_arraysize, (unsigned long)k);
     handleChange();
     this->withdrawnRoutes[k] = withdrawnRoutes;
 }
 
 void BgpUpdateMessage::insertWithdrawnRoutes(size_t k, const BgpUpdateWithdrawnRoutes& withdrawnRoutes)
 {
+    if (k > withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)withdrawnRoutes_arraysize, (unsigned long)k);
     handleChange();
-    if (k > withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = withdrawnRoutes_arraysize + 1;
     BgpUpdateWithdrawnRoutes *withdrawnRoutes2 = new BgpUpdateWithdrawnRoutes[newSize];
     size_t i;
@@ -5523,14 +6603,14 @@ void BgpUpdateMessage::insertWithdrawnRoutes(size_t k, const BgpUpdateWithdrawnR
     withdrawnRoutes_arraysize = newSize;
 }
 
-void BgpUpdateMessage::insertWithdrawnRoutes(const BgpUpdateWithdrawnRoutes& withdrawnRoutes)
+void BgpUpdateMessage::appendWithdrawnRoutes(const BgpUpdateWithdrawnRoutes& withdrawnRoutes)
 {
     insertWithdrawnRoutes(withdrawnRoutes_arraysize, withdrawnRoutes);
 }
 
 void BgpUpdateMessage::eraseWithdrawnRoutes(size_t k)
 {
-    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= withdrawnRoutes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)withdrawnRoutes_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = withdrawnRoutes_arraysize - 1;
     BgpUpdateWithdrawnRoutes *withdrawnRoutes2 = (newSize == 0) ? nullptr : new BgpUpdateWithdrawnRoutes[newSize];
@@ -5562,7 +6642,7 @@ size_t BgpUpdateMessage::getPathAttributesArraySize() const
 
 const BgpUpdatePathAttributes * BgpUpdateMessage::getPathAttributes(size_t k) const
 {
-    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size pathAttributes_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)pathAttributes_arraysize, (unsigned long)k);
     return this->pathAttributes[k];
 }
 
@@ -5584,31 +6664,35 @@ void BgpUpdateMessage::setPathAttributesArraySize(size_t newSize)
 
 void BgpUpdateMessage::setPathAttributes(size_t k, BgpUpdatePathAttributes * pathAttributes)
 {
-    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)pathAttributes_arraysize, (unsigned long)k);
     handleChange();
-    delete this->pathAttributes[k];
+    if (pathAttributes == this->pathAttributes[k]) return;
+    if (this->pathAttributes[k] != nullptr && this->pathAttributes[k]->isOwnedObject()) dropAndDelete((cOwnedObject*)this->pathAttributes[k]); else delete this->pathAttributes[k];
     this->pathAttributes[k] = pathAttributes;
+    if (this->pathAttributes[k] != nullptr && this->pathAttributes[k]->isOwnedObject()) take((cOwnedObject*)this->pathAttributes[k]);
 }
 
-BgpUpdatePathAttributes * BgpUpdateMessage::dropPathAttributes(size_t k)
+BgpUpdatePathAttributes * BgpUpdateMessage::removePathAttributes(size_t k)
 {
-    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)pathAttributes_arraysize, (unsigned long)k);
     handleChange();
     BgpUpdatePathAttributes * retval = this->pathAttributes[k];
+    if (retval != nullptr && retval->isOwnedObject()) drop((cOwnedObject*)retval);
     this->pathAttributes[k] = nullptr;
     return retval;
 }
 
 void BgpUpdateMessage::insertPathAttributes(size_t k, BgpUpdatePathAttributes * pathAttributes)
 {
+    if (k > pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)pathAttributes_arraysize, (unsigned long)k);
     handleChange();
-    if (k > pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = pathAttributes_arraysize + 1;
     BgpUpdatePathAttributes * *pathAttributes2 = new BgpUpdatePathAttributes *[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         pathAttributes2[i] = this->pathAttributes[i];
     pathAttributes2[k] = pathAttributes;
+    if (pathAttributes2[k] != nullptr && pathAttributes2[k]->isOwnedObject()) take((cOwnedObject*)pathAttributes2[k]);
     for (i = k + 1; i < newSize; i++)
         pathAttributes2[i] = this->pathAttributes[i-1];
     delete [] this->pathAttributes;
@@ -5616,14 +6700,14 @@ void BgpUpdateMessage::insertPathAttributes(size_t k, BgpUpdatePathAttributes * 
     pathAttributes_arraysize = newSize;
 }
 
-void BgpUpdateMessage::insertPathAttributes(BgpUpdatePathAttributes * pathAttributes)
+void BgpUpdateMessage::appendPathAttributes(BgpUpdatePathAttributes * pathAttributes)
 {
     insertPathAttributes(pathAttributes_arraysize, pathAttributes);
 }
 
 void BgpUpdateMessage::erasePathAttributes(size_t k)
 {
-    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= pathAttributes_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)pathAttributes_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = pathAttributes_arraysize - 1;
     BgpUpdatePathAttributes * *pathAttributes2 = (newSize == 0) ? nullptr : new BgpUpdatePathAttributes *[newSize];
@@ -5632,7 +6716,7 @@ void BgpUpdateMessage::erasePathAttributes(size_t k)
         pathAttributes2[i] = this->pathAttributes[i];
     for (i = k; i < newSize; i++)
         pathAttributes2[i] = this->pathAttributes[i+1];
-    delete this->pathAttributes[k];
+    if (this->pathAttributes[k] != nullptr && this->pathAttributes[k]->isOwnedObject()) dropAndDelete((cOwnedObject*)this->pathAttributes[k]); else delete this->pathAttributes[k];
     delete [] this->pathAttributes;
     this->pathAttributes = pathAttributes2;
     pathAttributes_arraysize = newSize;
@@ -5645,7 +6729,7 @@ size_t BgpUpdateMessage::getNLRIArraySize() const
 
 const BgpUpdateNlri& BgpUpdateMessage::getNLRI(size_t k) const
 {
-    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size NLRI_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)NLRI_arraysize, (unsigned long)k);
     return this->NLRI[k];
 }
 
@@ -5663,15 +6747,15 @@ void BgpUpdateMessage::setNLRIArraySize(size_t newSize)
 
 void BgpUpdateMessage::setNLRI(size_t k, const BgpUpdateNlri& NLRI)
 {
-    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)NLRI_arraysize, (unsigned long)k);
     handleChange();
     this->NLRI[k] = NLRI;
 }
 
 void BgpUpdateMessage::insertNLRI(size_t k, const BgpUpdateNlri& NLRI)
 {
+    if (k > NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)NLRI_arraysize, (unsigned long)k);
     handleChange();
-    if (k > NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
     size_t newSize = NLRI_arraysize + 1;
     BgpUpdateNlri *NLRI2 = new BgpUpdateNlri[newSize];
     size_t i;
@@ -5685,14 +6769,14 @@ void BgpUpdateMessage::insertNLRI(size_t k, const BgpUpdateNlri& NLRI)
     NLRI_arraysize = newSize;
 }
 
-void BgpUpdateMessage::insertNLRI(const BgpUpdateNlri& NLRI)
+void BgpUpdateMessage::appendNLRI(const BgpUpdateNlri& NLRI)
 {
     insertNLRI(NLRI_arraysize, NLRI);
 }
 
 void BgpUpdateMessage::eraseNLRI(size_t k)
 {
-    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= NLRI_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)NLRI_arraysize, (unsigned long)k);
     handleChange();
     size_t newSize = NLRI_arraysize - 1;
     BgpUpdateNlri *NLRI2 = (newSize == 0) ? nullptr : new BgpUpdateNlri[newSize];
@@ -5709,7 +6793,7 @@ void BgpUpdateMessage::eraseNLRI(size_t k)
 class BgpUpdateMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_withDrawnRoutesLength,
         FIELD_withdrawnRoutes,
@@ -5723,34 +6807,38 @@ class BgpUpdateMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(BgpUpdateMessageDescriptor)
 
 BgpUpdateMessageDescriptor::BgpUpdateMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::bgp::BgpUpdateMessage)), "inet::bgp::BgpHeader")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 BgpUpdateMessageDescriptor::~BgpUpdateMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool BgpUpdateMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -5760,52 +6848,52 @@ bool BgpUpdateMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **BgpUpdateMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *BgpUpdateMessageDescriptor::getProperty(const char *propertyname) const
+const char *BgpUpdateMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int BgpUpdateMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int BgpUpdateMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_withDrawnRoutesLength
-        FD_ISARRAY | FD_ISCOMPOUND,    // FIELD_withdrawnRoutes
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISRESIZABLE,    // FIELD_withdrawnRoutes
         FD_ISEDITABLE,    // FIELD_totalPathAttributeLength
-        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT,    // FIELD_pathAttributes
-        FD_ISARRAY | FD_ISCOMPOUND,    // FIELD_NLRI
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISREPLACEABLE | FD_ISRESIZABLE,    // FIELD_pathAttributes
+        FD_ISARRAY | FD_ISCOMPOUND | FD_ISRESIZABLE,    // FIELD_NLRI
     };
     return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
 }
 
 const char *BgpUpdateMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "withDrawnRoutesLength",
@@ -5819,23 +6907,23 @@ const char *BgpUpdateMessageDescriptor::getFieldName(int field) const
 
 int BgpUpdateMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'w' && strcmp(fieldName, "withDrawnRoutesLength") == 0) return base+0;
-    if (fieldName[0] == 'w' && strcmp(fieldName, "withdrawnRoutes") == 0) return base+1;
-    if (fieldName[0] == 't' && strcmp(fieldName, "totalPathAttributeLength") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "pathAttributes") == 0) return base+3;
-    if (fieldName[0] == 'N' && strcmp(fieldName, "NLRI") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "withDrawnRoutesLength") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "withdrawnRoutes") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "totalPathAttributeLength") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "pathAttributes") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "NLRI") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *BgpUpdateMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint16_t",    // FIELD_withDrawnRoutesLength
@@ -5849,11 +6937,11 @@ const char *BgpUpdateMessageDescriptor::getFieldTypeString(int field) const
 
 const char **BgpUpdateMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_pathAttributes: {
@@ -5864,32 +6952,32 @@ const char **BgpUpdateMessageDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *BgpUpdateMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *BgpUpdateMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_pathAttributes:
-            if (!strcmp(propertyname, "owned")) return "";
-            if (!strcmp(propertyname, "allowReplace")) return "";
+            if (!strcmp(propertyName, "owned")) return "";
+            if (!strcmp(propertyName, "allowReplace")) return "";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int BgpUpdateMessageDescriptor::getFieldArraySize(void *object, int field) const
+int BgpUpdateMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    BgpUpdateMessage *pp = (BgpUpdateMessage *)object; (void)pp;
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
     switch (field) {
         case FIELD_withdrawnRoutes: return pp->getWithdrawnRoutesArraySize();
         case FIELD_pathAttributes: return pp->getPathAttributesArraySize();
@@ -5898,63 +6986,122 @@ int BgpUpdateMessageDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *BgpUpdateMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void BgpUpdateMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateMessage *pp = (BgpUpdateMessage *)object; (void)pp;
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_withdrawnRoutes: pp->setWithdrawnRoutesArraySize(size); break;
+        case FIELD_pathAttributes: pp->setPathAttributesArraySize(size); break;
+        case FIELD_NLRI: pp->setNLRIArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'BgpUpdateMessage'", field);
+    }
+}
+
+const char *BgpUpdateMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
     switch (field) {
         case FIELD_pathAttributes: { const BgpUpdatePathAttributes * value = pp->getPathAttributes(i); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string BgpUpdateMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string BgpUpdateMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateMessage *pp = (BgpUpdateMessage *)object; (void)pp;
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
     switch (field) {
         case FIELD_withDrawnRoutesLength: return ulong2string(pp->getWithDrawnRoutesLength());
-        case FIELD_withdrawnRoutes: {std::stringstream out; out << pp->getWithdrawnRoutes(i); return out.str();}
+        case FIELD_withdrawnRoutes: return "";
         case FIELD_totalPathAttributeLength: return ulong2string(pp->getTotalPathAttributeLength());
-        case FIELD_pathAttributes: {std::stringstream out; out << pp->getPathAttributes(i); return out.str();}
-        case FIELD_NLRI: {std::stringstream out; out << pp->getNLRI(i); return out.str();}
+        case FIELD_pathAttributes: { auto obj = pp->getPathAttributes(i); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_NLRI: return "";
         default: return "";
     }
 }
 
-bool BgpUpdateMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void BgpUpdateMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    BgpUpdateMessage *pp = (BgpUpdateMessage *)object; (void)pp;
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_withDrawnRoutesLength: pp->setWithDrawnRoutesLength(string2ulong(value)); return true;
-        case FIELD_totalPathAttributeLength: pp->setTotalPathAttributeLength(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_withDrawnRoutesLength: pp->setWithDrawnRoutesLength(string2ulong(value)); break;
+        case FIELD_totalPathAttributeLength: pp->setTotalPathAttributeLength(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateMessage'", field);
+    }
+}
+
+omnetpp::cValue BgpUpdateMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_withDrawnRoutesLength: return (omnetpp::intval_t)(pp->getWithDrawnRoutesLength());
+        case FIELD_withdrawnRoutes: return omnetpp::toAnyPtr(&pp->getWithdrawnRoutes(i)); break;
+        case FIELD_totalPathAttributeLength: return (omnetpp::intval_t)(pp->getTotalPathAttributeLength());
+        case FIELD_pathAttributes: return omnetpp::toAnyPtr(pp->getPathAttributes(i)); break;
+        case FIELD_NLRI: return omnetpp::toAnyPtr(&pp->getNLRI(i)); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'BgpUpdateMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void BgpUpdateMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_withDrawnRoutesLength: pp->setWithDrawnRoutesLength(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_totalPathAttributeLength: pp->setTotalPathAttributeLength(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_pathAttributes: pp->setPathAttributes(i,omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(value.pointerValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateMessage'", field);
     }
 }
 
 const char *BgpUpdateMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_withdrawnRoutes: return omnetpp::opp_typename(typeid(BgpUpdateWithdrawnRoutes));
@@ -5964,23 +7111,44 @@ const char *BgpUpdateMessageDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *BgpUpdateMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr BgpUpdateMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    BgpUpdateMessage *pp = (BgpUpdateMessage *)object; (void)pp;
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_withdrawnRoutes: return toVoidPtr(&pp->getWithdrawnRoutes(i)); break;
-        case FIELD_pathAttributes: return toVoidPtr(pp->getPathAttributes(i)); break;
-        case FIELD_NLRI: return toVoidPtr(&pp->getNLRI(i)); break;
-        default: return nullptr;
+        case FIELD_withdrawnRoutes: return omnetpp::toAnyPtr(&pp->getWithdrawnRoutes(i)); break;
+        case FIELD_pathAttributes: return omnetpp::toAnyPtr(pp->getPathAttributes(i)); break;
+        case FIELD_NLRI: return omnetpp::toAnyPtr(&pp->getNLRI(i)); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace bgp
-} // namespace inet
+void BgpUpdateMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    BgpUpdateMessage *pp = omnetpp::fromAnyPtr<BgpUpdateMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_pathAttributes: pp->setPathAttributes(i,omnetpp::fromAnyPtr<BgpUpdatePathAttributes>(ptr)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'BgpUpdateMessage'", field);
+    }
+}
+
+}  // namespace bgp
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

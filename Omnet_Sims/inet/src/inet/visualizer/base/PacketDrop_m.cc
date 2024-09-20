@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/visualizer/base/PacketDrop.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/visualizer/base/PacketDrop.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "PacketDrop_m.h"
 
 namespace omnetpp {
@@ -149,69 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace visualizer {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 class PacketDropDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_packet_,
         FIELD_module,
@@ -225,34 +170,38 @@ class PacketDropDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(PacketDropDescriptor)
 
 PacketDropDescriptor::PacketDropDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::visualizer::PacketDrop)), "inet::PacketDropDetails")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 PacketDropDescriptor::~PacketDropDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool PacketDropDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -262,36 +211,36 @@ bool PacketDropDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **PacketDropDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = { "existingClass", "descriptor",  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *PacketDropDescriptor::getProperty(const char *propertyname) const
+const char *PacketDropDescriptor::getProperty(const char *propertyName) const
 {
-    if (!strcmp(propertyname, "existingClass")) return "";
-    if (!strcmp(propertyname, "descriptor")) return "readonly";
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    if (!strcmp(propertyName, "existingClass")) return "";
+    if (!strcmp(propertyName, "descriptor")) return "readonly";
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int PacketDropDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int PacketDropDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND | FD_ISPOINTER | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_packet_
@@ -305,11 +254,11 @@ unsigned int PacketDropDescriptor::getFieldTypeFlags(int field) const
 
 const char *PacketDropDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "packet_",
@@ -323,23 +272,23 @@ const char *PacketDropDescriptor::getFieldName(int field) const
 
 int PacketDropDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "packet_") == 0) return base+0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "module") == 0) return base+1;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "networkNode") == 0) return base+2;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "networkInterface") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "position") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "packet_") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "module") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "networkNode") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "networkInterface") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "position") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *PacketDropDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "omnetpp::cPacket",    // FIELD_packet_
@@ -353,132 +302,205 @@ const char *PacketDropDescriptor::getFieldTypeString(int field) const
 
 const char **PacketDropDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *PacketDropDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *PacketDropDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int PacketDropDescriptor::getFieldArraySize(void *object, int field) const
+int PacketDropDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    PacketDrop *pp = (PacketDrop *)object; (void)pp;
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *PacketDropDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void PacketDropDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    PacketDrop *pp = (PacketDrop *)object; (void)pp;
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
     switch (field) {
-        case FIELD_packet_: { const cPacket * value = pp->getPacket_(); return omnetpp::opp_typename(typeid(*value)); }
-        case FIELD_module: { const cModule * value = pp->getModule(); return omnetpp::opp_typename(typeid(*value)); }
-        case FIELD_networkNode: { const cModule * value = pp->getNetworkNode(); return omnetpp::opp_typename(typeid(*value)); }
-        case FIELD_networkInterface: { const cObject * value = pp->getNetworkInterface(); return omnetpp::opp_typename(typeid(*value)); }
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'PacketDrop'", field);
+    }
+}
+
+const char *PacketDropDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
+    switch (field) {
+        case FIELD_packet_: { const ::omnetpp::cPacket * value = pp->getPacket_(); return omnetpp::opp_typename(typeid(*value)); }
+        case FIELD_module: { const ::omnetpp::cModule * value = pp->getModule(); return omnetpp::opp_typename(typeid(*value)); }
+        case FIELD_networkNode: { const ::omnetpp::cModule * value = pp->getNetworkNode(); return omnetpp::opp_typename(typeid(*value)); }
+        case FIELD_networkInterface: { const ::omnetpp::cObject * value = pp->getNetworkInterface(); return omnetpp::opp_typename(typeid(*value)); }
         default: return nullptr;
     }
 }
 
-std::string PacketDropDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string PacketDropDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    PacketDrop *pp = (PacketDrop *)object; (void)pp;
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
     switch (field) {
-        case FIELD_packet_: {std::stringstream out; out << pp->getPacket_(); return out.str();}
-        case FIELD_module: {std::stringstream out; out << pp->getModule(); return out.str();}
-        case FIELD_networkNode: {std::stringstream out; out << pp->getNetworkNode(); return out.str();}
-        case FIELD_networkInterface: {std::stringstream out; out << pp->getNetworkInterface(); return out.str();}
-        case FIELD_position: {std::stringstream out; out << pp->getPosition(); return out.str();}
+        case FIELD_packet_: { auto obj = pp->getPacket_(); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_module: { auto obj = pp->getModule(); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_networkNode: { auto obj = pp->getNetworkNode(); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_networkInterface: { auto obj = pp->getNetworkInterface(); return obj == nullptr ? "" : obj->str(); }
+        case FIELD_position: return "";
         default: return "";
     }
 }
 
-bool PacketDropDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void PacketDropDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    PacketDrop *pp = (PacketDrop *)object; (void)pp;
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'PacketDrop'", field);
+    }
+}
+
+omnetpp::cValue PacketDropDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
+    switch (field) {
+        case FIELD_packet_: return omnetpp::toAnyPtr(pp->getPacket_()); break;
+        case FIELD_module: return omnetpp::toAnyPtr(pp->getModule()); break;
+        case FIELD_networkNode: return omnetpp::toAnyPtr(pp->getNetworkNode()); break;
+        case FIELD_networkInterface: return omnetpp::toAnyPtr(pp->getNetworkInterface()); break;
+        case FIELD_position: return omnetpp::toAnyPtr(&pp->getPosition()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'PacketDrop' as cValue -- field index out of range?", field);
+    }
+}
+
+void PacketDropDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'PacketDrop'", field);
     }
 }
 
 const char *PacketDropDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
-        case FIELD_packet_: return omnetpp::opp_typename(typeid(cPacket));
-        case FIELD_module: return omnetpp::opp_typename(typeid(cModule));
-        case FIELD_networkNode: return omnetpp::opp_typename(typeid(cModule));
-        case FIELD_networkInterface: return omnetpp::opp_typename(typeid(cObject));
-        case FIELD_position: return omnetpp::opp_typename(typeid(Coord));
+        case FIELD_packet_: return omnetpp::opp_typename(typeid(::omnetpp::cPacket));
+        case FIELD_module: return omnetpp::opp_typename(typeid(::omnetpp::cModule));
+        case FIELD_networkNode: return omnetpp::opp_typename(typeid(::omnetpp::cModule));
+        case FIELD_networkInterface: return omnetpp::opp_typename(typeid(::omnetpp::cObject));
+        case FIELD_position: return omnetpp::opp_typename(typeid(::inet::Coord));
         default: return nullptr;
     };
 }
 
-void *PacketDropDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr PacketDropDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    PacketDrop *pp = (PacketDrop *)object; (void)pp;
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
     switch (field) {
-        case FIELD_packet_: return toVoidPtr(pp->getPacket_()); break;
-        case FIELD_module: return toVoidPtr(pp->getModule()); break;
-        case FIELD_networkNode: return toVoidPtr(pp->getNetworkNode()); break;
-        case FIELD_networkInterface: return toVoidPtr(pp->getNetworkInterface()); break;
-        case FIELD_position: return toVoidPtr(&pp->getPosition()); break;
-        default: return nullptr;
+        case FIELD_packet_: return omnetpp::toAnyPtr(pp->getPacket_()); break;
+        case FIELD_module: return omnetpp::toAnyPtr(pp->getModule()); break;
+        case FIELD_networkNode: return omnetpp::toAnyPtr(pp->getNetworkNode()); break;
+        case FIELD_networkInterface: return omnetpp::toAnyPtr(pp->getNetworkInterface()); break;
+        case FIELD_position: return omnetpp::toAnyPtr(&pp->getPosition()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace visualizer
-} // namespace inet
+void PacketDropDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    PacketDrop *pp = omnetpp::fromAnyPtr<PacketDrop>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'PacketDrop'", field);
+    }
+}
+
+}  // namespace visualizer
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

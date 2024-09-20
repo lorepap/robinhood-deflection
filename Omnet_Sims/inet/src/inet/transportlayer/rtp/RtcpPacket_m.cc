@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/transportlayer/rtp/RtcpPacket.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/transportlayer/rtp/RtcpPacket.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "RtcpPacket_m.h"
 
 namespace omnetpp {
@@ -149,110 +150,14 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-} // namespace inet
+}  // namespace inet
 
 namespace inet {
 namespace rtp {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::rtp::RtcpPacketType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::rtp::RtcpPacketType"));
-    e->insert(RTCP_PT_UNDEF, "RTCP_PT_UNDEF");
-    e->insert(RTCP_PT_SR, "RTCP_PT_SR");
-    e->insert(RTCP_PT_RR, "RTCP_PT_RR");
-    e->insert(RTCP_PT_SDES, "RTCP_PT_SDES");
-    e->insert(RTCP_PT_BYE, "RTCP_PT_BYE");
-)
+Register_Enum(inet::rtp::RtcpPacketType, (inet::rtp::RtcpPacketType::RTCP_PT_UNDEF, inet::rtp::RtcpPacketType::RTCP_PT_SR, inet::rtp::RtcpPacketType::RTCP_PT_RR, inet::rtp::RtcpPacketType::RTCP_PT_SDES, inet::rtp::RtcpPacketType::RTCP_PT_BYE));
 
 Register_Class(RtcpPacket)
 
@@ -341,12 +246,12 @@ void RtcpPacket::setCount(short count)
     this->count = count;
 }
 
-inet::rtp::RtcpPacketType RtcpPacket::getPacketType() const
+RtcpPacketType RtcpPacket::getPacketType() const
 {
     return this->packetType;
 }
 
-void RtcpPacket::setPacketType(inet::rtp::RtcpPacketType packetType)
+void RtcpPacket::setPacketType(RtcpPacketType packetType)
 {
     handleChange();
     this->packetType = packetType;
@@ -366,7 +271,7 @@ void RtcpPacket::setRtcpLength(int rtcpLength)
 class RtcpPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_version,
         FIELD_padding,
@@ -380,34 +285,38 @@ class RtcpPacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RtcpPacketDescriptor)
 
 RtcpPacketDescriptor::RtcpPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::rtp::RtcpPacket)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RtcpPacketDescriptor::~RtcpPacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RtcpPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -417,40 +326,40 @@ bool RtcpPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RtcpPacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RtcpPacketDescriptor::getProperty(const char *propertyname) const
+const char *RtcpPacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RtcpPacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int RtcpPacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_version
         FD_ISEDITABLE,    // FIELD_padding
         FD_ISEDITABLE,    // FIELD_count
-        FD_ISEDITABLE,    // FIELD_packetType
+        0,    // FIELD_packetType
         FD_ISEDITABLE,    // FIELD_rtcpLength
     };
     return (field >= 0 && field < 5) ? fieldTypeFlags[field] : 0;
@@ -458,11 +367,11 @@ unsigned int RtcpPacketDescriptor::getFieldTypeFlags(int field) const
 
 const char *RtcpPacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "version",
@@ -476,23 +385,23 @@ const char *RtcpPacketDescriptor::getFieldName(int field) const
 
 int RtcpPacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "version") == 0) return base+0;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "padding") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "count") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "packetType") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "rtcpLength") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "version") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "padding") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "count") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "packetType") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "rtcpLength") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RtcpPacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int8",    // FIELD_version
@@ -506,11 +415,11 @@ const char *RtcpPacketDescriptor::getFieldTypeString(int field) const
 
 const char **RtcpPacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_packetType: {
@@ -521,59 +430,75 @@ const char **RtcpPacketDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *RtcpPacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RtcpPacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_packetType:
-            if (!strcmp(propertyname, "enum")) return "inet::rtp::RtcpPacketType";
+            if (!strcmp(propertyName, "enum")) return "inet::rtp::RtcpPacketType";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int RtcpPacketDescriptor::getFieldArraySize(void *object, int field) const
+int RtcpPacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RtcpPacket *pp = (RtcpPacket *)object; (void)pp;
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RtcpPacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RtcpPacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpPacket *pp = (RtcpPacket *)object; (void)pp;
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RtcpPacket'", field);
+    }
+}
+
+const char *RtcpPacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RtcpPacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RtcpPacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RtcpPacket *pp = (RtcpPacket *)object; (void)pp;
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
     switch (field) {
         case FIELD_version: return long2string(pp->getVersion());
         case FIELD_padding: return bool2string(pp->getPadding());
@@ -584,49 +509,105 @@ std::string RtcpPacketDescriptor::getFieldValueAsString(void *object, int field,
     }
 }
 
-bool RtcpPacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RtcpPacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpPacket *pp = (RtcpPacket *)object; (void)pp;
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_version: pp->setVersion(string2long(value)); return true;
-        case FIELD_padding: pp->setPadding(string2bool(value)); return true;
-        case FIELD_count: pp->setCount(string2long(value)); return true;
-        case FIELD_packetType: pp->setPacketType((inet::rtp::RtcpPacketType)string2enum(value, "inet::rtp::RtcpPacketType")); return true;
-        case FIELD_rtcpLength: pp->setRtcpLength(string2long(value)); return true;
-        default: return false;
+        case FIELD_version: pp->setVersion(string2long(value)); break;
+        case FIELD_padding: pp->setPadding(string2bool(value)); break;
+        case FIELD_count: pp->setCount(string2long(value)); break;
+        case FIELD_rtcpLength: pp->setRtcpLength(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpPacket'", field);
+    }
+}
+
+omnetpp::cValue RtcpPacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: return pp->getVersion();
+        case FIELD_padding: return pp->getPadding();
+        case FIELD_count: return pp->getCount();
+        case FIELD_packetType: return static_cast<int>(pp->getPacketType());
+        case FIELD_rtcpLength: return pp->getRtcpLength();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RtcpPacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void RtcpPacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: pp->setVersion(omnetpp::checked_int_cast<int8_t>(value.intValue())); break;
+        case FIELD_padding: pp->setPadding(value.boolValue()); break;
+        case FIELD_count: pp->setCount(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_rtcpLength: pp->setRtcpLength(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpPacket'", field);
     }
 }
 
 const char *RtcpPacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *RtcpPacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RtcpPacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RtcpPacket *pp = (RtcpPacket *)object; (void)pp;
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RtcpPacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpPacket *pp = omnetpp::fromAnyPtr<RtcpPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpPacket'", field);
     }
 }
 
@@ -691,12 +672,12 @@ void RtcpReceiverReportPacket::setSsrc(uint32_t ssrc)
     this->ssrc = ssrc;
 }
 
-const cArray& RtcpReceiverReportPacket::getReceptionReports() const
+const ::omnetpp::cArray& RtcpReceiverReportPacket::getReceptionReports() const
 {
     return this->receptionReports;
 }
 
-void RtcpReceiverReportPacket::setReceptionReports(const cArray& receptionReports)
+void RtcpReceiverReportPacket::setReceptionReports(const ::omnetpp::cArray& receptionReports)
 {
     handleChange();
     this->receptionReports = receptionReports;
@@ -705,7 +686,7 @@ void RtcpReceiverReportPacket::setReceptionReports(const cArray& receptionReport
 class RtcpReceiverReportPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_ssrc,
         FIELD_receptionReports,
@@ -716,34 +697,38 @@ class RtcpReceiverReportPacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RtcpReceiverReportPacketDescriptor)
 
 RtcpReceiverReportPacketDescriptor::RtcpReceiverReportPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::rtp::RtcpReceiverReportPacket)), "inet::rtp::RtcpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RtcpReceiverReportPacketDescriptor::~RtcpReceiverReportPacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RtcpReceiverReportPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -753,34 +738,34 @@ bool RtcpReceiverReportPacketDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **RtcpReceiverReportPacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RtcpReceiverReportPacketDescriptor::getProperty(const char *propertyname) const
+const char *RtcpReceiverReportPacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RtcpReceiverReportPacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int RtcpReceiverReportPacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_ssrc
@@ -791,11 +776,11 @@ unsigned int RtcpReceiverReportPacketDescriptor::getFieldTypeFlags(int field) co
 
 const char *RtcpReceiverReportPacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "ssrc",
@@ -806,20 +791,20 @@ const char *RtcpReceiverReportPacketDescriptor::getFieldName(int field) const
 
 int RtcpReceiverReportPacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "ssrc") == 0) return base+0;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "receptionReports") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "ssrc") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "receptionReports") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RtcpReceiverReportPacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_ssrc
@@ -830,115 +815,182 @@ const char *RtcpReceiverReportPacketDescriptor::getFieldTypeString(int field) co
 
 const char **RtcpReceiverReportPacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RtcpReceiverReportPacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RtcpReceiverReportPacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RtcpReceiverReportPacketDescriptor::getFieldArraySize(void *object, int field) const
+int RtcpReceiverReportPacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RtcpReceiverReportPacket *pp = (RtcpReceiverReportPacket *)object; (void)pp;
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RtcpReceiverReportPacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RtcpReceiverReportPacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpReceiverReportPacket *pp = (RtcpReceiverReportPacket *)object; (void)pp;
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RtcpReceiverReportPacket'", field);
+    }
+}
+
+const char *RtcpReceiverReportPacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RtcpReceiverReportPacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RtcpReceiverReportPacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RtcpReceiverReportPacket *pp = (RtcpReceiverReportPacket *)object; (void)pp;
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
     switch (field) {
         case FIELD_ssrc: return ulong2string(pp->getSsrc());
-        case FIELD_receptionReports: {std::stringstream out; out << pp->getReceptionReports(); return out.str();}
+        case FIELD_receptionReports: return pp->getReceptionReports().str();
         default: return "";
     }
 }
 
-bool RtcpReceiverReportPacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RtcpReceiverReportPacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpReceiverReportPacket *pp = (RtcpReceiverReportPacket *)object; (void)pp;
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_ssrc: pp->setSsrc(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_ssrc: pp->setSsrc(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpReceiverReportPacket'", field);
+    }
+}
+
+omnetpp::cValue RtcpReceiverReportPacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_ssrc: return (omnetpp::intval_t)(pp->getSsrc());
+        case FIELD_receptionReports: return omnetpp::toAnyPtr(&pp->getReceptionReports()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RtcpReceiverReportPacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void RtcpReceiverReportPacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_ssrc: pp->setSsrc(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpReceiverReportPacket'", field);
     }
 }
 
 const char *RtcpReceiverReportPacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
-        case FIELD_receptionReports: return omnetpp::opp_typename(typeid(cArray));
+        case FIELD_receptionReports: return omnetpp::opp_typename(typeid(::omnetpp::cArray));
         default: return nullptr;
     };
 }
 
-void *RtcpReceiverReportPacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RtcpReceiverReportPacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RtcpReceiverReportPacket *pp = (RtcpReceiverReportPacket *)object; (void)pp;
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_receptionReports: return toVoidPtr(&pp->getReceptionReports()); break;
-        default: return nullptr;
+        case FIELD_receptionReports: return omnetpp::toAnyPtr(&pp->getReceptionReports()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RtcpReceiverReportPacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpReceiverReportPacket *pp = omnetpp::fromAnyPtr<RtcpReceiverReportPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpReceiverReportPacket'", field);
     }
 }
 
@@ -988,12 +1040,12 @@ void RtcpSdesPacket::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->sdesChunks);
 }
 
-const cArray& RtcpSdesPacket::getSdesChunks() const
+const ::omnetpp::cArray& RtcpSdesPacket::getSdesChunks() const
 {
     return this->sdesChunks;
 }
 
-void RtcpSdesPacket::setSdesChunks(const cArray& sdesChunks)
+void RtcpSdesPacket::setSdesChunks(const ::omnetpp::cArray& sdesChunks)
 {
     handleChange();
     this->sdesChunks = sdesChunks;
@@ -1002,7 +1054,7 @@ void RtcpSdesPacket::setSdesChunks(const cArray& sdesChunks)
 class RtcpSdesPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_sdesChunks,
     };
@@ -1012,34 +1064,38 @@ class RtcpSdesPacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RtcpSdesPacketDescriptor)
 
 RtcpSdesPacketDescriptor::RtcpSdesPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::rtp::RtcpSdesPacket)), "inet::rtp::RtcpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RtcpSdesPacketDescriptor::~RtcpSdesPacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RtcpSdesPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1049,34 +1105,34 @@ bool RtcpSdesPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RtcpSdesPacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RtcpSdesPacketDescriptor::getProperty(const char *propertyname) const
+const char *RtcpSdesPacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RtcpSdesPacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int RtcpSdesPacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND | FD_ISCOBJECT | FD_ISCOWNEDOBJECT,    // FIELD_sdesChunks
@@ -1086,11 +1142,11 @@ unsigned int RtcpSdesPacketDescriptor::getFieldTypeFlags(int field) const
 
 const char *RtcpSdesPacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "sdesChunks",
@@ -1100,19 +1156,19 @@ const char *RtcpSdesPacketDescriptor::getFieldName(int field) const
 
 int RtcpSdesPacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sdesChunks") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "sdesChunks") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RtcpSdesPacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "omnetpp::cArray",    // FIELD_sdesChunks
@@ -1122,113 +1178,178 @@ const char *RtcpSdesPacketDescriptor::getFieldTypeString(int field) const
 
 const char **RtcpSdesPacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RtcpSdesPacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RtcpSdesPacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RtcpSdesPacketDescriptor::getFieldArraySize(void *object, int field) const
+int RtcpSdesPacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RtcpSdesPacket *pp = (RtcpSdesPacket *)object; (void)pp;
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RtcpSdesPacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RtcpSdesPacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpSdesPacket *pp = (RtcpSdesPacket *)object; (void)pp;
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RtcpSdesPacket'", field);
+    }
+}
+
+const char *RtcpSdesPacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RtcpSdesPacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RtcpSdesPacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RtcpSdesPacket *pp = (RtcpSdesPacket *)object; (void)pp;
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_sdesChunks: {std::stringstream out; out << pp->getSdesChunks(); return out.str();}
+        case FIELD_sdesChunks: return pp->getSdesChunks().str();
         default: return "";
     }
 }
 
-bool RtcpSdesPacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RtcpSdesPacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpSdesPacket *pp = (RtcpSdesPacket *)object; (void)pp;
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSdesPacket'", field);
+    }
+}
+
+omnetpp::cValue RtcpSdesPacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_sdesChunks: return omnetpp::toAnyPtr(&pp->getSdesChunks()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RtcpSdesPacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void RtcpSdesPacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSdesPacket'", field);
     }
 }
 
 const char *RtcpSdesPacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
-        case FIELD_sdesChunks: return omnetpp::opp_typename(typeid(cArray));
+        case FIELD_sdesChunks: return omnetpp::opp_typename(typeid(::omnetpp::cArray));
         default: return nullptr;
     };
 }
 
-void *RtcpSdesPacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RtcpSdesPacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RtcpSdesPacket *pp = (RtcpSdesPacket *)object; (void)pp;
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_sdesChunks: return toVoidPtr(&pp->getSdesChunks()); break;
-        default: return nullptr;
+        case FIELD_sdesChunks: return omnetpp::toAnyPtr(&pp->getSdesChunks()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RtcpSdesPacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpSdesPacket *pp = omnetpp::fromAnyPtr<RtcpSdesPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSdesPacket'", field);
     }
 }
 
@@ -1290,7 +1411,7 @@ void RtcpByePacket::setSsrc(uint32_t ssrc)
 class RtcpByePacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_ssrc,
     };
@@ -1300,34 +1421,38 @@ class RtcpByePacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RtcpByePacketDescriptor)
 
 RtcpByePacketDescriptor::RtcpByePacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::rtp::RtcpByePacket)), "inet::rtp::RtcpPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RtcpByePacketDescriptor::~RtcpByePacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RtcpByePacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1337,34 +1462,34 @@ bool RtcpByePacketDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RtcpByePacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RtcpByePacketDescriptor::getProperty(const char *propertyname) const
+const char *RtcpByePacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RtcpByePacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int RtcpByePacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_ssrc
@@ -1374,11 +1499,11 @@ unsigned int RtcpByePacketDescriptor::getFieldTypeFlags(int field) const
 
 const char *RtcpByePacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "ssrc",
@@ -1388,19 +1513,19 @@ const char *RtcpByePacketDescriptor::getFieldName(int field) const
 
 int RtcpByePacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "ssrc") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "ssrc") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RtcpByePacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "uint32",    // FIELD_ssrc
@@ -1410,112 +1535,178 @@ const char *RtcpByePacketDescriptor::getFieldTypeString(int field) const
 
 const char **RtcpByePacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RtcpByePacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RtcpByePacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RtcpByePacketDescriptor::getFieldArraySize(void *object, int field) const
+int RtcpByePacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RtcpByePacket *pp = (RtcpByePacket *)object; (void)pp;
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RtcpByePacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RtcpByePacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpByePacket *pp = (RtcpByePacket *)object; (void)pp;
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RtcpByePacket'", field);
+    }
+}
+
+const char *RtcpByePacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RtcpByePacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RtcpByePacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RtcpByePacket *pp = (RtcpByePacket *)object; (void)pp;
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
     switch (field) {
         case FIELD_ssrc: return ulong2string(pp->getSsrc());
         default: return "";
     }
 }
 
-bool RtcpByePacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RtcpByePacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpByePacket *pp = (RtcpByePacket *)object; (void)pp;
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
     switch (field) {
-        case FIELD_ssrc: pp->setSsrc(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_ssrc: pp->setSsrc(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpByePacket'", field);
+    }
+}
+
+omnetpp::cValue RtcpByePacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_ssrc: return (omnetpp::intval_t)(pp->getSsrc());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RtcpByePacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void RtcpByePacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_ssrc: pp->setSsrc(omnetpp::checked_int_cast<uint32_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpByePacket'", field);
     }
 }
 
 const char *RtcpByePacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *RtcpByePacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RtcpByePacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RtcpByePacket *pp = (RtcpByePacket *)object; (void)pp;
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void RtcpByePacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpByePacket *pp = omnetpp::fromAnyPtr<RtcpByePacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpByePacket'", field);
     }
 }
 
@@ -1576,7 +1767,7 @@ void RtcpSenderReportPacket::setSenderReport(const SenderReport& senderReport)
 class RtcpSenderReportPacketDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_senderReport,
     };
@@ -1586,34 +1777,38 @@ class RtcpSenderReportPacketDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(RtcpSenderReportPacketDescriptor)
 
 RtcpSenderReportPacketDescriptor::RtcpSenderReportPacketDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::rtp::RtcpSenderReportPacket)), "inet::rtp::RtcpReceiverReportPacket")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 RtcpSenderReportPacketDescriptor::~RtcpSenderReportPacketDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool RtcpSenderReportPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1623,34 +1818,34 @@ bool RtcpSenderReportPacketDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **RtcpSenderReportPacketDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *RtcpSenderReportPacketDescriptor::getProperty(const char *propertyname) const
+const char *RtcpSenderReportPacketDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int RtcpSenderReportPacketDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int RtcpSenderReportPacketDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISCOMPOUND | FD_ISCOBJECT,    // FIELD_senderReport
@@ -1660,11 +1855,11 @@ unsigned int RtcpSenderReportPacketDescriptor::getFieldTypeFlags(int field) cons
 
 const char *RtcpSenderReportPacketDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "senderReport",
@@ -1674,19 +1869,19 @@ const char *RtcpSenderReportPacketDescriptor::getFieldName(int field) const
 
 int RtcpSenderReportPacketDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "senderReport") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "senderReport") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *RtcpSenderReportPacketDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::rtp::SenderReport",    // FIELD_senderReport
@@ -1696,94 +1891,143 @@ const char *RtcpSenderReportPacketDescriptor::getFieldTypeString(int field) cons
 
 const char **RtcpSenderReportPacketDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *RtcpSenderReportPacketDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *RtcpSenderReportPacketDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int RtcpSenderReportPacketDescriptor::getFieldArraySize(void *object, int field) const
+int RtcpSenderReportPacketDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    RtcpSenderReportPacket *pp = (RtcpSenderReportPacket *)object; (void)pp;
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *RtcpSenderReportPacketDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void RtcpSenderReportPacketDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpSenderReportPacket *pp = (RtcpSenderReportPacket *)object; (void)pp;
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'RtcpSenderReportPacket'", field);
+    }
+}
+
+const char *RtcpSenderReportPacketDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string RtcpSenderReportPacketDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string RtcpSenderReportPacketDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    RtcpSenderReportPacket *pp = (RtcpSenderReportPacket *)object; (void)pp;
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_senderReport: {std::stringstream out; out << pp->getSenderReport(); return out.str();}
+        case FIELD_senderReport: return pp->getSenderReport().str();
         default: return "";
     }
 }
 
-bool RtcpSenderReportPacketDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void RtcpSenderReportPacketDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    RtcpSenderReportPacket *pp = (RtcpSenderReportPacket *)object; (void)pp;
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
     switch (field) {
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSenderReportPacket'", field);
+    }
+}
+
+omnetpp::cValue RtcpSenderReportPacketDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
+    switch (field) {
+        case FIELD_senderReport: return omnetpp::toAnyPtr(&pp->getSenderReport()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'RtcpSenderReportPacket' as cValue -- field index out of range?", field);
+    }
+}
+
+void RtcpSenderReportPacketDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSenderReportPacket'", field);
     }
 }
 
 const char *RtcpSenderReportPacketDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_senderReport: return omnetpp::opp_typename(typeid(SenderReport));
@@ -1791,21 +2035,41 @@ const char *RtcpSenderReportPacketDescriptor::getFieldStructName(int field) cons
     };
 }
 
-void *RtcpSenderReportPacketDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr RtcpSenderReportPacketDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    RtcpSenderReportPacket *pp = (RtcpSenderReportPacket *)object; (void)pp;
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
     switch (field) {
-        case FIELD_senderReport: return toVoidPtr(&pp->getSenderReport()); break;
-        default: return nullptr;
+        case FIELD_senderReport: return omnetpp::toAnyPtr(&pp->getSenderReport()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace rtp
-} // namespace inet
+void RtcpSenderReportPacketDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    RtcpSenderReportPacket *pp = omnetpp::fromAnyPtr<RtcpSenderReportPacket>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'RtcpSenderReportPacket'", field);
+    }
+}
+
+}  // namespace rtp
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

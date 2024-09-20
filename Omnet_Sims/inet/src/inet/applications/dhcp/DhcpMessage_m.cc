@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/applications/dhcp/DhcpMessage.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/applications/dhcp/DhcpMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "DhcpMessage_m.h"
 
 namespace omnetpp {
@@ -149,112 +150,15 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::DhcpOpcode, (inet::DhcpOpcode::BOOTREQUEST, inet::DhcpOpcode::BOOTREPLY));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+Register_Enum(inet::DhcpMessageType, (inet::DhcpMessageType::DHCPDISCOVER, inet::DhcpMessageType::DHCPOFFER, inet::DhcpMessageType::DHCPREQUEST, inet::DhcpMessageType::DHCPDECLINE, inet::DhcpMessageType::DHCPACK, inet::DhcpMessageType::DHCPNAK, inet::DhcpMessageType::DHCPRELEASE, inet::DhcpMessageType::DHCPINFORM));
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+Register_Enum(inet::DhcpOptionCode, (inet::DhcpOptionCode::DHCP_MSG_TYPE, inet::DhcpOptionCode::CLIENT_ID, inet::DhcpOptionCode::HOSTNAME, inet::DhcpOptionCode::REQUESTED_IP, inet::DhcpOptionCode::PARAM_LIST, inet::DhcpOptionCode::SUBNET_MASK, inet::DhcpOptionCode::ROUTER, inet::DhcpOptionCode::DNS, inet::DhcpOptionCode::NTP_SRV, inet::DhcpOptionCode::RENEWAL_TIME, inet::DhcpOptionCode::REBIND_TIME, inet::DhcpOptionCode::LEASE_TIME, inet::DhcpOptionCode::SERVER_ID));
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::DhcpOpcode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::DhcpOpcode"));
-    e->insert(BOOTREQUEST, "BOOTREQUEST");
-    e->insert(BOOTREPLY, "BOOTREPLY");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::DhcpMessageType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::DhcpMessageType"));
-    e->insert(DHCPDISCOVER, "DHCPDISCOVER");
-    e->insert(DHCPOFFER, "DHCPOFFER");
-    e->insert(DHCPREQUEST, "DHCPREQUEST");
-    e->insert(DHCPDECLINE, "DHCPDECLINE");
-    e->insert(DHCPACK, "DHCPACK");
-    e->insert(DHCPNAK, "DHCPNAK");
-    e->insert(DHCPRELEASE, "DHCPRELEASE");
-    e->insert(DHCPINFORM, "DHCPINFORM");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::DhcpOptionCode");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::DhcpOptionCode"));
-    e->insert(DHCP_MSG_TYPE, "DHCP_MSG_TYPE");
-    e->insert(CLIENT_ID, "CLIENT_ID");
-    e->insert(HOSTNAME, "HOSTNAME");
-    e->insert(REQUESTED_IP, "REQUESTED_IP");
-    e->insert(PARAM_LIST, "PARAM_LIST");
-    e->insert(SUBNET_MASK, "SUBNET_MASK");
-    e->insert(ROUTER, "ROUTER");
-    e->insert(DNS, "DNS");
-    e->insert(NTP_SRV, "NTP_SRV");
-    e->insert(RENEWAL_TIME, "RENEWAL_TIME");
-    e->insert(REBIND_TIME, "REBIND_TIME");
-    e->insert(LEASE_TIME, "LEASE_TIME");
-    e->insert(SERVER_ID, "SERVER_ID");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::DhcpTimerType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::DhcpTimerType"));
-    e->insert(WAIT_OFFER, "WAIT_OFFER");
-    e->insert(WAIT_ACK, "WAIT_ACK");
-    e->insert(T1, "T1");
-    e->insert(T2, "T2");
-    e->insert(LEASE_TIMEOUT, "LEASE_TIMEOUT");
-    e->insert(START_DHCP, "START_DHCP");
-)
+Register_Enum(inet::DhcpTimerType, (inet::DhcpTimerType::WAIT_OFFER, inet::DhcpTimerType::WAIT_ACK, inet::DhcpTimerType::T1, inet::DhcpTimerType::T2, inet::DhcpTimerType::LEASE_TIMEOUT, inet::DhcpTimerType::START_DHCP));
 
 Register_Class(DhcpOptions)
 
@@ -288,7 +192,7 @@ void DhcpOptions::copy(const DhcpOptions& other)
     this->messageType = other.messageType;
     this->hostName = other.hostName;
     delete [] this->parameterRequestList;
-    this->parameterRequestList = (other.parameterRequestList_arraysize==0) ? nullptr : new inet::DhcpOptionCode[other.parameterRequestList_arraysize];
+    this->parameterRequestList = (other.parameterRequestList_arraysize==0) ? nullptr : new DhcpOptionCode[other.parameterRequestList_arraysize];
     parameterRequestList_arraysize = other.parameterRequestList_arraysize;
     for (size_t i = 0; i < parameterRequestList_arraysize; i++) {
         this->parameterRequestList[i] = other.parameterRequestList[i];
@@ -350,7 +254,7 @@ void DhcpOptions::parsimUnpack(omnetpp::cCommBuffer *b)
     if (parameterRequestList_arraysize == 0) {
         this->parameterRequestList = nullptr;
     } else {
-        this->parameterRequestList = new inet::DhcpOptionCode[parameterRequestList_arraysize];
+        this->parameterRequestList = new DhcpOptionCode[parameterRequestList_arraysize];
         doParsimArrayUnpacking(b,this->parameterRequestList,parameterRequestList_arraysize);
     }
     doParsimUnpacking(b,this->clientIdentifier);
@@ -386,12 +290,12 @@ void DhcpOptions::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->leaseTime);
 }
 
-inet::DhcpMessageType DhcpOptions::getMessageType() const
+DhcpMessageType DhcpOptions::getMessageType() const
 {
     return this->messageType;
 }
 
-void DhcpOptions::setMessageType(inet::DhcpMessageType messageType)
+void DhcpOptions::setMessageType(DhcpMessageType messageType)
 {
     this->messageType = messageType;
 }
@@ -411,15 +315,15 @@ size_t DhcpOptions::getParameterRequestListArraySize() const
     return parameterRequestList_arraysize;
 }
 
-inet::DhcpOptionCode DhcpOptions::getParameterRequestList(size_t k) const
+DhcpOptionCode DhcpOptions::getParameterRequestList(size_t k) const
 {
-    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size parameterRequestList_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)parameterRequestList_arraysize, (unsigned long)k);
     return this->parameterRequestList[k];
 }
 
 void DhcpOptions::setParameterRequestListArraySize(size_t newSize)
 {
-    inet::DhcpOptionCode *parameterRequestList2 = (newSize==0) ? nullptr : new inet::DhcpOptionCode[newSize];
+    DhcpOptionCode *parameterRequestList2 = (newSize==0) ? nullptr : new DhcpOptionCode[newSize];
     size_t minSize = parameterRequestList_arraysize < newSize ? parameterRequestList_arraysize : newSize;
     for (size_t i = 0; i < minSize; i++)
         parameterRequestList2[i] = this->parameterRequestList[i];
@@ -430,17 +334,17 @@ void DhcpOptions::setParameterRequestListArraySize(size_t newSize)
     parameterRequestList_arraysize = newSize;
 }
 
-void DhcpOptions::setParameterRequestList(size_t k, inet::DhcpOptionCode parameterRequestList)
+void DhcpOptions::setParameterRequestList(size_t k, DhcpOptionCode parameterRequestList)
 {
-    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)parameterRequestList_arraysize, (unsigned long)k);
     this->parameterRequestList[k] = parameterRequestList;
 }
 
-void DhcpOptions::insertParameterRequestList(size_t k, inet::DhcpOptionCode parameterRequestList)
+void DhcpOptions::insertParameterRequestList(size_t k, DhcpOptionCode parameterRequestList)
 {
-    if (k > parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)parameterRequestList_arraysize, (unsigned long)k);
     size_t newSize = parameterRequestList_arraysize + 1;
-    inet::DhcpOptionCode *parameterRequestList2 = new inet::DhcpOptionCode[newSize];
+    DhcpOptionCode *parameterRequestList2 = new DhcpOptionCode[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         parameterRequestList2[i] = this->parameterRequestList[i];
@@ -452,16 +356,16 @@ void DhcpOptions::insertParameterRequestList(size_t k, inet::DhcpOptionCode para
     parameterRequestList_arraysize = newSize;
 }
 
-void DhcpOptions::insertParameterRequestList(inet::DhcpOptionCode parameterRequestList)
+void DhcpOptions::appendParameterRequestList(DhcpOptionCode parameterRequestList)
 {
     insertParameterRequestList(parameterRequestList_arraysize, parameterRequestList);
 }
 
 void DhcpOptions::eraseParameterRequestList(size_t k)
 {
-    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= parameterRequestList_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)parameterRequestList_arraysize, (unsigned long)k);
     size_t newSize = parameterRequestList_arraysize - 1;
-    inet::DhcpOptionCode *parameterRequestList2 = (newSize == 0) ? nullptr : new inet::DhcpOptionCode[newSize];
+    DhcpOptionCode *parameterRequestList2 = (newSize == 0) ? nullptr : new DhcpOptionCode[newSize];
     size_t i;
     for (i = 0; i < k; i++)
         parameterRequestList2[i] = this->parameterRequestList[i];
@@ -509,7 +413,7 @@ size_t DhcpOptions::getRouterArraySize() const
 
 const Ipv4Address& DhcpOptions::getRouter(size_t k) const
 {
-    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size router_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)router_arraysize, (unsigned long)k);
     return this->router[k];
 }
 
@@ -526,13 +430,13 @@ void DhcpOptions::setRouterArraySize(size_t newSize)
 
 void DhcpOptions::setRouter(size_t k, const Ipv4Address& router)
 {
-    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)router_arraysize, (unsigned long)k);
     this->router[k] = router;
 }
 
 void DhcpOptions::insertRouter(size_t k, const Ipv4Address& router)
 {
-    if (k > router_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > router_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)router_arraysize, (unsigned long)k);
     size_t newSize = router_arraysize + 1;
     Ipv4Address *router2 = new Ipv4Address[newSize];
     size_t i;
@@ -546,14 +450,14 @@ void DhcpOptions::insertRouter(size_t k, const Ipv4Address& router)
     router_arraysize = newSize;
 }
 
-void DhcpOptions::insertRouter(const Ipv4Address& router)
+void DhcpOptions::appendRouter(const Ipv4Address& router)
 {
     insertRouter(router_arraysize, router);
 }
 
 void DhcpOptions::eraseRouter(size_t k)
 {
-    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= router_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)router_arraysize, (unsigned long)k);
     size_t newSize = router_arraysize - 1;
     Ipv4Address *router2 = (newSize == 0) ? nullptr : new Ipv4Address[newSize];
     size_t i;
@@ -573,7 +477,7 @@ size_t DhcpOptions::getDnsArraySize() const
 
 const Ipv4Address& DhcpOptions::getDns(size_t k) const
 {
-    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size dns_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dns_arraysize, (unsigned long)k);
     return this->dns[k];
 }
 
@@ -590,13 +494,13 @@ void DhcpOptions::setDnsArraySize(size_t newSize)
 
 void DhcpOptions::setDns(size_t k, const Ipv4Address& dns)
 {
-    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dns_arraysize, (unsigned long)k);
     this->dns[k] = dns;
 }
 
 void DhcpOptions::insertDns(size_t k, const Ipv4Address& dns)
 {
-    if (k > dns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > dns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dns_arraysize, (unsigned long)k);
     size_t newSize = dns_arraysize + 1;
     Ipv4Address *dns2 = new Ipv4Address[newSize];
     size_t i;
@@ -610,14 +514,14 @@ void DhcpOptions::insertDns(size_t k, const Ipv4Address& dns)
     dns_arraysize = newSize;
 }
 
-void DhcpOptions::insertDns(const Ipv4Address& dns)
+void DhcpOptions::appendDns(const Ipv4Address& dns)
 {
     insertDns(dns_arraysize, dns);
 }
 
 void DhcpOptions::eraseDns(size_t k)
 {
-    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= dns_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)dns_arraysize, (unsigned long)k);
     size_t newSize = dns_arraysize - 1;
     Ipv4Address *dns2 = (newSize == 0) ? nullptr : new Ipv4Address[newSize];
     size_t i;
@@ -637,7 +541,7 @@ size_t DhcpOptions::getNtpArraySize() const
 
 const Ipv4Address& DhcpOptions::getNtp(size_t k) const
 {
-    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size ntp_arraysize indexed by %lu", (unsigned long)k);
+    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ntp_arraysize, (unsigned long)k);
     return this->ntp[k];
 }
 
@@ -654,13 +558,13 @@ void DhcpOptions::setNtpArraySize(size_t newSize)
 
 void DhcpOptions::setNtp(size_t k, const Ipv4Address& ntp)
 {
-    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ntp_arraysize, (unsigned long)k);
     this->ntp[k] = ntp;
 }
 
 void DhcpOptions::insertNtp(size_t k, const Ipv4Address& ntp)
 {
-    if (k > ntp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k > ntp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ntp_arraysize, (unsigned long)k);
     size_t newSize = ntp_arraysize + 1;
     Ipv4Address *ntp2 = new Ipv4Address[newSize];
     size_t i;
@@ -674,14 +578,14 @@ void DhcpOptions::insertNtp(size_t k, const Ipv4Address& ntp)
     ntp_arraysize = newSize;
 }
 
-void DhcpOptions::insertNtp(const Ipv4Address& ntp)
+void DhcpOptions::appendNtp(const Ipv4Address& ntp)
 {
     insertNtp(ntp_arraysize, ntp);
 }
 
 void DhcpOptions::eraseNtp(size_t k)
 {
-    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size  indexed by %lu", (unsigned long)k);
+    if (k >= ntp_arraysize) throw omnetpp::cRuntimeError("Array of size %lu indexed by %lu", (unsigned long)ntp_arraysize, (unsigned long)k);
     size_t newSize = ntp_arraysize - 1;
     Ipv4Address *ntp2 = (newSize == 0) ? nullptr : new Ipv4Address[newSize];
     size_t i;
@@ -704,32 +608,32 @@ void DhcpOptions::setServerIdentifier(const Ipv4Address& serverIdentifier)
     this->serverIdentifier = serverIdentifier;
 }
 
-omnetpp::simtime_t DhcpOptions::getRenewalTime() const
+::omnetpp::simtime_t DhcpOptions::getRenewalTime() const
 {
     return this->renewalTime;
 }
 
-void DhcpOptions::setRenewalTime(omnetpp::simtime_t renewalTime)
+void DhcpOptions::setRenewalTime(::omnetpp::simtime_t renewalTime)
 {
     this->renewalTime = renewalTime;
 }
 
-omnetpp::simtime_t DhcpOptions::getRebindingTime() const
+::omnetpp::simtime_t DhcpOptions::getRebindingTime() const
 {
     return this->rebindingTime;
 }
 
-void DhcpOptions::setRebindingTime(omnetpp::simtime_t rebindingTime)
+void DhcpOptions::setRebindingTime(::omnetpp::simtime_t rebindingTime)
 {
     this->rebindingTime = rebindingTime;
 }
 
-omnetpp::simtime_t DhcpOptions::getLeaseTime() const
+::omnetpp::simtime_t DhcpOptions::getLeaseTime() const
 {
     return this->leaseTime;
 }
 
-void DhcpOptions::setLeaseTime(omnetpp::simtime_t leaseTime)
+void DhcpOptions::setLeaseTime(::omnetpp::simtime_t leaseTime)
 {
     this->leaseTime = leaseTime;
 }
@@ -737,7 +641,7 @@ void DhcpOptions::setLeaseTime(omnetpp::simtime_t leaseTime)
 class DhcpOptionsDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_messageType,
         FIELD_hostName,
@@ -759,34 +663,38 @@ class DhcpOptionsDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(DhcpOptionsDescriptor)
 
 DhcpOptionsDescriptor::DhcpOptionsDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::DhcpOptions)), "omnetpp::cObject")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 DhcpOptionsDescriptor::~DhcpOptionsDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool DhcpOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -796,60 +704,60 @@ bool DhcpOptionsDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **DhcpOptionsDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *DhcpOptionsDescriptor::getProperty(const char *propertyname) const
+const char *DhcpOptionsDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int DhcpOptionsDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 13+basedesc->getFieldCount() : 13;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 13+base->getFieldCount() : 13;
 }
 
 unsigned int DhcpOptionsDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_messageType
         FD_ISEDITABLE,    // FIELD_hostName
-        FD_ISARRAY,    // FIELD_parameterRequestList
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_parameterRequestList
         0,    // FIELD_clientIdentifier
         0,    // FIELD_requestedIp
         0,    // FIELD_subnetMask
-        FD_ISARRAY,    // FIELD_router
-        FD_ISARRAY,    // FIELD_dns
-        FD_ISARRAY,    // FIELD_ntp
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_router
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_dns
+        FD_ISARRAY | FD_ISRESIZABLE,    // FIELD_ntp
         0,    // FIELD_serverIdentifier
-        0,    // FIELD_renewalTime
-        0,    // FIELD_rebindingTime
-        0,    // FIELD_leaseTime
+        FD_ISEDITABLE,    // FIELD_renewalTime
+        FD_ISEDITABLE,    // FIELD_rebindingTime
+        FD_ISEDITABLE,    // FIELD_leaseTime
     };
     return (field >= 0 && field < 13) ? fieldTypeFlags[field] : 0;
 }
 
 const char *DhcpOptionsDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "messageType",
@@ -871,31 +779,31 @@ const char *DhcpOptionsDescriptor::getFieldName(int field) const
 
 int DhcpOptionsDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'm' && strcmp(fieldName, "messageType") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hostName") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "parameterRequestList") == 0) return base+2;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "clientIdentifier") == 0) return base+3;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "requestedIp") == 0) return base+4;
-    if (fieldName[0] == 's' && strcmp(fieldName, "subnetMask") == 0) return base+5;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "router") == 0) return base+6;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "dns") == 0) return base+7;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "ntp") == 0) return base+8;
-    if (fieldName[0] == 's' && strcmp(fieldName, "serverIdentifier") == 0) return base+9;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "renewalTime") == 0) return base+10;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "rebindingTime") == 0) return base+11;
-    if (fieldName[0] == 'l' && strcmp(fieldName, "leaseTime") == 0) return base+12;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "messageType") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "hostName") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "parameterRequestList") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "clientIdentifier") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "requestedIp") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "subnetMask") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "router") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "dns") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "ntp") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "serverIdentifier") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "renewalTime") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "rebindingTime") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "leaseTime") == 0) return baseIndex + 12;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *DhcpOptionsDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::DhcpMessageType",    // FIELD_messageType
@@ -917,11 +825,11 @@ const char *DhcpOptionsDescriptor::getFieldTypeString(int field) const
 
 const char **DhcpOptionsDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_messageType: {
@@ -936,34 +844,34 @@ const char **DhcpOptionsDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *DhcpOptionsDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *DhcpOptionsDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_messageType:
-            if (!strcmp(propertyname, "enum")) return "inet::DhcpMessageType";
+            if (!strcmp(propertyName, "enum")) return "inet::DhcpMessageType";
             return nullptr;
         case FIELD_parameterRequestList:
-            if (!strcmp(propertyname, "enum")) return "inet::DhcpOptionCode";
+            if (!strcmp(propertyName, "enum")) return "inet::DhcpOptionCode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int DhcpOptionsDescriptor::getFieldArraySize(void *object, int field) const
+int DhcpOptionsDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    DhcpOptions *pp = (DhcpOptions *)object; (void)pp;
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
     switch (field) {
         case FIELD_parameterRequestList: return pp->getParameterRequestListArraySize();
         case FIELD_router: return pp->getRouterArraySize();
@@ -973,29 +881,49 @@ int DhcpOptionsDescriptor::getFieldArraySize(void *object, int field) const
     }
 }
 
-const char *DhcpOptionsDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void DhcpOptionsDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    DhcpOptions *pp = (DhcpOptions *)object; (void)pp;
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_parameterRequestList: pp->setParameterRequestListArraySize(size); break;
+        case FIELD_router: pp->setRouterArraySize(size); break;
+        case FIELD_dns: pp->setDnsArraySize(size); break;
+        case FIELD_ntp: pp->setNtpArraySize(size); break;
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'DhcpOptions'", field);
+    }
+}
+
+const char *DhcpOptionsDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string DhcpOptionsDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string DhcpOptionsDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    DhcpOptions *pp = (DhcpOptions *)object; (void)pp;
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
     switch (field) {
         case FIELD_messageType: return enum2string(pp->getMessageType(), "inet::DhcpMessageType");
         case FIELD_hostName: return oppstring2string(pp->getHostName());
@@ -1014,52 +942,120 @@ std::string DhcpOptionsDescriptor::getFieldValueAsString(void *object, int field
     }
 }
 
-bool DhcpOptionsDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void DhcpOptionsDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    DhcpOptions *pp = (DhcpOptions *)object; (void)pp;
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_hostName: pp->setHostName((value)); return true;
-        default: return false;
+        case FIELD_hostName: pp->setHostName((value)); break;
+        case FIELD_renewalTime: pp->setRenewalTime(string2simtime(value)); break;
+        case FIELD_rebindingTime: pp->setRebindingTime(string2simtime(value)); break;
+        case FIELD_leaseTime: pp->setLeaseTime(string2simtime(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpOptions'", field);
+    }
+}
+
+omnetpp::cValue DhcpOptionsDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_messageType: return static_cast<int>(pp->getMessageType());
+        case FIELD_hostName: return pp->getHostName();
+        case FIELD_parameterRequestList: return static_cast<int>(pp->getParameterRequestList(i));
+        case FIELD_clientIdentifier: return omnetpp::toAnyPtr(&pp->getClientIdentifier()); break;
+        case FIELD_requestedIp: return omnetpp::toAnyPtr(&pp->getRequestedIp()); break;
+        case FIELD_subnetMask: return omnetpp::toAnyPtr(&pp->getSubnetMask()); break;
+        case FIELD_router: return omnetpp::toAnyPtr(&pp->getRouter(i)); break;
+        case FIELD_dns: return omnetpp::toAnyPtr(&pp->getDns(i)); break;
+        case FIELD_ntp: return omnetpp::toAnyPtr(&pp->getNtp(i)); break;
+        case FIELD_serverIdentifier: return omnetpp::toAnyPtr(&pp->getServerIdentifier()); break;
+        case FIELD_renewalTime: return pp->getRenewalTime().dbl();
+        case FIELD_rebindingTime: return pp->getRebindingTime().dbl();
+        case FIELD_leaseTime: return pp->getLeaseTime().dbl();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'DhcpOptions' as cValue -- field index out of range?", field);
+    }
+}
+
+void DhcpOptionsDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
+    switch (field) {
+        case FIELD_hostName: pp->setHostName(value.stringValue()); break;
+        case FIELD_renewalTime: pp->setRenewalTime(value.doubleValue()); break;
+        case FIELD_rebindingTime: pp->setRebindingTime(value.doubleValue()); break;
+        case FIELD_leaseTime: pp->setLeaseTime(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpOptions'", field);
     }
 }
 
 const char *DhcpOptionsDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *DhcpOptionsDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr DhcpOptionsDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    DhcpOptions *pp = (DhcpOptions *)object; (void)pp;
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
     switch (field) {
-        case FIELD_clientIdentifier: return toVoidPtr(&pp->getClientIdentifier()); break;
-        case FIELD_requestedIp: return toVoidPtr(&pp->getRequestedIp()); break;
-        case FIELD_subnetMask: return toVoidPtr(&pp->getSubnetMask()); break;
-        case FIELD_router: return toVoidPtr(&pp->getRouter(i)); break;
-        case FIELD_dns: return toVoidPtr(&pp->getDns(i)); break;
-        case FIELD_ntp: return toVoidPtr(&pp->getNtp(i)); break;
-        case FIELD_serverIdentifier: return toVoidPtr(&pp->getServerIdentifier()); break;
-        default: return nullptr;
+        case FIELD_clientIdentifier: return omnetpp::toAnyPtr(&pp->getClientIdentifier()); break;
+        case FIELD_requestedIp: return omnetpp::toAnyPtr(&pp->getRequestedIp()); break;
+        case FIELD_subnetMask: return omnetpp::toAnyPtr(&pp->getSubnetMask()); break;
+        case FIELD_router: return omnetpp::toAnyPtr(&pp->getRouter(i)); break;
+        case FIELD_dns: return omnetpp::toAnyPtr(&pp->getDns(i)); break;
+        case FIELD_ntp: return omnetpp::toAnyPtr(&pp->getNtp(i)); break;
+        case FIELD_serverIdentifier: return omnetpp::toAnyPtr(&pp->getServerIdentifier()); break;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void DhcpOptionsDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    DhcpOptions *pp = omnetpp::fromAnyPtr<DhcpOptions>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpOptions'", field);
     }
 }
 
@@ -1145,12 +1141,12 @@ void DhcpMessage::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->options);
 }
 
-inet::DhcpOpcode DhcpMessage::getOp() const
+DhcpOpcode DhcpMessage::getOp() const
 {
     return this->op;
 }
 
-void DhcpMessage::setOp(inet::DhcpOpcode op)
+void DhcpMessage::setOp(DhcpOpcode op)
 {
     handleChange();
     this->op = op;
@@ -1313,7 +1309,7 @@ void DhcpMessage::setOptions(const DhcpOptions& options)
 class DhcpMessageDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_op,
         FIELD_htype,
@@ -1337,34 +1333,38 @@ class DhcpMessageDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(DhcpMessageDescriptor)
 
 DhcpMessageDescriptor::DhcpMessageDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::DhcpMessage)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 DhcpMessageDescriptor::~DhcpMessageDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool DhcpMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1374,34 +1374,34 @@ bool DhcpMessageDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **DhcpMessageDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *DhcpMessageDescriptor::getProperty(const char *propertyname) const
+const char *DhcpMessageDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int DhcpMessageDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 15+basedesc->getFieldCount() : 15;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 15+base->getFieldCount() : 15;
 }
 
 unsigned int DhcpMessageDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_op
@@ -1425,11 +1425,11 @@ unsigned int DhcpMessageDescriptor::getFieldTypeFlags(int field) const
 
 const char *DhcpMessageDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "op",
@@ -1453,33 +1453,33 @@ const char *DhcpMessageDescriptor::getFieldName(int field) const
 
 int DhcpMessageDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "op") == 0) return base+0;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "htype") == 0) return base+1;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hlen") == 0) return base+2;
-    if (fieldName[0] == 'h' && strcmp(fieldName, "hops") == 0) return base+3;
-    if (fieldName[0] == 'x' && strcmp(fieldName, "xid") == 0) return base+4;
-    if (fieldName[0] == 's' && strcmp(fieldName, "secs") == 0) return base+5;
-    if (fieldName[0] == 'b' && strcmp(fieldName, "broadcast") == 0) return base+6;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "reserved") == 0) return base+7;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "ciaddr") == 0) return base+8;
-    if (fieldName[0] == 'y' && strcmp(fieldName, "yiaddr") == 0) return base+9;
-    if (fieldName[0] == 'g' && strcmp(fieldName, "giaddr") == 0) return base+10;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "chaddr") == 0) return base+11;
-    if (fieldName[0] == 's' && strcmp(fieldName, "sname") == 0) return base+12;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "file") == 0) return base+13;
-    if (fieldName[0] == 'o' && strcmp(fieldName, "options") == 0) return base+14;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "op") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "htype") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "hlen") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "hops") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "xid") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "secs") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "broadcast") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "reserved") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "ciaddr") == 0) return baseIndex + 8;
+    if (strcmp(fieldName, "yiaddr") == 0) return baseIndex + 9;
+    if (strcmp(fieldName, "giaddr") == 0) return baseIndex + 10;
+    if (strcmp(fieldName, "chaddr") == 0) return baseIndex + 11;
+    if (strcmp(fieldName, "sname") == 0) return baseIndex + 12;
+    if (strcmp(fieldName, "file") == 0) return baseIndex + 13;
+    if (strcmp(fieldName, "options") == 0) return baseIndex + 14;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *DhcpMessageDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::DhcpOpcode",    // FIELD_op
@@ -1503,11 +1503,11 @@ const char *DhcpMessageDescriptor::getFieldTypeString(int field) const
 
 const char **DhcpMessageDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_op: {
@@ -1518,59 +1518,75 @@ const char **DhcpMessageDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *DhcpMessageDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *DhcpMessageDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_op:
-            if (!strcmp(propertyname, "enum")) return "inet::DhcpOpcode";
+            if (!strcmp(propertyName, "enum")) return "inet::DhcpOpcode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int DhcpMessageDescriptor::getFieldArraySize(void *object, int field) const
+int DhcpMessageDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    DhcpMessage *pp = (DhcpMessage *)object; (void)pp;
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *DhcpMessageDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void DhcpMessageDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    DhcpMessage *pp = (DhcpMessage *)object; (void)pp;
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'DhcpMessage'", field);
+    }
+}
+
+const char *DhcpMessageDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string DhcpMessageDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string DhcpMessageDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    DhcpMessage *pp = (DhcpMessage *)object; (void)pp;
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
     switch (field) {
         case FIELD_op: return enum2string(pp->getOp(), "inet::DhcpOpcode");
         case FIELD_htype: return long2string(pp->getHtype());
@@ -1586,41 +1602,97 @@ std::string DhcpMessageDescriptor::getFieldValueAsString(void *object, int field
         case FIELD_chaddr: return pp->getChaddr().str();
         case FIELD_sname: return oppstring2string(pp->getSname());
         case FIELD_file: return oppstring2string(pp->getFile());
-        case FIELD_options: {std::stringstream out; out << pp->getOptions(); return out.str();}
+        case FIELD_options: return pp->getOptions().str();
         default: return "";
     }
 }
 
-bool DhcpMessageDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void DhcpMessageDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    DhcpMessage *pp = (DhcpMessage *)object; (void)pp;
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_htype: pp->setHtype(string2long(value)); return true;
-        case FIELD_hlen: pp->setHlen(string2long(value)); return true;
-        case FIELD_hops: pp->setHops(string2long(value)); return true;
-        case FIELD_xid: pp->setXid(string2ulong(value)); return true;
-        case FIELD_secs: pp->setSecs(string2long(value)); return true;
-        case FIELD_broadcast: pp->setBroadcast(string2bool(value)); return true;
-        case FIELD_reserved: pp->setReserved(string2ulong(value)); return true;
-        case FIELD_sname: pp->setSname((value)); return true;
-        case FIELD_file: pp->setFile((value)); return true;
-        default: return false;
+        case FIELD_htype: pp->setHtype(string2long(value)); break;
+        case FIELD_hlen: pp->setHlen(string2long(value)); break;
+        case FIELD_hops: pp->setHops(string2long(value)); break;
+        case FIELD_xid: pp->setXid(string2ulong(value)); break;
+        case FIELD_secs: pp->setSecs(string2long(value)); break;
+        case FIELD_broadcast: pp->setBroadcast(string2bool(value)); break;
+        case FIELD_reserved: pp->setReserved(string2ulong(value)); break;
+        case FIELD_sname: pp->setSname((value)); break;
+        case FIELD_file: pp->setFile((value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpMessage'", field);
+    }
+}
+
+omnetpp::cValue DhcpMessageDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_op: return static_cast<int>(pp->getOp());
+        case FIELD_htype: return pp->getHtype();
+        case FIELD_hlen: return pp->getHlen();
+        case FIELD_hops: return pp->getHops();
+        case FIELD_xid: return (omnetpp::intval_t)(pp->getXid());
+        case FIELD_secs: return pp->getSecs();
+        case FIELD_broadcast: return pp->getBroadcast();
+        case FIELD_reserved: return (omnetpp::intval_t)(pp->getReserved());
+        case FIELD_ciaddr: return omnetpp::toAnyPtr(&pp->getCiaddr()); break;
+        case FIELD_yiaddr: return omnetpp::toAnyPtr(&pp->getYiaddr()); break;
+        case FIELD_giaddr: return omnetpp::toAnyPtr(&pp->getGiaddr()); break;
+        case FIELD_chaddr: return omnetpp::toAnyPtr(&pp->getChaddr()); break;
+        case FIELD_sname: return pp->getSname();
+        case FIELD_file: return pp->getFile();
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'DhcpMessage' as cValue -- field index out of range?", field);
+    }
+}
+
+void DhcpMessageDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
+    switch (field) {
+        case FIELD_htype: pp->setHtype(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_hlen: pp->setHlen(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_hops: pp->setHops(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_xid: pp->setXid(omnetpp::checked_int_cast<unsigned int>(value.intValue())); break;
+        case FIELD_secs: pp->setSecs(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_broadcast: pp->setBroadcast(value.boolValue()); break;
+        case FIELD_reserved: pp->setReserved(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        case FIELD_sname: pp->setSname(value.stringValue()); break;
+        case FIELD_file: pp->setFile(value.stringValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpMessage'", field);
     }
 }
 
 const char *DhcpMessageDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_options: return omnetpp::opp_typename(typeid(DhcpOptions));
@@ -1628,24 +1700,44 @@ const char *DhcpMessageDescriptor::getFieldStructName(int field) const
     };
 }
 
-void *DhcpMessageDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr DhcpMessageDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    DhcpMessage *pp = (DhcpMessage *)object; (void)pp;
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
     switch (field) {
-        case FIELD_ciaddr: return toVoidPtr(&pp->getCiaddr()); break;
-        case FIELD_yiaddr: return toVoidPtr(&pp->getYiaddr()); break;
-        case FIELD_giaddr: return toVoidPtr(&pp->getGiaddr()); break;
-        case FIELD_chaddr: return toVoidPtr(&pp->getChaddr()); break;
-        case FIELD_options: return toVoidPtr(&pp->getOptions()); break;
-        default: return nullptr;
+        case FIELD_ciaddr: return omnetpp::toAnyPtr(&pp->getCiaddr()); break;
+        case FIELD_yiaddr: return omnetpp::toAnyPtr(&pp->getYiaddr()); break;
+        case FIELD_giaddr: return omnetpp::toAnyPtr(&pp->getGiaddr()); break;
+        case FIELD_chaddr: return omnetpp::toAnyPtr(&pp->getChaddr()); break;
+        case FIELD_options: return omnetpp::toAnyPtr(&pp->getOptions()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void DhcpMessageDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    DhcpMessage *pp = omnetpp::fromAnyPtr<DhcpMessage>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'DhcpMessage'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

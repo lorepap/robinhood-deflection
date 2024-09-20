@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/routing/ospf_common/OspfPacketBase.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/routing/ospf_common/OspfPacketBase.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "OspfPacketBase_m.h"
 
 namespace omnetpp {
@@ -149,74 +150,10 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace ospf {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::ospf::OspfPacketType");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::ospf::OspfPacketType"));
-    e->insert(HELLO_PACKET, "HELLO_PACKET");
-    e->insert(DATABASE_DESCRIPTION_PACKET, "DATABASE_DESCRIPTION_PACKET");
-    e->insert(LINKSTATE_REQUEST_PACKET, "LINKSTATE_REQUEST_PACKET");
-    e->insert(LINKSTATE_UPDATE_PACKET, "LINKSTATE_UPDATE_PACKET");
-    e->insert(LINKSTATE_ACKNOWLEDGEMENT_PACKET, "LINKSTATE_ACKNOWLEDGEMENT_PACKET");
-)
+Register_Enum(inet::ospf::OspfPacketType, (inet::ospf::OspfPacketType::HELLO_PACKET, inet::ospf::OspfPacketType::DATABASE_DESCRIPTION_PACKET, inet::ospf::OspfPacketType::LINKSTATE_REQUEST_PACKET, inet::ospf::OspfPacketType::LINKSTATE_UPDATE_PACKET, inet::ospf::OspfPacketType::LINKSTATE_ACKNOWLEDGEMENT_PACKET));
 
 Register_Class(OspfPacketBase)
 
@@ -289,12 +226,12 @@ void OspfPacketBase::setVersion(short version)
     this->version = version;
 }
 
-inet::ospf::OspfPacketType OspfPacketBase::getType() const
+OspfPacketType OspfPacketBase::getType() const
 {
     return this->type;
 }
 
-void OspfPacketBase::setType(inet::ospf::OspfPacketType type)
+void OspfPacketBase::setType(OspfPacketType type)
 {
     handleChange();
     this->type = type;
@@ -311,23 +248,23 @@ void OspfPacketBase::setPacketLengthField(int packetLengthField)
     this->packetLengthField = packetLengthField;
 }
 
-const Ipv4Address& OspfPacketBase::getRouterID() const
+const ::inet::Ipv4Address& OspfPacketBase::getRouterID() const
 {
     return this->routerID;
 }
 
-void OspfPacketBase::setRouterID(const Ipv4Address& routerID)
+void OspfPacketBase::setRouterID(const ::inet::Ipv4Address& routerID)
 {
     handleChange();
     this->routerID = routerID;
 }
 
-const Ipv4Address& OspfPacketBase::getAreaID() const
+const ::inet::Ipv4Address& OspfPacketBase::getAreaID() const
 {
     return this->areaID;
 }
 
-void OspfPacketBase::setAreaID(const Ipv4Address& areaID)
+void OspfPacketBase::setAreaID(const ::inet::Ipv4Address& areaID)
 {
     handleChange();
     this->areaID = areaID;
@@ -344,12 +281,12 @@ void OspfPacketBase::setCrc(uint16_t crc)
     this->crc = crc;
 }
 
-inet::CrcMode OspfPacketBase::getCrcMode() const
+::inet::CrcMode OspfPacketBase::getCrcMode() const
 {
     return this->crcMode;
 }
 
-void OspfPacketBase::setCrcMode(inet::CrcMode crcMode)
+void OspfPacketBase::setCrcMode(::inet::CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
@@ -358,7 +295,7 @@ void OspfPacketBase::setCrcMode(inet::CrcMode crcMode)
 class OspfPacketBaseDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_version,
         FIELD_type,
@@ -374,34 +311,38 @@ class OspfPacketBaseDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(OspfPacketBaseDescriptor)
 
 OspfPacketBaseDescriptor::OspfPacketBaseDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ospf::OspfPacketBase)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 OspfPacketBaseDescriptor::~OspfPacketBaseDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool OspfPacketBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -411,38 +352,38 @@ bool OspfPacketBaseDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **OspfPacketBaseDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *OspfPacketBaseDescriptor::getProperty(const char *propertyname) const
+const char *OspfPacketBaseDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int OspfPacketBaseDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 7+basedesc->getFieldCount() : 7;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 7+base->getFieldCount() : 7;
 }
 
 unsigned int OspfPacketBaseDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_version
-        FD_ISEDITABLE,    // FIELD_type
+        0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_packetLengthField
         0,    // FIELD_routerID
         0,    // FIELD_areaID
@@ -454,11 +395,11 @@ unsigned int OspfPacketBaseDescriptor::getFieldTypeFlags(int field) const
 
 const char *OspfPacketBaseDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "version",
@@ -474,25 +415,25 @@ const char *OspfPacketBaseDescriptor::getFieldName(int field) const
 
 int OspfPacketBaseDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'v' && strcmp(fieldName, "version") == 0) return base+0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+1;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "packetLengthField") == 0) return base+2;
-    if (fieldName[0] == 'r' && strcmp(fieldName, "routerID") == 0) return base+3;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "areaID") == 0) return base+4;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crc") == 0) return base+5;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crcMode") == 0) return base+6;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "version") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "packetLengthField") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "routerID") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "areaID") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "crc") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "crcMode") == 0) return baseIndex + 6;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *OspfPacketBaseDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "short",    // FIELD_version
@@ -508,11 +449,11 @@ const char *OspfPacketBaseDescriptor::getFieldTypeString(int field) const
 
 const char **OspfPacketBaseDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -527,62 +468,78 @@ const char **OspfPacketBaseDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *OspfPacketBaseDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *OspfPacketBaseDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::ospf::OspfPacketType";
+            if (!strcmp(propertyName, "enum")) return "inet::ospf::OspfPacketType";
             return nullptr;
         case FIELD_crcMode:
-            if (!strcmp(propertyname, "enum")) return "inet::CrcMode";
+            if (!strcmp(propertyName, "enum")) return "inet::CrcMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int OspfPacketBaseDescriptor::getFieldArraySize(void *object, int field) const
+int OspfPacketBaseDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    OspfPacketBase *pp = (OspfPacketBase *)object; (void)pp;
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *OspfPacketBaseDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void OspfPacketBaseDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    OspfPacketBase *pp = (OspfPacketBase *)object; (void)pp;
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'OspfPacketBase'", field);
+    }
+}
+
+const char *OspfPacketBaseDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string OspfPacketBaseDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string OspfPacketBaseDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    OspfPacketBase *pp = (OspfPacketBase *)object; (void)pp;
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
     switch (field) {
         case FIELD_version: return long2string(pp->getVersion());
         case FIELD_type: return enum2string(pp->getType(), "inet::ospf::OspfPacketType");
@@ -595,53 +552,114 @@ std::string OspfPacketBaseDescriptor::getFieldValueAsString(void *object, int fi
     }
 }
 
-bool OspfPacketBaseDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void OspfPacketBaseDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    OspfPacketBase *pp = (OspfPacketBase *)object; (void)pp;
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
     switch (field) {
-        case FIELD_version: pp->setVersion(string2long(value)); return true;
-        case FIELD_type: pp->setType((inet::ospf::OspfPacketType)string2enum(value, "inet::ospf::OspfPacketType")); return true;
-        case FIELD_packetLengthField: pp->setPacketLengthField(string2long(value)); return true;
-        case FIELD_crc: pp->setCrc(string2ulong(value)); return true;
-        default: return false;
+        case FIELD_version: pp->setVersion(string2long(value)); break;
+        case FIELD_packetLengthField: pp->setPacketLengthField(string2long(value)); break;
+        case FIELD_crc: pp->setCrc(string2ulong(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'OspfPacketBase'", field);
+    }
+}
+
+omnetpp::cValue OspfPacketBaseDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: return pp->getVersion();
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_packetLengthField: return pp->getPacketLengthField();
+        case FIELD_routerID: return omnetpp::toAnyPtr(&pp->getRouterID()); break;
+        case FIELD_areaID: return omnetpp::toAnyPtr(&pp->getAreaID()); break;
+        case FIELD_crc: return (omnetpp::intval_t)(pp->getCrc());
+        case FIELD_crcMode: return static_cast<int>(pp->getCrcMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'OspfPacketBase' as cValue -- field index out of range?", field);
+    }
+}
+
+void OspfPacketBaseDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
+    switch (field) {
+        case FIELD_version: pp->setVersion(omnetpp::checked_int_cast<short>(value.intValue())); break;
+        case FIELD_packetLengthField: pp->setPacketLengthField(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_crc: pp->setCrc(omnetpp::checked_int_cast<uint16_t>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'OspfPacketBase'", field);
     }
 }
 
 const char *OspfPacketBaseDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *OspfPacketBaseDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr OspfPacketBaseDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    OspfPacketBase *pp = (OspfPacketBase *)object; (void)pp;
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
     switch (field) {
-        case FIELD_routerID: return toVoidPtr(&pp->getRouterID()); break;
-        case FIELD_areaID: return toVoidPtr(&pp->getAreaID()); break;
-        default: return nullptr;
+        case FIELD_routerID: return omnetpp::toAnyPtr(&pp->getRouterID()); break;
+        case FIELD_areaID: return omnetpp::toAnyPtr(&pp->getAreaID()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace ospf
-} // namespace inet
+void OspfPacketBaseDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    OspfPacketBase *pp = omnetpp::fromAnyPtr<OspfPacketBase>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'OspfPacketBase'", field);
+    }
+}
+
+}  // namespace ospf
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/probabilistic/ProbabilisticBroadcastHeader.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/probabilistic/ProbabilisticBroadcastHeader.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "ProbabilisticBroadcastHeader_m.h"
 
 namespace omnetpp {
@@ -149,63 +150,7 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(ProbabilisticBroadcastHeader)
 
@@ -315,23 +260,23 @@ void ProbabilisticBroadcastHeader::setNbHops(int nbHops)
     this->nbHops = nbHops;
 }
 
-inet::IpProtocolId ProbabilisticBroadcastHeader::getProtocolId() const
+IpProtocolId ProbabilisticBroadcastHeader::getProtocolId() const
 {
     return this->protocolId;
 }
 
-void ProbabilisticBroadcastHeader::setProtocolId(inet::IpProtocolId protocolId)
+void ProbabilisticBroadcastHeader::setProtocolId(IpProtocolId protocolId)
 {
     handleChange();
     this->protocolId = protocolId;
 }
 
-omnetpp::simtime_t ProbabilisticBroadcastHeader::getAppTtl() const
+::omnetpp::simtime_t ProbabilisticBroadcastHeader::getAppTtl() const
 {
     return this->appTtl;
 }
 
-void ProbabilisticBroadcastHeader::setAppTtl(omnetpp::simtime_t appTtl)
+void ProbabilisticBroadcastHeader::setAppTtl(::omnetpp::simtime_t appTtl)
 {
     handleChange();
     this->appTtl = appTtl;
@@ -373,7 +318,7 @@ void ProbabilisticBroadcastHeader::setPayloadLengthField(B payloadLengthField)
 class ProbabilisticBroadcastHeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_srcAddr,
         FIELD_destAddr,
@@ -391,34 +336,38 @@ class ProbabilisticBroadcastHeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(ProbabilisticBroadcastHeaderDescriptor)
 
 ProbabilisticBroadcastHeaderDescriptor::ProbabilisticBroadcastHeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::ProbabilisticBroadcastHeader)), "inet::NetworkHeaderBase")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 ProbabilisticBroadcastHeaderDescriptor::~ProbabilisticBroadcastHeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool ProbabilisticBroadcastHeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -428,34 +377,34 @@ bool ProbabilisticBroadcastHeaderDescriptor::doesSupport(omnetpp::cObject *obj) 
 
 const char **ProbabilisticBroadcastHeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *ProbabilisticBroadcastHeaderDescriptor::getProperty(const char *propertyname) const
+const char *ProbabilisticBroadcastHeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int ProbabilisticBroadcastHeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 9+basedesc->getFieldCount() : 9;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 9+base->getFieldCount() : 9;
 }
 
 unsigned int ProbabilisticBroadcastHeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         0,    // FIELD_srcAddr
@@ -463,7 +412,7 @@ unsigned int ProbabilisticBroadcastHeaderDescriptor::getFieldTypeFlags(int field
         FD_ISEDITABLE,    // FIELD_id
         FD_ISEDITABLE,    // FIELD_nbHops
         0,    // FIELD_protocolId
-        0,    // FIELD_appTtl
+        FD_ISEDITABLE,    // FIELD_appTtl
         0,    // FIELD_initialSrcAddr
         0,    // FIELD_finalDestAddr
         FD_ISEDITABLE,    // FIELD_payloadLengthField
@@ -473,11 +422,11 @@ unsigned int ProbabilisticBroadcastHeaderDescriptor::getFieldTypeFlags(int field
 
 const char *ProbabilisticBroadcastHeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "srcAddr",
@@ -495,27 +444,27 @@ const char *ProbabilisticBroadcastHeaderDescriptor::getFieldName(int field) cons
 
 int ProbabilisticBroadcastHeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "srcAddr") == 0) return base+0;
-    if (fieldName[0] == 'd' && strcmp(fieldName, "destAddr") == 0) return base+1;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "id") == 0) return base+2;
-    if (fieldName[0] == 'n' && strcmp(fieldName, "nbHops") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "protocolId") == 0) return base+4;
-    if (fieldName[0] == 'a' && strcmp(fieldName, "appTtl") == 0) return base+5;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "initialSrcAddr") == 0) return base+6;
-    if (fieldName[0] == 'f' && strcmp(fieldName, "finalDestAddr") == 0) return base+7;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "payloadLengthField") == 0) return base+8;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "srcAddr") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "destAddr") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "id") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "nbHops") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "protocolId") == 0) return baseIndex + 4;
+    if (strcmp(fieldName, "appTtl") == 0) return baseIndex + 5;
+    if (strcmp(fieldName, "initialSrcAddr") == 0) return baseIndex + 6;
+    if (strcmp(fieldName, "finalDestAddr") == 0) return baseIndex + 7;
+    if (strcmp(fieldName, "payloadLengthField") == 0) return baseIndex + 8;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *ProbabilisticBroadcastHeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::L3Address",    // FIELD_srcAddr
@@ -533,11 +482,11 @@ const char *ProbabilisticBroadcastHeaderDescriptor::getFieldTypeString(int field
 
 const char **ProbabilisticBroadcastHeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocolId: {
@@ -548,59 +497,75 @@ const char **ProbabilisticBroadcastHeaderDescriptor::getFieldPropertyNames(int f
     }
 }
 
-const char *ProbabilisticBroadcastHeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *ProbabilisticBroadcastHeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_protocolId:
-            if (!strcmp(propertyname, "enum")) return "inet::IpProtocolId";
+            if (!strcmp(propertyName, "enum")) return "inet::IpProtocolId";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int ProbabilisticBroadcastHeaderDescriptor::getFieldArraySize(void *object, int field) const
+int ProbabilisticBroadcastHeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    ProbabilisticBroadcastHeader *pp = (ProbabilisticBroadcastHeader *)object; (void)pp;
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *ProbabilisticBroadcastHeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void ProbabilisticBroadcastHeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    ProbabilisticBroadcastHeader *pp = (ProbabilisticBroadcastHeader *)object; (void)pp;
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'ProbabilisticBroadcastHeader'", field);
+    }
+}
+
+const char *ProbabilisticBroadcastHeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string ProbabilisticBroadcastHeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string ProbabilisticBroadcastHeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    ProbabilisticBroadcastHeader *pp = (ProbabilisticBroadcastHeader *)object; (void)pp;
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
     switch (field) {
         case FIELD_srcAddr: return pp->getSrcAddr().str();
         case FIELD_destAddr: return pp->getDestAddr().str();
@@ -615,53 +580,119 @@ std::string ProbabilisticBroadcastHeaderDescriptor::getFieldValueAsString(void *
     }
 }
 
-bool ProbabilisticBroadcastHeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void ProbabilisticBroadcastHeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    ProbabilisticBroadcastHeader *pp = (ProbabilisticBroadcastHeader *)object; (void)pp;
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_id: pp->setId(string2long(value)); return true;
-        case FIELD_nbHops: pp->setNbHops(string2long(value)); return true;
-        case FIELD_payloadLengthField: pp->setPayloadLengthField(B(string2long(value))); return true;
-        default: return false;
+        case FIELD_id: pp->setId(string2long(value)); break;
+        case FIELD_nbHops: pp->setNbHops(string2long(value)); break;
+        case FIELD_appTtl: pp->setAppTtl(string2simtime(value)); break;
+        case FIELD_payloadLengthField: pp->setPayloadLengthField(B(string2long(value))); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ProbabilisticBroadcastHeader'", field);
+    }
+}
+
+omnetpp::cValue ProbabilisticBroadcastHeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_srcAddr: return omnetpp::toAnyPtr(&pp->getSrcAddr()); break;
+        case FIELD_destAddr: return omnetpp::toAnyPtr(&pp->getDestAddr()); break;
+        case FIELD_id: return (omnetpp::intval_t)(pp->getId());
+        case FIELD_nbHops: return pp->getNbHops();
+        case FIELD_protocolId: return static_cast<int>(pp->getProtocolId());
+        case FIELD_appTtl: return pp->getAppTtl().dbl();
+        case FIELD_initialSrcAddr: return omnetpp::toAnyPtr(&pp->getInitialSrcAddr()); break;
+        case FIELD_finalDestAddr: return omnetpp::toAnyPtr(&pp->getFinalDestAddr()); break;
+        case FIELD_payloadLengthField: throw omnetpp::cRuntimeError("Cannot return field 'inet::ProbabilisticBroadcastHeader::payloadLengthField' (type 'B') as cValue, please provide @toValue in the msg file");
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'ProbabilisticBroadcastHeader' as cValue -- field index out of range?", field);
+    }
+}
+
+void ProbabilisticBroadcastHeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
+    switch (field) {
+        case FIELD_id: pp->setId(omnetpp::checked_int_cast<long>(value.intValue())); break;
+        case FIELD_nbHops: pp->setNbHops(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_appTtl: pp->setAppTtl(value.doubleValue()); break;
+        case FIELD_payloadLengthField: throw omnetpp::cRuntimeError("Cannot set field 'inet::ProbabilisticBroadcastHeader::payloadLengthField' (type 'B') from cValue, please provide @fromValue in the msg file");
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ProbabilisticBroadcastHeader'", field);
     }
 }
 
 const char *ProbabilisticBroadcastHeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *ProbabilisticBroadcastHeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr ProbabilisticBroadcastHeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    ProbabilisticBroadcastHeader *pp = (ProbabilisticBroadcastHeader *)object; (void)pp;
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
     switch (field) {
-        case FIELD_srcAddr: return toVoidPtr(&pp->getSrcAddr()); break;
-        case FIELD_destAddr: return toVoidPtr(&pp->getDestAddr()); break;
-        case FIELD_initialSrcAddr: return toVoidPtr(&pp->getInitialSrcAddr()); break;
-        case FIELD_finalDestAddr: return toVoidPtr(&pp->getFinalDestAddr()); break;
-        default: return nullptr;
+        case FIELD_srcAddr: return omnetpp::toAnyPtr(&pp->getSrcAddr()); break;
+        case FIELD_destAddr: return omnetpp::toAnyPtr(&pp->getDestAddr()); break;
+        case FIELD_initialSrcAddr: return omnetpp::toAnyPtr(&pp->getInitialSrcAddr()); break;
+        case FIELD_finalDestAddr: return omnetpp::toAnyPtr(&pp->getFinalDestAddr()); break;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void ProbabilisticBroadcastHeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    ProbabilisticBroadcastHeader *pp = omnetpp::fromAnyPtr<ProbabilisticBroadcastHeader>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'ProbabilisticBroadcastHeader'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

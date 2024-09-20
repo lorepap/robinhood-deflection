@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/applications/rtpapp/RtpApplication.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/applications/rtpapp/RtpApplication.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "RtpApplication_m.h"
 
 namespace omnetpp {
@@ -149,72 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::RtpAppSelfMsgKinds, (inet::RtpAppSelfMsgKinds::RTPAPP_ENTER_SESSION, inet::RtpAppSelfMsgKinds::RTPAPP_START_TRANSMISSION, inet::RtpAppSelfMsgKinds::RTPAPP_STOP_TRANSMISSION, inet::RtpAppSelfMsgKinds::RTPAPP_LEAVE_SESSION));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+}  // namespace inet
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+namespace omnetpp {
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::RtpAppSelfMsgKinds");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::RtpAppSelfMsgKinds"));
-    e->insert(RTPAPP_ENTER_SESSION, "RTPAPP_ENTER_SESSION");
-    e->insert(RTPAPP_START_TRANSMISSION, "RTPAPP_START_TRANSMISSION");
-    e->insert(RTPAPP_STOP_TRANSMISSION, "RTPAPP_STOP_TRANSMISSION");
-    e->insert(RTPAPP_LEAVE_SESSION, "RTPAPP_LEAVE_SESSION");
-)
-
-} // namespace inet
+}  // namespace omnetpp
 

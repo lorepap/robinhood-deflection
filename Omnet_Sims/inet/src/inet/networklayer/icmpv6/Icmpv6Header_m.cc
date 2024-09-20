@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/icmpv6/Icmpv6Header.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/icmpv6/Icmpv6Header.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Icmpv6Header_m.h"
 
 namespace omnetpp {
@@ -149,109 +150,15 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::Icmpv6Type, (inet::Icmpv6Type::ICMPv6_UNSPECIFIED, inet::Icmpv6Type::ICMPv6_DESTINATION_UNREACHABLE, inet::Icmpv6Type::ICMPv6_PACKET_TOO_BIG, inet::Icmpv6Type::ICMPv6_TIME_EXCEEDED, inet::Icmpv6Type::ICMPv6_PARAMETER_PROBLEM, inet::Icmpv6Type::ICMPv6_ECHO_REQUEST, inet::Icmpv6Type::ICMPv6_ECHO_REPLY, inet::Icmpv6Type::ICMPv6_MLD_QUERY, inet::Icmpv6Type::ICMPv6_MLD_REPORT, inet::Icmpv6Type::ICMPv6_MLD_DONE, inet::Icmpv6Type::ICMPv6_ROUTER_SOL, inet::Icmpv6Type::ICMPv6_ROUTER_AD, inet::Icmpv6Type::ICMPv6_NEIGHBOUR_SOL, inet::Icmpv6Type::ICMPv6_NEIGHBOUR_AD, inet::Icmpv6Type::ICMPv6_REDIRECT, inet::Icmpv6Type::ICMPv6_MLDv2_REPORT, inet::Icmpv6Type::ICMPv6_EXPERIMENTAL_MOBILITY));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+Register_Enum(inet::Icmpv6DestUnav, (inet::Icmpv6DestUnav::NO_ROUTE_TO_DEST, inet::Icmpv6DestUnav::COMM_WITH_DEST_PROHIBITED, inet::Icmpv6DestUnav::ADDRESS_UNREACHABLE, inet::Icmpv6DestUnav::PORT_UNREACHABLE));
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+Register_Enum(inet::Icmpv6TimeEx, (inet::Icmpv6TimeEx::ND_HOP_LIMIT_EXCEEDED, inet::Icmpv6TimeEx::ND_FRAGMENT_REASSEMBLY_TIME));
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Icmpv6Type");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Icmpv6Type"));
-    e->insert(ICMPv6_UNSPECIFIED, "ICMPv6_UNSPECIFIED");
-    e->insert(ICMPv6_DESTINATION_UNREACHABLE, "ICMPv6_DESTINATION_UNREACHABLE");
-    e->insert(ICMPv6_PACKET_TOO_BIG, "ICMPv6_PACKET_TOO_BIG");
-    e->insert(ICMPv6_TIME_EXCEEDED, "ICMPv6_TIME_EXCEEDED");
-    e->insert(ICMPv6_PARAMETER_PROBLEM, "ICMPv6_PARAMETER_PROBLEM");
-    e->insert(ICMPv6_ECHO_REQUEST, "ICMPv6_ECHO_REQUEST");
-    e->insert(ICMPv6_ECHO_REPLY, "ICMPv6_ECHO_REPLY");
-    e->insert(ICMPv6_MLD_QUERY, "ICMPv6_MLD_QUERY");
-    e->insert(ICMPv6_MLD_REPORT, "ICMPv6_MLD_REPORT");
-    e->insert(ICMPv6_MLD_DONE, "ICMPv6_MLD_DONE");
-    e->insert(ICMPv6_ROUTER_SOL, "ICMPv6_ROUTER_SOL");
-    e->insert(ICMPv6_ROUTER_AD, "ICMPv6_ROUTER_AD");
-    e->insert(ICMPv6_NEIGHBOUR_SOL, "ICMPv6_NEIGHBOUR_SOL");
-    e->insert(ICMPv6_NEIGHBOUR_AD, "ICMPv6_NEIGHBOUR_AD");
-    e->insert(ICMPv6_REDIRECT, "ICMPv6_REDIRECT");
-    e->insert(ICMPv6_MLDv2_REPORT, "ICMPv6_MLDv2_REPORT");
-    e->insert(ICMPv6_EXPERIMENTAL_MOBILITY, "ICMPv6_EXPERIMENTAL_MOBILITY");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Icmpv6DestUnav");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Icmpv6DestUnav"));
-    e->insert(NO_ROUTE_TO_DEST, "NO_ROUTE_TO_DEST");
-    e->insert(COMM_WITH_DEST_PROHIBITED, "COMM_WITH_DEST_PROHIBITED");
-    e->insert(ADDRESS_UNREACHABLE, "ADDRESS_UNREACHABLE");
-    e->insert(PORT_UNREACHABLE, "PORT_UNREACHABLE");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Icmpv6TimeEx");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Icmpv6TimeEx"));
-    e->insert(ND_HOP_LIMIT_EXCEEDED, "ND_HOP_LIMIT_EXCEEDED");
-    e->insert(ND_FRAGMENT_REASSEMBLY_TIME, "ND_FRAGMENT_REASSEMBLY_TIME");
-)
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Icmpv6ParameterProblem");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Icmpv6ParameterProblem"));
-    e->insert(ERROREOUS_HDR_FIELD, "ERROREOUS_HDR_FIELD");
-    e->insert(UNRECOGNIZED_NEXT_HDR_TYPE, "UNRECOGNIZED_NEXT_HDR_TYPE");
-    e->insert(UNRECOGNIZED_IPV6_OPTION, "UNRECOGNIZED_IPV6_OPTION");
-)
+Register_Enum(inet::Icmpv6ParameterProblem, (inet::Icmpv6ParameterProblem::ERROREOUS_HDR_FIELD, inet::Icmpv6ParameterProblem::UNRECOGNIZED_NEXT_HDR_TYPE, inet::Icmpv6ParameterProblem::UNRECOGNIZED_IPV6_OPTION));
 
 Register_Class(Icmpv6Header)
 
@@ -301,12 +208,12 @@ void Icmpv6Header::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->crcMode);
 }
 
-inet::Icmpv6Type Icmpv6Header::getType() const
+Icmpv6Type Icmpv6Header::getType() const
 {
     return this->type;
 }
 
-void Icmpv6Header::setType(inet::Icmpv6Type type)
+void Icmpv6Header::setType(Icmpv6Type type)
 {
     handleChange();
     this->type = type;
@@ -323,12 +230,12 @@ void Icmpv6Header::setChksum(int chksum)
     this->chksum = chksum;
 }
 
-inet::CrcMode Icmpv6Header::getCrcMode() const
+CrcMode Icmpv6Header::getCrcMode() const
 {
     return this->crcMode;
 }
 
-void Icmpv6Header::setCrcMode(inet::CrcMode crcMode)
+void Icmpv6Header::setCrcMode(CrcMode crcMode)
 {
     handleChange();
     this->crcMode = crcMode;
@@ -337,7 +244,7 @@ void Icmpv6Header::setCrcMode(inet::CrcMode crcMode)
 class Icmpv6HeaderDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_type,
         FIELD_chksum,
@@ -349,34 +256,38 @@ class Icmpv6HeaderDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6HeaderDescriptor)
 
 Icmpv6HeaderDescriptor::Icmpv6HeaderDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6Header)), "inet::FieldsChunk")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6HeaderDescriptor::~Icmpv6HeaderDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6HeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -386,37 +297,37 @@ bool Icmpv6HeaderDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6HeaderDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6HeaderDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6HeaderDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6HeaderDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Icmpv6HeaderDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_type
+        0,    // FIELD_type
         FD_ISEDITABLE,    // FIELD_chksum
         0,    // FIELD_crcMode
     };
@@ -425,11 +336,11 @@ unsigned int Icmpv6HeaderDescriptor::getFieldTypeFlags(int field) const
 
 const char *Icmpv6HeaderDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "type",
@@ -441,21 +352,21 @@ const char *Icmpv6HeaderDescriptor::getFieldName(int field) const
 
 int Icmpv6HeaderDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 't' && strcmp(fieldName, "type") == 0) return base+0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "chksum") == 0) return base+1;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "crcMode") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "type") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "chksum") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "crcMode") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6HeaderDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Icmpv6Type",    // FIELD_type
@@ -467,11 +378,11 @@ const char *Icmpv6HeaderDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6HeaderDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type: {
@@ -486,62 +397,78 @@ const char **Icmpv6HeaderDescriptor::getFieldPropertyNames(int field) const
     }
 }
 
-const char *Icmpv6HeaderDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6HeaderDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_type:
-            if (!strcmp(propertyname, "enum")) return "inet::Icmpv6Type";
+            if (!strcmp(propertyName, "enum")) return "inet::Icmpv6Type";
             return nullptr;
         case FIELD_crcMode:
-            if (!strcmp(propertyname, "enum")) return "inet::CrcMode";
+            if (!strcmp(propertyName, "enum")) return "inet::CrcMode";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Icmpv6HeaderDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6HeaderDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6Header *pp = (Icmpv6Header *)object; (void)pp;
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6HeaderDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6HeaderDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6Header *pp = (Icmpv6Header *)object; (void)pp;
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6Header'", field);
+    }
+}
+
+const char *Icmpv6HeaderDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6HeaderDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6HeaderDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6Header *pp = (Icmpv6Header *)object; (void)pp;
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
     switch (field) {
         case FIELD_type: return enum2string(pp->getType(), "inet::Icmpv6Type");
         case FIELD_chksum: return long2string(pp->getChksum());
@@ -550,46 +477,97 @@ std::string Icmpv6HeaderDescriptor::getFieldValueAsString(void *object, int fiel
     }
 }
 
-bool Icmpv6HeaderDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6HeaderDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6Header *pp = (Icmpv6Header *)object; (void)pp;
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
     switch (field) {
-        case FIELD_type: pp->setType((inet::Icmpv6Type)string2enum(value, "inet::Icmpv6Type")); return true;
-        case FIELD_chksum: pp->setChksum(string2long(value)); return true;
-        default: return false;
+        case FIELD_chksum: pp->setChksum(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6Header'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6HeaderDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
+    switch (field) {
+        case FIELD_type: return static_cast<int>(pp->getType());
+        case FIELD_chksum: return pp->getChksum();
+        case FIELD_crcMode: return static_cast<int>(pp->getCrcMode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6Header' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6HeaderDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
+    switch (field) {
+        case FIELD_chksum: pp->setChksum(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6Header'", field);
     }
 }
 
 const char *Icmpv6HeaderDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6HeaderDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6HeaderDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6Header *pp = (Icmpv6Header *)object; (void)pp;
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6HeaderDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6Header *pp = omnetpp::fromAnyPtr<Icmpv6Header>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6Header'", field);
     }
 }
 
@@ -635,12 +613,12 @@ void Icmpv6DestUnreachableMsg::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->code);
 }
 
-inet::Icmpv6DestUnav Icmpv6DestUnreachableMsg::getCode() const
+Icmpv6DestUnav Icmpv6DestUnreachableMsg::getCode() const
 {
     return this->code;
 }
 
-void Icmpv6DestUnreachableMsg::setCode(inet::Icmpv6DestUnav code)
+void Icmpv6DestUnreachableMsg::setCode(Icmpv6DestUnav code)
 {
     handleChange();
     this->code = code;
@@ -649,7 +627,7 @@ void Icmpv6DestUnreachableMsg::setCode(inet::Icmpv6DestUnav code)
 class Icmpv6DestUnreachableMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
     };
@@ -659,34 +637,38 @@ class Icmpv6DestUnreachableMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6DestUnreachableMsgDescriptor)
 
 Icmpv6DestUnreachableMsgDescriptor::Icmpv6DestUnreachableMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6DestUnreachableMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6DestUnreachableMsgDescriptor::~Icmpv6DestUnreachableMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6DestUnreachableMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -696,48 +678,48 @@ bool Icmpv6DestUnreachableMsgDescriptor::doesSupport(omnetpp::cObject *obj) cons
 
 const char **Icmpv6DestUnreachableMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6DestUnreachableMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6DestUnreachableMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6DestUnreachableMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Icmpv6DestUnreachableMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_code
+        0,    // FIELD_code
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Icmpv6DestUnreachableMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -747,19 +729,19 @@ const char *Icmpv6DestUnreachableMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6DestUnreachableMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6DestUnreachableMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Icmpv6DestUnav",    // FIELD_code
@@ -769,11 +751,11 @@ const char *Icmpv6DestUnreachableMsgDescriptor::getFieldTypeString(int field) co
 
 const char **Icmpv6DestUnreachableMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code: {
@@ -784,104 +766,168 @@ const char **Icmpv6DestUnreachableMsgDescriptor::getFieldPropertyNames(int field
     }
 }
 
-const char *Icmpv6DestUnreachableMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6DestUnreachableMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code:
-            if (!strcmp(propertyname, "enum")) return "inet::Icmpv6DestUnav";
+            if (!strcmp(propertyName, "enum")) return "inet::Icmpv6DestUnav";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Icmpv6DestUnreachableMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6DestUnreachableMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6DestUnreachableMsg *pp = (Icmpv6DestUnreachableMsg *)object; (void)pp;
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6DestUnreachableMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6DestUnreachableMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6DestUnreachableMsg *pp = (Icmpv6DestUnreachableMsg *)object; (void)pp;
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6DestUnreachableMsg'", field);
+    }
+}
+
+const char *Icmpv6DestUnreachableMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6DestUnreachableMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6DestUnreachableMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6DestUnreachableMsg *pp = (Icmpv6DestUnreachableMsg *)object; (void)pp;
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return enum2string(pp->getCode(), "inet::Icmpv6DestUnav");
         default: return "";
     }
 }
 
-bool Icmpv6DestUnreachableMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6DestUnreachableMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6DestUnreachableMsg *pp = (Icmpv6DestUnreachableMsg *)object; (void)pp;
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode((inet::Icmpv6DestUnav)string2enum(value, "inet::Icmpv6DestUnav")); return true;
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6DestUnreachableMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6DestUnreachableMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return static_cast<int>(pp->getCode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6DestUnreachableMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6DestUnreachableMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6DestUnreachableMsg'", field);
     }
 }
 
 const char *Icmpv6DestUnreachableMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6DestUnreachableMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6DestUnreachableMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6DestUnreachableMsg *pp = (Icmpv6DestUnreachableMsg *)object; (void)pp;
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6DestUnreachableMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6DestUnreachableMsg *pp = omnetpp::fromAnyPtr<Icmpv6DestUnreachableMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6DestUnreachableMsg'", field);
     }
 }
 
@@ -955,7 +1001,7 @@ void Icmpv6PacketTooBigMsg::setMTU(int MTU)
 class Icmpv6PacketTooBigMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
         FIELD_MTU,
@@ -966,34 +1012,38 @@ class Icmpv6PacketTooBigMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6PacketTooBigMsgDescriptor)
 
 Icmpv6PacketTooBigMsgDescriptor::Icmpv6PacketTooBigMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6PacketTooBigMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6PacketTooBigMsgDescriptor::~Icmpv6PacketTooBigMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6PacketTooBigMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1003,34 +1053,34 @@ bool Icmpv6PacketTooBigMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6PacketTooBigMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6PacketTooBigMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6PacketTooBigMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6PacketTooBigMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 2+basedesc->getFieldCount() : 2;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 2+base->getFieldCount() : 2;
 }
 
 unsigned int Icmpv6PacketTooBigMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_code
@@ -1041,11 +1091,11 @@ unsigned int Icmpv6PacketTooBigMsgDescriptor::getFieldTypeFlags(int field) const
 
 const char *Icmpv6PacketTooBigMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -1056,20 +1106,20 @@ const char *Icmpv6PacketTooBigMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6PacketTooBigMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    if (fieldName[0] == 'M' && strcmp(fieldName, "MTU") == 0) return base+1;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "MTU") == 0) return baseIndex + 1;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6PacketTooBigMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_code
@@ -1080,67 +1130,83 @@ const char *Icmpv6PacketTooBigMsgDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6PacketTooBigMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Icmpv6PacketTooBigMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6PacketTooBigMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Icmpv6PacketTooBigMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6PacketTooBigMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6PacketTooBigMsg *pp = (Icmpv6PacketTooBigMsg *)object; (void)pp;
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6PacketTooBigMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6PacketTooBigMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6PacketTooBigMsg *pp = (Icmpv6PacketTooBigMsg *)object; (void)pp;
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6PacketTooBigMsg'", field);
+    }
+}
+
+const char *Icmpv6PacketTooBigMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6PacketTooBigMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6PacketTooBigMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6PacketTooBigMsg *pp = (Icmpv6PacketTooBigMsg *)object; (void)pp;
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return long2string(pp->getCode());
         case FIELD_MTU: return long2string(pp->getMTU());
@@ -1148,46 +1214,98 @@ std::string Icmpv6PacketTooBigMsgDescriptor::getFieldValueAsString(void *object,
     }
 }
 
-bool Icmpv6PacketTooBigMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6PacketTooBigMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6PacketTooBigMsg *pp = (Icmpv6PacketTooBigMsg *)object; (void)pp;
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode(string2long(value)); return true;
-        case FIELD_MTU: pp->setMTU(string2long(value)); return true;
-        default: return false;
+        case FIELD_code: pp->setCode(string2long(value)); break;
+        case FIELD_MTU: pp->setMTU(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6PacketTooBigMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6PacketTooBigMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return pp->getCode();
+        case FIELD_MTU: return pp->getMTU();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6PacketTooBigMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6PacketTooBigMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: pp->setCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_MTU: pp->setMTU(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6PacketTooBigMsg'", field);
     }
 }
 
 const char *Icmpv6PacketTooBigMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6PacketTooBigMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6PacketTooBigMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6PacketTooBigMsg *pp = (Icmpv6PacketTooBigMsg *)object; (void)pp;
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6PacketTooBigMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6PacketTooBigMsg *pp = omnetpp::fromAnyPtr<Icmpv6PacketTooBigMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6PacketTooBigMsg'", field);
     }
 }
 
@@ -1233,12 +1351,12 @@ void Icmpv6TimeExceededMsg::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->code);
 }
 
-inet::Icmpv6TimeEx Icmpv6TimeExceededMsg::getCode() const
+Icmpv6TimeEx Icmpv6TimeExceededMsg::getCode() const
 {
     return this->code;
 }
 
-void Icmpv6TimeExceededMsg::setCode(inet::Icmpv6TimeEx code)
+void Icmpv6TimeExceededMsg::setCode(Icmpv6TimeEx code)
 {
     handleChange();
     this->code = code;
@@ -1247,7 +1365,7 @@ void Icmpv6TimeExceededMsg::setCode(inet::Icmpv6TimeEx code)
 class Icmpv6TimeExceededMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
     };
@@ -1257,34 +1375,38 @@ class Icmpv6TimeExceededMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6TimeExceededMsgDescriptor)
 
 Icmpv6TimeExceededMsgDescriptor::Icmpv6TimeExceededMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6TimeExceededMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6TimeExceededMsgDescriptor::~Icmpv6TimeExceededMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6TimeExceededMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1294,48 +1416,48 @@ bool Icmpv6TimeExceededMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6TimeExceededMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6TimeExceededMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6TimeExceededMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6TimeExceededMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Icmpv6TimeExceededMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_code
+        0,    // FIELD_code
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Icmpv6TimeExceededMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -1345,19 +1467,19 @@ const char *Icmpv6TimeExceededMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6TimeExceededMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6TimeExceededMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Icmpv6TimeEx",    // FIELD_code
@@ -1367,11 +1489,11 @@ const char *Icmpv6TimeExceededMsgDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6TimeExceededMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code: {
@@ -1382,104 +1504,168 @@ const char **Icmpv6TimeExceededMsgDescriptor::getFieldPropertyNames(int field) c
     }
 }
 
-const char *Icmpv6TimeExceededMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6TimeExceededMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code:
-            if (!strcmp(propertyname, "enum")) return "inet::Icmpv6TimeEx";
+            if (!strcmp(propertyName, "enum")) return "inet::Icmpv6TimeEx";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Icmpv6TimeExceededMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6TimeExceededMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6TimeExceededMsg *pp = (Icmpv6TimeExceededMsg *)object; (void)pp;
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6TimeExceededMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6TimeExceededMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6TimeExceededMsg *pp = (Icmpv6TimeExceededMsg *)object; (void)pp;
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6TimeExceededMsg'", field);
+    }
+}
+
+const char *Icmpv6TimeExceededMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6TimeExceededMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6TimeExceededMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6TimeExceededMsg *pp = (Icmpv6TimeExceededMsg *)object; (void)pp;
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return enum2string(pp->getCode(), "inet::Icmpv6TimeEx");
         default: return "";
     }
 }
 
-bool Icmpv6TimeExceededMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6TimeExceededMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6TimeExceededMsg *pp = (Icmpv6TimeExceededMsg *)object; (void)pp;
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode((inet::Icmpv6TimeEx)string2enum(value, "inet::Icmpv6TimeEx")); return true;
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6TimeExceededMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6TimeExceededMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return static_cast<int>(pp->getCode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6TimeExceededMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6TimeExceededMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6TimeExceededMsg'", field);
     }
 }
 
 const char *Icmpv6TimeExceededMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6TimeExceededMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6TimeExceededMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6TimeExceededMsg *pp = (Icmpv6TimeExceededMsg *)object; (void)pp;
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6TimeExceededMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6TimeExceededMsg *pp = omnetpp::fromAnyPtr<Icmpv6TimeExceededMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6TimeExceededMsg'", field);
     }
 }
 
@@ -1525,12 +1711,12 @@ void Icmpv6ParamProblemMsg::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->code);
 }
 
-inet::Icmpv6ParameterProblem Icmpv6ParamProblemMsg::getCode() const
+Icmpv6ParameterProblem Icmpv6ParamProblemMsg::getCode() const
 {
     return this->code;
 }
 
-void Icmpv6ParamProblemMsg::setCode(inet::Icmpv6ParameterProblem code)
+void Icmpv6ParamProblemMsg::setCode(Icmpv6ParameterProblem code)
 {
     handleChange();
     this->code = code;
@@ -1539,7 +1725,7 @@ void Icmpv6ParamProblemMsg::setCode(inet::Icmpv6ParameterProblem code)
 class Icmpv6ParamProblemMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
     };
@@ -1549,34 +1735,38 @@ class Icmpv6ParamProblemMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6ParamProblemMsgDescriptor)
 
 Icmpv6ParamProblemMsgDescriptor::Icmpv6ParamProblemMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6ParamProblemMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6ParamProblemMsgDescriptor::~Icmpv6ParamProblemMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6ParamProblemMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1586,48 +1776,48 @@ bool Icmpv6ParamProblemMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6ParamProblemMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6ParamProblemMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6ParamProblemMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6ParamProblemMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 1+basedesc->getFieldCount() : 1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 1+base->getFieldCount() : 1;
 }
 
 unsigned int Icmpv6ParamProblemMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
-        FD_ISEDITABLE,    // FIELD_code
+        0,    // FIELD_code
     };
     return (field >= 0 && field < 1) ? fieldTypeFlags[field] : 0;
 }
 
 const char *Icmpv6ParamProblemMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -1637,19 +1827,19 @@ const char *Icmpv6ParamProblemMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6ParamProblemMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6ParamProblemMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "inet::Icmpv6ParameterProblem",    // FIELD_code
@@ -1659,11 +1849,11 @@ const char *Icmpv6ParamProblemMsgDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6ParamProblemMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code: {
@@ -1674,104 +1864,168 @@ const char **Icmpv6ParamProblemMsgDescriptor::getFieldPropertyNames(int field) c
     }
 }
 
-const char *Icmpv6ParamProblemMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6ParamProblemMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         case FIELD_code:
-            if (!strcmp(propertyname, "enum")) return "inet::Icmpv6ParameterProblem";
+            if (!strcmp(propertyName, "enum")) return "inet::Icmpv6ParameterProblem";
             return nullptr;
         default: return nullptr;
     }
 }
 
-int Icmpv6ParamProblemMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6ParamProblemMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6ParamProblemMsg *pp = (Icmpv6ParamProblemMsg *)object; (void)pp;
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6ParamProblemMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6ParamProblemMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6ParamProblemMsg *pp = (Icmpv6ParamProblemMsg *)object; (void)pp;
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6ParamProblemMsg'", field);
+    }
+}
+
+const char *Icmpv6ParamProblemMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6ParamProblemMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6ParamProblemMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6ParamProblemMsg *pp = (Icmpv6ParamProblemMsg *)object; (void)pp;
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return enum2string(pp->getCode(), "inet::Icmpv6ParameterProblem");
         default: return "";
     }
 }
 
-bool Icmpv6ParamProblemMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6ParamProblemMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6ParamProblemMsg *pp = (Icmpv6ParamProblemMsg *)object; (void)pp;
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode((inet::Icmpv6ParameterProblem)string2enum(value, "inet::Icmpv6ParameterProblem")); return true;
-        default: return false;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6ParamProblemMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6ParamProblemMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return static_cast<int>(pp->getCode());
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6ParamProblemMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6ParamProblemMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6ParamProblemMsg'", field);
     }
 }
 
 const char *Icmpv6ParamProblemMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6ParamProblemMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6ParamProblemMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6ParamProblemMsg *pp = (Icmpv6ParamProblemMsg *)object; (void)pp;
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6ParamProblemMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6ParamProblemMsg *pp = omnetpp::fromAnyPtr<Icmpv6ParamProblemMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6ParamProblemMsg'", field);
     }
 }
 
@@ -1859,7 +2113,7 @@ void Icmpv6EchoRequestMsg::setSeqNumber(int seqNumber)
 class Icmpv6EchoRequestMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
         FIELD_identifier,
@@ -1871,34 +2125,38 @@ class Icmpv6EchoRequestMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6EchoRequestMsgDescriptor)
 
 Icmpv6EchoRequestMsgDescriptor::Icmpv6EchoRequestMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6EchoRequestMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6EchoRequestMsgDescriptor::~Icmpv6EchoRequestMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6EchoRequestMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -1908,34 +2166,34 @@ bool Icmpv6EchoRequestMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6EchoRequestMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6EchoRequestMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6EchoRequestMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6EchoRequestMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Icmpv6EchoRequestMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_code
@@ -1947,11 +2205,11 @@ unsigned int Icmpv6EchoRequestMsgDescriptor::getFieldTypeFlags(int field) const
 
 const char *Icmpv6EchoRequestMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -1963,21 +2221,21 @@ const char *Icmpv6EchoRequestMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6EchoRequestMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "identifier") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "seqNumber") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "identifier") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "seqNumber") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6EchoRequestMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_code
@@ -1989,67 +2247,83 @@ const char *Icmpv6EchoRequestMsgDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6EchoRequestMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Icmpv6EchoRequestMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6EchoRequestMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Icmpv6EchoRequestMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6EchoRequestMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoRequestMsg *pp = (Icmpv6EchoRequestMsg *)object; (void)pp;
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6EchoRequestMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6EchoRequestMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoRequestMsg *pp = (Icmpv6EchoRequestMsg *)object; (void)pp;
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6EchoRequestMsg'", field);
+    }
+}
+
+const char *Icmpv6EchoRequestMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6EchoRequestMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6EchoRequestMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoRequestMsg *pp = (Icmpv6EchoRequestMsg *)object; (void)pp;
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return long2string(pp->getCode());
         case FIELD_identifier: return long2string(pp->getIdentifier());
@@ -2058,47 +2332,101 @@ std::string Icmpv6EchoRequestMsgDescriptor::getFieldValueAsString(void *object, 
     }
 }
 
-bool Icmpv6EchoRequestMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6EchoRequestMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoRequestMsg *pp = (Icmpv6EchoRequestMsg *)object; (void)pp;
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode(string2long(value)); return true;
-        case FIELD_identifier: pp->setIdentifier(string2long(value)); return true;
-        case FIELD_seqNumber: pp->setSeqNumber(string2long(value)); return true;
-        default: return false;
+        case FIELD_code: pp->setCode(string2long(value)); break;
+        case FIELD_identifier: pp->setIdentifier(string2long(value)); break;
+        case FIELD_seqNumber: pp->setSeqNumber(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoRequestMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6EchoRequestMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return pp->getCode();
+        case FIELD_identifier: return pp->getIdentifier();
+        case FIELD_seqNumber: return pp->getSeqNumber();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6EchoRequestMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6EchoRequestMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: pp->setCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_identifier: pp->setIdentifier(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_seqNumber: pp->setSeqNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoRequestMsg'", field);
     }
 }
 
 const char *Icmpv6EchoRequestMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6EchoRequestMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6EchoRequestMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoRequestMsg *pp = (Icmpv6EchoRequestMsg *)object; (void)pp;
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
+    }
+}
+
+void Icmpv6EchoRequestMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoRequestMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoRequestMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoRequestMsg'", field);
     }
 }
 
@@ -2186,7 +2514,7 @@ void Icmpv6EchoReplyMsg::setSeqNumber(int seqNumber)
 class Icmpv6EchoReplyMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_code,
         FIELD_identifier,
@@ -2198,34 +2526,38 @@ class Icmpv6EchoReplyMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(Icmpv6EchoReplyMsgDescriptor)
 
 Icmpv6EchoReplyMsgDescriptor::Icmpv6EchoReplyMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::Icmpv6EchoReplyMsg)), "inet::Icmpv6Header")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 Icmpv6EchoReplyMsgDescriptor::~Icmpv6EchoReplyMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool Icmpv6EchoReplyMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -2235,34 +2567,34 @@ bool Icmpv6EchoReplyMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
 
 const char **Icmpv6EchoReplyMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *Icmpv6EchoReplyMsgDescriptor::getProperty(const char *propertyname) const
+const char *Icmpv6EchoReplyMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int Icmpv6EchoReplyMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 3+basedesc->getFieldCount() : 3;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 3+base->getFieldCount() : 3;
 }
 
 unsigned int Icmpv6EchoReplyMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_code
@@ -2274,11 +2606,11 @@ unsigned int Icmpv6EchoReplyMsgDescriptor::getFieldTypeFlags(int field) const
 
 const char *Icmpv6EchoReplyMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "code",
@@ -2290,21 +2622,21 @@ const char *Icmpv6EchoReplyMsgDescriptor::getFieldName(int field) const
 
 int Icmpv6EchoReplyMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'c' && strcmp(fieldName, "code") == 0) return base+0;
-    if (fieldName[0] == 'i' && strcmp(fieldName, "identifier") == 0) return base+1;
-    if (fieldName[0] == 's' && strcmp(fieldName, "seqNumber") == 0) return base+2;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "code") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "identifier") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "seqNumber") == 0) return baseIndex + 2;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *Icmpv6EchoReplyMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "int",    // FIELD_code
@@ -2316,67 +2648,83 @@ const char *Icmpv6EchoReplyMsgDescriptor::getFieldTypeString(int field) const
 
 const char **Icmpv6EchoReplyMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *Icmpv6EchoReplyMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *Icmpv6EchoReplyMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int Icmpv6EchoReplyMsgDescriptor::getFieldArraySize(void *object, int field) const
+int Icmpv6EchoReplyMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoReplyMsg *pp = (Icmpv6EchoReplyMsg *)object; (void)pp;
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *Icmpv6EchoReplyMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void Icmpv6EchoReplyMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoReplyMsg *pp = (Icmpv6EchoReplyMsg *)object; (void)pp;
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'Icmpv6EchoReplyMsg'", field);
+    }
+}
+
+const char *Icmpv6EchoReplyMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string Icmpv6EchoReplyMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string Icmpv6EchoReplyMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoReplyMsg *pp = (Icmpv6EchoReplyMsg *)object; (void)pp;
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
     switch (field) {
         case FIELD_code: return long2string(pp->getCode());
         case FIELD_identifier: return long2string(pp->getIdentifier());
@@ -2385,49 +2733,107 @@ std::string Icmpv6EchoReplyMsgDescriptor::getFieldValueAsString(void *object, in
     }
 }
 
-bool Icmpv6EchoReplyMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void Icmpv6EchoReplyMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoReplyMsg *pp = (Icmpv6EchoReplyMsg *)object; (void)pp;
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_code: pp->setCode(string2long(value)); return true;
-        case FIELD_identifier: pp->setIdentifier(string2long(value)); return true;
-        case FIELD_seqNumber: pp->setSeqNumber(string2long(value)); return true;
-        default: return false;
+        case FIELD_code: pp->setCode(string2long(value)); break;
+        case FIELD_identifier: pp->setIdentifier(string2long(value)); break;
+        case FIELD_seqNumber: pp->setSeqNumber(string2long(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoReplyMsg'", field);
+    }
+}
+
+omnetpp::cValue Icmpv6EchoReplyMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: return pp->getCode();
+        case FIELD_identifier: return pp->getIdentifier();
+        case FIELD_seqNumber: return pp->getSeqNumber();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'Icmpv6EchoReplyMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void Icmpv6EchoReplyMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_code: pp->setCode(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_identifier: pp->setIdentifier(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_seqNumber: pp->setSeqNumber(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoReplyMsg'", field);
     }
 }
 
 const char *Icmpv6EchoReplyMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *Icmpv6EchoReplyMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr Icmpv6EchoReplyMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    Icmpv6EchoReplyMsg *pp = (Icmpv6EchoReplyMsg *)object; (void)pp;
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace inet
+void Icmpv6EchoReplyMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    Icmpv6EchoReplyMsg *pp = omnetpp::fromAnyPtr<Icmpv6EchoReplyMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'Icmpv6EchoReplyMsg'", field);
+    }
+}
+
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 

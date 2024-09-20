@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/networklayer/diffserv/Dscp.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/networklayer/diffserv/Dscp.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "Dscp_m.h"
 
 namespace omnetpp {
@@ -149,90 +150,13 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
+Register_Enum(inet::Dscp, (inet::Dscp::DSCP_BE, inet::Dscp::DSCP_AF11, inet::Dscp::DSCP_AF12, inet::Dscp::DSCP_AF13, inet::Dscp::DSCP_AF21, inet::Dscp::DSCP_AF22, inet::Dscp::DSCP_AF23, inet::Dscp::DSCP_AF31, inet::Dscp::DSCP_AF32, inet::Dscp::DSCP_AF33, inet::Dscp::DSCP_AF41, inet::Dscp::DSCP_AF42, inet::Dscp::DSCP_AF43, inet::Dscp::DSCP_EF, inet::Dscp::DSCP_CS1, inet::Dscp::DSCP_CS2, inet::Dscp::DSCP_CS3, inet::Dscp::DSCP_CS4, inet::Dscp::DSCP_CS5, inet::Dscp::DSCP_CS6, inet::Dscp::DSCP_CS7, inet::Dscp::DSCP_MAX));
 
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
+}  // namespace inet
 
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
+namespace omnetpp {
 
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-EXECUTE_ON_STARTUP(
-    omnetpp::cEnum *e = omnetpp::cEnum::find("inet::Dscp");
-    if (!e) omnetpp::enums.getInstance()->add(e = new omnetpp::cEnum("inet::Dscp"));
-    e->insert(DSCP_BE, "DSCP_BE");
-    e->insert(DSCP_AF11, "DSCP_AF11");
-    e->insert(DSCP_AF12, "DSCP_AF12");
-    e->insert(DSCP_AF13, "DSCP_AF13");
-    e->insert(DSCP_AF21, "DSCP_AF21");
-    e->insert(DSCP_AF22, "DSCP_AF22");
-    e->insert(DSCP_AF23, "DSCP_AF23");
-    e->insert(DSCP_AF31, "DSCP_AF31");
-    e->insert(DSCP_AF32, "DSCP_AF32");
-    e->insert(DSCP_AF33, "DSCP_AF33");
-    e->insert(DSCP_AF41, "DSCP_AF41");
-    e->insert(DSCP_AF42, "DSCP_AF42");
-    e->insert(DSCP_AF43, "DSCP_AF43");
-    e->insert(DSCP_EF, "DSCP_EF");
-    e->insert(DSCP_CS1, "DSCP_CS1");
-    e->insert(DSCP_CS2, "DSCP_CS2");
-    e->insert(DSCP_CS3, "DSCP_CS3");
-    e->insert(DSCP_CS4, "DSCP_CS4");
-    e->insert(DSCP_CS5, "DSCP_CS5");
-    e->insert(DSCP_CS6, "DSCP_CS6");
-    e->insert(DSCP_CS7, "DSCP_CS7");
-    e->insert(DSCP_MAX, "DSCP_MAX");
-)
-
-} // namespace inet
+}  // namespace omnetpp
 

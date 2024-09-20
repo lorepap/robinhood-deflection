@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by nedtool 5.6 from inet/applications/httptools/common/HttpEventMessages.msg.
+// Generated file, do not edit! Created by opp_msgtool 6.0 from inet/applications/httptools/common/HttpEventMessages.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <type_traits>
 #include "HttpEventMessages_m.h"
 
 namespace omnetpp {
@@ -149,64 +150,8 @@ void doParsimUnpacking(omnetpp::cCommBuffer *, T& t)
 
 }  // namespace omnetpp
 
-namespace {
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)(static_cast<const omnetpp::cObject *>(t));
-}
-
-template <class T> inline
-typename std::enable_if<std::is_polymorphic<T>::value && !std::is_base_of<omnetpp::cObject,T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)dynamic_cast<const void *>(t);
-}
-
-template <class T> inline
-typename std::enable_if<!std::is_polymorphic<T>::value, void *>::type
-toVoidPtr(T* t)
-{
-    return (void *)static_cast<const void *>(t);
-}
-
-}
-
 namespace inet {
 namespace httptools {
-
-// forward
-template<typename T, typename A>
-std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec);
-
-// Template rule to generate operator<< for shared_ptr<T>
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const std::shared_ptr<T>& t) { return out << t.get(); }
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
-
-// operator<< for std::vector<T>
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
 
 Register_Class(HttpServerStatusUpdateMsg)
 
@@ -270,12 +215,12 @@ void HttpServerStatusUpdateMsg::setWww(const char * www)
     this->www = www;
 }
 
-omnetpp::simtime_t HttpServerStatusUpdateMsg::getSetTime() const
+::omnetpp::simtime_t HttpServerStatusUpdateMsg::getSetTime() const
 {
     return this->setTime;
 }
 
-void HttpServerStatusUpdateMsg::setSetTime(omnetpp::simtime_t setTime)
+void HttpServerStatusUpdateMsg::setSetTime(::omnetpp::simtime_t setTime)
 {
     this->setTime = setTime;
 }
@@ -313,7 +258,7 @@ void HttpServerStatusUpdateMsg::setPamortize(double pamortize)
 class HttpServerStatusUpdateMsgDescriptor : public omnetpp::cClassDescriptor
 {
   private:
-    mutable const char **propertynames;
+    mutable const char **propertyNames;
     enum FieldConstants {
         FIELD_www,
         FIELD_setTime,
@@ -327,34 +272,38 @@ class HttpServerStatusUpdateMsgDescriptor : public omnetpp::cClassDescriptor
 
     virtual bool doesSupport(omnetpp::cObject *obj) const override;
     virtual const char **getPropertyNames() const override;
-    virtual const char *getProperty(const char *propertyname) const override;
+    virtual const char *getProperty(const char *propertyName) const override;
     virtual int getFieldCount() const override;
     virtual const char *getFieldName(int field) const override;
     virtual int findField(const char *fieldName) const override;
     virtual unsigned int getFieldTypeFlags(int field) const override;
     virtual const char *getFieldTypeString(int field) const override;
     virtual const char **getFieldPropertyNames(int field) const override;
-    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
-    virtual int getFieldArraySize(void *object, int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyName) const override;
+    virtual int getFieldArraySize(omnetpp::any_ptr object, int field) const override;
+    virtual void setFieldArraySize(omnetpp::any_ptr object, int field, int size) const override;
 
-    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
-    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
-    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+    virtual const char *getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const override;
+    virtual omnetpp::cValue getFieldValue(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const override;
 
     virtual const char *getFieldStructName(int field) const override;
-    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+    virtual omnetpp::any_ptr getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const override;
+    virtual void setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const override;
 };
 
 Register_ClassDescriptor(HttpServerStatusUpdateMsgDescriptor)
 
 HttpServerStatusUpdateMsgDescriptor::HttpServerStatusUpdateMsgDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::httptools::HttpServerStatusUpdateMsg)), "omnetpp::cMessage")
 {
-    propertynames = nullptr;
+    propertyNames = nullptr;
 }
 
 HttpServerStatusUpdateMsgDescriptor::~HttpServerStatusUpdateMsgDescriptor()
 {
-    delete[] propertynames;
+    delete[] propertyNames;
 }
 
 bool HttpServerStatusUpdateMsgDescriptor::doesSupport(omnetpp::cObject *obj) const
@@ -364,38 +313,38 @@ bool HttpServerStatusUpdateMsgDescriptor::doesSupport(omnetpp::cObject *obj) con
 
 const char **HttpServerStatusUpdateMsgDescriptor::getPropertyNames() const
 {
-    if (!propertynames) {
+    if (!propertyNames) {
         static const char *names[] = {  nullptr };
-        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
-        propertynames = mergeLists(basenames, names);
+        omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+        const char **baseNames = base ? base->getPropertyNames() : nullptr;
+        propertyNames = mergeLists(baseNames, names);
     }
-    return propertynames;
+    return propertyNames;
 }
 
-const char *HttpServerStatusUpdateMsgDescriptor::getProperty(const char *propertyname) const
+const char *HttpServerStatusUpdateMsgDescriptor::getProperty(const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? base->getProperty(propertyName) : nullptr;
 }
 
 int HttpServerStatusUpdateMsgDescriptor::getFieldCount() const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 5+basedesc->getFieldCount() : 5;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    return base ? 5+base->getFieldCount() : 5;
 }
 
 unsigned int HttpServerStatusUpdateMsgDescriptor::getFieldTypeFlags(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeFlags(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeFlags(field);
+        field -= base->getFieldCount();
     }
     static unsigned int fieldTypeFlags[] = {
         FD_ISEDITABLE,    // FIELD_www
-        0,    // FIELD_setTime
+        FD_ISEDITABLE,    // FIELD_setTime
         FD_ISEDITABLE,    // FIELD_eventKind
         FD_ISEDITABLE,    // FIELD_pvalue
         FD_ISEDITABLE,    // FIELD_pamortize
@@ -405,11 +354,11 @@ unsigned int HttpServerStatusUpdateMsgDescriptor::getFieldTypeFlags(int field) c
 
 const char *HttpServerStatusUpdateMsgDescriptor::getFieldName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldName(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldNames[] = {
         "www",
@@ -423,23 +372,23 @@ const char *HttpServerStatusUpdateMsgDescriptor::getFieldName(int field) const
 
 int HttpServerStatusUpdateMsgDescriptor::findField(const char *fieldName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    int base = basedesc ? basedesc->getFieldCount() : 0;
-    if (fieldName[0] == 'w' && strcmp(fieldName, "www") == 0) return base+0;
-    if (fieldName[0] == 's' && strcmp(fieldName, "setTime") == 0) return base+1;
-    if (fieldName[0] == 'e' && strcmp(fieldName, "eventKind") == 0) return base+2;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "pvalue") == 0) return base+3;
-    if (fieldName[0] == 'p' && strcmp(fieldName, "pamortize") == 0) return base+4;
-    return basedesc ? basedesc->findField(fieldName) : -1;
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    int baseIndex = base ? base->getFieldCount() : 0;
+    if (strcmp(fieldName, "www") == 0) return baseIndex + 0;
+    if (strcmp(fieldName, "setTime") == 0) return baseIndex + 1;
+    if (strcmp(fieldName, "eventKind") == 0) return baseIndex + 2;
+    if (strcmp(fieldName, "pvalue") == 0) return baseIndex + 3;
+    if (strcmp(fieldName, "pamortize") == 0) return baseIndex + 4;
+    return base ? base->findField(fieldName) : -1;
 }
 
 const char *HttpServerStatusUpdateMsgDescriptor::getFieldTypeString(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldTypeString(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldTypeString(field);
+        field -= base->getFieldCount();
     }
     static const char *fieldTypeStrings[] = {
         "string",    // FIELD_www
@@ -453,67 +402,83 @@ const char *HttpServerStatusUpdateMsgDescriptor::getFieldTypeString(int field) c
 
 const char **HttpServerStatusUpdateMsgDescriptor::getFieldPropertyNames(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldPropertyNames(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldPropertyNames(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-const char *HttpServerStatusUpdateMsgDescriptor::getFieldProperty(int field, const char *propertyname) const
+const char *HttpServerStatusUpdateMsgDescriptor::getFieldProperty(int field, const char *propertyName) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldProperty(field, propertyname);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldProperty(field, propertyName);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     }
 }
 
-int HttpServerStatusUpdateMsgDescriptor::getFieldArraySize(void *object, int field) const
+int HttpServerStatusUpdateMsgDescriptor::getFieldArraySize(omnetpp::any_ptr object, int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldArraySize(object, field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldArraySize(object, field);
+        field -= base->getFieldCount();
     }
-    HttpServerStatusUpdateMsg *pp = (HttpServerStatusUpdateMsg *)object; (void)pp;
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-const char *HttpServerStatusUpdateMsgDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+void HttpServerStatusUpdateMsgDescriptor::setFieldArraySize(omnetpp::any_ptr object, int field, int size) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldDynamicTypeString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldArraySize(object, field, size);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpServerStatusUpdateMsg *pp = (HttpServerStatusUpdateMsg *)object; (void)pp;
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set array size of field %d of class 'HttpServerStatusUpdateMsg'", field);
+    }
+}
+
+const char *HttpServerStatusUpdateMsgDescriptor::getFieldDynamicTypeString(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldDynamicTypeString(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
     switch (field) {
         default: return nullptr;
     }
 }
 
-std::string HttpServerStatusUpdateMsgDescriptor::getFieldValueAsString(void *object, int field, int i) const
+std::string HttpServerStatusUpdateMsgDescriptor::getFieldValueAsString(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldValueAsString(object,field,i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValueAsString(object,field,i);
+        field -= base->getFieldCount();
     }
-    HttpServerStatusUpdateMsg *pp = (HttpServerStatusUpdateMsg *)object; (void)pp;
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
     switch (field) {
         case FIELD_www: return oppstring2string(pp->getWww());
         case FIELD_setTime: return simtime2string(pp->getSetTime());
@@ -524,51 +489,114 @@ std::string HttpServerStatusUpdateMsgDescriptor::getFieldValueAsString(void *obj
     }
 }
 
-bool HttpServerStatusUpdateMsgDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+void HttpServerStatusUpdateMsgDescriptor::setFieldValueAsString(omnetpp::any_ptr object, int field, int i, const char *value) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->setFieldValueAsString(object,field,i,value);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValueAsString(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
     }
-    HttpServerStatusUpdateMsg *pp = (HttpServerStatusUpdateMsg *)object; (void)pp;
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
     switch (field) {
-        case FIELD_www: pp->setWww((value)); return true;
-        case FIELD_eventKind: pp->setEventKind(string2long(value)); return true;
-        case FIELD_pvalue: pp->setPvalue(string2double(value)); return true;
-        case FIELD_pamortize: pp->setPamortize(string2double(value)); return true;
-        default: return false;
+        case FIELD_www: pp->setWww((value)); break;
+        case FIELD_setTime: pp->setSetTime(string2simtime(value)); break;
+        case FIELD_eventKind: pp->setEventKind(string2long(value)); break;
+        case FIELD_pvalue: pp->setPvalue(string2double(value)); break;
+        case FIELD_pamortize: pp->setPamortize(string2double(value)); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpServerStatusUpdateMsg'", field);
+    }
+}
+
+omnetpp::cValue HttpServerStatusUpdateMsgDescriptor::getFieldValue(omnetpp::any_ptr object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldValue(object,field,i);
+        field -= base->getFieldCount();
+    }
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_www: return pp->getWww();
+        case FIELD_setTime: return pp->getSetTime().dbl();
+        case FIELD_eventKind: return pp->getEventKind();
+        case FIELD_pvalue: return pp->getPvalue();
+        case FIELD_pamortize: return pp->getPamortize();
+        default: throw omnetpp::cRuntimeError("Cannot return field %d of class 'HttpServerStatusUpdateMsg' as cValue -- field index out of range?", field);
+    }
+}
+
+void HttpServerStatusUpdateMsgDescriptor::setFieldValue(omnetpp::any_ptr object, int field, int i, const omnetpp::cValue& value) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldValue(object, field, i, value);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
+    switch (field) {
+        case FIELD_www: pp->setWww(value.stringValue()); break;
+        case FIELD_setTime: pp->setSetTime(value.doubleValue()); break;
+        case FIELD_eventKind: pp->setEventKind(omnetpp::checked_int_cast<int>(value.intValue())); break;
+        case FIELD_pvalue: pp->setPvalue(value.doubleValue()); break;
+        case FIELD_pamortize: pp->setPamortize(value.doubleValue()); break;
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpServerStatusUpdateMsg'", field);
     }
 }
 
 const char *HttpServerStatusUpdateMsgDescriptor::getFieldStructName(int field) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructName(field);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructName(field);
+        field -= base->getFieldCount();
     }
     switch (field) {
         default: return nullptr;
     };
 }
 
-void *HttpServerStatusUpdateMsgDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+omnetpp::any_ptr HttpServerStatusUpdateMsgDescriptor::getFieldStructValuePointer(omnetpp::any_ptr object, int field, int i) const
 {
-    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    if (basedesc) {
-        if (field < basedesc->getFieldCount())
-            return basedesc->getFieldStructValuePointer(object, field, i);
-        field -= basedesc->getFieldCount();
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount())
+            return base->getFieldStructValuePointer(object, field, i);
+        field -= base->getFieldCount();
     }
-    HttpServerStatusUpdateMsg *pp = (HttpServerStatusUpdateMsg *)object; (void)pp;
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
     switch (field) {
-        default: return nullptr;
+        default: return omnetpp::any_ptr(nullptr);
     }
 }
 
-} // namespace httptools
-} // namespace inet
+void HttpServerStatusUpdateMsgDescriptor::setFieldStructValuePointer(omnetpp::any_ptr object, int field, int i, omnetpp::any_ptr ptr) const
+{
+    omnetpp::cClassDescriptor *base = getBaseClassDescriptor();
+    if (base) {
+        if (field < base->getFieldCount()){
+            base->setFieldStructValuePointer(object, field, i, ptr);
+            return;
+        }
+        field -= base->getFieldCount();
+    }
+    HttpServerStatusUpdateMsg *pp = omnetpp::fromAnyPtr<HttpServerStatusUpdateMsg>(object); (void)pp;
+    switch (field) {
+        default: throw omnetpp::cRuntimeError("Cannot set field %d of class 'HttpServerStatusUpdateMsg'", field);
+    }
+}
+
+}  // namespace httptools
+}  // namespace inet
+
+namespace omnetpp {
+
+}  // namespace omnetpp
 
